@@ -433,7 +433,7 @@ class NewAdminController extends Controller {
                
             $user_details = User::find($request->user_id) ;
             
-            if(!$user_details) {
+            if( count($user_details) == 0 ) {
 
                 throw new Exception(tr('admin_user_not_found'), 101);
             } 
@@ -567,7 +567,7 @@ class NewAdminController extends Controller {
 
             $users_details = User::find($request->user_id);
 
-            if(!$users_details) {
+            if (count($users_details) == 0 ) {
 
                throw new Exception(tr('admin_user_not_found'), 101);                
             }
@@ -622,7 +622,7 @@ class NewAdminController extends Controller {
 
             $users_details = User::find($request->user_id);
 
-            if(!$users_details) {
+            if ( count($users_details) == 0 ) {
 
                throw new Exception(tr('admin_user_not_found'), 101);                
             }
@@ -679,7 +679,7 @@ class NewAdminController extends Controller {
        
             $user_details = User::find($request->user_id);
 
-            if(!$user_details) {
+            if( count( $user_details) == 0) {
                 
                 throw new Exception(tr('admin_user_not_found'), 101);
             } 
@@ -728,7 +728,7 @@ class NewAdminController extends Controller {
             
             $user_details = User::find($request->user_id);
 
-            if(!$user_details) {
+            if( count( $user_details) == 0) {
                 
                 throw new Exception(tr('admin_user_not_found'), 101);
             } 
@@ -783,7 +783,7 @@ class NewAdminController extends Controller {
 
             $user_wishlist = Wishlist::find($request->wishlist_id);
 
-            if(!$user_wishlist) {
+            if(count($user_wishlist) == 0) {
 
                 throw new Exception(tr('admin_user_wishlist_not_found'), 101);
             }
@@ -830,7 +830,7 @@ class NewAdminController extends Controller {
 
             $user_history = UserHistory::find($request->history_id);
 
-            if(!$user_history) {
+            if(count($user_history) == 0) {
 
                 throw new Exception(tr('admin_user_history_not_found'), 101);
             }
@@ -875,7 +875,7 @@ class NewAdminController extends Controller {
 
             $user_details = User::find($request->user_id);
 
-            if(!$user_details) {
+            if(count($user_details) == 0) {
 
                 throw new Exception(tr('admin_user_not_found'), 101);
             }
@@ -1030,7 +1030,7 @@ class NewAdminController extends Controller {
 
             $user_details = User::find($request->user_id);
 
-            if(!$user_details) {
+            if(count($user_details) == 0) {
 
                 throw new Exception(tr('admin_user_not_found'), 101);
             }
@@ -1146,7 +1146,7 @@ class NewAdminController extends Controller {
 
             $channel_details = Channel::find($request->channel_id);
 
-            if(!$channel_details) {
+            if (count($channel_details) == 0) {
 
                 throw new Exception(tr('admin_channel_not_found'), 101);
             }
@@ -1223,18 +1223,17 @@ class NewAdminController extends Controller {
                         ->leftjoin('users', 'users.id', '=', 'channels.user_id')
                         ->withCount('getVideoTape')
                         ->withCount('getChannelSubscribers')
-                        ->withCount('getPlaylist')
                         ->where('channels.id', $request->channel_id)
                         ->first();
 
-            if(!$channel_details) {
+            if( count($channel_details) == 0 ) {
 
                 throw new Exception(tr('admin_channel_not_found'), 101);
             }
 
             // Load videos and subscribrs based on the channel
             $channel_earnings = getAmountBasedChannel($channel_details->id);
-             
+
             $videos = VideoTape::select('video_tapes.title', 'video_tapes.default_image', 'video_tapes.id', 'video_tapes.description', 'video_tapes.created_at')
                         ->where('channel_id', $channel_details->id)
                         ->paginate(12);
@@ -1242,13 +1241,7 @@ class NewAdminController extends Controller {
             $channel_subscriptions = ChannelSubscription::select('users.name as user_name', 'users.id as user_id', 'users.picture as user_picture', 'users.description', 'users.created_at', 'users.email')->where('channel_id', $channel_details->id)
                         ->leftjoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
                         ->paginate(12);
-            
-            $channel_playlists = Playlist::where('playlists.channel_id', $request->channel_id)->CommonResponse()->orderBy('playlists.updated_at', 'desc')->get();
-
-            foreach ($channel_playlists as $key => $playlist_details) {
-                
-                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
-            }
+            // dd($channel_subscriptions->toArray());
 
             return view('new_admin.channels.view')
                         ->with('page' ,'channels')
@@ -1256,8 +1249,7 @@ class NewAdminController extends Controller {
                         ->with('channel_details' , $channel_details)
                         ->with('channel_earnings', $channel_earnings)
                         ->with('videos', $videos)
-                        ->with('channel_subscriptions', $channel_subscriptions)
-                        ->with('channel_playlists', $channel_playlists);
+                        ->with('channel_subscriptions', $channel_subscriptions);
             
         } catch (Exception $e) {
             
@@ -1265,7 +1257,7 @@ class NewAdminController extends Controller {
 
             return redirect()->back()->with('flash_error',$error);
         }
-
+    
     }
 
     /**
@@ -1290,7 +1282,7 @@ class NewAdminController extends Controller {
 
             $channel_details = Channel::find($request->channel_id);
 
-            if (!$channel_details) {
+            if (count($channel_details) == 0) {
 
                 throw new Exception(tr('admin_channel_not_found'), 101);
             }
@@ -1335,7 +1327,7 @@ class NewAdminController extends Controller {
 
             $channel_details = Channel::find($request->channel_id);
 
-            if(!$channel_details) {
+            if ( count($channel_details) == 0) {
 
                 throw new Exception(tr('admin_channel_not_found'), 101);
             }
@@ -1391,7 +1383,7 @@ class NewAdminController extends Controller {
 
             $channel_details = Channel::find($request->channel_id);
 
-            if(!$channel_details) {
+            if(count($channel_details) == 0) {
 
                 throw new Exception(tr('admin_channel_not_found'), 101);
             }
@@ -1524,7 +1516,7 @@ class NewAdminController extends Controller {
           
             $category_details = Category::find($request->category_id);
 
-            if(!$category_details) {
+            if( count($category_details) == 0 ) {
 
                 throw new Exception( tr('admin_category_not_found'), 101);
             } 
@@ -1544,6 +1536,8 @@ class NewAdminController extends Controller {
         }
     
     }
+
+
     
     /**
      * Function Name : categories_save
@@ -1643,7 +1637,7 @@ class NewAdminController extends Controller {
                                             ->withCount('getVideos')
                                             ->first();
             
-            if(!$category_details) {
+            if (count($category_details) == 0 ) {
 
                 throw new Exception(tr('admin_category_not_found'), 101);
             } 
@@ -1793,7 +1787,7 @@ class NewAdminController extends Controller {
 
             $category_details = Category::find($request->category_id);
 
-            if(!$category_details) {
+            if (count($category_details) == 0) {
 
                 throw new Exception(tr('admin_category_not_found'), 101);
             }
@@ -1843,7 +1837,7 @@ class NewAdminController extends Controller {
 
             $category_details = Category::find($request->category_id);
 
-            if(!$category_details) {
+            if (count($category_details) == 0) {
 
                 throw new Exception(tr('admin_category_not_found'), 101);
             }
@@ -1893,7 +1887,7 @@ class NewAdminController extends Controller {
 
             $category_details = Category::find($request->category_id);
 
-            if(!$category_details) {
+            if (count( $category_details) == 0 ) {
 
                 throw new Exception(tr('admin_category_not_found'), 101);
             }
@@ -2037,7 +2031,7 @@ class NewAdminController extends Controller {
 
             $tag_details = Tag::find($request->tag_id);
 
-            if(!$tag_details) {
+            if (count($tag_details) == 0) {
 
                 throw new Exception(tr('admin_tag_not_found'), 101);
             }            
@@ -2083,7 +2077,7 @@ class NewAdminController extends Controller {
 
             $tag_details = Tag::find($request->tag_id);
 
-            if(!$tag_details) {
+            if ( count($tag_details) == 0) {
 
                 throw new Exception(tr('admin_tag_not_found'), 101);
             }
@@ -2141,7 +2135,7 @@ class NewAdminController extends Controller {
             
             $tag_details = Tag::find($request->tag_id);
 
-            if(!$tag_details) {
+            if (count($tag_details) == 0) {
 
                 throw new Exception(tr('admin_tag_not_found'), 101);
             }
@@ -2237,7 +2231,7 @@ class NewAdminController extends Controller {
           
             $coupon_details = Coupon::find($request->coupon_id);
 
-            if(!$coupon_details) {
+            if( count($coupon_details) == 0 ) {
 
                 throw new Exception( tr('admin_coupon_not_found'), 101);
             } 
@@ -2403,7 +2397,7 @@ class NewAdminController extends Controller {
 
             $coupon_details = Coupon::find($request->coupon_id);
 
-            if(!$coupon_details) {
+            if (count($coupon_details) == 0) {
 
                 throw new Exception(tr('admin_coupon_not_found'), 101);
             }
@@ -2444,7 +2438,7 @@ class NewAdminController extends Controller {
 
             $coupon_details = Coupon::find($request->coupon_id);
 
-            if(!$coupon_details) {
+            if (count($coupon_details) == 0) {
 
                 throw new Exception(tr('admin_coupon_not_found'), 101);
             }
@@ -2491,7 +2485,7 @@ class NewAdminController extends Controller {
 
             $coupons_details = Coupon::find($request->coupon_id);
 
-            if(!$coupons_details) {
+            if ( count($coupons_details) == 0 ) {
 
                throw new Exception(tr('admin_coupon_not_found'), 101);                
             }
@@ -2585,7 +2579,7 @@ class NewAdminController extends Controller {
 
             $ads_detail_details = AdsDetail::find($request->ads_detail_id);
 
-            if(!$ads_detail_details) {
+            if (count($ads_detail_details) == 0) {
 
                 throw new Exception(tr('admin_ads_detail_not_found'), 101);
             }
@@ -2660,7 +2654,7 @@ class NewAdminController extends Controller {
           
             $ads_detail_details = AdsDetail::find($request->ads_detail_id);
 
-            if(!$ads_detail_details) {
+            if( count($ads_detail_details) == 0 ) {
 
                 throw new Exception( tr('admin_ads_detail_not_found'), 101);
             } 
@@ -2704,7 +2698,7 @@ class NewAdminController extends Controller {
 
             $ads_detail_details = AdsDetail::find($request->ads_detail_id);
 
-            if(!$ads_detail_details) {
+            if (count($ads_detail_details) == 0) {
 
                 throw new Exception(tr('admin_ads_detail_not_found'), 101);
             }
@@ -2770,7 +2764,7 @@ class NewAdminController extends Controller {
 
             $ads_detail_details = AdsDetail::find($request->ads_detail_id);
 
-            if(!$ads_detail_details) {
+            if (count($ads_detail_details) == 0) {
 
                 throw new Exception(tr('admin_ads_detail_not_found'), 101);
             }
@@ -2803,7 +2797,7 @@ class NewAdminController extends Controller {
 
                     $exp_video_ad = explode(',', $video_ad->types_of_ad);
 
-                    if(count($exp_video_ad) == 1) {
+                    if (count($exp_video_ad) == 1) {
 
                         $video_ad->delete();
 
@@ -2929,7 +2923,7 @@ class NewAdminController extends Controller {
 
             $video_ad_details = VideoAd::find($request->id);
 
-            if(!$video_ad_details) {
+            if (count($video_ad_details) == 0) {
 
                 throw new Exception(tr('admin_video_ad_not_found'), 101);
             }
@@ -3032,7 +3026,7 @@ class NewAdminController extends Controller {
 
             $video_ad_details = VideoAd::find($request->id);
 
-            if(!$video_ad_details) {
+            if (count($video_ad_details) == 0) {
 
                 throw new Exception(tr('admin_video_ad_not_found'), 101);
             }            
@@ -3380,7 +3374,7 @@ class NewAdminController extends Controller {
           
             $page_details = Page::find($request->page_id);
 
-            if(!$page_details) {
+            if( count($page_details) == 0 ) {
 
                 throw new Exception( tr('admin_page_not_found'), 101);
             } 
@@ -3504,7 +3498,7 @@ class NewAdminController extends Controller {
 
             $page_details = Page::find($request->page_id);
             
-            if(!$page_details) {
+            if( count($page_details) == 0 ) {
 
                 throw new Exception(tr('admin_page_not_found'), 101);
             }
@@ -3543,7 +3537,7 @@ class NewAdminController extends Controller {
             
             $page_details = Page::where('id' , $request->page_id)->first();
 
-            if(!$page_details) {  
+            if( count($page_details) == 0 ) {  
 
                 throw new Exception(tr('admin_page_not_found'), 101);
             }
@@ -3639,7 +3633,7 @@ class NewAdminController extends Controller {
           
             $banner_ad_details = BannerAd::find($request->banner_ad_id);
 
-            if(!$banner_ad_details) {
+            if( count($banner_ad_details) == 0 ) {
 
                 throw new Exception( tr('admin_banner_ad_not_found'), 101);
             } 
@@ -3758,7 +3752,7 @@ class NewAdminController extends Controller {
 
             $banner_ad_details = BannerAd::find($request->banner_ad_id);
 
-            if(!$banner_ad_details) {
+            if (count($banner_ad_details) == 0) {
 
                 throw new Exception(tr('admin_banner_ad_not_found'), 101);
             }            
@@ -3829,7 +3823,7 @@ class NewAdminController extends Controller {
 
             $banner_ads_details = BannerAd::find($request->banner_ad_id);
 
-            if(!$banner_ads_details) {
+            if ( count($banner_ads_details) == 0 ) {
 
                throw new Exception(tr('admin_banner_ad_not_found'), 101);
             }
@@ -3877,7 +3871,7 @@ class NewAdminController extends Controller {
 
             $banner_ad_details = BannerAd::find($request->banner_ad_id);
 
-            if(!$banner_ad_details) {
+            if (count($banner_ad_details) == 0) {
 
                 throw new Exception(tr('admin_banner_ad_not_found'), 101);
             }
@@ -3917,7 +3911,7 @@ class NewAdminController extends Controller {
 
             $banner_ads_details = BannerAd::find($request->banner_ad_id);
 
-            if(!$banner_ads_details) {
+            if ( count($banner_ads_details) == 0 ) {
 
                 throw new Exception(tr('admin_banner_ad_not_found'), 101);
             } 
@@ -3930,7 +3924,7 @@ class NewAdminController extends Controller {
 
             $current_position_banner = BannerAd::where('position', $current_position)->first();
 
-            if(!$current_position_banner) {
+            if ( count($current_position_banner) == 0 ) {
 
                 throw new Exception(tr('current_position_banner_ad_not_available'), 101);
             }
@@ -4016,7 +4010,7 @@ class NewAdminController extends Controller {
 
             $video_details = VideoTape::find($request->id);
             
-            if(!$video_details) {
+            if(count($video_details) == 0) {
 
                 throw new Exception(tr('admin_banner_video_not_found'), 101);
             }
@@ -4090,8 +4084,9 @@ class NewAdminController extends Controller {
             DB::beginTransaction();
 
             $video_details = VideoTape::find($request->id);
+            
 
-            if(!$video_details) {
+            if(count($video_details) == 0) {
 
                 throw new Exception(tr('admin_banner_video_not_found'), 101);
             }
@@ -4186,7 +4181,7 @@ class NewAdminController extends Controller {
           
             $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
 
-            if(!$custom_live_video_details) {
+            if( count($custom_live_video_details) == 0 ) {
 
                 throw new Exception( tr('admin_custom_live_video_not_found'), 101);
 
@@ -4267,7 +4262,7 @@ class NewAdminController extends Controller {
 
             $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
             
-            if(!$custom_live_video_details) {
+            if( count($custom_live_video_details) == 0 ) {
 
                 throw new Exception(tr('admin_custom_live_video_not_found'), 101);
             }
@@ -4306,7 +4301,7 @@ class NewAdminController extends Controller {
 
             $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
 
-            if(!$custom_live_video_details) {
+            if (count($custom_live_video_details) == 0) {
 
                 throw new Exception(tr('admin_custom_live_video_not_found'), 101);
             }
@@ -4350,7 +4345,7 @@ class NewAdminController extends Controller {
 
             $custom_live_video_details = CustomLiveVideo::find($request->custom_live_video_id);
 
-            if(!$custom_live_video_details) {
+            if( count($custom_live_video_details) == 0) {
 
                 throw new Exception(tr('admin_custom_live_video_not_found'), 101);
             }
@@ -4445,7 +4440,7 @@ class NewAdminController extends Controller {
           
             $subscription_details = Subscription::find($request->subscription_id);
 
-            if(!$subscription_details) {
+            if( count($subscription_details) == 0 ) {
 
                 throw new Exception( tr('admin_subscription_not_found'), 101);
             } 
@@ -4555,7 +4550,7 @@ class NewAdminController extends Controller {
 
             $subscription_details = Subscription::find($request->subscription_id);
             
-            if(!$subscription_details) {
+            if( count($subscription_details) == 0 ) {
 
                 throw new Exception(tr('admin_subscription_not_found'), 101);
             }
@@ -4595,7 +4590,7 @@ class NewAdminController extends Controller {
         
             $subscription_details = subscription::find($request->subscription_id);
 
-            if(!$subscription_details) {
+            if (count($subscription_details) == 0) {
 
                 throw new Exception(tr('admin_subscription_not_found'), 101);
             }
@@ -4642,7 +4637,7 @@ class NewAdminController extends Controller {
 
             $subscriptions_details = Subscription::find($request->subscription_id);
 
-            if(!$subscriptions_details) {
+            if ( count($subscriptions_details) == 0 ) {
 
                throw new Exception(tr('admin_subscription_not_found'), 101);
             }
@@ -4872,7 +4867,7 @@ class NewAdminController extends Controller {
         
             $user_payment_details = UserPayment::find($request->id);
 
-            if(!$user_payment_details) {
+            if (count($user_payment_details) == 0) {
 
                 throw new Exception(tr('admin_subscription_not_found'), 101);
             }
@@ -4924,7 +4919,7 @@ class NewAdminController extends Controller {
                 ->where('is_cancelled', AUTORENEWAL_CANCELLED)
                 ->first();
 
-            if(!$user_payment) {
+            if( count($user_payment) == 0) {
 
                 throw new Exception(tr('admin_user_payment_details_not_found'), 101);
             }
@@ -5080,7 +5075,7 @@ class NewAdminController extends Controller {
 
             $payment_details = PayPerView::find($request->id);
 
-            if(!$payment_details) {
+            if(count($payment_details) == 0 ){
 
                 throw new Exception(tr('admin_ppv_not_found'), 101);
             }
@@ -5403,7 +5398,7 @@ class NewAdminController extends Controller {
 
             $video_tape_details = VideoTape::find($request->video_tape_id);
 
-            if(!$video_tape_details) { 
+            if(count($video_tape_details) == 0) { 
 
                 throw new Exception(tr('admin_video_tape_not_found'), 101);
             }   
@@ -5462,7 +5457,7 @@ class NewAdminController extends Controller {
         
             $user_rating_details = UserRating::find($request->user_rating_id);
 
-            if(!$user_rating_details) {
+            if (count($user_rating_details) == 0) {
 
                 throw new Exception(tr('admin_user_rating_not_found'), 101);
             }
@@ -5552,9 +5547,10 @@ class NewAdminController extends Controller {
           
             $sub_admin_details = Admin::find($request->sub_admin_id);
 
-            if(!$sub_admin_details) {
+            if( count($sub_admin_details) == 0 ) {
 
                 throw new Exception( tr('admin_sub_admin_not_found'), 101);
+
             }
 
             return view('new_admin.sub_admins.edit')
@@ -5589,7 +5585,7 @@ class NewAdminController extends Controller {
           
             $sub_admin_details = Admin::find($request->sub_admin_id);
 
-            if(!$sub_admin_details) {
+            if( count($sub_admin_details) == 0 ) {
 
                 throw new Exception( tr('admin_sub_admin_not_found'), 101);
             } 
@@ -5629,7 +5625,7 @@ class NewAdminController extends Controller {
             
             $sub_admin_details = Admin::where('id' , $request->sub_admin_id)->first();
 
-            if(!$sub_admin_details) {  
+            if(count($sub_admin_details) == 0 ) {  
 
                 throw new Exception(tr('admin_sub_admin_not_found'), 101);
             }
@@ -5778,7 +5774,7 @@ class NewAdminController extends Controller {
        
             $sub_admin_details = Admin::find($request->sub_admin_id);
 
-            if(!$sub_admin_details) {
+            if( count( $sub_admin_details) == 0) {
                 
                 throw new Exception(tr('admin_sub_admin_not_found'), 101);
             } 
@@ -5825,7 +5821,7 @@ class NewAdminController extends Controller {
             
             $user_details = User::find($request->user_id);
 
-            if(!$user_details) {
+            if( count($user_details) == 0 ) {
 
                 throw new Exception( tr('admin_user_not_found'), 101);
             } 
@@ -5884,7 +5880,7 @@ class NewAdminController extends Controller {
 
             $playlist_details = Playlist::find( $request->playlist_id );
 
-            if(!$playlist_details) {
+            if( count($playlist_details) == 0 ) {
 
                 throw new Exception( tr('admin_user_playlist_not_found'), 101);
             } 
@@ -5930,7 +5926,7 @@ class NewAdminController extends Controller {
 
             $playlist_details = Playlist::find($request->playlist_id );
 
-            if(!$playlist_details) {
+            if( count($playlist_details) == 0 ) {
 
                 throw new Exception( tr('admin_user_playlist_not_found'), 101);
             } 
@@ -5979,7 +5975,7 @@ class NewAdminController extends Controller {
 
             $playlist_video_details = PlaylistVideo::find( $request->playlist_video_id );
 
-            if(!$playlist_video_details) {
+            if( count($playlist_video_details) == 0 ) {
 
                 throw new Exception( tr('admin_user_playlist_video_not_found'), 101);
             } 
@@ -6029,7 +6025,7 @@ class NewAdminController extends Controller {
 
                 $tag_details = Tag::find($request->tag_id);
 
-                if(!$tag_details) {
+                if (count($tag_details) == 0) {
 
                     throw new Exception(tr('admin_tag_not_found'), 101);
                 }
@@ -6912,494 +6908,6 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error', $error);
         }
-    }
-
-    /**
-     * Function Name : channels_playlists_index()
-     *
-     * @uses To list out channel's  playlist based channel_id
-     *
-     * @created Anjana H 
-     *
-     * @updated Anjana H
-     *
-     * @param Integer (request) channel_id
-     *
-     * @return View page
-     */
-    public function channels_playlists_index(Request $request) {
-
-        try {
-            
-            $channel_details = Channel::find($request->channel_id);
-
-            if(!$channel_details) {
-
-                throw new Exception( tr('admin_channel_not_found'), 101);
-            } 
-            
-            $base_query = Playlist::where('playlists.channel_id', $request->channel_id)
-                                ->orderBy('playlists.updated_at', 'desc');
-
-            $playlists = $base_query->CommonResponse()->get();
-
-            foreach ($playlists as $key => $playlist_details) {
-                
-                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
-            }
-
-            return view('new_admin.channels.playlist_index')
-                    ->with('page', 'channels')
-                    ->with('sub_page', 'channels-view')
-                    ->with('playlists', $playlists)
-                    ->with('channel_details', $channel_details);
-
-        } catch(Exception $e) {
-
-            $error = $e->getMessage();
-
-            return back()->withInput()->with('flash_error',$error);
-        }
-    
-    }
-
-    /**
-     * Function Name : channels_playlists_view()
-     *
-     * @uses to list out playlist details based on playlist_id of a channel
-     *
-     * @created Anjana H
-     *
-     * @updated Anjana H
-     *
-     * @param Integer (request) playlist_id
-     * 
-     * @return view page
-     */
-    public function channels_playlists_view(Request $request) {
-
-        try {
-
-            $playlist_details = Playlist::find($request->playlist_id );
-
-            if(!$playlist_details) {
-
-                throw new Exception( tr('admin_user_playlist_not_found'), 101);
-            } 
-
-            $channel_details = Channel::find($request->channel_id);
-
-            if(!$channel_details) {
-
-                throw new Exception( tr('admin_channel_not_found'), 101);
-            }
-
-            $playlists_videos = PlaylistVideo::where('playlist_id', $request->playlist_id)
-                        ->leftjoin('video_tapes','video_tapes.id','=','playlist_videos.video_tape_id')
-                        ->leftjoin('channels','channels.id','=','video_tapes.channel_id')
-                        ->addSelect('playlist_videos.id as playlist_video_id','playlist_videos.created_at as created_at')
-                        ->addSelect('channels.name as channel_name')
-                        ->addSelect('video_tapes.title as video_tape_title', 'video_tapes.id as video_tape_id')
-                        ->get();            
-
-            $playlist_details->total_videos = $playlists_videos->count();
-
-            return view('new_admin.channels.playlist_videos')
-                    ->with('page', 'channels')
-                    ->with('sub_page', 'channels-view')
-                    ->with('channel_details', $channel_details)
-                    ->with('playlists_videos', $playlists_videos)
-                    ->with('playlist_details', $playlist_details);
-
-        } catch(Exception $e) {
-
-            $error = $e->getMessage();
-
-            return back()->withInput()->with('flash_error',$error);
-
-        }
-        
-    }
-
-    /**
-     * Function Name : channels_playlists_delete()
-     *
-     * @uses To delete the playlist based on playlist_id
-     *
-     * @created Anjana H
-     *
-     * @updated Anjana Hdd
-     *
-     * @param object $request - playlist id
-     *
-     * @return success/failure message
-     */
-    public function channels_playlists_delete(Request $request) {
-
-        try {
-            
-            DB::beginTransaction();
-
-            $playlist_details = Playlist::find( $request->playlist_id );
-
-            if(!$playlist_details) {
-
-                throw new Exception( tr('admin_channel_playlist_not_found'), 101);
-            } 
-
-            if( $playlist_details->delete()){
-               
-                DB::commit();
-                
-                return redirect()->back()->with('flash_success', tr('admin_channel_playlist_delete_success'));
-            }
-
-            throw new Exception(tr('admin_channel_playlist_delete_error'), 101);
-
-        } catch(Exception $e) {
-
-            DB::rollback();
-
-            $error = $e->getMessage();
-
-            return back()->withInput()->with('flash_error',$error);
-        }
-    }
-
-    /**
-     * Function Name : channels_playlists_video_remove()
-     *
-     * @uses To delete video from channel playlist's list 
-     * 
-     * @created Anjana H
-     *
-     * @updated Anjana H  
-     *
-     * @param Integer (request) - $playlist_video_id
-     *
-     * @return view page
-     */
-    public function channels_playlists_video_remove(Request $request) {
-
-        try {
-            
-            DB::beginTransaction();
-
-            $playlist_video_details = PlaylistVideo::find( $request->playlist_video_id );
-
-            if(!$playlist_video_details) {
-
-                throw new Exception( tr('admin_channel_playlist_video_not_found'), 101);
-            } 
-
-            if( $playlist_video_details->delete()) {
-               
-                DB::commit();
-                
-                return redirect()->back()->with('flash_success', tr('admin_channel_playlist_video_delete_success'));
-            }
-
-            throw new Exception(tr('admin_channel_playlist_video_delete_error'), 101);
-
-        } catch(Exception $e) {
-
-            DB::rollback();
-
-            $error = $e->getMessage();
-
-            return back()->withInput()->with('flash_error',$error);
-        }
-    }
-
-    /**
-     * Function Name : channels_playlists_create()
-     *
-     * @uses To create a playlist object details based on channel id
-     *
-     * @created Anjana H 
-     *
-     * @updated Anjana H
-     *
-     * @param Integer (request) channel_id
-     *
-     * @return View page
-     */
-    public function channels_playlists_create(Request $request) {
-
-        try {
-
-            $channel_details = Channel::find($request->channel_id);
-
-            if(!$channel_details) {
-
-                throw new Exception(tr('admin_channel_not_found'), 101);                
-            }
-            
-            $video_tapes = VideoTape::where('video_tapes.channel_id' , '=' , $request->channel_id)
-                ->select('video_tapes.id as video_tapes_id', 
-                    'video_tapes.channel_id as channel_id',
-                    'video_tapes.title as video_tape_title')
-                ->orderBy('video_tapes.created_at' , 'desc')->get();
-         
-            if(!$video_tapes) {
-
-                throw new Exception(tr('admin_video_tape_not_found'), 101);
-            }
-
-            $playlist_details = new Playlist;
-
-            return view('new_admin.channels.playlist_create')
-                        ->with('page' , 'channels')
-                        ->with('sub_page','channels-view')
-                        ->with('channel_details', $channel_details)
-                        ->with('video_tapes', $video_tapes)
-                        ->with('playlist_details', $playlist_details);
-            
-        } catch (Exception $e) {
-
-            $error = $e->getMessage();
-
-            return back()->withInput()->with('flash_error',$error);
-        }
-    }
-
-    /**
-     * Function Name : channels_playlists_save
-     *
-     * @uses To save/update channel object based on channel id or details
-     *
-     * @created Anjana H
-     *
-     * @updated Anjana H
-     *
-     * @param Integer $request - channel_id, (request) details
-     * 
-     * @return success/failure message.
-     *
-     */
-    public function channels_playlists_save(Request $request) {
-
-        try {
-            
-            DB::beginTransaction();
-
-            $validator = Validator::make($request->all() , [
-               
-                'title' => 'required||max:128|min:2',
-                
-                'picture' => $request->playlist_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
-                
-                'description' => 'max:225|',
-            ]);
-
-            if($validator->fails()) {
-
-                $error = implode(',',$validator->messages()->all()); 
-
-                throw new Exception($error, 101);
-            }
-
-            $video_tapes = VideoTape::find($request->video_tapes_id);
-          
-            if(!$video_tapes){
-                
-                throw new Exception(tr('admin_video_tape_not_found'), 101);
-            }
-
-            $playlist_details = $request->playlist_id ? Playlist::find($request->playlist_id) : new Playlist;
-
-            $playlist_details->channel_id = $request->channel_id;
-
-            $playlist_details->title = $request->title;
-
-            $playlist_details->description = $request->description;
-
-            $playlist_details->status = APPROVED;
-
-            $playlist_details->playlist_type = PLAYLIST_TYPE_CHANNEL;
-
-            $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PUBLIC;
-
-            if ($request->hasFile('picture')) {
-
-                if ($request->playlist_id) {
-
-                    Helper::delete_avatar('uploads/channels/playlists' , $playlist_details->picture);
-                }
-
-                $playlist_details->picture = Helper::upload_avatar('uploads/channels/playlists', $request->file('picture'), 0); 
-            }
-            
-            if ($playlist_details->save()) {
-
-                $playlist_video_delete = PlaylistVideo::where('playlist_id', $playlist_details->id)
-                                ->whereNotIn('video_tape_id', $request->video_tapes_id)->delete();
-                
-                $playlist_video = PlaylistVideo::where('playlist_id', $playlist_details->id)
-                                ->whereIn('video_tape_id', $request->video_tapes_id)
-                                ->select('video_tape_id')
-                                ->get();
-
-                $playlist_video_ids = array_column($playlist_video->toArray(), 'video_tape_id');
-                
-                $result = array_diff($request->video_tapes_id,$playlist_video_ids);
-                               
-                foreach ($result as $key => $video_tape_id) {
-
-                    $playlist_video_details = new PlaylistVideo;
-
-                    $playlist_video_details->playlist_id = $playlist_details->id;
-
-                    $playlist_video_details->video_tape_id = $video_tape_id;
-
-                    $playlist_video_details->status = DEFAULT_TRUE;
-                    
-                    $playlist_video_details->save();                    
-                }
-
-                DB::commit();
-                
-                $message = $request->playlist_id ? tr('admin_channel_playlist_update_success') : tr('admin_channel_playlist_create_success');
-
-                return redirect()->route('admin.channels.playlists.view', ['playlist_id' => $playlist_details->id, 'channel_id' =>  $request->channel_id])->with('flash_success',$message);          
-            }
-
-            throw new Exception(tr('admin_playlist_save_error'), 101);
-        
-        } catch (Exception $e) {
-
-            DB::rollback();
-            
-            $error = $e->getMessage();
-
-            return back()->withInput()->with('flash_error',$error);
-        }
 
     }
-
-    /**
-     * Function Name : channels_playlists_edit
-     *
-     * @uses To edit a playlist based on playlist_id
-     *
-     * @created Anjana H
-     *
-     * @updated Anjana H
-     *
-     * @param Integer $request - playlist_id
-     * 
-     * @return viuew page
-     *
-     */
-    public function channels_playlists_edit(Request $request) {
-        
-        try {
-
-            $channel_details = Channel::find($request->channel_id);
-
-            if(!$channel_details) {
-
-                throw new Exception(tr('admin_channel_not_found'), 101);
-            }
-            
-            $video_tapes = VideoTape::where('video_tapes.channel_id' , '=' , $request->channel_id)
-                ->select('video_tapes.id as video_tapes_id', 
-                    'video_tapes.channel_id as channel_id',
-                    'video_tapes.title as video_tape_title')
-                ->orderBy('video_tapes.created_at' , 'desc')->get();
-         
-            if(!$video_tapes) {
-
-                throw new Exception(tr('admin_video_tape_not_found'), 101);
-            }
-
-            foreach ($video_tapes as $key => $video_tape_details) {
-
-                // check already video_tape added 
-
-                $check_playlist_video_exists = PlaylistVideo::where('video_tape_id' , $video_tape_details->video_tapes_id)->where('status' , APPROVED)->count();
-
-                $video_tape_details->is_selected = NO;
-
-                if($check_playlist_video_exists) {
-                    $video_tape_details->is_selected = YES;
-                }
-
-            }
-
-            $playlist_details = $request->playlist_id ? Playlist::find( $request->playlist_id) : new Playlist;
-
-            return view('new_admin.channels.playlist_edit')
-                        ->with('page' , 'channels')
-                        ->with('sub_page','channels-view')
-                        ->with('channel_details', $channel_details)
-                        ->with('video_tapes', $video_tapes)
-                        ->with('playlist_details', $playlist_details);
-
-        } catch( Exception $e) {
-            
-            $error = $e->getMessage();
-
-            return redirect()->route('admin.categories.index')->with('flash_error',$error);
-        }
-    }
-
-
-    /**
-     * Function Name : channels_playlists_status
-     *
-     * @uses To change the channel playlist status to approve or decline 
-     *
-     * @created 
-     *
-     * @updated 
-     *
-     * @param integer (request) $channel_id
-     * 
-     * @return success/failure message
-     */
-    public function channels_playlists_status(Request $request) {
-        
-        try {
-
-            DB::beginTransaction();
-
-            $playlist_details = Playlist::find($request->playlist_id);
-
-            if(!$playlist_details) {
-
-                throw new Exception(tr('admin_channel_playlist_not_found'), 101);
-            }
-
-            // dd($playlist_details->status);
-
-            $playlist_details->status = $playlist_details->status == APPROVED ? DECLINED : APPROVED;
-
-            $message = $playlist_details->status == APPROVED ? tr('admin_channel_playlist_approved_success') :  tr('admin_channel_playlist_declined_success') ;
-
-            if ($playlist_details->save() ) {
-
-                PlaylistVideo::where('playlist_id', $playlist_details->id)
-                                ->update(['status' => $playlist_details->status ]);   
-                
-                DB::commit();
-
-                return back()->with('flash_success', $message); 
-            }  
-
-            throw new Exception(tr('admin_channel_playlist_status_error'), 101);
-            
-        } catch (Exception $e) {
-            
-            DB::rollback();
-
-            $error = $e->getMessage();
-
-            return back()->with('flash_error',$error);
-        }
-    
-    }
-
-
-
 }

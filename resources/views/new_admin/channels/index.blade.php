@@ -147,8 +147,6 @@
     	                                            @endif
                                                 </li>
 
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.channels.playlists.index' , ['channel_id' => $channel_details->id] ) }}">{{ tr('playlist') }}</a></li> 
-
 	                                        </ul>
 
 	                                    </li>
