@@ -16,7 +16,7 @@
 
 			<div class="col-sm-6">
 
-				<label for="coupon_code" class="control-label"> {{tr('coupon_code')}} *</label>
+				<label for="coupon_code" class="control-label"> * {{tr('coupon_code')}}</label>
 
 				<input type="text" name="coupon_code" min="5" max="10" class="form-control" pattern="[A-Z0-9]+" placeholder="{{tr('enter_coupon_code')}}" value="{{ old('coupon_code') ?: $coupon_details->coupon_code }}" required><span class="help-block">{{tr('note')}} : {{tr('coupon_code_note')}}</span>
 			</div>

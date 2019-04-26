@@ -54,13 +54,26 @@ use App\UserReferrer;
 
 function tr($key , $otherkey = "") {
 
-    if (!\Session::has('locale'))
+    if(Auth::guard('admin')->check()) {
+        // $locale = config('app.locale');
+        $locale = Setting::get('default_lang' , 'en');
+        
+    } else {
+        
+        if (!\Session::has('locale')) {
 
-        \Session::put('locale', \Config::get('app.locale'));
+            // $locale = \Session::put('locale', config('app.locale'));
+            $locale = Setting::get('default_lang' , 'en');
 
-    // return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
+        }else {
 
-    return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
+            $locale = \Session::get('locale');
+
+        }
+
+    }
+    
+    return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), $locale);
 }
 
 function envfile($key) {

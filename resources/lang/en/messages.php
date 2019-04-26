@@ -1970,6 +1970,8 @@ return array(
 
 	'admin_channel_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
 
+	'admin_channel_playlist_video_delete_confirmation'=>"Do you want to delete this(:otherkey) video from playlist?",
+
 	'admin_channel_playlist_create_success' => "Playlist created successfully!",
 
 	'admin_channel_playlist_update_success' => "Playlist created successfully!",

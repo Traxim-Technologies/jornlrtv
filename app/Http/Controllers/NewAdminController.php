@@ -108,7 +108,7 @@ class NewAdminController extends Controller {
     public function __construct()
     {
         $this->middleware('admin');  
-    }
+    }   
     public function check_role(Request $request) {
         
         if(Auth::guard('admin')->check()) {
@@ -330,14 +330,16 @@ class NewAdminController extends Controller {
             $user_details = $request->user_id ? User::find($request->user_id) : new User;
 
             $new_user = NEW_USER;
+            
+            if ($user_details->id != '') {
 
-            if ($user_details->id) {
-
-                $new_user = EXISTING_USER;
+                $new_user = NO;
 
                 $message = tr('admin_user_update_success');
 
             } else {
+                
+                $new_user = YES;
 
                 $user_details->password = ($request->password) ? \Hash::make($request->password) : null;
 
@@ -351,7 +353,7 @@ class NewAdminController extends Controller {
 
                 $user_details->timezone = $request->has('timezone') ? $request->timezone : '';
             }
-            
+
             $user_details->name = $request->has('name') ? $request->name : '';
 
             $user_details->email = $request->has('email') ? $request->email: '';
@@ -370,7 +372,7 @@ class NewAdminController extends Controller {
 
                 $from = new \DateTime($user_details->dob);
 
-                $to   = new \DateTime('today');
+                $to = new \DateTime('today');
 
                 $user_details->age_limit = $from->diff($to)->y;
             }
@@ -380,7 +382,7 @@ class NewAdminController extends Controller {
                 throw new Exception(tr('admin_user_min_age_error'), 101);
             }
 
-            if ($new_user) {
+            if ($new_user == YES) {
 
                 $email_data['name'] = $user_details->name;
 
@@ -411,7 +413,7 @@ class NewAdminController extends Controller {
 
                 $user_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/users/");
             }
-
+            
             if ($user_details->save()) {
 
                 // Check the default subscription and save the user type
@@ -2245,7 +2247,7 @@ class NewAdminController extends Controller {
         $coupon_details = new Coupon;
 
         $coupon_details->expiry_date = date('Y-m-d');
-
+        
         return view('new_admin.coupons.create')
                     ->with('page' , 'coupons')
                     ->with('sub_page','coupons-create')
@@ -2330,7 +2332,7 @@ class NewAdminController extends Controller {
                 throw new Exception( $error, 101);
             }
 
-            if($request->coupon_id !=''){
+            if($request->coupon_id != ''){
                                        
                 $coupon_detail = Coupon::find($request->coupon_id); 
 
@@ -2399,9 +2401,7 @@ class NewAdminController extends Controller {
             if($coupon_detail->save()) {
 
                 DB::commit();
-                
-                $message = $request->coupon_id ? tr('admin_coupon_create_success'): tr('admin_coupon_update_success');
-                
+                               
                 return redirect()->route('admin.coupons.view',['coupon_id' =>$coupon_detail->id ])->with('flash_success',$message);
             } 
 
@@ -4522,7 +4522,8 @@ class NewAdminController extends Controller {
                 'title' => 'required|max:255',
                 'plan' => 'required|integer|between:1,12',
                 'amount' => 'required',
-                'picture' => 'mimes:jpeg,png,jpg'
+                'picture' => 'mimes:jpeg,png,jpg',
+                'description' => 'max:255',
             ]);
 
             if($validator->fails()) {
@@ -4541,6 +4542,8 @@ class NewAdminController extends Controller {
             $subscription_details->plan = $request->plan;  
 
             $subscription_details->amount = $request->amount;
+
+            $subscription_details->description = $request->description;
             
             if($request->hasFile('picture')) {
                 
@@ -5276,7 +5279,7 @@ class NewAdminController extends Controller {
      * @return success/error message
      */
     public function settings_save(Request $request) {
-
+        
         try {
             
             DB::beginTransaction();
@@ -5299,7 +5302,7 @@ class NewAdminController extends Controller {
                     $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
                
                 } else {
-
+                    
                     $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
 
                     if( $result == TRUE ) {
@@ -5635,8 +5638,8 @@ class NewAdminController extends Controller {
                     ->with('page', 'sub-admins')
                     ->with('sub_page', 'sub-admins-view')
                     ->with('sub_admin_details', $sub_admin_details);
-       
-        } catch( Exception $e) {
+        
+           } catch( Exception $e) {
             
             $error = $e->getMessage();
 
@@ -5744,9 +5747,17 @@ class NewAdminController extends Controller {
             $sub_admin_details->description = $request->description ? $request->description : '';
 
             $sub_admin_details->role = SUBADMIN;
+                
+            if (!$sub_admin_details->id) {
 
-            $sub_admin_details->picture = asset('placeholder.png');
-            
+                $new_password = $request->password;
+                
+                $sub_admin_details->password = \Hash::make($new_password);
+
+                $sub_admin_details->picture = asset('placeholder.png');
+
+            }
+
             if($request->hasFile('picture')) {
 
                 if($request->sub_admin_id) {
@@ -5755,13 +5766,6 @@ class NewAdminController extends Controller {
                 }
 
                 $sub_admin_details->picture = Helper::normal_upload_picture($request->picture, "/uploads/sub_admins/");
-            }
-                
-            if (!$sub_admin_details->id) {
-
-                $new_password = $request->password;
-                
-                $sub_admin_details->password = \Hash::make($new_password);
             }
 
             $sub_admin_details->timezone = $request->timezone;
@@ -6569,7 +6573,7 @@ class NewAdminController extends Controller {
                     ->where('video_tape_id', $request->id)->get(12);
 
 
-            $page = 'video_tapes'; $sub_page = 'video_tapes-create';
+            $page = 'video_tapes'; $sub_page = 'video_tapes-view';
 
             if($video_tape_details->is_banner == 1) {
 
@@ -6629,7 +6633,7 @@ class NewAdminController extends Controller {
             
             DB::commit();
 
-            return redirect()->route('admin.video_tapes.index')->with('flash_success', tr('video_delete_success'));
+            return redirect()->back()->with('flash_success', tr('video_delete_success'));
                 
         } catch (Exception $e) {
             
@@ -7409,8 +7413,6 @@ class NewAdminController extends Controller {
 
                 throw new Exception(tr('admin_channel_playlist_not_found'), 101);
             }
-
-            // dd($playlist_details->status);
 
             $playlist_details->status = $playlist_details->status == APPROVED ? DECLINED : APPROVED;
 

@@ -874,7 +874,7 @@ hr {
 
                                         <br>
 
-                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked @endif id="multi_channel_status" style="vertical-align: middle;"> {{ tr('enable_channel_status') }}
+                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked value="1" @else value="0" @endif id="multi_channel_status" style="vertical-align: middle;"> {{ tr('enable_channel_status') }}
                                         
                                     </div>   
                                 </div>

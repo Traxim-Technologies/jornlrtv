@@ -91,7 +91,7 @@
 
 	          								@else
 
-												<a href="{{ route('admin.channels.playlist.video.delete', ['playlist_video_id' => $playlists_video_details->playlist_video_id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_playlist_delete_confirmation', $playlists_video_details->video_tape_title) }}&quot;)" class="btn btn-danger" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b> 
+												<a href="{{ route('admin.channels.playlist.video.delete', ['playlist_video_id' => $playlists_video_details->playlist_video_id] ) }}" onclick="return confirm(&quot;{{ tr('admin_channel_playlist_video_delete_confirmation', $playlists_video_details->video_tape_title) }}&quot;)" class="btn btn-danger" title="{{tr('delete')}}" ><b><i class="fa fa-trash"></i></b> 
 	          									</a>
 
 	          								@endif

@@ -46,7 +46,7 @@
 
                         <ul class="dropdown-menu">
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{{ route('admin.channels.export' , ['format' => 'xls']) }}">
+                                <a role="menuitem" tabindex="-1" href="{{ route('admin.channels.export' , ['format' => 'xlsx']) }}">
                                     <span class="text-red"><b>{{ tr('excel_sheet') }}</b></span>
                                 </a>
                             </li>

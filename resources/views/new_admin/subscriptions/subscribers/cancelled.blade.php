@@ -86,7 +86,7 @@
 							      	<td class="text-center">
 
 					      			<?php $enable_subscription_notes = tr('enable_subscription_notes') ; ?>			
-					      				<a onclick="return confirm('{{ $enable_subscription_notes }}')" href="{{ route('admin.subscription.auto-renewal.enable', ['id' => $payment_details->user_id]) }}" class="pull-right btn btn-sm btn-success">{{ tr('enable_subscription') }}</a>
+					      				<a onclick="return confirm('{{ $enable_subscription_notes }}')" href="{{ route('admin.subscription.auto-renewal.enable', ['user_id' => $payment_details->user_id]) }}" class="pull-right btn btn-sm btn-success">{{ tr('enable_subscription') }}</a>
 					      			</td>
 							    </tr>
 
