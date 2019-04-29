@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Playlist extends Model
 {
-	public function getTotalVideos() {
+	public function getTotalVideos(){
 	    return $this->hasMany('App\PlaylistVideo')->where('user_id',$this->user_id)->count();
 	}
 
@@ -32,34 +32,10 @@ class Playlist extends Model
         return $query->select(
         	'playlists.id as playlist_id',
             'playlists.title as title',
-            'playlists.title as description',
-        	'playlists.status as status',
+        	'playlists.title as description',
         	'playlists.created_at',
         	'playlists.updated_at'
         );
 
-    }
-
-    public function getPlaylistVideos() {
-        return $this->hasMany('App\PlaylistVideo');
-    }
-
-    public static function boot() {
-        //execute the parent's boot method 
-        parent::boot();
-
-        //delete your related models here
-        static::deleting(function($model) {
-
-            if (count($model->getPlaylistVideos) > 0) {
-
-                foreach ($model->getPlaylistVideos as $key => $value) {
-
-                   $value->delete();    
-
-                }
-
-            }
-        });
     }
 }

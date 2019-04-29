@@ -366,3 +366,5 @@ if (!defined('DECLINED')) define('DECLINED',0);
 
 if (!defined('WISHLIST_DELETE_ALL')) define('WISHLIST_DELETE_ALL', 1);
 
+
+

@@ -51,12 +51,6 @@ class Channel extends Model
      * @return void
      */
 
-    public function getPlaylist() {
-    
-        return $this->hasMany('App\Playlist');
-    
-    }
-
     public static function boot()
     {
         //execute the parent's boot method 
@@ -114,22 +108,14 @@ class Channel extends Model
 
             }
 
-            if (count($model->getChannelSubscribers) > 0) {
+             if (count($model->getChannelSubscribers) > 0) {
 
                 foreach ($model->getChannelSubscribers as $key => $value) {
 
                    $value->delete();    
 
                 }
-            }
 
-            if (count($model->getPlaylist) > 0) {
-
-                foreach ($model->getPlaylist as $key => $value) {
-
-                   $value->delete();    
-
-                }
             }
 
         }); 

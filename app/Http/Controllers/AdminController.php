@@ -90,10 +90,6 @@ use App\VideoTapeTag;
 
 use App\CustomLiveVideo;
 
-use App\Playlist;
-
-use App\PlaylistVideo;
-
 class AdminController extends Controller {
 
     /**
@@ -999,7 +995,6 @@ class AdminController extends Controller {
                     ->withCount('getChannelSubscribers')
                     ->where('channels.id', $id)
                     ->first();
-                    
         if ($channel) {
 
             // Load videos and subscribrs based on the channel
