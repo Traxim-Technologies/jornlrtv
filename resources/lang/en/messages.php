@@ -2033,4 +2033,6 @@ return array(
 
 	'back' => 'Back',
 	'referral_code_invalid' => 'referral code invalid',
+
+	'add_card_is_not_enabled' => 'Add card is disabled due to some configuration problems',
 );

@@ -1080,3 +1080,10 @@ Route::group(['prefix' => 'userApi'], function(){
 
 
 // Route::get('/v5/', 'V5UserController@index')->name('v5.index');
+// 
+// 
+Route::group(['prefix' => 'userApi'], function(){
+
+    Route::post('cards_add', 'V5UserApiController@cards_add');
+
+});
