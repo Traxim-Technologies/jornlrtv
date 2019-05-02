@@ -135,11 +135,9 @@ class V5UserApiController extends Controller
 
                 $data = Card::where('id' , $card_details->id)->select('id as card_id' , 'customer_id' , 'last_four' ,'card_name', 'card_token' , 'is_default' )->first();
 
-                $response_array = ['success' => true , 'message' => Helper::get_message(50007), 'data' => $data];
-
                 DB::commit();
 
-            	return response()->json($response_array , 200);
+                return $this->sendResponse($message = Helper::get_message(50007), $code = 50007, $data);
 
             } else {
 
