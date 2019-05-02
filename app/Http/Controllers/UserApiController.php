@@ -7597,6 +7597,16 @@ class UserApiController extends Controller {
 
             $playlist_details->share_link = url('/');
 
+            $playlist_details->is_my_channel = NO;
+
+            if($playlist_details->channel_id) {
+
+                if($channel_details = Channel::find($playlist_details->channel_id)) {
+
+                    $playlist_details->is_my_channel = $playlist_details->user_id == $channel_details->user_id ? YES : NO;
+                }
+            }
+
             $playlist_details->total_videos = count($video_tapes);
 
             $playlist_details->video_tapes = $video_tapes;
