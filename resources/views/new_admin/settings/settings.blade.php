@@ -303,6 +303,132 @@ hr {
                                     <input type="text" value="{{  Setting::get('HLS_STREAMING_URL') }}" class="form-control" name="HLS_STREAMING_URL" id="HLS_STREAMING_URL" placeholder="Enter Streaming URL">
                                 </div> 
                             </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                        <label for="sitename">{{tr('wowza_port_number')}}</label>
+
+                                        <p class="example-note">{{tr('example_wowza_port_number')}}</p>
+
+                                        <input type="text" class="form-control" name="wowza_port_number" value="{{ Setting::get('wowza_port_number')  }}" id="wowza_port_number" placeholder="{{tr('wowza_port_number')}}">
+                                    </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+
+                                    <label for="sitename">{{tr('wowza_app_name')}}</label>
+
+                                    <p class="example-note">{{tr('example_wowza_app_name')}}</p>
+
+                                    <input type="text" class="form-control" name="wowza_app_name" value="{{ Setting::get('wowza_app_name')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('wowza_app_name')}}">
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+
+                                    <label for="sitename">{{tr('wowza_username')}}</label>
+
+                                    <p class="example-note">{{tr('example_wowza_username')}}</p>
+
+                                    <input type="text" class="form-control" name="wowza_username" value="{{ Setting::get('wowza_username')  }}" id="KRUENTO_SOCKET_URL" placeholder="{{tr('wowza_username')}}">
+                                </div>
+                            </div>
+
+                             <div class="col-lg-6">
+                                <div class="form-group">
+                                        <label for="sitename">{{tr('wowza_password')}}</label>
+
+                                        <p class="example-note">{{tr('example_wowza_password')}}</p>
+
+                                        <input type="text" class="form-control" name="wowza_password" value="{{ Setting::get('wowza_password')  }}" id="wowza_password" placeholder="{{tr('wowza_password')}}">
+                                    </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                             <div class="col-lg-12">
+                                <div class="form-group">
+                                        <label for="sitename">{{tr('wowza_gocoder_license_key')}}</label>
+
+                                        <p class="example-note">{{tr('example_license_key')}}</p>
+
+                                        <input type="text" class="form-control" name="wowza_license_key" value="{{ Setting::get('wowza_license_key')  }}" id="wowza_license_key" placeholder="{{tr('wowza_license_key')}}">
+                                    </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="wowza_server_url">{{tr('wowza_server_url')}}</label>
+
+                                    <p class="example-note">{{tr('example_ip_address_8007')}}</p>
+
+                                    <input type="text" class="form-control" name="wowza_server_url" value="{{ Setting::get('wowza_server_url')  }}" id="wowza_server_url" placeholder="{{tr('wowza_server_url')}}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cross_platform_url">{{tr('cross_platform_url')}}</label>
+                                        <p class="example-note">{{tr('example_ip_address_1935')}}</p>
+
+                                        <input type="text" class="form-control" name="cross_platform_url" value="{{ Setting::get('cross_platform_url')  }}" id="cross_platform_url" placeholder="{{tr('cross_platform_url')}}">
+                                    </div>
+                                </div>
+
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="chat_socket_url">{{tr('chat_socket_url')}}</label>
+                                        <p class="example-note">{{tr('example_ip_address_3002')}}</p>
+
+                                        <input type="text" class="form-control" name="chat_socket_url" value="{{ Setting::get('chat_socket_url')  }}" id="chat_socket_url" placeholder="{{tr('chat_socket_url')}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <label for="sitename">{{tr('wowza_ip_address')}}</label>
+                                        <p class="example-note">{{tr('example_127')}}</p>
+
+                                        <input type="text" class="form-control" name="wowza_ip_address" value="{{ Setting::get('wowza_ip_address')  }}" id="wowza_ip_address" placeholder="{{tr('wowza_ip_address')}}">
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                              
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('SOCKET_URL')}}</label>
+                                        <input type="text" class="form-control" name="SOCKET_URL" value="{{ Setting::get('SOCKET_URL')  }}" id="SOCKET_URL" placeholder="{{tr('SOCKET_URL')}}">
+                                    </div>
+                                </div>
+<!-- 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('mobile_rtmp')}}</label>
+                                        <input type="text" class="form-control" name="mobile_rtmp" value="{{ Setting::get('mobile_rtmp')  }}" id="mobile_rtmp" placeholder="{{tr('mobile_rtmp')}}">
+                                    </div>
+                                </div> -->
+                                <div class="clearfix"></div>
+
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="sitename">{{tr('delete_video_hour')}}</label>
+                                        <br>
+                                        <p>{{tr('short_notes_video_hour')}}</p>
+                                        <input type="text" class="form-control" name="delete_video_hour" value="{{ Setting::get('delete_video_hour')  }}" id="delete_video_hour" placeholder="{{tr('delete_video_hour')}}" pattern="[0-9]{0,}">
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
                         </div>
 
                     </div>
