@@ -106,9 +106,11 @@ class VideoTape extends Model
                 'video_tapes.type_of_subscription',
                 'video_tapes.is_pay_per_view',
                 'video_tapes.ppv_amount',
-                'video_tapes.is_approved',
-                'video_tapes.status',
-                \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created_at')
+                'video_tapes.is_approved as is_admin_approved',
+                'video_tapes.status as video_status',
+                'video_publish_type',
+                'publish_status',
+                \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created')
             
             );
     

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Repositories\V5Repository as V5Repo;
+
 use App\Helpers\Helper;
 
 use Exception, DB, Validator, Setting, Log;
@@ -200,11 +202,11 @@ class V5UserApiController extends Controller
             return $this->sendError($e->getMessage(), $e->getCode());
 
         }
+    
     }
 
-
     /**
-     * Function Name : channels_view()
+     * Function Name : channels_view_for_owners()
      *
      * @uses used to get the channel details
      *
@@ -216,7 +218,7 @@ class V5UserApiController extends Controller
      * 
      * @return json response
      */
-    public function channels_view(Request $request) {
+    public function channels_view_for_owners(Request $request) {
 
         try {
 
@@ -237,29 +239,32 @@ class V5UserApiController extends Controller
                 
             }
 
-            $data = array();
+            $data = new \stdClass();
 
-            $channel_details = Channel::where('id', $request->channel_id)
-                                    ->where('user_id', $request->id)
-                                    ->where('status', APPROVED)
-                                    ->select('id as channel_id', 'name as channel_name','cover as channel_cover', 'description as channel_description', 'picture as channel_image')
-                                    ->first();
+            $channel_details = Channel::OwnerBaseResponse()->where('channels.id', $request->channel_id)->first();
 
             if(!$channel_details) {
 
                 throw new Exception(Helper::get_error_message(50102), 50102);
             }
 
-            $video_tapes = VideoRepo::channelVideos($request, $channel_details->id, '', $request->skip);
+            $channel_details->no_of_videos = videos_count($request->channel_id);
 
-            $channel_details->subscribers_count = subscriberscnt($channel_details->id);
+            $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
 
-            $channel_details->videos = $video_tapes; 
+            $data->channel_details = $channel_details;
 
-            $response_array = ['success' => true, 'data' => $channel_details];
-    
 
-            return response()->json($response_array, 200);
+            // Videos with skip and take
+
+            $video_tape_ids = VideoTape::where('video_tapes.channel_id', $request->channel_id)->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
+
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids);
+
+            $data->video_tapes = $video_tapes;
+
+            return $this->sendResponse($message = "", $code = "", $data);
 
         } catch (Exception $e) {
 

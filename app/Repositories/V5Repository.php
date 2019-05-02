@@ -202,6 +202,15 @@ class V5Repository {
  		
  		$video_tapes = $base_query->get();
 
+            foreach ($video_tapes as $key => $video_tape_details) {
+
+                  $video_tape_details->currency = Setting::get('currency', '$');
+
+                  $video_tape_details->share_url = route('user.single' , $video_tape_details->video_tape_id);
+
+                  $video_tape_details->watch_count = number_format_short($video_tape_details->watch_count);
+            }
+
  		return $video_tapes;
 
  	}
