@@ -110,7 +110,8 @@ class VideoTape extends Model
                 'video_tapes.status as video_status',
                 'video_publish_type',
                 'publish_status',
-                \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created')
+                \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created'),
+                \DB::raw('DATE_FORMAT(video_tapes.updated_at , "%e %b %y") as updated')
             
             );
     
