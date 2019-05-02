@@ -239,14 +239,14 @@ class V5UserApiController extends Controller
                 
             }
 
-            $data = new \stdClass();
-
             $channel_details = Channel::OwnerBaseResponse()->where('channels.id', $request->channel_id)->first();
 
             if(!$channel_details) {
 
                 throw new Exception(Helper::get_error_message(50102), 50102);
             }
+
+            $data = new \stdClass();
 
             $channel_details->no_of_videos = videos_count($request->channel_id);
 
@@ -258,7 +258,6 @@ class V5UserApiController extends Controller
             // Videos with skip and take
 
             $video_tape_ids = VideoTape::where('video_tapes.channel_id', $request->channel_id)->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
-
 
             $video_tapes = V5Repo::video_list_response($video_tape_ids);
 
@@ -275,6 +274,60 @@ class V5UserApiController extends Controller
             return response()->json($response_array, 200);
         }
 
+    }
+
+    /**
+     * @method channel_based_videos()
+     *
+     * @uses used to get the videos list based on the selected channel id
+     *
+     * @created Vithya R
+     * 
+     * @updated Vithya R
+     *
+     * @param integer $channel_id
+     *
+     * @return json response
+     */
+    
+    public function channel_based_videos(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                [
+                    'channel_id' => 'required|integer|exists:channels,id',
+                ],
+                [
+                    'exists' => 'The :attribute doesn\'t exists',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            $data = new \stdClass();
+
+            // Videos with skip and take
+
+            $video_tape_ids = VideoTape::where('video_tapes.channel_id', $request->channel_id)->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids);
+
+            $data->video_tapes = $video_tapes;
+
+            return $this->sendResponse($message = "", $code = "", $data);
+
+        } catch (Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
     }
 
     /**
