@@ -8,7 +8,25 @@ use App\Helpers\Helper;
 
 class Channel extends Model
 {
-    //
+    /**
+     * Scope a query to only include active users.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+
+    public function scopeOwnerBaseResponse($query) {
+
+        return $query->select('channels.id as channel_id', 
+                        'channels.name as channel_name', 
+                        'channels.description as channel_description', 
+                        'channels.picture as channel_picture', 
+                        'channels.is_approved as is_admin_approved', 
+                        'channels.status as channel_status', 
+                        'channels.created_at', 
+                        'channels.updated_at'
+                    );
+
+    }
 
     public function videoTape() {
         return $this->hasMany('App\VideoTape')->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')->videoResponse();

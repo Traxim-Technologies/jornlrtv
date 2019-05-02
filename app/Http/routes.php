@@ -1086,4 +1086,6 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('cards_add', 'V5UserApiController@cards_add');
 
+    Route::post('v5/channels_list_for_owners', 'V5UserApiController@channels_list_for_owners');
+
 });

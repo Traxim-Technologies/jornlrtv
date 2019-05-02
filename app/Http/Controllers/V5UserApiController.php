@@ -19,10 +19,15 @@ use App\Channel;
 
 class V5UserApiController extends Controller
 {
+    protected $skip, $take;
+
 	public function __construct(Request $request) {
 
         $this->middleware('UserApiVal');
 
+        $this->skip = $request->skip ?: 0;
+
+        $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);
     }
 
     /**
@@ -177,23 +182,17 @@ class V5UserApiController extends Controller
 
         try {
 
-            $channels = Channel::
+            $base_query = Channel::OwnerBaseResponse()->where('channels.user_id', $request->id);
 
-           $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)
-                ->where('user_id', $request->id)->get();
+            $channels = $base_query->skip($this->skip)->take($this->take)->get();
 
-            if($model) {
+            foreach ($channels as $key => $channel_details) {
 
-                $response_array = array('success' => true , 'data' => $model);
+                $channel_details->no_of_videos = videos_count($channel_details->channel_id);
 
-            } else {
-                $response_array = array('success' => false,'error_messages' => Helper::get_error_message(135),'error_code' => 135);
+                $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
             }
-
-            $response = response()->json($response_array, 200);
             
-            return $response;
-
             return $this->sendResponse($message = "", $code = 0, $channels);
 
         } catch(Exception $e) {
