@@ -335,6 +335,7 @@ class V5UserApiController extends Controller
             return $this->sendError($e->getMessage(), $e->getCode());
 
         }
+    
     }
 
     /**
