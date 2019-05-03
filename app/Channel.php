@@ -16,11 +16,15 @@ class Channel extends Model
 
     public function scopeBaseResponse($query) {
 
-        return $query->select('channels.id as channel_id', 
+        return $query->leftJoin('users', 'channels.user_id', '=', 'users.id')
+                    ->select('channels.id as channel_id', 
+                        'channels.user_id as user_id', 
                         'channels.name as channel_name', 
                         'channels.description as channel_description', 
                         'channels.picture as channel_image', 
                         'channels.cover as channel_cover', 
+                        'users.name as channel_owner_name',
+                        'users.picture as channel_owner_picture',
                         'channels.is_approved as is_admin_approved', 
                         'channels.status as channel_status', 
                         'channels.created_at', 

@@ -233,11 +233,11 @@ class V5UserApiController extends Controller
             return $this->sendError($e->getMessage(), $e->getCode());
 
         }
-    
+
     }
 
     /**
-     * Function Name : channels_view_for_owners()
+     * Function Name : channels_view()
      *
      * @uses used to get the channel details
      *
@@ -249,13 +249,14 @@ class V5UserApiController extends Controller
      * 
      * @return json response
      */
-    public function channels_view_for_owners(Request $request) {
+    public function channels_view(Request $request) {
 
         try {
 
             $validator = Validator::make($request->all(),
                 [
                     'channel_id' => 'required|integer|exists:channels,id',
+                    'view_type' => 'required'
                 ],
                 [
                     'exists' => 'The :attribute doesn\'t exists',
@@ -270,7 +271,15 @@ class V5UserApiController extends Controller
                 
             }
 
-            $channel_details = Channel::OwnerBaseResponse()->where('channels.id', $request->channel_id)->first();
+            $base_query = Channel::BaseResponse()->where('channels.id', $request->channel_id);
+
+            if($request->view_type == VIEW_TYPE_VIEWER) {
+
+                $base_query = $base_query->where('channels.status', USER_CHANNEL_APPROVED)->where('channels.is_approved', ADMIN_CHANNEL_APPROVED);
+
+            }
+
+            $channel_details = $base_query->first();
 
             if(!$channel_details) {
 
@@ -283,14 +292,54 @@ class V5UserApiController extends Controller
 
             $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
 
-            $data->channel_details = $channel_details;
+            // check my channel and subscribe status
 
+            $channel_details->is_my_channel = NO;
+
+            $channel_details->is_user_subscribed_the_channel = CHANNEL_UNSUBSCRIBED;
+
+            if($request->id) {
+
+                if($channel_details->user_id == $request->id) {
+
+                    $channel_details->is_my_channel = YES;
+
+                    $channel_details->is_user_subscribed_the_channel = CHANNEL_OWNER;
+
+                } else {
+
+                    $check_channel_subscription = ChannelSubscription::where('user_id', $request->id)->where('channel_id', $channel_details->channel_id)->count();
+
+                    $channel_details->is_user_subscribed_the_channel = $check_channel_subscription ? CHANNEL_SUBSCRIBED : CHANNEL_UNSUBSCRIBED;
+
+                }
+
+            }
+
+            $data->channel_details = $channel_details;
 
             // Videos with skip and take
 
-            $video_tape_ids = VideoTape::where('video_tapes.channel_id', $request->channel_id)->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
+            $video_tape_base_query = VideoTape::where('video_tapes.channel_id', $request->channel_id);
 
-            $video_tapes = V5Repo::video_list_response($video_tape_ids);
+            // Check flag videos
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+                $flagged_videos = getFlagVideos($request->id);
+
+                if($flagged_videos) {
+
+                    $video_tape_base_query->whereNotIn('video_tapes.id', $flagged_videos);
+
+                }
+
+            }
+
+            $video_tape_ids = $video_tape_base_query->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
 
             $data->video_tapes = $video_tapes;
 
@@ -298,11 +347,7 @@ class V5UserApiController extends Controller
 
         } catch (Exception $e) {
 
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
-            return response()->json($response_array, 200);
+            return $this->sendError($e->getMessage(), $e->getCode());
         }
 
     }

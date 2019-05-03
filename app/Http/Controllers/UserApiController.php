@@ -1719,7 +1719,7 @@ class UserApiController extends Controller {
 
                 if(count($data) > 0) {
 
-                    if($data['is_approved'] == ADMIN_VIDEO_DECLINED_STATUS || $data['status'] == USER_VIDEO_DECLINED_STATUS || $data['channel_approved_status'] == ADMIN_CHANNEL_DECLINED_STATUS || $data['channel_status'] == USER_CHANNEL_DECLINED_STATUS) {
+                    if($data['is_approved'] == ADMIN_VIDEO_DECLINED_STATUS || $data['status'] == USER_VIDEO_DECLINED_STATUS || $data['channel_approved_status'] == ADMIN_CHANNEL_DECLINED || $data['channel_status'] == USER_CHANNEL_DECLINED) {
 
                         return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
 
@@ -5224,7 +5224,7 @@ class UserApiController extends Controller {
 
                 // Channel / video is declined by admin /user
 
-                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED_STATUS || $video->channel_status == USER_CHANNEL_DECLINED_STATUS) {
+                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED || $video->channel_status == USER_CHANNEL_DECLINED) {
 
                     return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
 

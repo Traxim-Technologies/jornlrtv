@@ -1089,7 +1089,7 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('v5/channels_index', 'V5UserApiController@channels_index');
 
-    Route::post('v5/channels_view_for_owners', 'V5UserApiController@channels_view_for_owners');
+    Route::post('v5/channels_view', 'V5UserApiController@channels_view');
 
     Route::post('v5/channel_based_videos', 'V5UserApiController@channel_based_videos');
 
