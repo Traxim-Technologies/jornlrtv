@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\VideoTapeRepository as VideoRepo;
-
-use App\Repositories\CommonRepository as CommonRepo;
-
 use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
+use App\Repositories\CommonRepository as CommonRepo;
+
 use App\Repositories\PaymentRepository as PaymentRepo;
 
 use App\Repositories\UserRepository as UserRepo;
+
+use App\Repositories\V5Repository as V5Repo;
 
 use App\Jobs\sendPushNotification;
 
@@ -94,7 +96,13 @@ use App\Referral;
 
 class UserApiController extends Controller {
 
+    protected $skip, $take;
+
     public function __construct(Request $request) {
+
+        $this->skip = $request->skip ?: 0;
+
+        $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);
 
         $this->middleware('UserApiVal' , array('except' => [
                 'register' , 
@@ -3733,7 +3741,7 @@ class UserApiController extends Controller {
 
     public function spam_videos_list(Request $request) {
 
-        $skip = $request->skip ?: 0;
+        $skip = $this->skip ?: 0;
 
         $rake = $request->rake ?: (Setting::get('admin_take_count', 12));
 
@@ -7291,18 +7299,23 @@ class UserApiController extends Controller {
 
         try {
 
-            $base_query = Playlist::where('playlists.user_id', $request->id)
-                                ->where('playlists.status', APPROVED)
+            $base_query = Playlist::where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
+
+            if($request->view_type == VIEW_TYPE_OWNER) {
+
+                $base_query = $base_query->where('playlists.user_id', $request->id);
+
+            }
 
             if($request->channel_id) {
 
                 $base_query = $base_query->where('playlists.channel_id', $request->channel_id);
             }
 
-            $skip = $request->skip ?: 0;
+            $skip = $this->skip ?: 0;
 
-            $take = Setting::get('admin_take_count') ?: 12;
+            $take = $this->take ?: TAKE_COUNT;
 
             $playlists = $base_query->CommonResponse()->skip($skip)->take($take)->get();
 
@@ -7572,12 +7585,20 @@ class UserApiController extends Controller {
 
         try {
 
-            $playlist_details = Playlist::where('playlists.user_id', $request->id)
-                                ->where('playlists.status', APPROVED)
-                                ->where('playlists.id', $request->playlist_id)
-                                ->CommonResponse()
-                                ->first();
+            // Check the playlist record based on the view type
 
+            $playlist_base_query = Playlist::where('playlists.status', APPROVED)
+                                ->where('playlists.id', $request->playlist_id);
+
+            // check the playlist belongs to owner
+
+            if($request->view_type == VIEW_TYPE_OWNER) {
+
+                $playlist_base_query = $playlist_base_query->where('playlists.user_id', $request->id);
+
+            }
+
+            $playlist_details = $playlist_base_query->CommonResponse()->first();
 
             if(!$playlist_details) {
 
@@ -7585,15 +7606,34 @@ class UserApiController extends Controller {
                 
             }
 
-            $skip = $request->skip ?: 0;
+            $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
-            $take = Setting::get('admin_take_count') ?: 12;
+            $video_tape_base_query = PlaylistVideo::where('playlist_videos.playlist_id', $request->playlist_id);
 
-            $video_tape_ids = PlaylistVideo::where('playlist_id', $request->playlist_id)->where('playlist_videos.user_id', $request->id)->skip($skip)->take($take)->pluck('playlist_videos.video_tape_id')->toArray();
 
-            $video_tapes = VideoRepo::video_tape_list($video_tape_ids, $request->id);
+            // Check the flag videos
 
-            $playlist_details->picture = $video_tapes ? $video_tapes[0]->default_image : asset('images/playlist.png');
+            if($request->id) {
+
+                // Check any flagged videos are present
+                $flagged_videos = getFlagVideos($request->id);
+
+                if($flagged_videos) {
+
+                    $video_tape_base_query->whereNotIn('video_tapes.id', $flagged_videos);
+
+                }
+
+            }
+
+            $video_tape_ids = $video_tape_base_query->skip($skip)
+                                ->take($take)
+                                ->pluck('playlist_videos.video_tape_id')
+                                ->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
+
+            $playlist_details->picture = asset('images/playlist.png');
 
             $playlist_details->share_link = url('/');
 
@@ -7788,9 +7828,9 @@ class UserApiController extends Controller {
 
         try {
 
-            $skip = $request->skip ?: 0;
+            $skip = $this->skip ?: 0;
 
-            $take = Setting::get('admin_take_count') ?: 12;
+            $take = $this->take ?: TAKE_COUNT;
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
                                         ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
