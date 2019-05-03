@@ -7643,7 +7643,7 @@ class UserApiController extends Controller {
 
                 if($channel_details = Channel::find($playlist_details->channel_id)) {
 
-                    $playlist_details->is_my_channel = $playlist_details->user_id == $channel_details->user_id ? YES : NO;
+                    $playlist_details->is_my_channel = $request->id == $channel_details->user_id ? YES : NO;
                 }
             }
 
