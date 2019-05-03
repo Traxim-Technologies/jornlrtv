@@ -2043,4 +2043,19 @@ return array(
 	'VIDEO_TYPE_LIVE' => 'Live TV',
 	'VIDEO_TYPE_YOUTUBE' => 'YouTube',
 	'VIDEO_TYPE_OTHERS' => 'Others',
+
+	/* - - - - - - - - used for header for each section - http://prntscr.com/maiccj - - - - - - - - - - */
+	
+	'header_banner' => 'Banner Videos',
+
+	'header_wishlist' => 'My List',
+
+	'header_new_releases' => 'New Releases',
+
+	'header_trending' => 'Trending Now',
+
+	'header_recommended' => 'Recommended',
+
+
+	/* - - - - - - - - used for header for each section  - - - - - - - - - - */
 );

@@ -82,15 +82,7 @@ class V5UserController extends Controller {
 
             $data = V5Repo::home_first_section($request);
 
-            // foreach ($data as $key => $value) {
-            //     dd($value);
-            // }
-
-            dd($data[0]['title']);
-
-            $hello = json_decode(json_encode($data));
-
-            dd($hello);
+            dd($data);
 
             return view('new-user.index')->with('data', $data);
 

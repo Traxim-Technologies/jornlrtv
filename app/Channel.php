@@ -14,7 +14,7 @@ class Channel extends Model
      * @return \Illuminate\Database\Eloquent\Builder
      */
 
-    public function scopeOwnerBaseResponse($query) {
+    public function scopeBaseResponse($query) {
 
         return $query->select('channels.id as channel_id', 
                         'channels.name as channel_name', 

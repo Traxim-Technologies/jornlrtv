@@ -395,8 +395,6 @@ if(!defined('URL_TYPE_WISHLIST')) define('URL_TYPE_WISHLIST', 'URL_TYPE_WISHLIST
 
 if(!defined('URL_TYPE_NEW_RELEASE')) define('URL_TYPE_NEW_RELEASE', 'URL_TYPE_NEW_RELEASE');
 
-if(!defined('URL_TYPE_CONTINUE_WATCHING')) define('URL_TYPE_CONTINUE_WATCHING', 'URL_TYPE_CONTINUE_WATCHING');
-
 if(!defined('URL_TYPE_TRENDING')) define('URL_TYPE_TRENDING', 'URL_TYPE_TRENDING');
 
 if(!defined('URL_TYPE_SUGGESTION')) define('URL_TYPE_SUGGESTION', 'URL_TYPE_SUGGESTION');
@@ -410,3 +408,16 @@ if(!defined('URL_TYPE_SUB_CATEGORY')) define('URL_TYPE_SUB_CATEGORY', 'URL_TYPE_
 if(!defined('URL_TYPE_GENRE')) define('URL_TYPE_GENRE', 'URL_TYPE_GENRE');
 
 if(!defined('URL_TYPE_CAST_CREW')) define('URL_TYPE_CAST_CREW', 'URL_TYPE_CAST_CREW');
+
+
+if(!defined('CHANNEL_SUBSCRIBED')) define('CHANNEL_SUBSCRIBED', 1);
+
+if(!defined('CHANNEL_UNSUBSCRIBED')) define('CHANNEL_UNSUBSCRIBED', 0);
+
+if(!defined('CHANNEL_OWNER')) define('CHANNEL_OWNER', 2);
+
+if(!defined('VIEW_TYPE_OWNER')) define('VIEW_TYPE_OWNER', 'owner');
+
+if(!defined('VIEW_TYPE_VIEWER')) define('VIEW_TYPE_VIEWER', 'viewer');
+
+
