@@ -387,7 +387,7 @@ class V5UserApiController extends Controller
                 
             }
 
-            $channel_details = Channel::where('channels.id', $request->channel_id)->where('channels.user_id', $request->id)->first();
+            $channel_details = Channel::where('channels.id', $request->channel_id)->first();
 
             if(!$channel_details) {
 
@@ -398,9 +398,26 @@ class V5UserApiController extends Controller
 
             // Videos with skip and take
 
-            $video_tape_ids = VideoTape::where('video_tapes.channel_id', $request->channel_id)->where('video_tapes.user_id', $request->id)->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
+            $video_tape_base_query = VideoTape::where('video_tapes.channel_id', $request->channel_id);
 
-            $video_tapes = V5Repo::video_list_response($video_tape_ids);
+            // Check flag videos
+
+            if ($request->id) {
+
+                // Check any flagged videos are present
+                $flagged_videos = getFlagVideos($request->id);
+
+                if($flagged_videos) {
+
+                    $video_tape_base_query->whereNotIn('video_tapes.id', $flagged_videos);
+
+                }
+
+            }
+
+            $video_tape_ids = $video_tape_base_query->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
 
             $data->video_tapes = $video_tapes;
 
