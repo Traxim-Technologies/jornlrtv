@@ -222,7 +222,7 @@
 	                                    		<p class="category-name" style="float: none !important;font-size: 15px !important;">category</p>
 	                                    	</div>
 	                                    	<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 p-0 mt-10">
-	                                    		<a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank" class="category-name blue-link">{{$video->category_name}}</a>
+	                                    		<a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank" class="category-name blue-link">{{$video->category_id ? $video->get_category->name :  ""}}</a>
 	                                    	</div>
 	                                    </div>
 	                                    @if(count($tags) > 0)
