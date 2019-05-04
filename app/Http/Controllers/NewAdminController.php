@@ -6472,7 +6472,7 @@ class NewAdminController extends Controller {
 
                 throw new Exception($error, 101);                
             }
-
+           
             $video_tape_details = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                         ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()

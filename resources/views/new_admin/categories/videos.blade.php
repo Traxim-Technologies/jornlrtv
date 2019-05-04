@@ -70,7 +70,7 @@
 								      	</td>
 								      	
 								      	<td>
-								      		<a href="{{ route('admin.video_tapes.view' , ['video_tapes_id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a>
+								      		<a href="{{ route('admin.video_tapes.view' , ['video_tape_id' => $video_details->video_tape_id] ) }}"> {{ substr($video_details->title , 0,25) }}...</a>
 								      	</td>								      	
 
 								      	<td>
@@ -135,7 +135,7 @@
 	                                                        	
 	                                                        	<a role="menuitem" tabindex="-1"
 										                  			onclick="return confirm(&quot;{{ tr('admin_live_custom_video_delete_confirmation', substr($video_details->title , 0,25) ) }}&quot;)"
-										                  			 href="{{ route('admin.videos.delete' , ['video_tape_id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
+										                  			 href="{{ route('admin.video_tapes.delete' , ['video_tape_id' => $video_details->video_tape_id] ) }}">{{ tr('delete') }}</a>
 	                                                        @endif
 	                                                    </li>
 
