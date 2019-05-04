@@ -298,7 +298,7 @@
                                           <div class="clearfix"></div>
                                           <div>
                                               
-                                            <select id="tag_id" name="tag_id[]" class="form-control select2" required data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
+                                            <select id="tag_id" name="tag_id[]" class="form-control select2"  data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
                                                 @foreach($tags as $tag)
                                                       <option value="{{$tag->tag_id}}" {{in_array($tag->tag_id, $video_tape_details->tag_id) ? 'selected' : ''}}>{{$tag->tag_name}}</option>
                                                 @endforeach
