@@ -144,12 +144,7 @@ class V5Repository {
 
  	public static function video_list_response($video_tape_ids, $user_id, $orderby = 'video_tapes.updated_at', $other_select_columns = "") {
 
-            $user_details = User::find($user_id);
-
-            if(!$user_details) {
-
-                  return [];
-            }
+        $user_details = User::find($user_id);
 
  		$base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)
  							->orderBy($orderby , 'desc');
@@ -165,20 +160,29 @@ class V5Repository {
  		
  		$video_tapes = $base_query->get();
 
-            foreach ($video_tapes as $key => $video_tape_details) {
+        foreach ($video_tapes as $key => $video_tape_details) {
 
-                  $video_tape_details->currency = Setting::get('currency', '$');
 
-                  $video_tape_details->share_url = route('user.single' , $video_tape_details->video_tape_id);
+            $video_tape_details->currency = Setting::get('currency', '$');
 
-                  $video_tape_details->watch_count = number_format_short($video_tape_details->watch_count);
+            $video_tape_details->share_url = route('user.single' , $video_tape_details->video_tape_id);
 
-                  $ppv_details = self::pay_per_views_status_check($user_details->id, $user_details->user_type, $video_tape_details)->getData();
+            $video_tape_details->watch_count = number_format_short($video_tape_details->watch_count);
 
-                  $watch_video_free = DEFAULT_TRUE;
+            $video_tape_details->should_display_ppv = $video_tape_details->is_my_channel = NO;
 
-                  $video_tape_details->should_display_ppv = $ppv_details->success == $watch_video_free ? NO : YES;
+            if($user_details) {
+
+                $video_tape_details->is_my_channel = $video_tape_details->user_id == $user_details->id ? YES: NO;
+
+                $ppv_details = self::pay_per_views_status_check($user_details->id, $user_details->user_type, $video_tape_details)->getData();
+
+                $watch_video_free = DEFAULT_TRUE;
+
+                $video_tape_details->should_display_ppv = $ppv_details->success == $watch_video_free ? NO : YES;
             }
+        
+        }
 
  		return $video_tapes;
 
