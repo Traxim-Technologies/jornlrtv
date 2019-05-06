@@ -3743,7 +3743,7 @@ class UserApiController extends Controller {
 
         $skip = $this->skip ?: 0;
 
-        $rake = $request->rake ?: (Setting::get('admin_take_count', 12));
+        $take = $request->take ?: (Setting::get('admin_take_count', 12));
 
         // Load Flag videos based on logged in user id
         $model = Flag::where('flags.user_id', $request->id)
