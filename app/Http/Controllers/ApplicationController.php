@@ -87,8 +87,6 @@ class ApplicationController extends Controller {
 
         $about = Page::where('type', 'about')->first();
 
-        // dd($about);
-
         return view('static.about-us')->with('about' , $about)
                         ->with('page' , 'about')
                         ->with('subPage' , '');
@@ -99,7 +97,6 @@ class ApplicationController extends Controller {
 
         $page = Page::where('type', 'privacy')->first();;
 
-        // dd($page);
         return view('static.privacy')->with('data' , $page)
                         ->with('page' , 'conact_page')
                         ->with('subPage' , '');

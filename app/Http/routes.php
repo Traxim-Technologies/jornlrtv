@@ -1092,5 +1092,7 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('v5/channels_view', 'V5UserApiController@channels_view');
 
     Route::post('v5/channel_based_videos', 'V5UserApiController@channel_based_videos');
+    
+    Route::post('v5/channels_subscribed', 'V5UserApiController@channels_subscribed');
 
 });

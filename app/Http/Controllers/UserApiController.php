@@ -131,6 +131,7 @@ class UserApiController extends Controller {
                 'categories_view',
                 'categories_channels_list',
                 'playlists_view',
+                'playlists'
             ]));
 
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
@@ -7337,6 +7338,7 @@ class UserApiController extends Controller {
                 $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
 
                 $playlist_details->share_link = url('/');
+            
             }
 
             $response_array = ['success' => true, 'data' => $playlists];

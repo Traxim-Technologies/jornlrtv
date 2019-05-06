@@ -512,4 +512,84 @@ class V5UserApiController extends Controller
         }
 
     }
+
+    /**
+     * @method subscribed_channels
+     *
+     * @uses list of channels subscribed by the loggedin user
+     * 
+     * @created vithya R
+     *
+     * @updated vithya R
+     * 
+     * @param Object $request - Subscribed plan Details
+     *
+     * @return array of channel subscribed plans
+     */
+    
+    public function channels_subscribed(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                [
+                    'skip' => 'required',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 906);
+                
+            }
+
+
+            $subscribed_channel_ids = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+            $base_query = Channel::whereIn('channels.id', $subscribed_channel_ids)->BaseResponse();
+
+            $channels = $base_query->skip($this->skip)->take($this->take)->get();
+
+            foreach ($channels as $key => $channel_details) {
+
+                $channel_details->no_of_videos = videos_count($channel_details->channel_id);
+
+                $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
+
+                // check my channel and subscribe status
+
+                $channel_details->is_my_channel = NO;
+
+                $channel_details->is_user_subscribed_the_channel = CHANNEL_UNSUBSCRIBED;
+
+                if($request->id) {
+
+                    if($channel_details->user_id == $request->id) {
+
+                        $channel_details->is_my_channel = YES;
+
+                        $channel_details->is_user_subscribed_the_channel = CHANNEL_OWNER;
+
+                    } else {
+
+                        $check_channel_subscription = ChannelSubscription::where('user_id', $request->id)->where('channel_id', $channel_details->channel_id)->count();
+
+                        $channel_details->is_user_subscribed_the_channel = $check_channel_subscription ? CHANNEL_SUBSCRIBED : CHANNEL_UNSUBSCRIBED;
+
+                    }
+
+                }
+
+            }
+            
+            return $this->sendResponse($message = "", $code = 0, $channels);
+
+        } catch (Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+
+    }
 }
