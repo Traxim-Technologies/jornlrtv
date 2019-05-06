@@ -162,7 +162,6 @@ class V5Repository {
 
         foreach ($video_tapes as $key => $video_tape_details) {
 
-
             $video_tape_details->currency = Setting::get('currency', '$');
 
             $video_tape_details->share_url = route('user.single' , $video_tape_details->video_tape_id);
@@ -173,7 +172,11 @@ class V5Repository {
 
             if($user_details) {
 
-                $video_tape_details->is_my_channel = $video_tape_details->user_id == $user_details->id ? YES: NO;
+                if($channel_details = Channel::find($video_tape_details->channel_id)) {
+
+                    $video_tape_details->is_my_channel = $channel_details->user_id == $user_details->id ? YES: NO;
+
+                }
 
                 $ppv_details = self::pay_per_views_status_check($user_details->id, $user_details->user_type, $video_tape_details)->getData();
 

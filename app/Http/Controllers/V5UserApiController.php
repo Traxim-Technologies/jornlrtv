@@ -25,7 +25,7 @@ class V5UserApiController extends Controller
 
 	public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal', ['except' => ['channels_index']]);
+        $this->middleware('UserApiVal', ['except' => ['channels_index', 'channel_view', 'channel_based_videos']]);
 
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
 
