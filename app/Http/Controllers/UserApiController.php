@@ -7620,7 +7620,7 @@ class UserApiController extends Controller {
 
                 if($flagged_videos) {
 
-                    $video_tape_base_query->whereNotIn('video_tapes.id', $flagged_videos);
+                    $video_tape_base_query->whereNotIn('playlist_videos.video_tape_id', $flagged_videos);
 
                 }
 
