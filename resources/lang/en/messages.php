@@ -2058,4 +2058,6 @@ return array(
 
 
 	/* - - - - - - - - used for header for each section  - - - - - - - - - - */
+
+	'video_in_spam_list' => 'The video in spams list.Please unspam the video',
 );

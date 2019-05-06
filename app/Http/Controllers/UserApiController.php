@@ -129,7 +129,8 @@ class UserApiController extends Controller {
                 'referrals_check',
                 'categories_list',
                 'categories_view',
-                'categories_channels_list'
+                'categories_channels_list',
+                'playlists_view',
             ]));
 
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
@@ -7494,6 +7495,21 @@ class UserApiController extends Controller {
                     throw new Exception($error_messages, 101);
                     
                 }
+
+                // check the video added in spams (For Viewer)
+
+                if(!$request->channel_id && $request->id) {
+
+                    $flagged_videos = getFlagVideos($request->id);
+
+                    if(in_array($request->video_tape_id, $flagged_videos)) {
+
+                        throw new Exception(tr('video_in_spam_list'), 101);
+                        
+                    }
+                }
+
+                // Spam check end
 
                 $playlist_ids = explode(',', $request->playlist_id);
 

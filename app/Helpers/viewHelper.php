@@ -600,7 +600,8 @@ function getFlagVideos($id) {
         ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
         ->where('video_tapes.is_approved' , 1)
         ->where('video_tapes.status' , 1)
-        ->pluck('video_tape_id')->toArray();
+        ->pluck('video_tape_id')
+        ->toArray();
     // Return array of id's
     return $model;
 }
