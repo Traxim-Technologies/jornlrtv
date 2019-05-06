@@ -456,6 +456,10 @@
                     $string = tr('user_video_tapes_delete_error');
                     break;
 
+                case 50108:
+                    $string = tr('add_card_is_not_enabled');
+                    break;
+
                 case 1000:
                     $string = tr('video_is_in_flag_list');
                     break;
@@ -605,6 +609,9 @@
                     break;
                 case 50006:
                     $string = tr('user_video_tapes_delete_success');
+                    break;
+                case 50007:
+                    $string = tr('add_card_success');
                     break;
                 default:
                     $string = "";

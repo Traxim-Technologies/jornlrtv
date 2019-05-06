@@ -180,8 +180,8 @@ return array(
 	'user' => 'User',
 	'moderators' => 'Moderators',
 	'moderator' => 'Moderator',
-	'home'	=>	'Home',
-	'dashboard'	=> 	'Dashboard',
+	'home'	=>	'My Home',
+	'dashboard'	=> 	'Dashboard 001',
 	'menu' => 'Menu',
 
 	'register'	=>	'Register',

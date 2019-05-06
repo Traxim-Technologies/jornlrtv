@@ -2035,4 +2035,29 @@ return array(
 
 	'back' => 'Back',
 	'referral_code_invalid' => 'referral code invalid',
+
+	'add_card_is_not_enabled' => 'Add card is disabled due to some configuration problems',
+
+	'PUBLISH_NOW' => 'Now',
+	'PUBLISH_LATER' => 'Later',
+
+	'VIDEO_TYPE_UPLOAD' => 'File Upload',
+	'VIDEO_TYPE_LIVE' => 'Live TV',
+	'VIDEO_TYPE_YOUTUBE' => 'YouTube',
+	'VIDEO_TYPE_OTHERS' => 'Others',
+
+	/* - - - - - - - - used for header for each section - http://prntscr.com/maiccj - - - - - - - - - - */
+	
+	'header_banner' => 'Banner Videos',
+
+	'header_wishlist' => 'My List',
+
+	'header_new_releases' => 'New Releases',
+
+	'header_trending' => 'Trending Now',
+
+	'header_recommended' => 'Recommended',
+
+
+	/* - - - - - - - - used for header for each section  - - - - - - - - - - */
 );

@@ -1074,9 +1074,23 @@ Route::group(['prefix' => 'userApi'], function(){
 
     Route::post('/video_tapes_delete', 'UserApiController@video_tapes_delete');
 
-    Route::post('/video_tapes_view', 'UserApiController@video_tapes_view');
+    Route::post('/video_tapes_view', 'V5UserApiController@video_tapes_view');
 
 });
 
 
-// Route::get('/v5/', 'V5UserController@index')->name('v5.index');
+Route::get('/v5/index', 'V5UserController@index')->name('v5.index');
+
+// 
+// 
+Route::group(['prefix' => 'userApi'], function(){
+
+    Route::post('cards_add', 'V5UserApiController@cards_add');
+
+    Route::post('v5/channels_index', 'V5UserApiController@channels_index');
+
+    Route::post('v5/channels_view', 'V5UserApiController@channels_view');
+
+    Route::post('v5/channel_based_videos', 'V5UserApiController@channel_based_videos');
+
+});

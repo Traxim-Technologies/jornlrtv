@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\VideoTapeRepository as VideoRepo;
-
-use App\Repositories\CommonRepository as CommonRepo;
-
 use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
 
+use App\Repositories\VideoTapeRepository as VideoRepo;
+
+use App\Repositories\CommonRepository as CommonRepo;
+
 use App\Repositories\PaymentRepository as PaymentRepo;
 
 use App\Repositories\UserRepository as UserRepo;
+
+use App\Repositories\V5Repository as V5Repo;
 
 use App\Jobs\sendPushNotification;
 
@@ -94,7 +96,13 @@ use App\Referral;
 
 class UserApiController extends Controller {
 
+    protected $skip, $take;
+
     public function __construct(Request $request) {
+
+        $this->skip = $request->skip ?: 0;
+
+        $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);
 
         $this->middleware('UserApiVal' , array('except' => [
                 'register' , 
@@ -118,10 +126,13 @@ class UserApiController extends Controller {
                 'tags_videos',
                 'video_tapes_youtube_grapper_save',
                 'categories_channels_list',
-                'referrals_check'
+                'referrals_check',
+                'categories_list',
+                'categories_view',
+                'categories_channels_list'
             ]));
 
-        $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status', 'videos']]);
+        $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
 
     }
 
@@ -1716,7 +1727,7 @@ class UserApiController extends Controller {
 
                 if(count($data) > 0) {
 
-                    if($data['is_approved'] == ADMIN_VIDEO_DECLINED_STATUS || $data['status'] == USER_VIDEO_DECLINED_STATUS || $data['channel_approved_status'] == ADMIN_CHANNEL_DECLINED_STATUS || $data['channel_status'] == USER_CHANNEL_DECLINED_STATUS) {
+                    if($data['is_approved'] == ADMIN_VIDEO_DECLINED_STATUS || $data['status'] == USER_VIDEO_DECLINED_STATUS || $data['channel_approved_status'] == ADMIN_CHANNEL_DECLINED || $data['channel_status'] == USER_CHANNEL_DECLINED) {
 
                         return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
 
@@ -3730,11 +3741,17 @@ class UserApiController extends Controller {
 
     public function spam_videos_list(Request $request) {
 
+        $skip = $this->skip ?: 0;
+
+        $rake = $request->rake ?: (Setting::get('admin_take_count', 12));
+
         // Load Flag videos based on logged in user id
         $model = Flag::where('flags.user_id', $request->id)
             ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
             ->where('video_tapes.is_approved' , 1)
             ->where('video_tapes.status' , 1)
+            ->skip($skip)
+            ->take($take)
             ->get();
 
         $flag_video = [];
@@ -5215,7 +5232,7 @@ class UserApiController extends Controller {
 
                 // Channel / video is declined by admin /user
 
-                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED_STATUS || $video->channel_status == USER_CHANNEL_DECLINED_STATUS) {
+                if($video->is_approved == ADMIN_VIDEO_DECLINED_STATUS || $video->status == USER_VIDEO_DECLINED_STATUS || $video->channel_approved_status == ADMIN_CHANNEL_DECLINED || $video->channel_status == USER_CHANNEL_DECLINED) {
 
                     return response()->json(['success'=>false, 'error_messages'=>tr('video_is_declined')]);
 
@@ -7282,18 +7299,23 @@ class UserApiController extends Controller {
 
         try {
 
-            $base_query = Playlist::where('playlists.user_id', $request->id)
-                                ->where('playlists.status', APPROVED)
+            $base_query = Playlist::where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
+
+            if($request->view_type == VIEW_TYPE_OWNER) {
+
+                $base_query = $base_query->where('playlists.user_id', $request->id);
+
+            }
 
             if($request->channel_id) {
 
                 $base_query = $base_query->where('playlists.channel_id', $request->channel_id);
             }
 
-            $skip = $request->skip ?: 0;
+            $skip = $this->skip ?: 0;
 
-            $take = Setting::get('admin_take_count') ?: 12;
+            $take = $this->take ?: TAKE_COUNT;
 
             $playlists = $base_query->CommonResponse()->skip($skip)->take($take)->get();
 
@@ -7563,12 +7585,20 @@ class UserApiController extends Controller {
 
         try {
 
-            $playlist_details = Playlist::where('playlists.user_id', $request->id)
-                                ->where('playlists.status', APPROVED)
-                                ->where('playlists.id', $request->playlist_id)
-                                ->CommonResponse()
-                                ->first();
+            // Check the playlist record based on the view type
 
+            $playlist_base_query = Playlist::where('playlists.status', APPROVED)
+                                ->where('playlists.id', $request->playlist_id);
+
+            // check the playlist belongs to owner
+
+            if($request->view_type == VIEW_TYPE_OWNER) {
+
+                $playlist_base_query = $playlist_base_query->where('playlists.user_id', $request->id);
+
+            }
+
+            $playlist_details = $playlist_base_query->CommonResponse()->first();
 
             if(!$playlist_details) {
 
@@ -7576,17 +7606,46 @@ class UserApiController extends Controller {
                 
             }
 
-            $skip = $request->skip ?: 0;
+            $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
-            $take = Setting::get('admin_take_count') ?: 12;
+            $video_tape_base_query = PlaylistVideo::where('playlist_videos.playlist_id', $request->playlist_id);
 
-            $video_tape_ids = PlaylistVideo::where('playlist_id', $request->playlist_id)->where('playlist_videos.user_id', $request->id)->skip($skip)->take($take)->pluck('playlist_videos.video_tape_id')->toArray();
 
-            $video_tapes = VideoRepo::video_tape_list($video_tape_ids, $request->id);
+            // Check the flag videos
 
-            $playlist_details->picture = $video_tapes ? $video_tapes[0]->default_image : asset('images/playlist.png');
+            if($request->id) {
+
+                // Check any flagged videos are present
+                $flagged_videos = getFlagVideos($request->id);
+
+                if($flagged_videos) {
+
+                    $video_tape_base_query->whereNotIn('video_tapes.id', $flagged_videos);
+
+                }
+
+            }
+
+            $video_tape_ids = $video_tape_base_query->skip($skip)
+                                ->take($take)
+                                ->pluck('playlist_videos.video_tape_id')
+                                ->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
+
+            $playlist_details->picture = asset('images/playlist.png');
 
             $playlist_details->share_link = url('/');
+
+            $playlist_details->is_my_channel = NO;
+
+            if($playlist_details->channel_id) {
+
+                if($channel_details = Channel::find($playlist_details->channel_id)) {
+
+                    $playlist_details->is_my_channel = $request->id == $channel_details->user_id ? YES : NO;
+                }
+            }
 
             $playlist_details->total_videos = count($video_tapes);
 
@@ -7769,9 +7828,9 @@ class UserApiController extends Controller {
 
         try {
 
-            $skip = $request->skip ?: 0;
+            $skip = $this->skip ?: 0;
 
-            $take = Setting::get('admin_take_count') ?: 12;
+            $take = $this->take ?: TAKE_COUNT;
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
                                         ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
@@ -8479,151 +8538,6 @@ class UserApiController extends Controller {
 
         }
     
-    }
-
-    /**
-     * Function Name : channels_view()
-     *
-     * @uses used to get the channel details
-     *
-     * @created vithya R
-     *
-     * @updated vithya R
-     *
-     * @param integer channel_id
-     * 
-     * @return json response
-     */
-    public function channels_view(Request $request) {
-
-        try {
-
-            $validator = Validator::make($request->all(),
-                [
-                    'channel_id' => 'required|integer|exists:channels,id',
-                ],
-                [
-                    'exists' => 'The :attribute doesn\'t exists',
-                ]
-            );
-
-            if ($validator->fails()) {
-
-                $error_messages = implode(',', $validator->messages()->all());
-
-                throw new Exception($error_messages, 101);
-                
-            }
-
-            $data = array();
-
-            $channel_details = Channel::where('id', $request->channel_id)
-                                    ->where('user_id', $request->id)
-                                    ->where('status', APPROVED)
-                                    ->select('id as channel_id', 'name as channel_name','cover as channel_cover', 'description as channel_description', 'picture as channel_image')
-                                    ->first();
-
-            if(!$channel_details) {
-
-                throw new Exception(Helper::get_error_message(50102), 50102);
-            }
-
-            $video_tapes = VideoRepo::channelVideos($request, $channel_details->id, '', $request->skip);
-
-            $channel_details->subscribers_count = subscriberscnt($channel_details->id);
-
-            $channel_details->videos = $video_tapes; 
-
-            $response_array = ['success' => true, 'data' => $channel_details];
-    
-
-            return response()->json($response_array, 200);
-
-        } catch (Exception $e) {
-
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
-            return response()->json($response_array, 200);
-        }
-
-    }
-
-    /**
-     * Function Name : video_tapes_view()
-     *
-     * @uses used to get the channel details
-     *
-     * @created vithya R
-     *
-     * @updated vithya R
-     *
-     * @param integer video_tape_id
-     * 
-     * @return json response
-     */
-    public function video_tapes_view(Request $request) {
-
-        try {
-
-            $validator = Validator::make($request->all(),
-                [
-                    'video_tape_id' => 'required|integer|exists:video_tapes,id',
-                ],
-                [
-                    'exists' => 'The :attribute doesn\'t exists',
-                ]
-            );
-
-            if ($validator->fails()) {
-
-                $error_messages = implode(',', $validator->messages()->all());
-
-                throw new Exception($error_messages, 906);
-                
-            }
-
-            $data = array();
-
-            $video_tape_details = VideoTape::where('id', $request->video_tape_id)
-                                    ->where('user_id', $request->id)
-                                    ->where('status', APPROVED)
-                                    ->select('id as video_tape_id', 'title', 'description', 'default_image', 'age_limit', 'duration', 'video_publish_type', 'publish_status', 'publish_time', 'is_approved as is_admin_approved', 'status as video_status', 'watch_count', 'is_pay_per_view', 'type_of_subscription', 'ppv_amount', 'category_name','video_type', 'channel_id', 'user_ppv_amount as ppv_revenue', 'amount as ads_revenue', 'category_id')
-                                    ->first();
-
-            if(!$video_tape_details) {
-
-                throw new Exception(Helper::get_error_message(906), 906);
-            }
-
-            $video_tape_details->total_revenue = $video_tape_details->ads_revenue + $video_tape_details->ppv_revenue;
-
-            $channel_details = Channel::find($video_tape_details->channel_id);
-
-            $video_tape_details->channel_name = $channel_details ? $channel_details->name: "";
-
-            $video_tape_details->tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
-                                            ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
-                                            ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
-                                            ->where('video_tape_id', $request->video_tape_id)
-                                            ->get()->toArray();
-
-            $video_tape_details->wishlist_count = get_wishlist_count($request->video_tape_id);
-
-            $response_array = ['success' => true, 'data' => $video_tape_details];
-    
-            return response()->json($response_array, 200);
-
-        } catch (Exception $e) {
-
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
-            return response()->json($response_array, 200);
-        }
-
     }
 
 }

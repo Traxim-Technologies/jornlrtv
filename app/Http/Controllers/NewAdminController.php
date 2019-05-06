@@ -672,7 +672,7 @@ class NewAdminController extends Controller {
 
                 if ($users_details->status == DECLINED) {
                     
-                    Channel::where('user_id', $users_details->id)->update(['is_approved'=>ADMIN_CHANNEL_DECLINED_STATUS]);
+                    Channel::where('user_id', $users_details->id)->update(['is_approved'=>ADMIN_CHANNEL_DECLINED]);
 
                     VideoTape::where('user_id', $users_details->id)->update(['is_approved'=>ADMIN_VIDEO_DECLINED_STATUS]);
 
@@ -1383,10 +1383,10 @@ class NewAdminController extends Controller {
 
             if ($channel_details->save() ) {
 
-                if ( $channel_details->is_approved == ADMIN_CHANNEL_DECLINED_STATUS) {
+                if ( $channel_details->is_approved == ADMIN_CHANNEL_DECLINED) {
 
                     VideoTape::where('channel_id', $channel_details->id)
-                                ->update(['is_approved' => ADMIN_CHANNEL_DECLINED_STATUS]);                
+                                ->update(['is_approved' => ADMIN_CHANNEL_DECLINED]);                
                 }
 
                 DB::commit();

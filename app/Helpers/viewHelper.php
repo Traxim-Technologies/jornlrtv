@@ -1217,11 +1217,7 @@ function displayVideoDetails($data,$userId) {
 
     } 
 
-    $wishlist_status = 0;
-
-    $history_status = 0;
-
-    $like_status = 0;
+    $wishlist_status = $history_status = $like_status = 0;
 
     if ($user) {
 
@@ -1276,7 +1272,7 @@ function displayVideoDetails($data,$userId) {
         'status'=>$data->status,
         'is_approved'=>$data->is_approved,
         'pay_per_view_status'=>$pay_per_view_status->success,
-        'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+        'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont show subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
         // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
         'publish_time'=>$data->created_at->diffForHumans(),
@@ -1292,6 +1288,7 @@ function displayVideoDetails($data,$userId) {
         'category_unique_id'=>$category_unique_id,
         'category_name'=>$data->category_name,
         'tags'=>$tags,
+        'is_my_channel' => $userId == $data->channel_created_by ? YES : NO
         // 'playlists' => $playlists
     ];
 
