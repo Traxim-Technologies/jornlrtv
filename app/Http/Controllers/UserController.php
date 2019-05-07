@@ -829,7 +829,10 @@ class UserController extends Controller {
                        // ->where('user_id', Auth::user()->id)
                         ->first();
     
+
             if ($model) {
+
+                $model->video_url = "";
 
                 Auth::loginUsingId($request->id);
 
@@ -880,8 +883,6 @@ class UserController extends Controller {
 
                     }*/
 
-                  
-
 
                 } else {
 
@@ -912,7 +913,6 @@ class UserController extends Controller {
 
         }
 
-        $model->video_url = "";
 
         return view('user.android.android-video')->with('data', $model)->with('page', '')->with('sub_page','');
     }
