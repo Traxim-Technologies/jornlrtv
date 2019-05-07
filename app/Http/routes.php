@@ -865,9 +865,13 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/referrals/view', 'UserController@referrals_view')->name('referrals.view');
 
+    // =================== v5.0 ==================
+
+    Route::get('playlist/list/', 'UserController@playlist_single')->name('playlist.single');
+
 });
 
-Route::group(['prefix' => 'userApi'], function(){
+Route::group(['prefix' => 'userApi'], function() {
 
     Route::post('/watch_count', 'UserController@watch_count');
 

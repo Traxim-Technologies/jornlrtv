@@ -513,6 +513,7 @@ class UserController extends Controller {
             $request->request->add([ 
                 'age' => \Auth::check() ? \Auth::user()->age_limit : "",
                 'id'=> \Auth::check() ? \Auth::user()->id : "",
+                'channel_id'=> $id,
             ]);
 
             if ($request->id != $channel->user_id || !Auth::check()) {
@@ -530,7 +531,14 @@ class UserController extends Controller {
             $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
 
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
+           
+            $channel_playlists = $this->UserAPI->playlists($request)->getData();
+           
+            $channel_playlists = $channel_playlists->data;
 
+            // dd($channel_playlists);
+
+           
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
             $subscribe_status = false;
@@ -538,7 +546,6 @@ class UserController extends Controller {
             if ($request->id) {
 
                 $subscribe_status = check_channel_status($request->id, $id);
-
             }
 
             $subscriberscnt = subscriberscnt($channel->id);
@@ -547,7 +554,9 @@ class UserController extends Controller {
                         ->with('page' , 'channels_'.$id)
                         ->with('subPage' , 'channels')
                         ->with('channel' , $channel)
-                        ->with('videos' , $videos)->with('trending_videos', $trending_videos)
+                        ->with('videos' , $videos)
+                        ->with('trending_videos', $trending_videos)
+                        ->with('channel_playlists', $channel_playlists)
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
                         ->with('subscriberscnt', $subscriberscnt);
@@ -642,6 +651,94 @@ class UserController extends Controller {
             return back()->with('flash_error', $error_message);
             
         } 
+    }
+
+    /**
+     * Function Name : playlist_single_video()
+     * 
+     * @uses To view single video based on video id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param integer $request - Video id
+     *
+     * @return based on video displayed all the details'
+     *
+     */
+    public function playlist_single_video(Request $request) { 
+  
+        $request->request->add([ 
+                'video_tape_id' => $request->id,
+        ]);
+
+        if (Auth::check()) {
+
+            $request->request->add([ 
+                'id'=>Auth::user()->id,
+                'age_limit'=>Auth::user()->age_limit,
+            ]);
+
+        } else {
+             $request->request->add([ 
+                'id'=> '',
+            ]);
+        }
+
+        $data = $this->UserAPI->video_detail($request)->getData();
+
+        if (isset($data->url)) {
+
+            return redirect($data->url);
+        }
+
+        if ($data->success) {
+
+            $response = $data->response_array;
+
+            // Video is autoplaying ,so we are incrementing the watch count 
+
+            if ($request->id != $response->video->channel_created_by) {
+
+                $this->watch_count($request);
+
+            }
+        
+            return view('user.videos.playlist_single_video')
+                        ->with('page' , '')
+                        ->with('subPage' , '')
+                        ->with('video' , $response->video)
+                        ->with('comments' , $response->comments)
+                        ->with('suggestions',$response->suggestions)
+                        ->with('wishlist_status' , $response->wishlist_status)
+                        ->with('history_status' , $response->history_status)
+                        ->with('main_video' , $response->main_video)
+                        ->with('url' , $response->main_video)
+                        ->with('channels' , $response->channels)
+                        ->with('report_video', $response->report_video)
+                        ->with('videoPath', $response->videoPath)
+                        ->with('video_pixels', $response->video_pixels)
+                        ->with('videoStreamUrl', $response->videoStreamUrl)
+                        ->with('hls_video' , $response->hls_video)
+                        ->with('flaggedVideo', $response->flaggedVideo)
+                        ->with('ads', $response->ads)
+                        ->with('subscribe_status', $response->subscribe_status)
+                        ->with('like_count',$response->like_count)
+                        ->with('dislike_count',$response->dislike_count)
+                        ->with('subscriberscnt', $response->subscriberscnt)
+                        ->with('comment_rating_status', $response->comment_rating_status)
+                        ->with('embed_link', $response->embed_link)
+                        ->with('tags', $response->tags);
+       
+        } else {
+
+            $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
+
+            return back()->with('flash_error', $error_message);
+            
+        } 
+
     }
 
 
@@ -3252,11 +3349,9 @@ class UserController extends Controller {
                 throw new Exception($response->error_messages, $response->error_code);
             }
 
-
             if($request->is_json) {
 
                 return response()->json($response, 200);
-
             }
 
             $playlists = $response->data;
@@ -3371,6 +3466,76 @@ class UserController extends Controller {
     
     }
 
+      /**
+     *
+     * Function name: playlist_single()
+     *
+     * @uses get the playlists
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param integer 
+     *
+     * @return 
+     *
+     */
+    public function playlist_single(Request $request) {
+        
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+
+            $response = $this->UserAPI->playlists_view($request)->getData();
+         
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+            if($request->is_json) {
+
+                return response()->json($response, 200);
+            }
+
+            $playlist_details = $response->data;
+
+            $user_details = User::find($playlist_details->user_id);
+
+            if(!$user_details) {
+                
+                return back()->with('flash_error', tr('user_not_found'));
+            }
+
+            $playlist_details->user_name = $user_details->name;
+           
+            $playlist_details->user_picture = $user_details->picture;
+          
+            $video_tapes = $response->data->video_tapes;
+            
+            return view('user.playlists.playlist_single_videos')
+                    ->with('playlist_details', $playlist_details)
+                    ->with('video_tapes', $video_tapes);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+        }
+
+    }
 
     /**
      *
@@ -3403,17 +3568,15 @@ class UserController extends Controller {
                 throw new Exception($response->error_messages, $response->error_code);
             }
 
-
             if($request->is_json) {
 
                 return response()->json($response, 200);
-
             }
 
             $playlist_details = $response->data;
 
             $video_tapes = $response->data->video_tapes;
-
+            
             return view('user.playlists.videos')->with('playlist_details', $playlist_details)->with('video_tapes', $video_tapes);
 
         } catch(Exception $e) {
@@ -3428,10 +3591,10 @@ class UserController extends Controller {
             }
 
             return redirect()->to('/')->with('flash_error' , $error_messages);
-
         }
     
     }
+
     /**
      *
      * Function name: playlists_add_video()

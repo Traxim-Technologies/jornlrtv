@@ -5015,7 +5015,6 @@ class UserApiController extends Controller {
 
             } else {
 
-
                 $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
                     ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS)
                         ->where('video_tapes.publish_status' , 1)   
@@ -5033,6 +5032,8 @@ class UserApiController extends Controller {
                         ->where('channels.status', 1)
                         ->where('channels.is_approved', 1)
                         ->where('categories.status', CATEGORY_APPROVE_STATUS);
+
+            
             
         }
 
@@ -7305,13 +7306,12 @@ class UserApiController extends Controller {
             if($request->view_type == VIEW_TYPE_OWNER) {
 
                 $base_query = $base_query->where('playlists.user_id', $request->id);
-
             }
 
             if($request->channel_id) {
 
                 $base_query = $base_query->where('playlists.channel_id', $request->channel_id);
-            }
+            }          
 
             $skip = $this->skip ?: 0;
 
@@ -7595,7 +7595,6 @@ class UserApiController extends Controller {
             if($request->view_type == VIEW_TYPE_OWNER) {
 
                 $playlist_base_query = $playlist_base_query->where('playlists.user_id', $request->id);
-
             }
 
             $playlist_details = $playlist_base_query->CommonResponse()->first();
@@ -7609,7 +7608,6 @@ class UserApiController extends Controller {
             $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
             $video_tape_base_query = PlaylistVideo::where('playlist_videos.playlist_id', $request->playlist_id);
-
 
             // Check the flag videos
 
@@ -7691,7 +7689,6 @@ class UserApiController extends Controller {
 
     public function playlists_video_remove(Request $request) {
 
-
         try {
 
             DB::beginTransaction();
@@ -7755,6 +7752,7 @@ class UserApiController extends Controller {
      * @param integer $playlist_id
      *
      * @return JSON Response
+     *
      */
     public function playlists_delete(Request $request) {
 
@@ -7805,9 +7803,7 @@ class UserApiController extends Controller {
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
             return response()->json($response_array);
-
         }
-
     }
 
     /**

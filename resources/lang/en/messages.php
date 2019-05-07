@@ -2060,4 +2060,6 @@ return array(
 
 
 	/* - - - - - - - - used for header for each section  - - - - - - - - - - */
+
+	'last_updated' => 'Last updated on'
 );
