@@ -17,6 +17,8 @@ use App\User;
 
 use App\VideoTape, App\PayPerView;
 
+use App\Channel;
+
 class V5Repository {
 
 
