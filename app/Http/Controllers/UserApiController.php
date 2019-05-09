@@ -7889,7 +7889,7 @@ class UserApiController extends Controller {
 
                     $video_tape_details = VideoTape::find($bell_notification_details->video_tape_id);
 
-                    $picture = $video_tape_details ? $video_tape_details->picture : $picture;
+                    $picture = $video_tape_details ? $video_tape_details->default_image : $picture;
 
                 }
 
