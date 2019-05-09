@@ -290,7 +290,7 @@ class V5UserApiController extends Controller
 
             $channel_details->no_of_videos = videos_count($request->channel_id);
 
-            $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
+            $channel_details->no_of_subscribers = subscriberscnt($request->channel_id);
 
             // check my channel and subscribe status
 
