@@ -1013,4 +1013,44 @@ class ApplicationController extends Controller {
         }
    
     }
+
+    /**
+     * @method static_pages_api()
+     *
+     * @uses used to get the pages
+     *
+     * @created Vidhya R 
+     *
+     * @edited Vidhya R
+     *
+     * @param - 
+     *
+     * @return JSON Response
+     */
+
+    public function static_pages_api(Request $request) {
+
+        if($request->page_type) {
+
+            $static_page = StaticPage::where('type' , $request->page_type)
+                                ->where('status' , APPROVED)
+                                ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
+                                ->first();
+
+            $response_array = ['success' => true , 'data' => $static_page];
+
+        } else {
+
+            $static_pages = StaticPage::where('status' , APPROVED)->orderBy('id' , 'asc')
+                                ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
+                                ->orderBy('title', 'asc')
+                                ->get();
+
+            $response_array = ['success' => true , 'data' => $static_pages ? $static_pages->toArray(): []];
+
+        }
+
+        return response()->json($response_array , 200);
+
+    }
 }

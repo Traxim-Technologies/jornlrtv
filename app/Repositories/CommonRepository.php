@@ -271,6 +271,10 @@ class CommonRepository {
 
                 if ($channel_details->save()) {
 
+                    // For response purpose
+
+                    $channel_details->channel_id = $channel_details->id;
+
                     DB::commit();
 
                 } else {

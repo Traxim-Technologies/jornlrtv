@@ -5487,6 +5487,8 @@ class UserApiController extends Controller {
 
             $video['category_unique_id'] = $category ? $category->unique_id : '';
 
+            $video['category_name'] = $category ? $category->name : '';
+
             $response_array = [
                 'tags'=>$tags,
                 'video'=>$video, 'comments'=>$comments, 
@@ -7335,7 +7337,25 @@ class UserApiController extends Controller {
 
                 $playlist_details->is_selected = $check_video ? YES : NO;
 
-                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
+                 // Total Video count start
+
+                $total_video_query = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id);
+
+                if($request->id) {
+
+                    $flag_video_ids = flag_videos($request->id);
+
+                    if($flag_video_ids) {
+
+                        $playlist_details->total_videos = $total_video_query->whereNotIn('playlist_videos.video_tape_id', $flag_video_ids);
+
+                    }
+
+                }
+
+                $playlist_details->total_videos = $total_video_query->count();
+               
+                // Total Video count end
 
                 $playlist_details->share_link = url('/');
             
@@ -7846,14 +7866,13 @@ class UserApiController extends Controller {
 
         try {
 
-            $skip = $this->skip ?: 0;
-
-            $take = $this->take ?: TAKE_COUNT;
+            $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
                                         ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
                                         ->skip($skip)
                                         ->take($take)
+                                        ->orderBy('bell_notifications.created_at', 'desc')
                                         ->get();
 
             foreach ($bell_notifications as $key => $bell_notification_details) {

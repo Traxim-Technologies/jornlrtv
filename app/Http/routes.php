@@ -28,6 +28,7 @@ Route::get('/clear-cache', function() {
 
 Route::post('project/configurations' , 'ApplicationController@configuration_site');
 
+Route::get('pages/list' , 'ApplicationController@static_pages_api');
 
 
 // UI
