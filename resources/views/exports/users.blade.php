@@ -176,7 +176,7 @@
                 </td>
 
                 <td>
-                   {{$user_details->description}}
+                   <?php echo $user_details->description ?>
                 </td>
 
                  <td>

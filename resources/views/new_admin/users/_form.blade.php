@@ -92,7 +92,8 @@
                         <div class="col-lg-12">
                             <label for="{{ tr('dob') }}">{{ tr('description') }} </label>
                          
-                            <textarea type="text" name="description" class="form-control" id="description" placeholder="{{ tr('description') }}" maxlength="255"><?php echo $user_details->description ?></textarea>
+                            <textarea type="text" name="description" class="form-control" id="description" placeholder="{{ tr('description') }}" maxlength="255">
+                            <?php echo $user_details->description ?></textarea>
                         </div>
 
                     </div>

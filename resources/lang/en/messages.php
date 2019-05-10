@@ -2022,10 +2022,10 @@ return array(
 	'referral_details' => 'Referral Details',
 	'referral_code' => 'Referral Code',
 	'referral_earnings' => 'Total Referral Revenue',
-	'referral_count' => 'Refered Count',
+	'referral_count' => 'Referred Count',
 	'referral_commission' => 'Referral Commission',
 
-	'admin_user_refered_accounts_not_found' => 'Sorry! User\'s Refered user details not found',
+	'admin_user_refered_accounts_not_found' => 'Sorry! User\'s Referred user details not found',
 
 	'referrals' => 'REFERRALS',
 	'total_referrals' => 'Total Referrals',

@@ -675,7 +675,6 @@ class NewAdminController extends Controller {
                     Channel::where('user_id', $users_details->id)->update(['is_approved'=>ADMIN_CHANNEL_DECLINED]);
 
                     VideoTape::where('user_id', $users_details->id)->update(['is_approved'=>ADMIN_VIDEO_DECLINED_STATUS]);
-
                 }
 
                 DB::commit();
@@ -730,7 +729,6 @@ class NewAdminController extends Controller {
                 DB::commit();
 
                 return back()->with('flash_success',$message);
-
             }
             
             throw new Exception(tr('admin_user_verification_save_error'), 101);
@@ -7089,7 +7087,7 @@ class NewAdminController extends Controller {
                 throw new Exception( tr('admin_channel_playlist_not_found'), 101);
             } 
 
-            if( $playlist_details->delete()){
+            if( $playlist_details->delete()) {
                
                 DB::commit();
                 
