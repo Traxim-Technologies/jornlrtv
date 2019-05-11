@@ -32,6 +32,8 @@ use Setting;
 
 use App\UserPayment;
 
+use App\StaticPage;
+
 class ApplicationController extends Controller {
 
     protected $UserAPI;
