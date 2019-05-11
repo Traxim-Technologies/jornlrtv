@@ -32,7 +32,7 @@ use Setting;
 
 use App\UserPayment;
 
-use App\StaticPage;
+use App\Page;
 
 class ApplicationController extends Controller {
 
@@ -1034,7 +1034,7 @@ class ApplicationController extends Controller {
 
         if($request->page_type) {
 
-            $static_page = StaticPage::where('type' , $request->page_type)
+            $static_page = Page::where('type' , $request->page_type)
                                 ->where('status' , APPROVED)
                                 ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
                                 ->first();
@@ -1043,7 +1043,7 @@ class ApplicationController extends Controller {
 
         } else {
 
-            $static_pages = StaticPage::where('status' , APPROVED)->orderBy('id' , 'asc')
+            $static_pages = Page::where('status' , APPROVED)->orderBy('id' , 'asc')
                                 ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
                                 ->orderBy('title', 'asc')
                                 ->get();
