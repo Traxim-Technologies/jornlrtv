@@ -7303,6 +7303,39 @@ class UserApiController extends Controller {
 
         try {
 
+            $validator = Validator::make($request->all(), [
+                'skip' => 'numeric',
+                'channel_id' => 'exists:channels,id',
+                'view_type' => 'required'
+            ]);
+
+            if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+                
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            // Guests can access only channel playlists  - Required channel_id
+
+            // Logged in users playlists - required - Required viewer_type 
+
+            // Logged in user access other channel playlist  - required channel_id
+
+            // Logged in user access owned channel playlist - required channel_id
+
+            if(($request->id && $request->view_type == VIEW_TYPE_VIEWER)|| (!$request->id && $request->view_type == VIEW_TYPE_VIEWER)) {
+
+                if(!$request->channel_id) {
+
+                    throw new Exception("Channel ID is required", 101);
+                    
+
+                }
+                
+            }
+
             $base_query = Playlist::where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
 
