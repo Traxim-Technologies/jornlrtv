@@ -4445,3 +4445,40 @@ input:checked + .slider{
 .top30{
 	margin-top: 30px;
 }
+
+.heart-now {
+  cursor: pointer;
+  background-image:url( 'https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png');
+  background-position: left;
+  background-repeat:no-repeat;
+  background-size:2900%;
+  /*position: absolute;*/
+  height: 20px;
+  width: 50px;
+  display: inline-block;
+}
+
+.heart-now:hover {
+  background-position:right;
+}
+
+.heart-now-active {
+	  background-position:right;
+}
+
+.is_animating {
+  animation: heart-burst .8s steps(28) 1;
+}
+
+@keyframes heart-burst {
+  from {background-position:left;}
+  to { background-position:right;}
+}
+
+.user-comment-pic {
+	width:50px;
+	height:50px; 
+	border-radius:25px;
+	object-fit: cover;
+	object-position: center;
+}
