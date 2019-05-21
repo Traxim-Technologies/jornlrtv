@@ -7339,7 +7339,17 @@ class UserApiController extends Controller {
             $base_query = Playlist::where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
 
-            if($request->view_type == VIEW_TYPE_OWNER) {
+            // While owner access the users playlists
+
+            if($request->view_type == VIEW_TYPE_OWNER && !$request->channel_id) {
+
+                $base_query = $base_query->where('playlists.user_id', $request->id)->where('channel_id', '=', 0);
+
+            }
+
+            // While owner access the channel playlists
+
+            if($request->view_type == VIEW_TYPE_OWNER && $request->channel_id) {
 
                 $base_query = $base_query->where('playlists.user_id', $request->id);
 
