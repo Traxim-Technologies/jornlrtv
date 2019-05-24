@@ -63,6 +63,17 @@ function tr($key , $otherkey = "") {
     return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
 }
 
+function apitr($key , $otherkey = "") {
+
+    if (!\Session::has('locale'))
+
+        \Session::put('locale', \Config::get('app.locale'));
+
+    // return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
+
+    return \Lang::choice('api-messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
+}
+
 function envfile($key) {
 
     $data = EnvEditorHelper::getEnvValues();

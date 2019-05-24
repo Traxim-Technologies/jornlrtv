@@ -280,7 +280,7 @@ class NewUserApiController extends Controller
 
                         $user_details->password = $request->password;
 
-                        $subject = tr('user_welcome_title').' '.Setting::get('site_name', 'StreamTube');
+                        $subject = apitr('user_welcome_title').' '.Setting::get('site_name', 'StreamTube');
 
                         $email_data = $user_details;
 
@@ -573,7 +573,7 @@ class NewUserApiController extends Controller
 
             $email_data = array();
 
-            $subject = tr('user_forgot_email_title' , Setting::get('site_name'));
+            $subject = apitr('user_forgot_email_title' , Setting::get('site_name'));
 
             $email_data['email']  = $user_details->email;
 
@@ -822,7 +822,7 @@ class NewUserApiController extends Controller
 
                 DB::commit();
 
-                return $this->sendResponse($message = tr('user_profile_update_success'), $success_code = 200, Helper::null_safe($data));
+                return $this->sendResponse($message = apitr('user_profile_update_success'), $success_code = 200, Helper::null_safe($data));
 
             } else {    
 
@@ -906,7 +906,7 @@ class NewUserApiController extends Controller
 
                 // @todo 
 
-                $message = tr('account_delete_success');
+                $message = apitr('account_delete_success');
 
                 return $this->sendResponse($message, $success_code = 200, $data = []);
 

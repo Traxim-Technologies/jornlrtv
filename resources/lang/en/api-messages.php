@@ -1,0 +1,87 @@
+<?php
+
+return array(
+
+	/*
+	|--------------------------------------------------------------------------
+	| Messages Language Keys
+	|--------------------------------------------------------------------------
+	|
+	|	This is the master keyword file. Any new keyword added to the website
+	|	should go here first.
+	|
+	|
+	*/
+
+
+	/*********** COMMON ERRORS *******/
+
+	'token_expiry' => 'Token Expired',
+	'invalid_token' => 'Invalid Token ',
+	'invalid_input' => 'Invalid Input',
+	'without_id_token_user_accessing_request' => 'The requested action needs login.',
+
+	'are_you_sure' => 'Are you sure?',
+	'unknown_error_occured' => 'Unknown error occured',
+	'something_went_wrong' => 'Sorry, Something went wrong, while functioning the current request!!',
+	'no_result_found' => 'No Result Found',
+	
+	'invalid_email_address' => 'The email address is invalid!!',
+
+	'stripe_not_configured' => 'The Stripe Payment is not configured Properly!!!',
+
+	'login_success' => 'Successfully loggedin!!',
+	'logout_success' => 'Successfully loggedout!!',
+
+	'mail_send_failure' => 'The mail send process is failed!!!',
+	'mail_not_configured' => 'The mail configuration failed!!!',
+	'mail_sent_success' => 'Mail sent successfully',
+
+	'forgot_password_email_verification_error' => 'The email verification not yet done Please check you inbox.',
+	'forgot_password_decline_error' => 'The requested email is disabled by admin.',
+	
+	'password_not_correct' => 'Sorry, the password is not matched.',
+	'password_mismatch' => 'The password doesn\'t match with existing record. Please try again!!',
+	'password_change_success' => 'Password changed successfully!!',
+
+	'account_delete_success' => 'Account deleted successfully!!!',
+
+	'user_details_not_found' => 'The selected user not exists.',
+	'provider_details_not_found' => 'The selected provider not exists.',
+
+	/*********** COMMON ERRORS *******/
+
+	// = = = = = = = = = USERS = = = = = = = = = = 
+
+	'user_forgot_password_deny_for_social_login' => 'The forgot password only available for manual login.',
+
+	'user_change_password_deny_for_social_login' => 'The change password only available for manual login.',
+
+	'user_details_not_save' => 'User details not saved',
+
+	'user_profile_update_success' => 'The Profile updated',
+
+	'username_password_not_match' => 'Sorry, the username or password you entered do not match. Please try again',
+
+	'user_login_decline' => 'Sorry, Your account has been disabled.',
+	'user_not_verified' => 'Please verify your email address!!',
+	'user_no_payment_mode' => 'Update the payment mode in account and try again!!!',
+
+	'card_added_success' => 'Card Added successfully!!',
+	'card_deleted_success' => 'Card Deleted successfully!!',
+	'card_default_success' => 'Selected Card has been changed into Default Card', 
+	'user_payment_mode_update_success' => 'Payment Mode updated successfully..!!!',
+
+	'no_default_card' => 'Please add card and try again!!',
+
+	'notification_enable' => 'Notification has been successfully enabled',
+	'notification_disable' => 'Notification has been successfully disabled',
+
+	'wishlist_delete_error' => 'The Favorite remove error',
+	
+	'wishlist_add_success' => 'The host added to Favorite',
+	'wishlist_delete_success' => 'The Favorite host removed',
+	'wishlist_clear_success' => 'Favorite List songs has been cleared successfully',
+
+
+);
