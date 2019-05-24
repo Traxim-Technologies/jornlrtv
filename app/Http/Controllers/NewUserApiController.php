@@ -35,9 +35,11 @@ use App\StaticPage;
 
 class NewUserApiController extends Controller
 {
-    protected $skip, $take;
+    protected $skip, $take, $loginUser;
 
 	public function __construct(Request $request) {
+
+        $this->loginUser = User::CommonResponse()->find($request->id);
 
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
 
@@ -945,5 +947,574 @@ class NewUserApiController extends Controller
 
         return $this->sendResponse(CommonHelper::success_message(106), 106);
 
+    }
+
+    /**
+     * @method cards_list()
+     *
+     * @uses get the user payment mode and cards list
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param integer id
+     * 
+     * @return
+     */
+
+    public function cards_list(Request $request) {
+
+        try {
+
+            // @todo card_holder_name
+
+            $user_cards = Card::where('user_id' , $request->id)->select('id as user_card_id' , 'customer_id' , 'last_four' ,'card_name', 'card_token' , 'is_default' )->get();
+
+            // $data = $user_cards ? $user_cards : []; 
+
+            $card_payment_mode = $payment_modes = [];
+
+            $card_payment_mode['name'] = "Card";
+
+            $card_payment_mode['payment_mode'] = "card";
+
+            $card_payment_mode['is_default'] = 1;
+
+            array_push($payment_modes , $card_payment_mode);
+
+            $data['payment_modes'] = $payment_modes;   
+
+            $data['cards'] = $user_cards ? $user_cards : []; 
+
+            return $this->sendResponse($message = "", $success_code = "", $data);
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+    
+    }
+    
+    /**
+     * @method cards_add()
+     *
+     * @uses Update the selected payment mode 
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param Form data
+     * 
+     * @return JSON Response
+     */
+
+    public function cards_add(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            if(Setting::get('stripe_secret_key')) {
+
+                \Stripe\Stripe::setApiKey(Setting::get('stripe_secret_key'));
+
+            } else {
+
+                throw new Exception(CommonHelper::error_message(133), 133);
+            }
+        
+            $validator = Validator::make(
+                    $request->all(),
+                    [
+                        'card_token' => 'required',
+                    ]
+                );
+
+            if($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+             
+                throw new Exception($error , 101);
+
+            } else {
+
+                Log::info("INSIDE CARDS ADD");
+
+                $user_details = User::find($request->id);
+
+                if(!$user_details) {
+
+                    throw new Exception(CommonHelper::error_message(1002), 1002);
+                    
+                }
+
+                // Get the key from settings table
+                
+                $customer = \Stripe\Customer::create([
+                        "card" => $request->card_token,
+                        "email" => $user_details->email,
+                        "description" => "Customer for ".Setting::get('site_name'),
+                    ]);
+
+                if($customer) {
+
+                    $customer_id = $customer->id;
+
+                    $card_details = new Card;
+
+                    $card_details->user_id = $request->id;
+
+                    $card_details->customer_id = $customer_id;
+
+                    $card_details->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
+
+                    $card_details->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
+
+                    $card_details->last_four = $customer->sources->data[0]->last4 ? $customer->sources->data[0]->last4 : "";
+
+                    // Check is any default is available
+
+                    $check_card_details = Card::where('user_id',$request->id)->count();
+
+                    $card_details->is_default = $check_card_details ? 0 : 1;
+
+
+                    if($card_details->save()) {
+
+                        if($user_details) {
+
+                            $user_details->card_id = $check_card_details ? $user_details->card_id : $card_details->id;
+
+                            $user_details->save();
+                        }
+
+                        $data = Card::where('id' , $card_details->id)->select('id as user_card_id' , 'customer_id' , 'last_four' ,'card_name', 'card_token' , 'is_default' )->first();
+
+                        DB::commit();
+
+                        $response_array = ['success' => true , 'message' => CommonHelper::success_message(105) , 'data' => $data];
+
+                    } else {
+
+                        throw new Exception(CommonHelper::error_message(117), 117);
+                        
+                    }
+               
+                } else {
+
+                    throw new Exception(CommonHelper::error_message(117) , 117);
+                    
+                }
+            
+            }
+
+            
+
+            return response()->json($response_array , 200);
+
+        } catch(Stripe_CardError $e) {
+
+            Log::info("error1");
+
+            $error1 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error' => $error1 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_InvalidRequestError $e) {
+
+            // Invalid parameters were supplied to Stripe's API
+
+            Log::info("error2");
+
+            $error2 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error' => $error2 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_AuthenticationError $e) {
+
+            Log::info("error3");
+
+            // Authentication with Stripe's API failed
+            $error3 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error' => $error3 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_ApiConnectionError $e) {
+            Log::info("error4");
+
+            // Network communication with Stripe failed
+            $error4 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error' => $error4 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (Stripe_Error $e) {
+            Log::info("error5");
+
+            // Display a very generic error to the user, and maybe send
+            // yourself an email
+            $error5 = $e->getMessage();
+
+            $response_array = array('success' => false , 'error' => $error5 ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch (\Stripe\StripeInvalidRequestError $e) {
+
+            Log::info("error7");
+
+            // Log::info(print_r($e,true));
+
+            $response_array = array('success' => false , 'error' => CommonHelper::error_message(903) ,'error_code' => 903);
+
+            return response()->json($response_array , 200);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+   
+    }
+
+    /**
+     * @method cards_delete()
+     *
+     * @uses delete the selected card
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param integer user_card_id
+     * 
+     * @return JSON Response
+     */
+
+    public function cards_delete(Request $request) {
+
+        // Log::info("cards_delete");
+
+        DB::beginTransaction();
+
+        try {
+    
+            $user_card_id = $request->user_card_id;
+
+            $validator = Validator::make(
+                $request->all(),
+                array(
+                    'user_card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+                ),
+                array(
+                    'exists' => 'The :attribute doesn\'t belong to user:'.$this->loginUser->name
+                )
+            );
+
+            if($validator->fails()) {
+
+               $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            } else {
+
+                $user_details = User::find($request->id);
+
+                // No need to prevent the deafult card delete. We need to allow user to delete the all the cards
+
+                // if($user_details->card_id == $user_card_id) {
+
+                //     throw new Exception(tr('card_default_error'), 101);
+                    
+                // } else {
+
+                    Card::where('id',$user_card_id)->delete();
+
+                    if($user_details) {
+
+                        if($user_details->payment_mode = CARD) {
+
+                            // Check he added any other card
+
+                            if($check_card = Card::where('user_id' , $request->id)->first()) {
+
+                                $check_card->is_default =  DEFAULT_TRUE;
+
+                                $user_details->card_id = $check_card->id;
+
+                                $check_card->save();
+
+                            } else { 
+
+                                $user_details->payment_mode = COD;
+
+                                $user_details->card_id = DEFAULT_FALSE;
+                            
+                            }
+                       
+                        }
+
+                        // Check the deleting card and default card are same
+
+                        if($user_details->card_id == $user_card_id) {
+
+                            $user_details->card_id = DEFAULT_FALSE;
+
+                            $user_details->save();
+                        }
+                        
+                        $user_details->save();
+                    
+                    }
+
+                    $response_array = ['success' => true , 'message' => CommonHelper::success_message(107) , 'code' => 107];
+
+                // }
+
+            }
+
+            DB::commit();
+    
+            return response()->json($response_array , 200);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        
+        }
+    }
+
+    /**
+     * @method cards_default()
+     *
+     * @uses update the selected card as default
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param integer id
+     * 
+     * @return JSON Response
+     */
+    public function cards_default(Request $request) {
+
+        Log::info("cards_default");
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                $request->all(),
+                array(
+                    'user_card_id' => 'required|integer|exists:cards,id,user_id,'.$request->id,
+                ),
+                array(
+                    'exists' => 'The :attribute doesn\'t belong to user:'.$this->loginUser->name
+                )
+            );
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+                   
+            }
+
+            $old_default_cards = Card::where('user_id' , $request->id)->where('is_default', DEFAULT_TRUE)->update(array('is_default' => DEFAULT_FALSE));
+
+            $card = Card::where('id' , $request->user_card_id)->update(['is_default' => DEFAULT_TRUE]);
+
+            $user_details = User::find($request->id);
+
+            $user_details->card_id = $request->user_card_id;
+
+            $user_details->save();           
+
+            DB::commit();
+
+            return $this->sendResponse($message = CommonHelper::success_message(108), $success_code = "108", $data = []);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        
+        }
+    
+    } 
+
+    /**
+     * @method notification_settings()
+     *
+     * @uses To enable/disable notifications of email / push notification
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param - 
+     *
+     * @return JSON Response
+     */
+    public function notification_settings(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make(
+                $request->all(),
+                array(
+                    'status' => 'required|numeric',
+                    'type'=>'required|in:'.EMAIL_NOTIFICATION.','.PUSH_NOTIFICATION
+                )
+            );
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+                
+            $user_details = User::find($request->id);
+
+            if($request->type == EMAIL_NOTIFICATION) {
+
+                $user_details->email_notification_status = $request->status;
+
+            }
+
+            if($request->type == PUSH_NOTIFICATION) {
+
+                $user_details->push_notification_status = $request->status;
+
+            }
+
+            $user_details->save();
+
+            $message = $request->status ? CommonHelper::success_message(206) : CommonHelper::success_message(207);
+
+            $data = ['id' => $user_details->id , 'token' => $user_details->token];
+
+            $response_array = [
+                'success' => true ,'message' => $message, 
+                'email_notification_status' => (int) $user_details->email_notification_status,  // Don't remove int (used ios)
+                'push_notification_status' => (int) $user_details->push_notification_status,    // Don't remove int (used ios)
+                'data' => $data
+            ];
+                
+            
+            DB::commit();
+
+            return response()->json($response_array , 200);
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            $code = $e->getCode();
+
+            $response_array = ['success'=>false, 'error'=>$error, 'error_code'=>$code];
+
+            return response()->json($response_array);
+        }
+
+    }
+
+    /**
+     * @method configurations()
+     *
+     * @uses used to get the configurations for base products
+     *
+     * @created Vithya R Chandrasekar
+     *
+     * @updated - 
+     *
+     * @param - 
+     *
+     * @return JSON Response
+     */
+    public function configurations(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|exists:users,id',
+                'token' => 'required',
+
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            $config_data = $data = [];
+
+            $payment_data['is_stripe'] = 1;
+
+            $payment_data['stripe_publishable_key'] = Setting::get('stripe_publishable_key') ?: "";
+
+            $payment_data['stripe_secret_key'] = Setting::get('stripe_secret_key') ?: "";
+
+            $payment_data['stripe_secret_key'] = Setting::get('stripe_secret_key') ?: "";
+
+            $data['payments'] = $payment_data;
+
+            $data['urls']  = [];
+
+            $url_data['base_url'] = envfile("APP_URL") ?: "";
+
+            $url_data['chat_socket_url'] = Setting::get("chat_socket_url") ?: "";
+
+            $data['urls'] = $url_data;
+
+            $notification_data['FCM_SENDER_ID'] = "";
+
+            $notification_data['FCM_SERVER_KEY'] = $notification_data['FCM_API_KEY'] = "";
+
+            $notification_data['FCM_PROTOCOL'] = "";
+
+            $data['notification'] = $notification_data;
+
+            $data['site_name'] = Setting::get('site_name');
+
+            $data['site_logo'] = Setting::get('site_logo');
+
+            $data['currency'] = Setting::get('currency');
+
+            return $this->sendResponse($message = "", $success_code = "", $data);
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+   
     }
 }
