@@ -1097,3 +1097,55 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('v5/channels_subscribed', 'V5UserApiController@channels_subscribed');
 
 });
+
+
+// NEW COLLECTIONS:
+
+
+Route::group(['prefix' => 'api/user'], function() {
+    /***
+     *
+     * User Account releated routs
+     *
+     */
+
+    Route::post('/register','NewUserApiController@register');
+    
+    Route::post('/login','NewUserApiController@login');
+
+    Route::post('/forgot_password', 'NewUserApiController@forgot_password');
+
+    Route::group(['middleware' => 'UserApiVal'] , function() {
+
+        Route::post('/profile','NewUserApiController@profile'); // 1
+
+        Route::post('/update_profile', 'NewUserApiController@update_profile'); // 2
+
+        Route::post('/change_password', 'NewUserApiController@change_password'); // 3
+
+        Route::post('/delete_account', 'NewUserApiController@delete_account'); // 4
+
+        Route::post('/push_notification_update', 'NewUserApiController@push_notification_status_change');  // 5
+
+        Route::post('/email_notification_update', 'NewUserApiController@email_notification_status_change'); // 6
+
+        Route::post('/logout', 'NewUserApiController@logout'); // 7
+
+        // CARDS curd Operations
+
+        Route::post('cards_add', 'NewUserApiController@cards_add'); // 15
+
+        Route::post('cards_list', 'NewUserApiController@cards_list'); // 16
+
+        Route::post('cards_delete', 'NewUserApiController@cards_delete'); // 17
+
+        Route::post('cards_default', 'NewUserApiController@cards_default'); // 18
+
+
+        //configurations
+
+        Route::post('notification/settings', 'NewUserApiController@notification_settings'); // 22
+
+    });
+
+});
