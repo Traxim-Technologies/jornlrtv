@@ -24,7 +24,72 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: wishlist_videos()
+     * @method mobile_home()
+     *
+     * @uses used to get the list of contunue watching videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function mobile_home($request) {
+
+        try {
+
+            $base_query = VideoTape::where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                            ->where('channels.is_approved', ADMIN_CHANNEL_APPROVED)
+                            ->where('channels.status', USER_CHANNEL_APPROVED)
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
+                            ->orderby('video_tapes.created_at' , 'desc');
+
+            // check page type 
+
+            $base_query = self::get_page_type_query($request, $base_query);
+
+            // Check any flagged videos are present
+
+            $spam_video_ids = flag_videos($request->id);
+            
+            if($spam_video_ids) {
+
+                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
+
+            }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+            $take = $request->take ?: (Setting::get('take') ?: 12);
+
+            $skip = $request->skip ?: 0;
+
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+    /**
+     *
+     * @method wishlist_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -81,7 +146,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: history_videos()
+     * @method history_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -102,9 +167,9 @@ class VideoHelper {
 
         try {
 
-            $base_query = UserHistory::select('user_histories.admin_video_id')
-                                ->where('user_histories.sub_profile_id' , $request->id)
-                                ->leftJoin('video_tapes', 'video_tapes.id', '=' , 'user_histories.admin_video_id')
+            $base_query = UserHistory::select('user_histories.video_tape_id')
+                                ->where('user_histories.user_id' , $request->id)
+                                ->leftJoin('video_tapes', 'video_tapes.id', '=' , 'user_histories.video_tape_id')
                                 ->orderby('user_histories.updated_at', 'desc');
             // check page type 
 
@@ -116,19 +181,9 @@ class VideoHelper {
             
             if($spam_video_ids) {
 
-                // $base_query->whereNotIn('user_histories.admin_video_id', $spam_video_ids);
+                $base_query->whereNotIn('user_histories.video_tape_id', $spam_video_ids);
 
             }
-
-            // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($sub_profile_id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('wishlists.admin_video_id', $continue_watching_video_ids);
-
-            // }
 
             $take = Setting::get('admin_take_count', 12);
 
@@ -150,7 +205,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: new_releases_videos()
+     * @method new_releases_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -217,7 +272,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: continue_watching_videos()
+     * @method continue_watching_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -277,7 +332,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: trending_videos()
+     * @method trending_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -345,7 +400,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: original_videos()
+     * @method original_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -416,7 +471,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: suggestion_videos()
+     * @method suggestion_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -483,7 +538,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: banner_videos()
+     * @method banner_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -559,7 +614,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: category_videos()
+     * @method category_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -629,7 +684,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: sub_category_videos()
+     * @method sub_category_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -699,7 +754,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: genre_videos()
+     * @method genre_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -769,7 +824,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: cast_crews_videos()
+     * @method cast_crews_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -841,7 +896,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: wishlist_status()
+     * @method wishlist_status()
      *
      * @uses used to get the wishlist status of the video
      *
@@ -871,7 +926,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: history_status()
+     * @method history_status()
      *
      * @uses used to get the wishlist status of the video
      *
@@ -897,7 +952,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: like_status()
+     * @method like_status()
      *
      * @uses used to get the like status of the video
      *
@@ -937,7 +992,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: likes_count()
+     * @method likes_count()
      *
      * @uses used to get the like status of the video
      *
@@ -961,7 +1016,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: download_button_status()
+     * @method download_button_status()
      *
      * @uses used to get the like status of the video
      *
@@ -1025,7 +1080,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: download_button_status()
+     * @method download_button_status()
      *
      * @uses used to get the like status of the video
      *
@@ -1087,7 +1142,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: download_button_status()
+     * @method download_button_status()
      *
      * @uses used to get the like status of the video
      *
@@ -1142,7 +1197,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: get_rtmp_link_video()
+     * @method get_rtmp_link_video()
      *
      * @uses used to convert the normal video to RTMP Video
      *
@@ -1194,7 +1249,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: get_page_type_query()
+     * @method get_page_type_query()
      *
      * @uses based on the page type, change the query
      *
@@ -1242,7 +1297,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: get_ppv_page_type()
+     * @method get_ppv_page_type()
      *
      * @uses based on the page type, change the query
      *
@@ -1305,7 +1360,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: get_ppv_page_type()
+     * @method get_ppv_page_type()
      *
      * @uses based on the page type, change the query
      *
@@ -1331,7 +1386,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: getFlagVideos()
+     * @method getFlagVideos()
      *
      * @uses based on the page type, change the query
      *

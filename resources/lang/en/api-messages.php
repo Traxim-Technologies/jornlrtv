@@ -99,7 +99,11 @@ return array(
 
 	'video_tape_not_found' => 'The video details is not found.',
 
+	// History management
 
-
+	'history_video_added' => 'The video added to history',
+	'history_video_tape_removed' => 'The video removed from history',
+	'history_cleared' => 'The history cleared',
+	'history_failed' => 'The action failed',
 
 );

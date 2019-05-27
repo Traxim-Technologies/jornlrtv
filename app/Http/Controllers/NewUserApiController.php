@@ -1837,8 +1837,6 @@ class NewUserApiController extends Controller
 
         try {
 
-            // @todo wishlist videos common
-
             $video_tapes = VideoHelper::wishlist_videos($request);
 
             return $this->sendResponse($message = "", $success_code = "", $video_tapes);
@@ -1942,6 +1940,222 @@ class NewUserApiController extends Controller
             DB::rollback();
 
             return $this->sendError($e->getMessage(), $e->getCode());
+        }
+
+    }
+
+    /**
+     * @method video_tapes_history()
+     *
+     * @uses get the logged in user video history details
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    public function video_tapes_history(Request $request) {
+
+        try {
+
+            // @todo wishlist videos common
+
+            $video_tapes = VideoHelper::history_videos($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method video_tapes_history_add()
+     *
+     * @uses add video to user history and update the PPV details
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    public function video_tapes_history_add(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),[
+                    'video_tape_id' => 'required|integer|exists:video_tapes,id'
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+            $ppv_details = PayPerView::where('user_id', $request->id)
+                                ->where('video_id', $request->video_tape_id)
+                                ->where('is_watched', '!=', WATCHED)
+                                ->where('status', PAID_STATUS)
+                                ->orderBy('ppv_date', 'desc')
+                                ->first();
+
+            if ($ppv_details) {
+
+                $ppv_details->is_watched = WATCHED;
+
+                $ppv_details->save();
+
+            }
+
+            $user_history_details = UserHistory::where('user_histories.user_id' , $request->id)->where('video_tape_id' ,$request->video_tape_id)->first();
+
+            if(!$user_history_details) {
+
+                $user_history_details = new UserHistory();
+
+                $user_history_details->user_id = $request->id;
+
+                $user_history_details->video_tape_id = $request->video_tape_id;
+
+                $user_history_details->status = DEFAULT_TRUE;
+
+                $user_history_details->save();
+
+            }
+
+            $video_tape_details = VideoTape::find($request->video_tape_id);
+
+            $navigateback = NO;
+
+            if ($request->id != $video_tape_details->user_id) {
+
+                if ($video->type_of_subscription == RECURRING_PAYMENT) {
+
+                    $navigateback = YES;
+
+                }
+            }
+
+            DB::commit();
+
+            // navigateback = used to handle the replay in mobile for recurring payments
+
+            $data['navigateback'] = $navigateback;
+           
+            return $this->sendResponse($message = CommonHelper::success_message(208), $success_code = 208, $data);
+
+        } catch(Exception  $e) {
+
+            DB::rollback();
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method video_tapes_history_remove()
+     *
+     * @uses remove video from user history and update the PPV details
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    public function video_tapes_history_remove(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),[
+                    'video_tape_id' =>$request->clear_all_status ? 'integer|exists:video_tapes,id' : 'required|integer|exists:video_tapes,id'
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+            if($request->clear_all_status) {
+
+                $history = UserHistory::where('user_id',$request->id)->delete();
+
+                $message = CommonHelper::success_message(210); $success_code = 210;
+
+            } else {
+
+                $history = UserHistory::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+
+                $message = CommonHelper::success_message(209); $success_code = 209;
+
+            }
+
+            DB::commit();
+
+            return $this->sendResponse($message, $success_code);
+
+        } catch(Exception  $e) {
+            
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method video_tapes_history_remove()
+     *
+     * @uses remove video from user history and update the PPV details
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    
+    public function home(Request $request) {
+
+        try {
+            
+            $video_tapes = VideoHelper::mobile_home($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
         }
 
     }

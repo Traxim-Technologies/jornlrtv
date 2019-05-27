@@ -30,9 +30,9 @@ class Controller extends BaseController
             $response['code'] = $success_code;
         }
 
-        if(!empty($result)) {
+        // if(!empty($result)) {
             $response['data'] = $result;
-        }
+        // }
 
         return response()->json($response, 200);
     }

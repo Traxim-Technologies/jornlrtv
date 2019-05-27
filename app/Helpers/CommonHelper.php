@@ -280,7 +280,15 @@ class CommonHelper {
             case 207: 
                 $string = apitr('notification_disable');
                 break;
-
+            case 208: 
+                $string = apitr('history_video_added');
+                break;
+            case 209: 
+                $string = apitr('history_video_tape_removed');
+                break;
+            case 210: 
+                $string = apitr('history_cleared');
+                break;
 
             default:
                 $string = "";

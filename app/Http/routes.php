@@ -1151,6 +1151,10 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::get('pages/list' , 'NewUserApiController@static_pages_api');
 
+    // Core api's
+
+    Route::post('home', 'NewUserApiController@home');
+
     Route::group(['middleware' => 'UserApiVal'] , function() {
 
         // Subscriptions management
@@ -1166,7 +1170,14 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('wishlist' , 'NewUserApiController@wishlist_list');
 
         Route::post('wishlist_operations' , 'NewUserApiController@wishlist_operations');
-    
+
+        // History Management
+
+        Route::post('/video_tapes_history', 'UserApiController@video_tapes_history');
+
+        Route::post('/video_tapes_history/add', 'UserApiController@video_tapes_history_add');
+
+        Route::post('/video_tapes_history/remove', 'UserApiController@video_tapes_history_remove');
     });
 
 

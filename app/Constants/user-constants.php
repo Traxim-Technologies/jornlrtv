@@ -73,4 +73,37 @@ if(!defined('EMAIL_NOTIFICATION')) define('EMAIL_NOTIFICATION', 'email');
 if(!defined('PUSH_NOTIFICATION')) define('PUSH_NOTIFICATION', 'push');
 
 
+// Video status
+
+if(!defined('ADMIN_VIDEO_APPROVED')) define('ADMIN_VIDEO_APPROVED', 1);
+
+if(!defined('ADMIN_VIDEO_DECLINED')) define('ADMIN_VIDEO_DECLINED', 0);
+
+// User status
+
+if(!defined('USER_VIDEO_APPROVED')) define('USER_VIDEO_APPROVED', 1);
+
+if(!defined('USER_VIDEO_DECLINED')) define('USER_VIDEO_DECLINED', 0);
+
+// Published Status
+
+if (!defined('VIDEO_PUBLISHED')) define('VIDEO_PUBLISHED', 1);
+
+if (!defined('VIDEO_NOT_YET_PUBLISHED')) define('VIDEO_NOT_YET_PUBLISHED', 0);
+
+
+// Channel status
+
+if(!defined('ADMIN_CHANNEL_APPROVED')) define('ADMIN_CHANNEL_APPROVED', 1);
+
+if(!defined('ADMIN_CHANNEL_DECLINED')) define('ADMIN_CHANNEL_DECLINED', 0);
+
+
+if(!defined('USER_CHANNEL_APPROVED')) define('USER_CHANNEL_APPROVED', 1);
+
+if(!defined('USER_CHANNEL_DECLINED')) define('USER_CHANNEL_DECLINED', 0);
+
+
+
+
 
