@@ -535,7 +535,7 @@ class PaymentRepository {
                         'paid_status' => YES,
                     ];
 
-            $response_array = ['success' => true, 'message' => CommonHelper::success_message(206), 'code' => 206, 'data' => $data];
+            $response_array = ['success' => true, 'message' => CommonHelper::success_message(205), 'code' => 205, 'data' => $data];
 
         } else {
 
