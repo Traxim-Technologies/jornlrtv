@@ -43,12 +43,12 @@ class Controller extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendError($error, $error_code = 101, $error_messages = [], $response_code = 404) {
+    public function sendError($error, $error_code = 101, $error_messages = [], $response_code = 101) {
     	//
-        $response = ['success' => false, 'error_messages' => $error , 'error_code' => $error_code];
+        $response = ['success' => false, 'error' => $error , 'error_code' => $error_code];
 
         if(!empty($error_messages)) {
-            // $response['error_messages'] = $error_messages;
+            $response['error_messages'] = $error_messages;
         }
 
         return response()->json($response, $response_code);

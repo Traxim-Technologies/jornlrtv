@@ -1141,11 +1141,28 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('cards_default', 'NewUserApiController@cards_default'); // 18
 
-
-        //configurations
-
-        Route::post('notification/settings', 'NewUserApiController@notification_settings'); // 22
-
     });
+
+    //configurations
+
+    Route::post('notification/settings', 'NewUserApiController@notification_settings'); // 22
+
+    // Static pages
+
+    Route::get('pages/list' , 'NewUserApiController@static_pages_api');
+
+    Route::group(['middleware' => 'UserApiVal'] , function() {
+
+        // Subscriptions management
+
+        Route::post('subscriptions', 'NewUserApiController@subscriptions');
+
+        Route::post('subscriptions_payment_by_stripe', 'NewUserApiController@subscriptions_payment_by_stripe');
+
+        Route::post('subscriptions_history', 'NewUserApiController@subscriptions_history');
+    
+    });
+
+
 
 });

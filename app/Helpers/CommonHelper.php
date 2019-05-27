@@ -144,7 +144,7 @@ class CommonHelper {
                 $string = apitr('no_default_card');
                 break;
             case 112:
-                $string = apitr('no_default_card');
+                $string = apitr('no_default_card'); // not used
                 break;
             case 113:
                 $string = apitr('stripe_payment_not_configured');
@@ -168,22 +168,31 @@ class CommonHelper {
                 $string = apitr('user_change_password_deny_for_social_login');
                 break;
             case 200:
-                $string = apitr('host_details_not_found');
+                $string = apitr('host_details_not_found'); // Not used
                 break;
             case 201:
-                $string = apitr('provider_details_not_found');
+                $string = apitr('provider_details_not_found'); // Not used
                 break;
             case 202:
-                $string = apitr('invalid_request_input');
+                $string = apitr('invalid_request_input'); // Not used
                 break;
             case 203:
-                $string = apitr('provider_subscription_not_found');
-                break;
-            case 203:
-                $string = apitr('provider_subscription_payment_error');
+                $string = apitr('subscription_not_found');
                 break;
             case 204:
-                $string = apitr('host_delete_error');
+                $string = apitr('subscription_payment_error');
+                break;
+            case 205:
+                $string = apitr('coupon_code_not_found');
+                break;
+            case 206:
+                $string = apitr('coupon_code_not_found');
+                break;
+            case 207:
+                $string = apitr('coupon_code_limit_exceeds');
+                break;
+            case 208:
+                $string = apitr('coupon_code_per_user_limit_exceeds');
                 break;
 
             // USE BELOW CONSTANTS FOR AUTHENTICATION CHECK
@@ -204,9 +213,6 @@ class CommonHelper {
                 break;
             case 1005:
                 $string = apitr('without_id_token_user_accessing_request');
-                break;
-            case 1006:
-                $string = apitr('provider_details_not_found');
                 break;
 
             default:
@@ -257,13 +263,13 @@ class CommonHelper {
                 $string = apitr('wishlist_clear_success');
                 break;
             case 203:
-                $string = apitr('booking_done_success');
+                $string = apitr('not_used');
                 break;
             case 204:
                 $string = apitr('bell_notification_updated');
                 break;
             case 205: 
-                $string = apitr('provider_subscription_payment_success');
+                $string = apitr('subscription_payment_success');
                 break;
             case 206: 
                 $string = apitr('notification_enable');

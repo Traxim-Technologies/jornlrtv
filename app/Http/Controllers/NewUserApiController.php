@@ -31,7 +31,9 @@ use App\BellNotification;
 
 use App\Category, App\SubCategory;
 
-use App\StaticPage;
+use App\Page;
+
+use App\Subscription, App\UserPayment;
 
 class NewUserApiController extends Controller
 {
@@ -979,7 +981,7 @@ class NewUserApiController extends Controller
 
             $card_payment_mode['payment_mode'] = "card";
 
-            $card_payment_mode['is_default'] = 1;
+            $card_payment_mode['is_default'] = YES;
 
             array_push($payment_modes , $card_payment_mode);
 
@@ -1516,5 +1518,304 @@ class NewUserApiController extends Controller
 
         }
    
+    }
+
+    /**
+     * @method static_pages_api()
+     *
+     * @uses used to get the pages
+     *
+     * @created Vidhya R 
+     *
+     * @edited Vidhya R
+     *
+     * @param - 
+     *
+     * @return JSON Response
+     */
+
+    public function static_pages_api(Request $request) {
+
+        if($request->page_type) {
+
+            $static_page = Page::where('type' , $request->page_type)
+                                ->where('status' , APPROVED)
+                                ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
+                                ->first();
+
+            $response_array = ['success' => true , 'data' => $static_page];
+
+        } else {
+
+            $static_pages = Page::where('status' , APPROVED)->orderBy('id' , 'asc')
+                                ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
+                                ->orderBy('title', 'asc')
+                                ->get();
+
+            $response_array = ['success' => true , 'data' => $static_pages ? $static_pages->toArray(): []];
+
+        }
+
+        return response()->json($response_array , 200);
+
+    }
+
+    /**
+     * @method subscriptions() 
+     *
+     * @uses used to get the list of subscriptions
+     *
+     * @created Vithya R 
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */     
+
+    public function subscriptions(Request $request) {
+
+        try {
+
+            $base_query = Subscription::where('subscriptions.status', APPROVED)->CommonResponse();
+
+            $subscriptions = $base_query->skip($this->skip)->take($this->take)->orderBy('updated_at', 'desc')->get();
+
+            foreach ($subscriptions as $key => $subscription_details) {
+
+                $subscription_details->amount_formatted = formatted_amount($subscription_details->amount);
+            }
+
+            return $this->sendResponse($message = "", $code = 200, $subscriptions);
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method subscriptions_payment_by_stripe() 
+     *
+     * @uses used to deduct amount for selected subscription
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */     
+
+    public function subscriptions_payment_by_stripe(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'subscription_id' => 'required|exists:subscriptions,id',
+                'coupon_code'=>'exists:coupons,coupon_code',
+            ],
+            [
+                'subscription_id' => CommonHelper::error_message(203),
+                'coupon_code' => CommonHelper::error_message(205)
+            ]
+            );
+
+            if ($validator->fails()) {
+
+                // Error messages added in response for debugging
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+            // Check Subscriptions
+
+            $subscription_details = Subscription::where('id', $request->subscription_id)->where('status', APPROVED)->first();
+
+            if (!$subscription_details) {
+
+                throw new Exception(CommonHelper::error_message(203), 203);
+            }
+
+            $user_details  = User::find($request->id);
+
+            // Initial detault values
+
+            $total = $subscription_details->amount; 
+
+            $coupon_amount = 0.00;
+           
+            $coupon_reason = ""; 
+
+            $is_coupon_applied = COUPON_NOT_APPLIED;
+
+            // Check the coupon code
+
+            if($request->coupon_code) {
+                
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $subscription_details->amount);
+
+                $coupon_amount = $coupon_code_response['coupon_amount'];
+
+                $coupon_reason = $coupon_code_response['coupon_reason'];
+
+                $is_coupon_applied = $coupon_code_response['is_coupon_applied'];
+
+                $total = $coupon_code_response['total'];
+
+            }
+
+            // Update the coupon details and total to the request
+
+            $request->coupon_amount = $coupon_amount ?: 0.00;
+
+            $request->coupon_reason = $coupon_reason ?: "";
+
+            $request->is_coupon_applied = $is_coupon_applied;
+
+            $request->total = $total ?: 0.00;
+
+            $request->payment_mode = CARD;
+
+            // If total greater than zero, do the stripe payment
+
+            if($request->total > 0) {
+
+                // Check provider card details
+
+                $card_details = Card::where('user_id', $request->id)->where('is_default', YES)->first();
+
+                if (!$card_details) {
+
+                    throw new Exception(CommonHelper::error_message(111), 111);
+                }
+
+                $customer_id = $card_details->customer_id;
+
+                // Check stripe configuration
+            
+                $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                if(!$stripe_secret_key) {
+
+                    throw new Exception(CommonHelper::error_message(107), 107);
+
+                } 
+
+                try {
+
+                    \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+                    $total = $subscription_details->amount;
+
+                    $currency_code = Setting::get('currency_code', 'USD') ?: "USD";
+
+                    $charge_array = [
+                                        "amount" => $total * 100,
+                                        "currency" => $currency_code,
+                                        "customer" => $customer_id,
+                                    ];
+
+                    $stripe_payment_response =  \Stripe\Charge::create($charge_array);
+
+                    $payment_id = $stripe_payment_response->id;
+
+                    $amount = $stripe_payment_response->amount/100;
+
+                    $paid_status = $stripe_payment_response->paid;
+
+                } catch(Stripe_CardError | Stripe_InvalidRequestError | Stripe_AuthenticationError | Stripe_ApiConnectionError | Stripe_Error $e) {
+
+                    $error_message = $e->getMessage();
+
+                    $error_code = $e->getCode();
+
+                    // Payment failure function
+
+                    DB::commit();
+
+                    // @todo changes
+
+                    $response_array = ['success' => false, 'error'=> $error_message , 'error_code' => 205];
+
+                    return response()->json($response_array);
+
+                } 
+
+            }
+
+            $response_array = PaymentRepo::subscriptions_payment_save($request, $subscription_details, $user_details);
+
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            // Something else happened, completely unrelated to Stripe
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method subscriptions_history() 
+     *
+     * @uses List of subscription payments
+     *
+     * @created Vithya R 
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */     
+
+    public function subscriptions_history(Request $request) {
+
+        try {
+
+            $base_query = UserPayment::where('user_id', $request->id)->select('user_payments.id as provider_subscription_payment_id', 'user_payments.*');
+
+            $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('updated_at', 'desc')->get();
+
+            foreach ($user_payments as $key => $payment_details) {
+
+                $payment_details->title = $payment_details->description = "";
+
+                $subscription_details = Subscription::find($payment_details->subscription_id);
+
+                if($subscription_details) {
+
+                    $payment_details->title = $subscription_details->title ?: "";
+
+                    $payment_details->description = $subscription_details->description ?: "";
+                }
+
+                unset($payment_details->id);
+            }
+
+            return $this->sendResponse($message = "", $code = 200, $user_payments);
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
     }
 }

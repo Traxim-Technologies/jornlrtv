@@ -84,4 +84,20 @@ return array(
 	'wishlist_clear_success' => 'Favorite List songs has been cleared successfully',
 
 
+	'subscription_not_found' => 'The subscription is not available now.',
+	'subscription_payment_success' => 'Payment success..!!',
+	'subscription_payment_error' => 'The subscription payment failed..!!',
+
+	'coupon_code_not_found' => 'Coupon code not found',
+	'coupon_code_declined' => 'The coupon is invalid',
+	'coupon_code_limit_exceeds' => 'Coupon Limit Reached..!, You can`t use the coupon code.',
+
+	'create_a_new_coupon_row' => 'Create a new User coupon Details',
+	'total_no_of_users_maximum_limit_reached' => 'Coupon Limit Reached..!, You can`t use the coupon code.',
+	'coupon_code_per_user_limit_exceeds' => 'Your maxiumum limit is over..!',
+	'add_no_of_times_used_coupon' => 'Already coupon row added, increase no of times used the coupon',
+
+
+
+
 );

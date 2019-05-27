@@ -1483,3 +1483,12 @@ function userChannelId() {
         return route('user.subscriptions');
     }
 }
+
+function formatted_amount($amount = 0.00, $currency = "") {
+
+    $currency = $currency ?: Setting::get('currency', '$');
+
+    $formatted_amount = $currency."".$amount;
+
+    return $formatted_amount;
+}

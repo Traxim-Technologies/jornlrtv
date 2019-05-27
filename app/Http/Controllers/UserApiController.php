@@ -3414,7 +3414,7 @@ class UserApiController extends Controller {
                                                 $user->user_type = SUBSCRIBED_USER;
 
                                                 $user->expiry_date = $user_payment->expiry_date;
-/*
+                            /*
                                                 $now = time(); // or your date as well
 
                                                 $end_date = strtotime($user->expiry_date);
