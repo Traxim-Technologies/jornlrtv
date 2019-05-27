@@ -168,7 +168,7 @@ class CommonHelper {
                 $string = apitr('user_change_password_deny_for_social_login');
                 break;
             case 200:
-                $string = apitr('host_details_not_found'); // Not used
+                $string = apitr('video_tape_not_found');
                 break;
             case 201:
                 $string = apitr('provider_details_not_found'); // Not used
@@ -193,6 +193,9 @@ class CommonHelper {
                 break;
             case 208:
                 $string = apitr('coupon_code_per_user_limit_exceeds');
+                break;
+            case 209:
+                $string = apitr('wishlist_delete_error');
                 break;
 
             // USE BELOW CONSTANTS FOR AUTHENTICATION CHECK

@@ -77,11 +77,11 @@ return array(
 	'notification_enable' => 'Notification has been successfully enabled',
 	'notification_disable' => 'Notification has been successfully disabled',
 
-	'wishlist_delete_error' => 'The Favorite remove error',
+	'wishlist_delete_error' => 'The wishlist remove error',
 	
-	'wishlist_add_success' => 'The host added to Favorite',
-	'wishlist_delete_success' => 'The Favorite host removed',
-	'wishlist_clear_success' => 'Favorite List songs has been cleared successfully',
+	'wishlist_add_success' => 'The video added to wishlist',
+	'wishlist_delete_success' => 'The wishlist video removed',
+	'wishlist_clear_success' => 'wishlist List songs has been cleared successfully',
 
 
 	'subscription_not_found' => 'The subscription is not available now.',
@@ -96,6 +96,8 @@ return array(
 	'total_no_of_users_maximum_limit_reached' => 'Coupon Limit Reached..!, You can`t use the coupon code.',
 	'coupon_code_per_user_limit_exceeds' => 'Your maxiumum limit is over..!',
 	'add_no_of_times_used_coupon' => 'Already coupon row added, increase no of times used the coupon',
+
+	'video_tape_not_found' => 'The video details is not found.',
 
 
 

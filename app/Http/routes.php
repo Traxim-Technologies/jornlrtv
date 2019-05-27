@@ -1160,6 +1160,12 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('subscriptions_payment_by_stripe', 'NewUserApiController@subscriptions_payment_by_stripe');
 
         Route::post('subscriptions_history', 'NewUserApiController@subscriptions_history');
+
+        // Wishlist
+
+        Route::post('wishlist' , 'NewUserApiController@wishlist_list');
+
+        Route::post('wishlist_operations' , 'NewUserApiController@wishlist_operations');
     
     });
 

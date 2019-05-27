@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use DB, Log, Hash, Validator, Exception, Setting;
 
-use App\Helpers\Helper, App\Helpers\CommonHelper;
+use App\Helpers\Helper, App\Helpers\CommonHelper, App\Helpers\VideoHelper;
 
 
 use App\Repositories\VideoTapeRepository as VideoRepo;
@@ -277,8 +277,9 @@ class NewUserApiController extends Controller
                         UserRepo::referral_register($request->referral_code, $user_details);
                     }
 
-                    user_type_check($user_details->id);
+                    // Check the user type
 
+                    user_type_check($user_details->id);
 
                     if($user_details->login_by == 'manual') {
 
@@ -1815,6 +1816,132 @@ class NewUserApiController extends Controller
 
             return $this->sendError($e->getMessage(), $e->getCode());
 
+        }
+
+    }
+
+    /**
+     * @method wishlist_list()
+     *
+     * @uses Get the user saved the hosts
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    public function wishlist_list(Request $request) {
+
+        try {
+
+            // @todo wishlist videos common
+
+            $video_tapes = VideoHelper::wishlist_videos($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method wishlist_operations()
+     *
+     * @uses To add/Remove by using this operation favorite
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id, host_id
+     *
+     * @return response of details
+     */
+    public function wishlist_operations(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(),
+                [
+                    'clear_all_status' => 'in:'.YES.','.NO,
+                    'video_tape_id' => $request->clear_all_status == NO ? 'required|exists:video_tapes,id,status,'.APPROVED : '', 
+                ], 
+                [
+                    'required' => CommonHelper::error_message(200)
+                ]
+            );
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            if($request->clear_all_status == YES) {
+
+                Wishlist::where('user_id', $request->id)->delete();
+                
+                DB::commit();
+
+                return $this->sendResponse($message = CommonHelper::success_message(202), $code = 202, $data = []);
+
+
+            } else {
+
+                $wishlist_details = Wishlist::where('video_tape_id', $request->video_tape_id)->where('user_id', $request->id)->first();
+
+                if($wishlist_details) {
+
+                    if($wishlist_details->delete()) {
+
+                        DB::commit();
+
+                        return $this->sendResponse($message = CommonHelper::success_message(201), $code = 201, $data = []);
+
+                    } else {
+
+                        throw new Exception(CommonHelper::error_message(209), 209);
+                        
+                    }
+
+                } else {
+
+                    $wishlist_details = new Wishlist;
+
+                    $wishlist_details->user_id = $request->id;
+
+                    $wishlist_details->video_tape_id = $request->video_tape_id;
+
+                    $wishlist_details->status = APPROVED;
+
+                    $wishlist_details->save();
+
+                    DB::commit();
+
+                    $data = ['wishlist_id' => $wishlist_details->id];
+               
+                    return $this->sendResponse(CommonHelper::success_message(200), 200, $data = ['wishlist_id' => $wishlist_details->id]);
+
+                }
+
+            }
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
         }
 
     }

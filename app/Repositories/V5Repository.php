@@ -131,7 +131,7 @@ class V5Repository {
 
     /**
 	 *
-	 * Function Name: 
+	 * @method video_list_response
 	 *
 	 * @uses used to get the common list details for video
 	 *
@@ -185,6 +185,9 @@ class V5Repository {
                 $watch_video_free = DEFAULT_TRUE;
 
                 $video_tape_details->should_display_ppv = $ppv_details->success == $watch_video_free ? NO : YES;
+
+                $video_tape_details->ppv_amount_formatted = formatted_amount($video_tape_details->ppv_amount);
+           
             }
         
         }

@@ -67,13 +67,11 @@ class VideoHelper {
 
             $wishlist_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($wishlist_video_ids, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+            $video_tapes = V5Repo::video_list_response($wishlist_video_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
 
             return $video_tapes;
 
         }  catch( Exception $e) {
-
-            dd($e->getMessage());
 
             return [];
 
