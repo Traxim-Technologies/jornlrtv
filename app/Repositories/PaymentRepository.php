@@ -529,7 +529,10 @@ class PaymentRepository {
             $data = [
                         'id' => $user_details->id , 
                         'token' => $user_details->token, 
-                        'payment_id' => $user_payment->payment_id
+                        'payment_id' => $user_payment->payment_id,
+                        'amount' => $request->total ?: 0.00,
+                        'amount_formatted' => formatted_amount($user_payment->amount),
+                        'paid_status' => YES,
                     ];
 
             $response_array = ['success' => true, 'message' => CommonHelper::success_message(206), 'code' => 206, 'data' => $data];
