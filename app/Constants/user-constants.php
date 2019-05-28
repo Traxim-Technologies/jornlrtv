@@ -104,6 +104,12 @@ if(!defined('USER_CHANNEL_APPROVED')) define('USER_CHANNEL_APPROVED', 1);
 if(!defined('USER_CHANNEL_DECLINED')) define('USER_CHANNEL_DECLINED', 0);
 
 
+// Redeeem Request Status
 
+if(!defined('REDEEM_REQUEST_SENT')) define('REDEEM_REQUEST_SENT', 0);
 
+if(!defined('REDEEM_REQUEST_PROCESSING')) define('REDEEM_REQUEST_PROCESSING', 1);
 
+if(!defined('REDEEM_REQUEST_PAID')) define('REDEEM_REQUEST_PAID', 2);
+
+if(!defined('REDEEM_REQUEST_CANCEL')) define('REDEEM_REQUEST_CANCEL', 3);

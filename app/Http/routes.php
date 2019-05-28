@@ -1159,6 +1159,14 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::group(['middleware' => 'UserApiVal'] , function() {
 
+        // Redeems management 
+
+        Route::post('redeems', 'NewUserApiController@redeems');
+
+        Route::post('redeems_request_send', 'NewUserApiController@redeems_request_send');
+
+        Route::post('redeems_request_cancel', 'NewUserApiController@redeems_request_cancel');
+
         // Subscriptions management
 
         Route::post('subscriptions', 'NewUserApiController@subscriptions');

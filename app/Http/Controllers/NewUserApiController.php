@@ -37,6 +37,8 @@ use App\Subscription, App\UserPayment;
 
 use App\VideoTape, App\PayPerView, App\UserHistory;
 
+use App\Redeem, App\RedeemRequest;
+
 class NewUserApiController extends Controller
 {
     protected $skip, $take, $loginUser;
@@ -2302,6 +2304,20 @@ class NewUserApiController extends Controller
 
     }
 
+    /**
+     * @method spam_videos()
+     *
+     * @uses list of videos spammed by logged in user
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+
     public function spam_videos(Request $request) {
 
         try {
@@ -2316,6 +2332,239 @@ class NewUserApiController extends Controller
             return $this->sendError($e->getMessage(), $e->getCode());
 
         }
+    
+    }
+
+    /**
+     * @method redeems()
+     *
+     * @uses redeems details for the loggedin user
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+
+    public function redeems(Request $request) {
+
+        try {
+
+            if($request->skip == 0) {
+
+                $redeem_details = Redeem::where('user_id' , $request->id)->select('total' , 'paid' , 'remaining' , 'status')->first();
+
+                // If no record, create and send the empty details 
+
+                if(!$redeem_details) {
+
+                    $redeem_details = new Redeem;
+
+                    $redeem_details->user_id = $request->id;
+
+                    $redeem_details->total = $redeem_details->paid = $redeem_details->remaining = 0.00;
+
+                    $redeem_details->status = DEFAULT_TRUE;
+
+                    $redeem_details->save();
+
+                }
+
+                $redeem_details->minimum_redeem = intval(Setting::get('minimum_redeem', 1));
+
+                $redeem_details->currency = Setting::get('currency', '$');
+
+                $data['redeems'] = $redeem_details;
+            }
+
+            $redeems_history = RedeemRequest::where('user_id' , $request->id)
+                    ->CommonResponse()
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+            foreach ($redeems_history as $key => $details) {
+
+                $details->request_amount_formatted = formatted_amount($details->request_amount);
+
+                $details->paid_amount_formatted = formatted_amount($details->paid_amount);
+
+                $details->status_text = redeem_request_status($details->status);
+            }
+
+            $data['redeems_history'] = $redeems_history;
+
+            return $this->sendResponse($message = "", $code = "", $data);
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method redeems_request_send()
+     *
+     * @uses send redeem request to admin
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    public function redeems_request_send(Request $request) {
+
+        try {
+
+            // Get admin configured - Minimum Provider Credit
+
+            $minimum_redeem = Setting::get('minimum_redeem' , 1);
+
+            // Get the user redeems details 
+
+            $redeem_details = Redeem::where('user_id' , $request->id)->first();
+
+            if(!$redeem_details) {
+
+                throw new Exception(CommonHelper::error_message(211), 211);
+            }
+
+            $remaining = $redeem_details->remaining;
+
+            // check the provider have more than minimum credits
+
+            if($remaining < $minimum_redeem) {
+                throw new Exception(CommonHelper::error_message(213), 213);
+
+            }
+
+            $redeem_amount = abs(intval($remaining - $minimum_redeem));
+
+            // Check the redeems is not empty
+
+            if(!$redeem_amount) {
+
+                throw new Exception(CommonHelper::error_message(212), 212);
+            }
+
+            DB::beginTransaction();
+
+            // Save Redeem Request
+
+            $redeem_request = new RedeemRequest;
+
+            $redeem_request->user_id = $request->id;
+
+            $redeem_request->request_amount = $redeem_amount;
+
+            $redeem_request->status = DEFAULT_FALSE;
+
+            $redeem_request->save();
+
+            // Update Redeems details 
+
+            $redeem_details->remaining = abs($redeem_details->remaining-$redeem_amount);
+
+            $redeem_details->save();
+
+            $data['redeem_request_id'] = $redeem_request->id;
+
+            DB::commit();
+
+            return $this->sendResponse($message = CommonHelper::success_message(212), 212, $data);
+        
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+
+    }
+
+    /**
+     * @method redeems_request_cancel()
+     *
+     * @uses redeems details for the loggedin user
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    public function redeems_request_cancel(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all() , [
+                'redeem_request_id' => 'required|exists:redeem_requests,id,user_id,'.$request->id,
+                ]);
+
+             if ($validator->fails()) {
+                
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+
+            // check the record exists
+
+            $redeem_details = Redeem::where('user_id' , $request->id)->first();
+
+            $redeem_request_details = RedeemRequest::find($request->redeem_request_id);
+
+            if(!$redeem_details || !$redeem_request_details) {
+
+                throw new Exception(CommonHelper::error_message(211), 211);
+                
+            }
+
+            DB::beginTransaction();
+
+            // Check status to cancel the redeem request
+
+            if(in_array($redeem_request_details->status, [REDEEM_REQUEST_SENT , REDEEM_REQUEST_PROCESSING])) {
+
+                // Update the redeem record
+
+                $redeem_details->remaining = $redeem_details->remaining + abs($redeem_request_details->request_amount);
+
+                $redeem_details->save();
+
+                // Update the redeem request Status
+
+                $redeem_request_details->status = REDEEM_REQUEST_CANCEL;
+
+                $redeem_request_details->save();
+
+                DB::commit();
+
+                $data['redeem_request_id'] = $redeem_request_details->id;
+
+                return $this->sendResponse(CommonHelper::success_message(211), 211, $data);
+
+            } else {
+
+                throw new Exception(CommonHelper::error_message(214), 214);
+            }
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+
     }
 
 }

@@ -106,4 +106,20 @@ return array(
 	'history_cleared' => 'The history cleared',
 	'history_failed' => 'The action failed',
 
+	// Redeems Management
+
+	'REDEEM_REQUEST_SENT' => 'Sent to Admin.',
+	'REDEEM_REQUEST_PROCESSING' => 'On Progress',
+	'REDEEM_REQUEST_PAID' => 'Paid',
+	'REDEEM_REQUEST_CANCEL' => 'Cancelled',
+
+	'redeem_disabled_by_admin' => 'Redeems is disabled by admin',
+	'redeem_not_found' => 'Redeem record not found.',
+	'redeem_wallet_empty' => 'Redeem wallet is empty',
+	'redeem_minimum_limit_failed' => 'Earn the minimum limit and try again.!',
+	'redeem_request_status_mismatch' => 'Redeem request status mismatched',
+
+	'redeem_request_cancelled_success' => 'Th request cancelled and credited the redeems to your wallet.',
+	'redeem_request_send_success' => 'Your Redeem Request Sent to Admin.',
+
 );

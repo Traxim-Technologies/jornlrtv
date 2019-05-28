@@ -197,6 +197,22 @@ class CommonHelper {
             case 209:
                 $string = apitr('wishlist_delete_error');
                 break;
+            case 210:
+                $string = apitr('redeem_disabled_by_admin');
+                break;
+            case 211:
+                $string = apitr('redeem_not_found');
+                break;
+            case 212:
+                $string = apitr('redeem_wallet_empty');
+                break;
+            case 213:
+                $string = apitr('redeem_minimum_limit_failed');
+                break;
+            case 214:
+                $string = apitr('redeem_request_status_mismatch');
+                break;
+            
 
             // USE BELOW CONSTANTS FOR AUTHENTICATION CHECK
             case 1000:
@@ -288,6 +304,12 @@ class CommonHelper {
                 break;
             case 210: 
                 $string = apitr('history_cleared');
+                break;
+            case 211: 
+                $string = apitr('redeem_request_cancelled_success');
+                break;
+            case 212: 
+                $string = apitr('redeem_request_send_success');
                 break;
 
             default:
