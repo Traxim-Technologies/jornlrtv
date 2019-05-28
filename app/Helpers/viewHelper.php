@@ -1492,3 +1492,10 @@ function formatted_amount($amount = 0.00, $currency = "") {
 
     return $formatted_amount;
 }
+
+function generate_payment_id($user_id = 0, $other_id = 0, $amount = 0) {
+
+    $payment_id = $user_id."-".$other_id."-".strtoupper(uniqid()).$amount;
+
+    return $payment_id;
+}

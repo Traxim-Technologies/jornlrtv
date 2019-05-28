@@ -1154,7 +1154,7 @@ Route::group(['prefix' => 'api/user'], function() {
     // Core api's
 
     Route::post('home', 'NewUserApiController@home');
-    
+
     Route::post('trending', 'NewUserApiController@trending');
 
     Route::group(['middleware' => 'UserApiVal'] , function() {
@@ -1164,6 +1164,8 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('subscriptions', 'NewUserApiController@subscriptions');
 
         Route::post('subscriptions_payment_by_stripe', 'NewUserApiController@subscriptions_payment_by_stripe');
+
+        Route::post('subscriptions_payment_by_paypal', 'NewUserApiController@subscriptions_payment_by_paypal');
 
         Route::post('subscriptions_history', 'NewUserApiController@subscriptions_history');
 

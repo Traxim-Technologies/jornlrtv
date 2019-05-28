@@ -1775,6 +1775,115 @@ class NewUserApiController extends Controller
     }
 
     /**
+     * @method subscriptions_payment_by_paypal() 
+     *
+     * @uses used to deduct amount for selected subscription
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */     
+
+    public function subscriptions_payment_by_paypal(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'subscription_id' => 'required|exists:subscriptions,id',
+                'coupon_code'=>'exists:coupons,coupon_code',
+            ],
+            [
+                'subscription_id' => CommonHelper::error_message(203),
+                'coupon_code' => CommonHelper::error_message(205)
+            ]
+            );
+
+            if ($validator->fails()) {
+
+                // Error messages added in response for debugging
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+            // Check Subscriptions
+
+            $subscription_details = Subscription::where('id', $request->subscription_id)->where('status', APPROVED)->first();
+
+            if (!$subscription_details) {
+
+                throw new Exception(CommonHelper::error_message(203), 203);
+            }
+
+            $user_details  = User::find($request->id);
+
+            // Initial detault values
+
+            $total = $subscription_details->amount; 
+
+            $coupon_amount = 0.00;
+           
+            $coupon_reason = ""; 
+
+            $is_coupon_applied = COUPON_NOT_APPLIED;
+
+            // Check the coupon code
+
+            if($request->coupon_code) {
+                
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $subscription_details->amount);
+
+                $coupon_amount = $coupon_code_response['coupon_amount'];
+
+                $coupon_reason = $coupon_code_response['coupon_reason'];
+
+                $is_coupon_applied = $coupon_code_response['is_coupon_applied'];
+
+                $total = $coupon_code_response['total'];
+
+            }
+
+            // Update the coupon details and total to the request
+
+            $request->coupon_amount = $coupon_amount ?: 0.00;
+
+            $request->coupon_reason = $coupon_reason ?: "";
+
+            $request->is_coupon_applied = $is_coupon_applied;
+
+            $request->total = $total ?: 0.00;
+
+            $request->payment_mode = CARD;
+
+            $request->payment_id = $request->payment_id ?: generate_payment_id($request->id, $subscription_details->id, $total);
+
+            $response_array = PaymentRepo::subscriptions_payment_save($request, $subscription_details, $user_details);
+
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            // Something else happened, completely unrelated to Stripe
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
      * @method subscriptions_history() 
      *
      * @uses List of subscription payments
