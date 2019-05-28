@@ -37,6 +37,7 @@ class User extends Authenticatable
             'users.picture as picture',
             'users.description as description',
             'users.mobile as mobile',
+            'users.dob as dob',
             'users.token as token',
             'users.token_expiry as token_expiry',
             'users.social_unique_id as social_unique_id',
