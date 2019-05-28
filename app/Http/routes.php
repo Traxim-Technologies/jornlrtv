@@ -1173,11 +1173,11 @@ Route::group(['prefix' => 'api/user'], function() {
 
         // History Management
 
-        Route::post('/video_tapes_history', 'UserApiController@video_tapes_history');
+        Route::post('/video_tapes_history', 'NewUserApiController@video_tapes_history');
 
-        Route::post('/video_tapes_history/add', 'UserApiController@video_tapes_history_add');
+        Route::post('/video_tapes_history_add', 'NewUserApiController@video_tapes_history_add');
 
-        Route::post('/video_tapes_history/remove', 'UserApiController@video_tapes_history_remove');
+        Route::post('/video_tapes_history_remove', 'NewUserApiController@video_tapes_history_remove');
     });
 
 

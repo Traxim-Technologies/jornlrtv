@@ -35,6 +35,8 @@ use App\Page;
 
 use App\Subscription, App\UserPayment;
 
+use App\VideoTape, App\PayPerView, App\UserHistory;
+
 class NewUserApiController extends Controller
 {
     protected $skip, $take, $loginUser;
@@ -2044,7 +2046,7 @@ class NewUserApiController extends Controller
 
             if ($request->id != $video_tape_details->user_id) {
 
-                if ($video->type_of_subscription == RECURRING_PAYMENT) {
+                if ($video_tape_details->type_of_subscription == RECURRING_PAYMENT) {
 
                     $navigateback = YES;
 

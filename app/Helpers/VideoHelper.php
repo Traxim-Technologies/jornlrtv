@@ -10,6 +10,13 @@ use App\Wishlist;
 
 use App\VideoTape;
 
+use App\UserHistory;
+
+use App\PayPerView;
+
+use App\Flag;
+
+
 class VideoHelper {
 
     protected $skip, $take;
@@ -189,7 +196,7 @@ class VideoHelper {
 
             $skip = $request->skip ?: 0;
 
-            $user_history_ids = $base_query->skip($skip)->take($take)->lists('admin_video_id')->toArray();
+            $user_history_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
             $video_tapes = V5Repo::video_list_response($user_history_ids, $orderBy = "created_at", $other_select_columns = 'video_tapes.description');
 
@@ -1398,11 +1405,11 @@ class VideoHelper {
      * 
      * @return $base_query 
      */
-    public static function getFlagVideos($sub_profile_id) {
+    public static function getFlagVideos($user_id) {
 
         // Load Flag videos based on logged in user id
         
-        $video_tape_ids = Flag::where('flags.sub_profile_id', $sub_profile_id)
+        $video_tape_ids = Flag::where('flags.user_id', $user_id)
                             ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
                             ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED_STATUS)
                             ->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
