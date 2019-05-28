@@ -1166,16 +1166,26 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('redeems_request_send', 'NewUserApiController@redeems_request_send');
 
         Route::post('redeems_request_cancel', 'NewUserApiController@redeems_request_cancel');
+        
 
         // Subscriptions management
 
         Route::post('subscriptions', 'NewUserApiController@subscriptions');
 
+        Route::post('subscriptions_history', 'NewUserApiController@subscriptions_history');
+
         Route::post('subscriptions_payment_by_stripe', 'NewUserApiController@subscriptions_payment_by_stripe');
 
         Route::post('subscriptions_payment_by_paypal', 'NewUserApiController@subscriptions_payment_by_paypal');
 
-        Route::post('subscriptions_history', 'NewUserApiController@subscriptions_history');
+
+        // PPV Management
+
+        Route::post('ppv_videos', 'NewUserApiController@ppv_videos');
+
+        Route::post('ppv_payment_by_stripe', 'NewUserApiController@ppv_payment_by_stripe');
+
+        Route::post('ppv_payment_by_paypal', 'NewUserApiController@ppv_payment_by_paypal');
 
         // Wishlist
 

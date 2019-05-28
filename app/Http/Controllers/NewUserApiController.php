@@ -2567,4 +2567,33 @@ class NewUserApiController extends Controller
 
     }
 
+    /**
+     * @method ppv_videos()
+     *
+     * @uses get the logged in user paid videos
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    public function ppv_videos(Request $request) {
+
+        try {
+
+            $video_tapes = VideoHelper::ppv_videos($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
 }

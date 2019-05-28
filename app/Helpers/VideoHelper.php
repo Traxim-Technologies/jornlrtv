@@ -278,6 +278,63 @@ class VideoHelper {
 
     /**
      *
+     * @method ppv_videos()
+     *
+     * @uses used to get the list of contunue watching videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function ppv_videos($request) {
+
+        try {
+
+            $base_query = PayPerView::select('pay_per_views.video_id')
+                                ->where('pay_per_views.user_id' , $request->id)
+                                ->leftJoin('video_tapes', 'video_tapes.id', '=' , 'pay_per_views.video_id')
+                                ->orderby('pay_per_views.updated_at', 'desc');
+            // check page type 
+
+            $base_query = self::get_page_type_query($request, $base_query);
+
+            // Check any flagged videos are present
+
+            $spam_video_ids = self::getFlagVideos($request->id);
+            
+            if($spam_video_ids) {
+
+                $base_query->whereNotIn('pay_per_views.video_id', $spam_video_ids);
+
+            }
+
+            $take = Setting::get('admin_take_count', 12);
+
+            $skip = $request->skip ?: 0;
+
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $orderBy = "created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+    /**
+     *
      * @method spam_videos()
      *
      * @uses used to get the list of contunue watching videos
