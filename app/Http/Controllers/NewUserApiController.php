@@ -829,7 +829,7 @@ class NewUserApiController extends Controller
 
                 DB::commit();
 
-                return $this->sendResponse($message = apitr('user_profile_update_success'), $success_code = 200, Helper::null_safe($data));
+                return $this->sendResponse($message = apitr('user_profile_update_success'), $success_code = 200, $data);
 
             } else {    
 
