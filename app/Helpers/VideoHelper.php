@@ -278,6 +278,54 @@ class VideoHelper {
 
     /**
      *
+     * @method spam_videos()
+     *
+     * @uses used to get the list of contunue watching videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function spam_videos($request) {
+
+        try {
+
+            $base_query = Flag::where('flags.user_id', $request->id)
+                            ->where('flags.status', DEFAULT_TRUE)
+                            ->leftJoin('video_tapes', 'flags.video_tape_id', '=', 'video_tapes.id')
+                            ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED)
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderBy('flags.created_at', 'desc');
+
+            $take = $request->take ?: (Setting::get('take') ?: 12);
+
+            $skip = $request->skip ?: 0;
+
+            $spam_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($spam_video_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+
+    /**
+     *
      * @method new_releases_videos()
      *
      * @uses used to get the list of contunue watching videos

@@ -1182,6 +1182,12 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('/video_tapes_history_add', 'NewUserApiController@video_tapes_history_add');
 
         Route::post('/video_tapes_history_remove', 'NewUserApiController@video_tapes_history_remove');
+
+        // Spam Management
+
+        Route::post('/spam_videos', 'NewUserApiController@spam_videos');
+
+
     });
 
 

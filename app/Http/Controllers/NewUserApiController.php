@@ -2301,4 +2301,21 @@ class NewUserApiController extends Controller
         }
 
     }
+
+    public function spam_videos(Request $request) {
+
+        try {
+            
+            $video_tapes = VideoHelper::spam_videos($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+    }
+
 }
