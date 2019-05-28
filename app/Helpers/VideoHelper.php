@@ -33,7 +33,7 @@ class VideoHelper {
      *
      * @method mobile_home()
      *
-     * @uses used to get the list of contunue watching videos
+     * @uses used to get the list of videos
      *
      * @created Vidhya R
      *
@@ -59,6 +59,72 @@ class VideoHelper {
                             ->where('channels.status', USER_CHANNEL_APPROVED)
                             ->where('categories.status', CATEGORY_APPROVE_STATUS)
                             ->orderby('video_tapes.created_at' , 'desc');
+
+            // check page type 
+
+            $base_query = self::get_page_type_query($request, $base_query);
+
+            // Check any flagged videos are present
+
+            $spam_video_ids = flag_videos($request->id);
+            
+            if($spam_video_ids) {
+
+                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
+
+            }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+            $take = $request->take ?: (Setting::get('take') ?: 12);
+
+            $skip = $request->skip ?: 0;
+
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+
+    /**
+     *
+     * @method trending()
+     *
+     * @uses used to get the list of trending videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function trending($request) {
+
+        try {
+
+            $base_query = VideoTape::where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                            ->where('channels.is_approved', ADMIN_CHANNEL_APPROVED)
+                            ->where('channels.status', USER_CHANNEL_APPROVED)
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
+                            ->orderby('video_tapes.watch_count' , 'desc');
 
             // check page type 
 

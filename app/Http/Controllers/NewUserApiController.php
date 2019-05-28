@@ -2132,9 +2132,9 @@ class NewUserApiController extends Controller
     }
 
     /**
-     * @method video_tapes_history_remove()
+     * @method home()
      *
-     * @uses remove video from user history and update the PPV details
+     * @uses home page videos
      *
      * @created Vithya R
      *
@@ -2150,6 +2150,37 @@ class NewUserApiController extends Controller
         try {
             
             $video_tapes = VideoHelper::mobile_home($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method trending()
+     *
+     * @uses trending videos
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    
+    public function trending(Request $request) {
+
+        try {
+            
+            $video_tapes = VideoHelper::trending($request);
 
             return $this->sendResponse($message = "", $success_code = "", $video_tapes);
 

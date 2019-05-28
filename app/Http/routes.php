@@ -1154,6 +1154,8 @@ Route::group(['prefix' => 'api/user'], function() {
     // Core api's
 
     Route::post('home', 'NewUserApiController@home');
+    
+    Route::post('trending', 'NewUserApiController@trending');
 
     Route::group(['middleware' => 'UserApiVal'] , function() {
 
