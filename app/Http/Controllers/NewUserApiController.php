@@ -253,7 +253,7 @@ class NewUserApiController extends Controller
 
                 if($request->hasFile('picture')) {
 
-                    $user_details->picture = Helper::upload_file($request->file('picture') , PROFILE_PATH_USER);
+                    $user_details->picture = Helper::normal_upload_picture($request->file('picture'), COMMON_FILE_PATH);
 
                 }
 
@@ -819,7 +819,7 @@ class NewUserApiController extends Controller
 
                 Helper::delete_file($user_details->picture, COMMON_FILE_PATH); // Delete the old pic
 
-                $user_details->picture = Helper::upload_file($request->file('picture') , COMMON_FILE_PATH);
+                $user_details->picture = Helper::normal_upload_picture($request->file('picture'), COMMON_FILE_PATH);
 
             }
 
