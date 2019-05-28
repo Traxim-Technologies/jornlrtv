@@ -190,6 +190,8 @@ class V5Repository {
            
             }
         
+            $video_tape_details->wishlist_status = VideoHelper::wishlist_status($video_tape_details->video_tape_id, $user_id);
+
         }
 
  		return $video_tapes;

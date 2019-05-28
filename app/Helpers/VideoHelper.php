@@ -1031,10 +1031,10 @@ class VideoHelper {
      *
      * @return boolean 
      */
-    public static function wishlist_status($admin_video_id,$sub_profile_id) {
+    public static function wishlist_status($video_tape_id,$user_id) {
 
-        $wishlist_details = Wishlist::where('admin_video_id' , $admin_video_id)
-                        ->where('sub_profile_id' , $sub_profile_id)
+        $wishlist_details = Wishlist::where('video_tape_id' , $video_tape_id)
+                        ->where('user_id' , $user_id)
                         ->where('status' , YES)
                         ->count();
 
