@@ -39,6 +39,8 @@ use App\VideoTape, App\PayPerView, App\UserHistory;
 
 use App\Redeem, App\RedeemRequest;
 
+use App\Flag;
+
 class NewUserApiController extends Controller
 {
     protected $skip, $take, $loginUser;
@@ -2336,6 +2338,135 @@ class NewUserApiController extends Controller
     }
 
     /**
+     * @method spam_videos()
+     *
+     * @uses add video to spam
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+
+    public function spam_videos_add(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'video_tape_id' => 'required|exists:video_tapes,id',
+                'reason' => 'required',
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+
+            DB::beginTransaction();
+
+            $spam_video = Flag::where('video_tape_id', $request->video_tape_id)->where('user_id', $request->id)->first();
+
+            // If already exists remove
+
+            if(!$spam_video) {
+
+                $spam_video = new Flag;
+
+                $spam_video->user_id = $request->id;
+
+                $spam_video->video_tape_id = $request->video_tape_id;
+
+                $spam_video->reason = $request->reason ?: "";
+
+            }
+
+            $spam_video->status = DEFAULT_TRUE;
+
+            $spam_video->save();
+
+            DB::commit();
+
+            $data['video_tape_id'] = $request->video_tape_id;
+
+            $data['flag_id'] = $spam_video->id;
+
+            $message = CommonHelper::success_message(213);
+
+            return $this->sendResponse($message, $code = 213, $data);
+
+        } catch(Exception  $e) {
+
+            DB::rollback();
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+
+    }
+
+    /**
+     * @method spam_videos_remove()
+     *
+     * @uses Remove | clear the video from spams 
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+
+    public function spam_videos_remove(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'video_tape_id' => $request->clear_all_status ? '' : 'required|exists:video_tapes,id',
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+
+            DB::beginTransaction();
+
+            if($request->clear_all_status) {
+
+                $flag = Flag::where('user_id', $request->id)->delete();
+
+                $message = CommonHelper::success_message(215); $code = 215;
+
+            } else {
+
+                $flag = Flag::where('user_id',$request->id)->where('video_tape_id' , $request->video_tape_id)->delete();
+
+                $message = CommonHelper::success_message(214); $code = 214;
+
+            }
+
+            DB::commit();
+
+            return $this->sendResponse($message, $code);
+
+        } catch(Exception  $e) {
+
+            DB::rollback();
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+    
+    }
+
+    /**
      * @method redeems()
      *
      * @uses redeems details for the loggedin user
@@ -2401,7 +2532,6 @@ class NewUserApiController extends Controller
         } catch(Exception  $e) {
             
             return $this->sendError($e->getMessage(), $e->getCode());
-
         }
 
     }
@@ -2590,6 +2720,296 @@ class NewUserApiController extends Controller
 
         } catch(Exception  $e) {
             
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method ppv_payment_by_stripe() 
+     *
+     * @uses used to deduct amount for selected video
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param @todo not yet completed
+     *
+     * @return json repsonse
+     */     
+
+    public function ppv_payment_by_stripe(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED.',is_approved,'.ADMIN_VIDEO_APPROVED.',publish_status,'.VIDEO_PUBLISHED,
+                'payment_id'=>'required',
+                'coupon_code'=>'exists:coupons,coupon_code',
+            ],
+            [
+                'video_tape_id' => CommonHelper::error_message(200),
+                'coupon_code' => CommonHelper::error_message(205)
+            ]
+            );
+
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+            $video_tape_details = VideoTape::find($request->video_tape_id);
+
+            $user_details = User::find($request->id);
+
+            // Check video record
+
+            if (!$video_tape_details) {
+
+                throw new Exception(CommonHelper::error_message(200), 200);
+            }
+
+            // check ppv enabled for this video
+
+            if($video_tape_details->is_pay_per_view == NO) {
+
+                throw new Exception(CommonHelper::success_message(), 1);
+    
+            }
+
+            // Initial detault values
+
+            $total = $video_tape_details->ppv_amount; 
+
+            $coupon_amount = 0.00;
+           
+            $coupon_reason = ""; 
+
+            $is_coupon_applied = COUPON_NOT_APPLIED;
+
+            // Check the coupon code
+
+            if($request->coupon_code) {
+                
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $subscription_details->amount);
+
+                $coupon_amount = $coupon_code_response['coupon_amount'];
+
+                $coupon_reason = $coupon_code_response['coupon_reason'];
+
+                $is_coupon_applied = $coupon_code_response['is_coupon_applied'];
+
+                $total = $coupon_code_response['total'];
+
+            }
+
+            // Update the coupon details and total to the request
+
+            $request->coupon_amount = $coupon_amount ?: 0.00;
+
+            $request->coupon_reason = $coupon_reason ?: "";
+
+            $request->is_coupon_applied = $is_coupon_applied;
+
+            $request->total = $total ?: 0.00;
+
+            $request->payment_mode = CARD;
+
+            // If total greater than zero, do the stripe payment
+
+            if($request->total > 0) {
+
+                // Check provider card details
+
+                $card_details = Card::where('user_id', $request->id)->where('is_default', YES)->first();
+
+                if (!$card_details) {
+
+                    throw new Exception(CommonHelper::error_message(111), 111);
+                }
+
+                $customer_id = $card_details->customer_id;
+
+                // Check stripe configuration
+            
+                $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                if(!$stripe_secret_key) {
+
+                    throw new Exception(CommonHelper::error_message(107), 107);
+
+                } 
+
+                try {
+
+                    \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+                    $total = $subscription_details->amount;
+
+                    $currency_code = Setting::get('currency_code', 'USD') ?: "USD";
+
+                    $charge_array = [
+                                        "amount" => $total * 100,
+                                        "currency" => $currency_code,
+                                        "customer" => $customer_id,
+                                    ];
+
+                    $stripe_payment_response =  \Stripe\Charge::create($charge_array);
+
+                    $payment_id = $stripe_payment_response->id;
+
+                    $amount = $stripe_payment_response->amount/100;
+
+                    $paid_status = $stripe_payment_response->paid;
+
+                } catch(Stripe_CardError | Stripe_InvalidRequestError | Stripe_AuthenticationError | Stripe_ApiConnectionError | Stripe_Error $e) {
+
+                    $error_message = $e->getMessage();
+
+                    $error_code = $e->getCode();
+
+                    // Payment failure function
+
+                    DB::commit();
+
+                    // @todo changes
+
+                    $response_array = ['success' => false, 'error'=> $error_message , 'error_code' => 205];
+
+                    return response()->json($response_array);
+
+                } 
+
+            }
+
+            $response_array = PaymentRepo::subscriptions_payment_save($request, $subscription_details, $user_details);
+
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            // Something else happened, completely unrelated to Stripe
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method ppv_payment_by_paypal() 
+     *
+     * @uses used to deduct amount for selected video
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param @todo not yet completed
+     *
+     * @return json repsonse
+     */     
+
+    public function ppv_payment_by_paypal(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'subscription_id' => 'required|exists:subscriptions,id',
+                'coupon_code'=>'exists:coupons,coupon_code',
+            ],
+            [
+                'subscription_id' => CommonHelper::error_message(203),
+                'coupon_code' => CommonHelper::error_message(205)
+            ]
+            );
+
+            if ($validator->fails()) {
+
+                // Error messages added in response for debugging
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+            // Check Subscriptions
+
+            $subscription_details = Subscription::where('id', $request->subscription_id)->where('status', APPROVED)->first();
+
+            if (!$subscription_details) {
+
+                throw new Exception(CommonHelper::error_message(203), 203);
+            }
+
+            $user_details  = User::find($request->id);
+
+            // Initial detault values
+
+            $total = $subscription_details->amount; 
+
+            $coupon_amount = 0.00;
+           
+            $coupon_reason = ""; 
+
+            $is_coupon_applied = COUPON_NOT_APPLIED;
+
+            // Check the coupon code
+
+            if($request->coupon_code) {
+                
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $subscription_details->amount);
+
+                $coupon_amount = $coupon_code_response['coupon_amount'];
+
+                $coupon_reason = $coupon_code_response['coupon_reason'];
+
+                $is_coupon_applied = $coupon_code_response['is_coupon_applied'];
+
+                $total = $coupon_code_response['total'];
+
+            }
+
+            // Update the coupon details and total to the request
+
+            $request->coupon_amount = $coupon_amount ?: 0.00;
+
+            $request->coupon_reason = $coupon_reason ?: "";
+
+            $request->is_coupon_applied = $is_coupon_applied;
+
+            $request->total = $total ?: 0.00;
+
+            $request->payment_mode = CARD;
+
+            $request->payment_id = $request->payment_id ?: generate_payment_id($request->id, $subscription_details->id, $total);
+
+            $response_array = PaymentRepo::subscriptions_payment_save($request, $subscription_details, $user_details);
+
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            // Something else happened, completely unrelated to Stripe
+
+            DB::rollback();
+
             return $this->sendError($e->getMessage(), $e->getCode());
 
         }

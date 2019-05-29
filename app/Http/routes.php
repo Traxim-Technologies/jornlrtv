@@ -1166,7 +1166,7 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('redeems_request_send', 'NewUserApiController@redeems_request_send');
 
         Route::post('redeems_request_cancel', 'NewUserApiController@redeems_request_cancel');
-        
+
 
         // Subscriptions management
 
@@ -1204,6 +1204,10 @@ Route::group(['prefix' => 'api/user'], function() {
         // Spam Management
 
         Route::post('/spam_videos', 'NewUserApiController@spam_videos');
+
+        Route::post('/spam_videos_add', 'NewUserApiController@spam_videos_add');
+
+        Route::post('/spam_videos_remove', 'NewUserApiController@spam_videos_remove');
 
 
     });

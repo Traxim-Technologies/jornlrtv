@@ -122,4 +122,15 @@ return array(
 	'redeem_request_cancelled_success' => 'Th request cancelled and credited the redeems to your wallet.',
 	'redeem_request_send_success' => 'Your Redeem Request Sent to Admin.',
 
+	// Spam Videos 
+
+	'spam_video_add_failed' => 'Spam video add failed',
+	'spam_video_remove_failed' => 'Spam video remove failed',
+
+	'spam_video_added' => 'The video added to spam list',
+	'spam_video_removed' => 'The video removed from spams',
+	'spam_video_cleared' => 'The spam videos are cleared',
+
+	'ppv_is_not_enabled' => '',
+
 );

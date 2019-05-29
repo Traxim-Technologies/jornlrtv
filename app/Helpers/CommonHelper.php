@@ -212,6 +212,12 @@ class CommonHelper {
             case 214:
                 $string = apitr('redeem_request_status_mismatch');
                 break;
+            case 215:
+                $string = apitr('spam_video_add_failed');
+                break;
+            case 216:
+                $string = apitr('spam_video_remove_failed');
+                break;
             
 
             // USE BELOW CONSTANTS FOR AUTHENTICATION CHECK
@@ -310,6 +316,18 @@ class CommonHelper {
                 break;
             case 212: 
                 $string = apitr('redeem_request_send_success');
+                break;
+            case 213: 
+                $string = apitr('spam_video_added');
+                break;
+            case 214: 
+                $string = apitr('spam_video_removed');
+                break;
+            case 215: 
+                $string = apitr('spam_video_cleared');
+                break;
+            case 216: 
+                $string = apitr('ppv_is_not_enabled');
                 break;
 
             default:
