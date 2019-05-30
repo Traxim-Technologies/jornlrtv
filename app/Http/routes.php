@@ -1160,7 +1160,7 @@ Route::group(['prefix' => 'api/user'], function() {
     Route::post('tags_based_videos', 'NewUserApiController@tags_based_videos');
 
     Route::post('categories_based_videos', 'NewUserApiController@categories_based_videos');
-    
+
     Route::post('suggestions', 'NewUserApiController@suggestions');
 
     Route::group(['middleware' => 'UserApiVal'] , function() {
@@ -1238,5 +1238,40 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('channels_unsubscribe_subscribe', 'NewUserApiController@channels_unsubscribe_subscribe');
 
+        // Referrals 
+
+        Route::post('/referrals', 'UserApiController@referrals')->name('referrals');
+
+        // Videos management @todo change to New user api
+
+        Route::post('video_tapes_revenues', 'UserApiController@video_tapes_revenues');
+
+        Route::post('video_tapes_status', 'UserApiController@video_tapes_status');
+
+        Route::post('video_tapes_ppv_status', 'UserApiController@video_tapes_ppv_status');
+
+        Route::post('video_tapes_delete', 'UserApiController@video_tapes_delete');
+
+        Route::post('video_tapes_view', 'V5UserApiController@video_tapes_view');
+
     });
+
+    // Referrals 
+
+    Route::post('/referrals_check', 'UserApiController@referrals_check');
+
+    // User Playlists @todo change to New user api
+
+    Route::post('playlists/', 'UserApiController@playlists');
+
+    Route::post('playlists_save', 'UserApiController@playlists_save');
+
+    Route::post('playlists_delete', 'UserApiController@playlists_delete');
+
+    Route::post('playlists_view', 'UserApiController@playlists_view');
+
+    Route::post('playlists_video_status', 'UserApiController@playlists_video_status');
+
+    Route::post('playlists_video_remove', 'UserApiController@playlists_video_remove');
+
 });
