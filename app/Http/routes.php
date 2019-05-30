@@ -1209,6 +1209,24 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('/spam_videos_remove', 'NewUserApiController@spam_videos_remove');
 
+        // Bell notifications @todo change to new userapi
+
+        Route::post('bell_notifications/', 'UserApiController@bell_notifications');
+
+        Route::post('bell_notifications_update', 'UserApiController@bell_notifications_update');
+
+        Route::post('bell_notifications_count', 'UserApiController@bell_notifications_count');
+
+        // Channels @todo change to new userapi
+
+
+        Route::post('channels_index', 'V5UserApiController@channels_index');
+
+        Route::post('channels_view', 'V5UserApiController@channels_view');
+
+        Route::post('channel_based_videos', 'V5UserApiController@channel_based_videos');
+        
+        Route::post('channels_subscribed', 'V5UserApiController@channels_subscribed');
 
     });
 

@@ -1517,6 +1517,8 @@ class NewUserApiController extends Controller
 
             $data['currency'] = Setting::get('currency');
 
+            $data['spam_reasons'] = getReportVideoTypes();
+
             return $this->sendResponse($message = "", $success_code = "", $data);
 
         } catch(Exception $e) {
