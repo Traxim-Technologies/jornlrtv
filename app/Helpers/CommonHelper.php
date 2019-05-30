@@ -344,6 +344,12 @@ class CommonHelper {
             case 220: 
                 $string = apitr('coupon_code_appiled');
                 break;
+            case 221: 
+                $string = apitr('channel_subscribed');
+                break;
+            case 222: 
+                $string = apitr('channel_unsubscribed');
+                break;
 
             default:
                 $string = "";

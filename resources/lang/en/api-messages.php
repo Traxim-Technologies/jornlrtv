@@ -150,4 +150,9 @@ return array(
 
 	'video_tape_not_found' => 'The video details is not found.',
 
+	// Channels
+
+	'channel_subscribed' => 'Subscription Added',
+	'channel_unsubscribed' => 'Subscription Removed',
+
 );

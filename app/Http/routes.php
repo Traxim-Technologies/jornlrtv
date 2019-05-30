@@ -1158,8 +1158,10 @@ Route::group(['prefix' => 'api/user'], function() {
     Route::post('trending', 'NewUserApiController@trending');
 
     Route::post('tags_based_videos', 'NewUserApiController@tags_based_videos');
-    
+
     Route::post('categories_based_videos', 'NewUserApiController@categories_based_videos');
+    
+    Route::post('suggestions', 'NewUserApiController@suggestions');
 
     Route::group(['middleware' => 'UserApiVal'] , function() {
 
@@ -1233,6 +1235,8 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('channel_based_videos', 'V5UserApiController@channel_based_videos');
         
         Route::post('channels_subscribed', 'V5UserApiController@channels_subscribed');
+
+        Route::post('channels_unsubscribe_subscribe', 'NewUserApiController@channels_unsubscribe_subscribe');
 
     });
 });

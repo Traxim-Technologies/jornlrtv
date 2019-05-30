@@ -535,11 +535,7 @@ class VideoHelper {
 
         try {
 
-            $base_query = UserHistory::where('sub_profile_id' , $request->id)->orderByRaw('RAND()');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
+            $base_query = UserHistory::where('user_id' , $request->id)->orderByRaw('RAND()');
                        
             // Check any flagged videos are present
 
@@ -547,27 +543,25 @@ class VideoHelper {
             
             if($spam_video_ids) {
 
-                $base_query->whereNotIn('user_histories.admin_video_id', $spam_video_ids);
+                $base_query->whereNotIn('user_histories.video_tape_id', $spam_video_ids);
 
             }
 
-            // Check any video present in continue watching
+            $take = Setting::get('admin_take_count', 12); $skip = $request->skip ?: 0;
 
-            // $continue_watching_video_ids = continueWatchingVideos($sub_profile_id);
-            
-            // if($continue_watching_video_ids) {
+            $suggestion_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
-            //     $base_query->whereNotIn('user_histories.admin_video_id', $continue_watching_video_ids);
+            // Get the channel videos 
 
-            // }
+            $suggestion_channel_ids = VideoTape::whereIn('video_tapes.id', $suggestion_video_ids)->whereNotIn('video_tapes.id', $spam_video_ids)->lists('channel_id')->toArray();
 
-            $take = Setting::get('admin_take_count', 12);
+            // Based on the selected channel ids
 
-            $skip = $request->skip ?: 0;
+            $spam_video_ids[] = $request->video_tape_id;
 
-            $suggestion_video_ids = $base_query->skip($skip)->take($take)->lists('admin_video_id')->toArray();
+            $video_tape_ids = VideoTape::whereNotIn('video_tapes.id', $spam_video_ids)->whereIn('channel_id', $suggestion_channel_ids)->orderByRaw('RAND()')->lists('video_tapes.id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($suggestion_video_ids);
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.updated_at", $other_select_columns = 'video_tapes.description', $is_random_order = YES);
 
             return $video_tapes;
 

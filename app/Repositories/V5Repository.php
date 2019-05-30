@@ -144,12 +144,21 @@ class V5Repository {
 	 * @return
 	 */
 
- 	public static function video_list_response($video_tape_ids, $user_id, $orderby = 'video_tapes.updated_at', $other_select_columns = "") {
+ 	public static function video_list_response($video_tape_ids, $user_id, $orderby = 'video_tapes.updated_at', $other_select_columns = "", $is_random_order = "") {
 
         $user_details = User::find($user_id);
 
- 		$base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids)
- 							->orderBy($orderby , 'desc');
+ 		$base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids);
+
+        if($is_random_order) {
+
+            $base_query = $base_query->orderByRaw('RAND()');
+
+        } else {
+
+            $base_query = $base_query->orderBy($orderby , 'desc');
+
+        }
 
  		if($other_select_columns != "") {
 

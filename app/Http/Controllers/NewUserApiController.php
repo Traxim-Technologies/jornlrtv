@@ -43,6 +43,8 @@ use App\Redeem, App\RedeemRequest;
 
 use App\Flag;
 
+use App\Channel, App\ChannelSubscription;
+
 class NewUserApiController extends Controller
 {
     protected $skip, $take, $loginUser, $currency;
@@ -2539,6 +2541,48 @@ class NewUserApiController extends Controller
     }
 
     /**
+     * @method suggestions()
+     *
+     * @uses suggestions videos
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    
+    public function suggestions(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'video_tape_id' => 'exists:video_tapes,id',
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+            
+            $video_tapes = VideoHelper::suggestion_videos($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
      * @method spam_videos()
      *
      * @uses list of videos spammed by logged in user
@@ -3173,7 +3217,7 @@ class NewUserApiController extends Controller
      *
      * @updated Vithya R
      *
-     * @param @todo not yet completed
+     * @param 
      *
      * @return json repsonse
      */     
@@ -3298,6 +3342,102 @@ class NewUserApiController extends Controller
 
         }
 
+    }
+
+    /**
+     * @method channels_unsubscribe_subscribe() 
+     *
+     * @uses used to update the subscribe status
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */ 
+    public function channels_unsubscribe_subscribe(Request $request) {
+
+        try {
+
+            $validator = Validator::make( $request->all(), 
+                    [
+                        'channel_id' => 'required|exists:channels,id'
+                    ]);
+
+
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            } else {
+
+                DB::beginTransaction();
+
+                $channel_details = Channel::where('status', USER_CHANNEL_APPROVED)
+                                        ->where('is_approved', ADMIN_CHANNEL_APPROVED)
+                                        ->where('id', $request->channel_id)
+                                        ->first();
+
+                $channel_subscription_details = ChannelSubscription::where('user_id', $request->id)
+                            ->where('channel_id',$request->channel_id)
+                            ->first();
+
+                if($channel_subscription_details) {
+
+                    // unsubscribe the details
+
+                    $channel_subscription_details->delete();
+
+                    $message = CommonHelper::success_message(222); $code = 222;
+
+                } else {
+
+                    $channel_subscription_details = new ChannelSubscription;
+
+                    $channel_subscription_details->user_id = $request->id;
+
+                    $channel_subscription_details->channel_id = $request->channel_id;
+
+                    $channel_subscription_details->status = DEFAULT_TRUE;
+
+                    $channel_subscription_details->save();
+
+                    // Bell Notification
+
+                    $notification_data['from_user_id'] = $request->id; 
+
+                    $notification_data['to_user_id'] = $channel_details->user_id;
+
+                    $notification_data['channel_id'] = $channel_details->id;
+
+                    $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_SUBSCRIBER;
+
+                    dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
+
+                    $message = CommonHelper::success_message(221); $code = 221;
+
+                }
+                
+            }
+
+            DB::commit();
+
+            $data = ['channel_id' => $request->channel_id];
+
+            return $this->sendResponse($message, $code, $data);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+   
     }
 
 }
