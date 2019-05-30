@@ -292,7 +292,7 @@ class PaymentRepository {
 
         $coupon_amount = 0; $coupon_reason = ""; $total = $original_total; $is_coupon_applied =COUPON_NOT_APPLIED;
 
-        $coupon_details = Coupon::where('coupon_code', $request->coupon_code)->first();
+        $coupon_details = Coupon::where('coupon_code', $request->coupon_code)->where('status', APPROVED)->first();
 
         if (!$coupon_details) {
 
@@ -300,14 +300,6 @@ class PaymentRepository {
 
             goto couponend;
         
-        }
-
-        if ($coupon_details->status == COUPON_INACTIVE) {
-
-            $coupon_reason = CommonHelper::error_message(206);
-
-            goto couponend;
-
         }
 
         $check_coupon = self::check_coupon_applicable_to_user($user_details, $coupon_details)->getData();

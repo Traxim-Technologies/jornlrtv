@@ -186,7 +186,7 @@ class CommonHelper {
                 $string = apitr('coupon_code_not_found');
                 break;
             case 206:
-                $string = apitr('coupon_code_not_found');
+                $string = apitr('coupon_code_expired');
                 break;
             case 207:
                 $string = apitr('coupon_code_limit_exceeds');
@@ -214,6 +214,9 @@ class CommonHelper {
                 break;
             case 215:
                 $string = apitr('spam_video_add_failed');
+                break;
+            case 216:
+                $string = apitr('spam_video_remove_failed');
                 break;
             case 216:
                 $string = apitr('spam_video_remove_failed');
@@ -337,6 +340,9 @@ class CommonHelper {
                 break;
             case 219: 
                 $string = apitr('ppv_payment_success');
+                break;
+            case 220: 
+                $string = apitr('coupon_code_appiled');
                 break;
 
             default:

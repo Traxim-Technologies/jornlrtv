@@ -37,13 +37,15 @@ use App\Subscription, App\UserPayment;
 
 use App\VideoTape, App\PayPerView, App\UserHistory;
 
+use App\Coupon;
+
 use App\Redeem, App\RedeemRequest;
 
 use App\Flag;
 
 class NewUserApiController extends Controller
 {
-    protected $skip, $take, $loginUser;
+    protected $skip, $take, $loginUser, $currency;
 
 	public function __construct(Request $request) {
 
@@ -54,6 +56,8 @@ class NewUserApiController extends Controller
         $this->skip = $request->skip ?: 0;
 
         $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);
+
+        $this->currency = Setting::get('currency', '$');
     }
 
     /**
@@ -1515,7 +1519,7 @@ class NewUserApiController extends Controller
 
             $data['site_logo'] = Setting::get('site_logo');
 
-            $data['currency'] = Setting::get('currency');
+            $data['currency'] = $this->currency;
 
             $data['spam_reasons'] = getReportVideoTypes();
 
@@ -1568,6 +1572,147 @@ class NewUserApiController extends Controller
         return response()->json($response_array , 200);
 
     }
+
+    /**
+     * @method coupon_codes_check()
+     *
+     * @uses check the coupon code status for the video | Subscrition
+     *
+     * @created vidhya R
+     *
+     * @updated vidhya R
+     *
+     * @param object $request - User details, subscription details
+     *
+     * @return response of coupon details with amount
+     *
+     */
+    public function coupon_codes_check(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), 
+                [
+                    'coupon_code' => 'required|exists:coupons,coupon_code',  
+                    'subscription_id'=>'exists:subscriptions,id',
+                    'video_tape_id' => 'exists:video_tapes,id'        
+                ], 
+                [
+                    'subscription_id' => CommonHelper::error_message(203),
+                    'video_tape_id' => CommonHelper::error_message(200),
+                    'coupon_code' => CommonHelper::error_message(205)
+                ]
+            );
+            
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+            
+            }
+
+            $coupon_details = Coupon::where('coupon_code', $request->coupon_code)->where('status', APPROVED)->first();
+
+            if(!$coupon_details) {
+
+                throw new Exception(CommonHelper::error_message(205), 205);
+                
+            }
+
+            if(strtotime($coupon_details->expiry_date) < strtotime(date('Y-m-d'))) {
+
+                throw new Exception(CommonHelper::error_message(206), 206);
+                
+            }
+
+            $user_details = User::find($request->id);
+
+            // Check the coupon code can usable by the user
+    
+            $coupon_codes_check = PaymentRepo::check_coupon_applicable_to_user($user_details, $coupon_details)->getData();
+
+            if ($coupon_codes_check->success) {
+
+                // Get the amount from corresponding modules
+
+                if($request->subscription_id) {
+
+                    $view_details = Subscription::find($request->subscription_id);
+
+                    if(!$view_details) {
+
+                        throw new Exception(CommonHelper::error_message(203), 203);
+
+                    }
+
+                    $module_amount = $view_details->amount ?: 0.00;
+
+                } else {
+
+                    $view_details = VideoTape::find($request->video_tape_id);
+
+                    if(!$view_details) {
+
+                        throw new Exception(CommonHelper::error_message(200), 200);
+                        
+                    }
+
+                    $module_amount = $view_details->ppv_amount ?: 0.00;
+
+                }
+
+                // If coupon code is percentage convert the amount
+
+                $coupon_amount = $coupon_details->amount;
+
+                $original_coupon_amount = formatted_amount($coupon_amount); // For response
+
+                if($coupon_details->amount_type == PERCENTAGE) {
+
+                    $coupon_amount = amount_convertion($coupon_details->amount, $module_amount);
+
+                    $original_coupon_amount = $coupon_details->amount."%";
+
+                }
+
+                // Compare and send the amount details as response
+
+                $remaining_amount = 0;
+
+                if($coupon_amount <= 0) {
+
+                    $remaining_amount = $module_amount;
+
+                } elseif($module_amount >= $coupon_amount && $coupon_amount > 0) {
+
+                    $remaining_amount = $module_amount - $coupon_amount;
+
+                }
+
+                $data = [
+                        'module_amount' => $module_amount,
+                        'remaining_amount' => $remaining_amount, 
+                        'coupon_amount' => $coupon_amount,
+                        'coupon_code' => $coupon_details->coupon_code,
+                        'original_coupon_amount' => $original_coupon_amount,
+                        'currency' => $this->currency,
+                        ];
+                   
+                return $this->sendResponse($message = CommonHelper::success_message(220), $code = 220, $data);
+
+            } else {
+
+                throw new Exception($coupon_codes_check->error_messages, $coupon_codes_check->error_code);
+            }
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+
+    }
+
 
     /**
      * @method subscriptions() 
@@ -2309,6 +2454,91 @@ class NewUserApiController extends Controller
     }
 
     /**
+     * @method tags_based_videos()
+     *
+     * @uses tags_based_videos videos
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    
+    public function tags_based_videos(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'tag_id' => 'required|exists:categories,id',
+                'reason' => 'required',
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+            
+            $video_tapes = VideoHelper::tags_based_videos($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method categories_based_videos()
+     *
+     * @uses categories_based_videos videos
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param object $request id
+     *
+     * @return response of details
+     */
+    
+    public function categories_based_videos(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'category_id' => 'required|exists:categories,id',
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+            
+            $video_tapes = VideoHelper::categories_based_videos($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
      * @method spam_videos()
      *
      * @uses list of videos spammed by logged in user
@@ -2508,7 +2738,7 @@ class NewUserApiController extends Controller
 
                 $redeem_details->minimum_redeem = intval(Setting::get('minimum_redeem', 1));
 
-                $redeem_details->currency = Setting::get('currency', '$');
+                $redeem_details->currency = $this->currency;
 
                 $data['redeems'] = $redeem_details;
             }

@@ -77,18 +77,22 @@ return array(
 	'notification_enable' => 'Notification has been successfully enabled',
 	'notification_disable' => 'Notification has been successfully disabled',
 
+	// Wishlist
+
 	'wishlist_delete_error' => 'The wishlist remove error',
-	
 	'wishlist_add_success' => 'The video added to wishlist',
 	'wishlist_delete_success' => 'The wishlist video removed',
 	'wishlist_clear_success' => 'wishlist List songs has been cleared successfully',
 
+	// Subscriptions
 
 	'subscription_not_found' => 'The subscription is not available now.',
 	'subscription_payment_success' => 'Payment success..!!',
 	'subscription_payment_error' => 'The subscription payment failed..!!',
 
-	'coupon_code_not_found' => 'Coupon code not found',
+	// Coupon codes
+
+	'coupon_code_not_found' => 'The coupon code is not valid',
 	'coupon_code_declined' => 'The coupon is invalid',
 	'coupon_code_limit_exceeds' => 'Coupon Limit Reached..!, You can`t use the coupon code.',
 
@@ -96,8 +100,10 @@ return array(
 	'total_no_of_users_maximum_limit_reached' => 'Coupon Limit Reached..!, You can`t use the coupon code.',
 	'coupon_code_per_user_limit_exceeds' => 'Your maxiumum limit is over..!',
 	'add_no_of_times_used_coupon' => 'Already coupon row added, increase no of times used the coupon',
+	'coupon_code_is_invaild' => 'The coupon code is invalid',
+	'coupon_code_expired' => 'The coupon code is expired',
 
-	'video_tape_not_found' => 'The video details is not found.',
+	'coupon_code_appiled' => 'The coupon code applied.',
 
 	// History management
 
@@ -122,7 +128,7 @@ return array(
 	'redeem_request_cancelled_success' => 'Th request cancelled and credited the redeems to your wallet.',
 	'redeem_request_send_success' => 'Your Redeem Request Sent to Admin.',
 
-	// Spam Videos 
+	// Spam videos
 
 	'spam_video_add_failed' => 'Spam video add failed',
 	'spam_video_remove_failed' => 'Spam video remove failed',
@@ -139,5 +145,9 @@ return array(
 
 	'ppv_payment_success' => 'Payment success..!!',
 	'ppv_payment_error' => 'The payment failed. Please try again',
+
+	// Video Tapes
+
+	'video_tape_not_found' => 'The video details is not found.',
 
 );

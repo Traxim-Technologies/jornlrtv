@@ -1157,6 +1157,10 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::post('trending', 'NewUserApiController@trending');
 
+    Route::post('tags_based_videos', 'NewUserApiController@tags_based_videos');
+    
+    Route::post('categories_based_videos', 'NewUserApiController@categories_based_videos');
+
     Route::group(['middleware' => 'UserApiVal'] , function() {
 
         // Redeems management 
@@ -1178,6 +1182,9 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('subscriptions_payment_by_paypal', 'NewUserApiController@subscriptions_payment_by_paypal');
 
+        // Coupon codes
+
+        Route::post('coupon_codes_check', 'NewUserApiController@coupon_codes_check');
 
         // PPV Management
 
