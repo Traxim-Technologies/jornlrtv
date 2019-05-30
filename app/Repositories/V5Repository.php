@@ -192,7 +192,7 @@ class V5Repository {
 
                 $should_display_ppv = NO;
 
-                if($is_my_channel == YES) {
+                if($is_my_channel == NO) {
 
                     $ppv_details = self::pay_per_views_status_check($user_details->id, $user_details->user_type, $video_tape_details)->getData();
 

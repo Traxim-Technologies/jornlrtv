@@ -1219,7 +1219,6 @@ Route::group(['prefix' => 'api/user'], function() {
 
         // Channels @todo change to new userapi
 
-
         Route::post('channels_index', 'V5UserApiController@channels_index');
 
         Route::post('channels_view', 'V5UserApiController@channels_view');
@@ -1229,7 +1228,4 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('channels_subscribed', 'V5UserApiController@channels_subscribed');
 
     });
-
-
-
 });
