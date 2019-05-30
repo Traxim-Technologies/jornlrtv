@@ -174,17 +174,35 @@ class V5Repository {
 
             if($user_details) {
 
-                if($channel_details = Channel::find($video_tape_details->channel_id)) {
+                // check the channer owner status
 
-                    $video_tape_details->is_my_channel = $channel_details->user_id == $user_details->id ? YES: NO;
+                $channel_details = Channel::find($video_tape_details->channel_id);
+
+                $is_my_channel = NO;
+
+                if($channel_details) {
+
+                    $is_my_channel = $channel_details->user_id == $user_details->id ? YES: NO;
 
                 }
 
-                $ppv_details = self::pay_per_views_status_check($user_details->id, $user_details->user_type, $video_tape_details)->getData();
+                $video_tape_details->is_my_channel = $is_my_channel;
 
-                $watch_video_free = DEFAULT_TRUE;
+                // check the PPV status for owner and guest, logged in user
 
-                $video_tape_details->should_display_ppv = $ppv_details->success == $watch_video_free ? NO : YES;
+                $should_display_ppv = NO;
+
+                if($is_my_channel == YES) {
+
+                    $ppv_details = self::pay_per_views_status_check($user_details->id, $user_details->user_type, $video_tape_details)->getData();
+
+                    $watch_video_free = DEFAULT_TRUE;
+
+                    $should_display_ppv = $ppv_details->success == $watch_video_free ? NO : YES;
+
+                }
+
+                $video_tape_details->should_display_ppv = $should_display_ppv;
 
                 $video_tape_details->ppv_amount_formatted = formatted_amount($video_tape_details->ppv_amount);
            

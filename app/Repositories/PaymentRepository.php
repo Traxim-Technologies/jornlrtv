@@ -453,7 +453,7 @@ class PaymentRepository {
     }
 
     /**
-     * @method subscriptions_payment_save()
+     * @method ppv_payment_save()
      *
      * @uses subscription payment record update
      *
@@ -461,88 +461,106 @@ class PaymentRepository {
      *
      * @updated
      *
-     * @param objects $subscription_details
+     * @param objects $video_tape_details
      *
      * @param objects $user_details
      *
      * @return response of success/failure message
      */
     
-    public static function subscriptions_payment_save($request, $subscription_details, $user_details) {
+    public static function ppv_payment_save($request, $video_tape_details, $user_details) {
 
-        $previous_payment = UserPayment::where('user_id' , $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+        $ppv_details = new PayPerView;
+        
+        $ppv_details->payment_id  = $request->payment_id;
 
-        $user_payment = new UserPayment;
+        $ppv_details->user_id = $request->id;
 
-        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription_details->plan} months"));
+        $ppv_details->video_id = $request->video_tape_id;
 
-        if($previous_payment) {
+        $ppv_details->status = PAID_STATUS;
 
-            if (strtotime($previous_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+        $ppv_details->is_watched = NOT_YET_WATCHED;
 
-                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription_details->plan} months", strtotime($previous_payment->expiry_date)));
+        $ppv_details->payment_mode = $request->payment_mode;
 
-            }
+        $ppv_details->ppv_date = date('Y-m-d H:i:s');
 
-        }
+        $ppv_details->type_of_user = type_of_user($video_tape_details->type_of_user);
 
-        $user_payment->payment_id = $request->payment_id ?: "FREE-".uniqid();
-
-        $user_payment->user_id = $request->id;
-
-        $user_payment->subscription_id = $request->subscription_id;
-
-        $user_payment->status = PAID_STATUS;
-
-        $user_payment->payment_mode = $request->payment_mode;
-
-        // Update previous current subscriptions as zero
-
-        UserPayment::where('user_id', $request->id)->update(['is_current' => NO]);
-
-        $user_payment->is_current = YES;
+        $ppv_details->type_of_subscription = type_of_subscription($video_tape_details->type_of_subscription);
 
         // Coupon details
 
-        $user_payment->is_coupon_applied = $request->is_coupon_applied;
+        $ppv_details->is_coupon_applied = $request->is_coupon_applied;
 
-        $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+        $ppv_details->coupon_code = $request->coupon_code ?: '';
 
-        $user_payment->coupon_amount = $request->coupon_amount;
+        $ppv_details->coupon_amount = $request->coupon_amount;
 
-        $user_payment->coupon_reason = $request->is_coupon_applied == COUPON_APPLIED ? '' : $request->coupon_reason;
+        $ppv_details->coupon_reason = $request->is_coupon_applied == COUPON_APPLIED ? '' : $request->coupon_reason;
+
 
         // Amount update
 
-        $user_payment->subscription_amount = $subscription_details->amount;
+        $ppv_details->ppv_amount = $video_tape_details->ppv_amount;
 
-        $user_payment->amount = $request->total;
+        $ppv_details->amount = $request->total;
 
-        if ($user_payment->save()) {
 
-            $user_details->zero_subscription_status = $subscription_details->amount <= 0 ? YES : NO;
+        $ppv_details->save();
 
-            $user_details->user_type = PAID_USER;
+        if($ppv_details) {
 
-            $user_details->save();
+            // Do Commission spilit  and redeems for moderator
 
-            $data = [
-                        'id' => $user_details->id , 
-                        'token' => $user_details->token, 
-                        'payment_id' => $user_payment->payment_id,
-                        'amount' => $request->total ?: 0.00,
-                        'amount_formatted' => formatted_amount($user_payment->amount),
-                        'paid_status' => YES,
-                    ];
+            Log::info("ppv_commission_spilit started");
 
-            $response_array = ['success' => true, 'message' => CommonHelper::success_message(205), 'code' => 205, 'data' => $data];
+            self::ppv_commission_split($video_tape_details->id , $ppv_details->id , "");
 
-        } else {
+            Log::info("ppv_commission_spilit END"); 
 
-            $response_array = ['success' => false, 'error_messages' => Helper::error_message(204), 'error_code' => 204];
+        } 
 
-        }
+        $data = [
+                    'id' => $user_details->id , 
+                    'token' => $user_details->token, 
+                    'payment_id' => $ppv_details->payment_id,
+                    'amount' => $request->total ?: 0.00,
+                    'amount_formatted' => formatted_amount($request->total),
+                    'paid_status' => YES,
+                ];
+
+        $response_array = ['success' => true, 'message' => CommonHelper::success_message(219), 'code' => 219, 'data' => $data];
+    
 
         return $response_array;
+    }
+
+    public static function is_user_can_watch_now($user_id, $video_tape_details) {
+
+        $ppv_details = PayPerView::where('user_id', $user_id)
+                            ->where('video_id', $video_tape_details->id)
+                            ->where('status', PAID_STATUS)
+                            ->orderBy('ppv_date', 'desc')
+                            ->first();
+
+        $is_user_can_watch_now = NO;
+
+        if ($ppv_details) {
+
+            if ($video_tape_details->type_of_subscription == RECURRING_PAYMENT && $ppv_details->is_watched == WATCHED) {
+
+                $is_user_can_watch_now = NO;
+
+            } else {
+
+                $is_user_can_watch_now = DEFAULT_TRUE;
+
+            }
+        
+        }
+
+        return $is_user_can_watch_now;
     }
 }

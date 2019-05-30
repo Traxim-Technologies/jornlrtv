@@ -1499,3 +1499,22 @@ function generate_payment_id($user_id = 0, $other_id = 0, $amount = 0) {
 
     return $payment_id;
 }
+
+function type_of_user($status) {
+
+    $list_status = [
+            NORMAL_USER => tr('normal_users'),
+            PAID_USER => tr('paid_users'),
+            BOTH_USERS => tr('both_users')
+        ];
+    return $list_status[$status];
+}
+
+function type_of_subscription($status) {
+
+    $list_status = [
+            ONE_TIME_PAYMENT => tr('one_time_payment'),
+            RECURRING_PAYMENT => tr('recurring_payment')
+        ];
+    return $list_status[$status];
+}

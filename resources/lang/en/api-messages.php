@@ -131,6 +131,13 @@ return array(
 	'spam_video_removed' => 'The video removed from spams',
 	'spam_video_cleared' => 'The spam videos are cleared',
 
-	'ppv_is_not_enabled' => '',
+	// PPV module
+
+	'ppv_is_not_enabled' => 'PPV is not applied for the video. You can watch now.',
+	'ppv_channel_owner_no_need_to_pay' => 'You\'re the owner of channel',
+	'ppv_already_paid' => 'You already paid for this video',
+
+	'ppv_payment_success' => 'Payment success..!!',
+	'ppv_payment_error' => 'The payment failed. Please try again',
 
 );

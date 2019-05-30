@@ -2746,7 +2746,7 @@ class NewUserApiController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED.',is_approved,'.ADMIN_VIDEO_APPROVED.',publish_status,'.VIDEO_PUBLISHED,
-                'payment_id'=>'required',
+                'payment_id'=>'',
                 'coupon_code'=>'exists:coupons,coupon_code',
             ],
             [
@@ -2780,8 +2780,31 @@ class NewUserApiController extends Controller
 
             if($video_tape_details->is_pay_per_view == NO) {
 
-                throw new Exception(CommonHelper::success_message(), 1);
+                $message = CommonHelper::success_message(216); $code = 216;
+
+                return $this->sendResponse($message, $code);
     
+            }
+
+            // Check the logged in user as channel owner
+
+            if($video_tape_details->user_id == $request->id) {
+
+                $message = CommonHelper::success_message(217); $code = 217;
+
+                return $this->sendResponse($message, $code);
+
+            }
+
+            // Check the whether the user needs to pay or directly allow the user to watch video
+
+            $is_user_can_watch_now = PaymentRepo::is_user_can_watch_now($request->id, $video_tape_details);
+
+            if($is_user_can_watch_now == YES) {
+
+                $message = CommonHelper::success_message(218); $code = 218;
+
+                return $this->sendResponse($message, $code);
             }
 
             // Initial detault values
@@ -2798,7 +2821,7 @@ class NewUserApiController extends Controller
 
             if($request->coupon_code) {
                 
-                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $subscription_details->amount);
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $video_tape_details->ppv_amount);
 
                 $coupon_amount = $coupon_code_response['coupon_amount'];
 
@@ -2851,7 +2874,7 @@ class NewUserApiController extends Controller
 
                     \Stripe\Stripe::setApiKey($stripe_secret_key);
 
-                    $total = $subscription_details->amount;
+                    $total = $video_tape_details->ppv_amount;
 
                     $currency_code = Setting::get('currency_code', 'USD') ?: "USD";
 
@@ -2868,6 +2891,8 @@ class NewUserApiController extends Controller
                     $amount = $stripe_payment_response->amount/100;
 
                     $paid_status = $stripe_payment_response->paid;
+
+                    $request->payment_id = $payment_id;
 
                 } catch(Stripe_CardError | Stripe_InvalidRequestError | Stripe_AuthenticationError | Stripe_ApiConnectionError | Stripe_Error $e) {
 
@@ -2889,7 +2914,7 @@ class NewUserApiController extends Controller
 
             }
 
-            $response_array = PaymentRepo::subscriptions_payment_save($request, $subscription_details, $user_details);
+            $response_array = PaymentRepo::ppv_payment_save($request, $video_tape_details, $user_details);
 
             DB::commit();
 
@@ -2920,24 +2945,22 @@ class NewUserApiController extends Controller
      *
      * @return json repsonse
      */     
-
     public function ppv_payment_by_paypal(Request $request) {
 
         try {
 
             $validator = Validator::make($request->all(), [
-                'subscription_id' => 'required|exists:subscriptions,id',
+                'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED.',is_approved,'.ADMIN_VIDEO_APPROVED.',publish_status,'.VIDEO_PUBLISHED,
+                'payment_id'=>'required',
                 'coupon_code'=>'exists:coupons,coupon_code',
             ],
             [
-                'subscription_id' => CommonHelper::error_message(203),
+                'video_tape_id' => CommonHelper::error_message(200),
                 'coupon_code' => CommonHelper::error_message(205)
             ]
             );
 
             if ($validator->fails()) {
-
-                // Error messages added in response for debugging
 
                 $error = implode(',',$validator->messages()->all());
 
@@ -2947,20 +2970,51 @@ class NewUserApiController extends Controller
 
             DB::beginTransaction();
 
-            // Check Subscriptions
+            $video_tape_details = VideoTape::find($request->video_tape_id);
 
-            $subscription_details = Subscription::where('id', $request->subscription_id)->where('status', APPROVED)->first();
+            $user_details = User::find($request->id);
 
-            if (!$subscription_details) {
+            // Check video record
 
-                throw new Exception(CommonHelper::error_message(203), 203);
+            if (!$video_tape_details) {
+
+                throw new Exception(CommonHelper::error_message(200), 200);
             }
 
-            $user_details  = User::find($request->id);
+            // check ppv enabled for this video
+
+            if($video_tape_details->is_pay_per_view == NO) {
+
+                $message = CommonHelper::success_message(216); $code = 216;
+
+                return $this->sendResponse($message, $code);
+    
+            }
+
+            // Check the logged in user as channel owner
+
+            if($video_tape_details->user_id == $request->id) {
+
+                $message = CommonHelper::success_message(217); $code = 217;
+
+                return $this->sendResponse($message, $code);
+
+            }
+
+            // Check the whether the user needs to pay or directly allow the user to watch video
+
+            $is_user_can_watch_now = PaymentRepo::is_user_can_watch_now($request->id, $video_tape_details);
+
+            if($is_user_can_watch_now == YES) {
+
+                $message = CommonHelper::success_message(218); $code = 218;
+
+                return $this->sendResponse($message, $code);
+            }
 
             // Initial detault values
 
-            $total = $subscription_details->amount; 
+            $total = $video_tape_details->ppv_amount; 
 
             $coupon_amount = 0.00;
            
@@ -2972,7 +3026,7 @@ class NewUserApiController extends Controller
 
             if($request->coupon_code) {
                 
-                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $subscription_details->amount);
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $video_tape_details->ppv_amount);
 
                 $coupon_amount = $coupon_code_response['coupon_amount'];
 
@@ -2994,11 +3048,9 @@ class NewUserApiController extends Controller
 
             $request->total = $total ?: 0.00;
 
-            $request->payment_mode = CARD;
+            $request->payment_mode = PAYPAL;
 
-            $request->payment_id = $request->payment_id ?: generate_payment_id($request->id, $subscription_details->id, $total);
-
-            $response_array = PaymentRepo::subscriptions_payment_save($request, $subscription_details, $user_details);
+            $response_array = PaymentRepo::ppv_payment_save($request, $video_tape_details, $user_details);
 
             DB::commit();
 

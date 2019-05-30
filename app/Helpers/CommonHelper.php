@@ -329,6 +329,15 @@ class CommonHelper {
             case 216: 
                 $string = apitr('ppv_is_not_enabled');
                 break;
+            case 217: 
+                $string = apitr('ppv_channel_owner_no_need_to_pay');
+                break;
+            case 218: 
+                $string = apitr('ppv_already_paid');
+                break;
+            case 219: 
+                $string = apitr('ppv_payment_success');
+                break;
 
             default:
                 $string = "";
