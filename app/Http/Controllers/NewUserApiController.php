@@ -2772,7 +2772,7 @@ class NewUserApiController extends Controller
 
                     $redeem_details->user_id = $request->id;
 
-                    $redeem_details->total = $redeem_details->paid = $redeem_details->remaining = 0.00;
+                    $redeem_details->total = $redeem_details->paid = $redeem_details->remaining = formatted_amount(0.00);
 
                     $redeem_details->status = DEFAULT_TRUE;
 
@@ -2783,6 +2783,11 @@ class NewUserApiController extends Controller
                 $redeem_details->minimum_redeem = intval(Setting::get('minimum_redeem', 1));
 
                 $redeem_details->currency = $this->currency;
+
+                $redeem_details->total_formatted = formatted_amount($redeem_details->total);
+
+                $redeem_details->remaining_formatted = formatted_amount($redeem_details->remaining);
+                $redeem_details->paid_formatted = formatted_amount($redeem_details->paid);
 
                 $data['redeems'] = $redeem_details;
             }
