@@ -341,7 +341,9 @@ class V5UserApiController extends Controller
 
             $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
 
-            $data->video_tapes = $video_tapes;
+            // $data->video_tapes = $video_tapes;
+
+            $data = $video_tapes;
 
             return $this->sendResponse($message = "", $code = "", $data);
 
