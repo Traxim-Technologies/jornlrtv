@@ -529,6 +529,98 @@ class PaymentRepository {
         return $response_array;
     }
 
+    /**
+     * @method subscriptions_payment_save()
+     *
+     * @uses subscription payment record update
+     *
+     * @created vithya
+     *
+     * @updated
+     *
+     * @param objects $subscription_details
+     *
+     * @param objects $user_details
+     *
+     * @return response of success/failure message
+     */
+    
+    public static function subscriptions_payment_save($request, $subscription_details, $user_details) {
+
+        $previous_payment = UserPayment::where('user_id' , $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+
+        $user_payment = new UserPayment;
+
+        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$subscription_details->plan} months"));
+
+        if($previous_payment) {
+
+            if (strtotime($previous_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$subscription_details->plan} months", strtotime($previous_payment->expiry_date)));
+
+            }
+
+        }
+
+        $user_payment->payment_id = $request->payment_id ?: "FREE-".uniqid();
+
+        $user_payment->user_id = $request->id;
+
+        $user_payment->subscription_id = $request->subscription_id;
+
+        $user_payment->status = PAID_STATUS;
+
+        $user_payment->payment_mode = $request->payment_mode;
+
+        // Update previous current subscriptions as zero
+
+        UserPayment::where('user_id', $request->id)->update(['is_current' => NO]);
+
+        $user_payment->is_current = YES;
+
+        // Coupon details
+
+        $user_payment->is_coupon_applied = $request->is_coupon_applied;
+
+        $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+        $user_payment->coupon_amount = $request->coupon_amount;
+
+        $user_payment->coupon_reason = $request->is_coupon_applied == COUPON_APPLIED ? '' : $request->coupon_reason;
+
+        // Amount update
+
+        $user_payment->subscription_amount = $subscription_details->amount;
+
+        $user_payment->amount = $request->total;
+
+        if ($user_payment->save()) {
+
+            $user_details->zero_subscription_status = $subscription_details->amount <= 0 ? YES : NO;
+
+            $user_details->user_type = PAID_USER;
+
+            $user_details->save();
+
+            $data = [
+                        'id' => $user_details->id , 
+                        'token' => $user_details->token, 
+                        'payment_id' => $user_payment->payment_id
+                    ];
+
+            $response_array = ['success' => true, 'message' => CommonHelper::success_message(206), 'code' => 206, 'data' => $data];
+
+        } else {
+
+            $response_array = ['success' => false, 'error_messages' => Helper::error_message(204), 'error_code' => 204];
+
+        }
+
+        return $response_array;
+    
+    }
+
     public static function is_user_can_watch_now($user_id, $video_tape_details) {
 
         $ppv_details = PayPerView::where('user_id', $user_id)
