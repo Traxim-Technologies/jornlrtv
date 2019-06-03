@@ -1262,7 +1262,31 @@ Route::group(['prefix' => 'api/user'], function() {
         
         Route::post('video_tapes_comments', 'NewUserApiController@video_tapes_comments');
 
+
+        // Automatic subscription with cancel @todo change to newuserAPi
+
+        Route::post('subscriptions_autorenewal_pause', 'UserApiController@subscriptions_autorenewal_pause');
+
+        Route::post('subscriptions_autorenewal_enable', 'UserApiController@subscriptions_autorenewal_enable');
     });
+
+    //categories @todo change to newuserAPi
+
+    Route::post('categories_list', 'UserApiController@categories_list');
+
+    Route::post('categories_view', 'UserApiController@categories_view');
+
+    Route::post('categories_videos', 'UserApiController@categories_videos');
+
+    Route::post('categories_channels_list', 'UserApiController@categories_channels_list');
+
+    // Tags @todo change to newuserAPi
+
+    Route::post('tags_list', 'UserApiController@tags_list');
+
+    Route::post('tags_view', 'UserApiController@tags_view');
+
+    Route::post('tags_videos', 'UserApiController@tags_videos');
 
     // Referrals 
 
