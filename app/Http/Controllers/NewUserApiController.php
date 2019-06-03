@@ -41,7 +41,7 @@ use App\Coupon;
 
 use App\Redeem, App\RedeemRequest;
 
-use App\Flag;
+use App\Flag, App\UserRating;
 
 use App\Channel, App\ChannelSubscription;
 
@@ -3378,57 +3378,55 @@ class NewUserApiController extends Controller
 
                 throw new Exception($error, 101);
 
-            } else {
-
-                DB::beginTransaction();
-
-                $channel_details = Channel::where('status', USER_CHANNEL_APPROVED)
-                                        ->where('is_approved', ADMIN_CHANNEL_APPROVED)
-                                        ->where('id', $request->channel_id)
-                                        ->first();
-
-                $channel_subscription_details = ChannelSubscription::where('user_id', $request->id)
-                            ->where('channel_id',$request->channel_id)
-                            ->first();
-
-                if($channel_subscription_details) {
-
-                    // unsubscribe the details
-
-                    $channel_subscription_details->delete();
-
-                    $message = CommonHelper::success_message(222); $code = 222;
-
-                } else {
-
-                    $channel_subscription_details = new ChannelSubscription;
-
-                    $channel_subscription_details->user_id = $request->id;
-
-                    $channel_subscription_details->channel_id = $request->channel_id;
-
-                    $channel_subscription_details->status = DEFAULT_TRUE;
-
-                    $channel_subscription_details->save();
-
-                    // Bell Notification
-
-                    $notification_data['from_user_id'] = $request->id; 
-
-                    $notification_data['to_user_id'] = $channel_details->user_id;
-
-                    $notification_data['channel_id'] = $channel_details->id;
-
-                    $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_SUBSCRIBER;
-
-                    dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
-
-                    $message = CommonHelper::success_message(221); $code = 221;
-
-                }
-                
             }
 
+            DB::beginTransaction();
+
+            $channel_details = Channel::where('status', USER_CHANNEL_APPROVED)
+                                    ->where('is_approved', ADMIN_CHANNEL_APPROVED)
+                                    ->where('id', $request->channel_id)
+                                    ->first();
+
+            $channel_subscription_details = ChannelSubscription::where('user_id', $request->id)
+                        ->where('channel_id',$request->channel_id)
+                        ->first();
+
+            if($channel_subscription_details) {
+
+                // unsubscribe the details
+
+                $channel_subscription_details->delete();
+
+                $message = CommonHelper::success_message(222); $code = 222;
+
+            } else {
+
+                $channel_subscription_details = new ChannelSubscription;
+
+                $channel_subscription_details->user_id = $request->id;
+
+                $channel_subscription_details->channel_id = $request->channel_id;
+
+                $channel_subscription_details->status = DEFAULT_TRUE;
+
+                $channel_subscription_details->save();
+
+                // Bell Notification
+
+                $notification_data['from_user_id'] = $request->id; 
+
+                $notification_data['to_user_id'] = $channel_details->user_id;
+
+                $notification_data['channel_id'] = $channel_details->id;
+
+                $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_SUBSCRIBER;
+
+                dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
+
+                $message = CommonHelper::success_message(221); $code = 221;
+
+            }
+                
             DB::commit();
 
             $data = ['channel_id' => $request->channel_id];
@@ -3443,6 +3441,176 @@ class NewUserApiController extends Controller
 
         }
    
+    }
+
+    /**
+     * @method video_tapes_comments()
+     *
+     * @uses used to update the rating or comment of the video
+     * 
+     * @created Vithya R
+     * 
+     * @updated Vithya R
+     *
+     * @param integer $video_tape_id - Video Tape ID
+     *
+     * @return response of success/failure message
+     */
+    public function video_tapes_comments(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                [
+                    'video_tape_id' => 'required|integer|exists:video_tapes,id',
+                ]);
+
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+
+            // Comments Section
+
+            $data = UserRating::where('video_tape_id' , $request->video_tape_id)
+                            ->CommonResponse()
+                            ->orderby('created_at', 'desc')
+                            ->skip($this->skip)
+                            ->take($this->take)
+                            ->get();
+
+            
+            return $this->sendResponse($message = "", $code = "", $data);
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+    
+    }
+
+    /**
+     * @method video_tapes_comments_save()
+     *
+     * @uses used to update the rating or comment of the video
+     * 
+     * @created Vithya R
+     * 
+     * @updated Vithya R
+     *
+     * @param integer $video_tape_id - Video Tape ID
+     *
+     * @return response of success/failure message
+     */
+    public function video_tapes_comments_save(Request $request) {
+
+        try {
+
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'video_tape_id' => 'required|integer|exists:video_tapes,id',
+                    'ratings' => 'integer|in:'.RATINGS,
+                    'comments' => '',
+                ],
+                array(
+                    'exists' => 'The :attribute doesn\'t exists please provide correct video id',
+                    'unique' => 'The :attribute already rated.'
+                )
+            
+            );
+
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+
+            DB::beginTransaction();
+
+            // Save Rating
+
+            $user_rating = new UserRating();
+
+            $user_rating->user_id = $request->id;
+
+            $user_rating->video_tape_id = $request->video_tape_id;
+
+            $user_rating->rating = $request->ratings ?: 0;
+
+            $user_rating->comment = $request->comments ? $request->comments: '';
+
+            $user_rating->save();
+
+            // Update video table with avg user rating
+
+            $user_ratings = UserRating::select(
+                    'rating', 'video_tape_id',DB::raw('sum(rating) as total_rating'))
+                    ->where('video_tape_id', $request->video_tape_id)
+                    ->groupBy('video_tape_id')
+                    ->avg('rating');
+
+            VideoTape::where('id', $request->video_tape_id)->update(['user_ratings' => $user_ratings]);
+
+            $data = UserRating::where('id', $user_rating->id)->CommonResponse()->first();    
+
+            DB::commit();
+
+            $message = CommonHelper::success_message(223); $code = 223;
+
+            return $this->sendResponse($message, $code, $data);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode() ?: 217);
+
+        }
+    
+    }
+
+    /**
+     * @method video_tapes_user_view
+     *
+     * @uses 
+     *
+     * @created
+     *
+     * @updated
+     *
+     * @param integer video_tape_id
+     *
+     * @return json response
+     */
+    
+    public function video_tapes_user_view(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                [
+                    'video_tape_id' => 'required|integer|exists:video_tapes,id',
+                ]);
+
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+            
+            }
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
     }
 
 }

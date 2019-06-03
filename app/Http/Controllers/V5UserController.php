@@ -58,7 +58,7 @@ class V5UserController extends Controller {
     }
 
     /**
-     * Function Name : master_login()
+     * @method master_login()
      *
      * @uses To Activate Super user by admin
      *

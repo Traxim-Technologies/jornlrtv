@@ -218,8 +218,8 @@ class CommonHelper {
             case 216:
                 $string = apitr('spam_video_remove_failed');
                 break;
-            case 216:
-                $string = apitr('spam_video_remove_failed');
+            case 217:
+                $string = apitr('video_comment_failed');
                 break;
             
 
@@ -349,6 +349,9 @@ class CommonHelper {
                 break;
             case 222: 
                 $string = apitr('channel_unsubscribed');
+                break;
+            case 223: 
+                $string = apitr('video_comment_success');
                 break;
 
             default:

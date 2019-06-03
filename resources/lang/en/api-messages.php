@@ -155,4 +155,9 @@ return array(
 	'channel_subscribed' => 'Subscription Added',
 	'channel_unsubscribed' => 'Subscription Removed',
 
+	// Comments 
+
+	'video_comment_success' => 'Comment added',
+	'video_comment_failed' => 'Comment add failed',
+
 );

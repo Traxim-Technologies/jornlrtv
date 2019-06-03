@@ -1254,6 +1254,14 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('video_tapes_view', 'V5UserApiController@video_tapes_view');
 
+        Route::post('video_tapes_user_view', 'V5UserApiController@video_tapes_user_view');
+
+        // Comments management
+
+        Route::post('video_tapes_comments_save', 'NewUserApiController@video_tapes_comments_save');
+        
+        Route::post('video_tapes_comments', 'NewUserApiController@video_tapes_comments');
+
     });
 
     // Referrals 

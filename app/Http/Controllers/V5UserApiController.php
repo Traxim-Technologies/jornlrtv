@@ -237,7 +237,7 @@ class V5UserApiController extends Controller
     }
 
     /**
-     * Function Name : channels_view()
+     * @method channels_view()
      *
      * @uses used to get the channel details
      *
@@ -433,7 +433,7 @@ class V5UserApiController extends Controller
     }
 
     /**
-     * Function Name : video_tapes_view()
+     * @method video_tapes_view()
      *
      * @uses used to get the channel details
      *
