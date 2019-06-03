@@ -606,10 +606,13 @@ class PaymentRepository {
             $data = [
                         'id' => $user_details->id , 
                         'token' => $user_details->token, 
-                        'payment_id' => $user_payment->payment_id
+                        'payment_id' => $user_payment->payment_id,
+                        'amount' => $user_payment->amount,
+                        'amount_formatted' => formatted_amount($user_payment->amount),
+                        'paid_status' => $user_payment->status
                     ];
 
-            $response_array = ['success' => true, 'message' => CommonHelper::success_message(206), 'code' => 206, 'data' => $data];
+            $response_array = ['success' => true, 'message' => CommonHelper::success_message(205), 'code' => 205, 'data' => $data];
 
         } else {
 
