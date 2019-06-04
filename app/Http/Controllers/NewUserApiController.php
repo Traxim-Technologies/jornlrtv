@@ -1742,6 +1742,8 @@ class NewUserApiController extends Controller
 
             foreach ($subscriptions as $key => $subscription_details) {
 
+                $subscription_details->is_free_plan = $subscription_details->amount > 0 ? NO : YES;
+
                 $subscription_details->amount_formatted = formatted_amount($subscription_details->amount);
             }
 
@@ -2056,24 +2058,32 @@ class NewUserApiController extends Controller
 
         try {
 
-            $base_query = UserPayment::where('user_id', $request->id)->select('user_payments.id as provider_subscription_payment_id', 'user_payments.*');
+            $base_query = UserPayment::where('user_id', $request->id)->select('user_payments.id as user_payment_id', 'user_payments.*');
 
             $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('user_payments.updated_at', 'desc')->get();
 
             foreach ($user_payments as $key => $payment_details) {
 
-                $payment_details->is_autorenewal = ($payment_details->is_current && strtotime($payment_details->expiry_date) > strtotime(date('Y-m-d H:i:s')) ) ? YES : NO;
-
                 $payment_details->title = $payment_details->description = "";
+
+                $payment_details->is_free_plan = $payment_details->is_autorenewal = NO;
 
                 $subscription_details = Subscription::find($payment_details->subscription_id);
 
                 if($subscription_details) {
 
+                    $payment_details->is_free_plan = $subscription_details->amount <= 0 ? YES : NO;
+
                     $payment_details->title = $subscription_details->title ?: "";
 
                     $payment_details->description = $subscription_details->description ?: "";
                 }
+
+                if($payment_details->is_free_plan == NO) {
+
+                    $payment_details->is_autorenewal = ($payment_details->is_current && strtotime($payment_details->expiry_date) > strtotime(date('Y-m-d H:i:s')) ) ? YES : NO;
+                }
+
 
                 unset($payment_details->id);
             }
