@@ -1307,3 +1307,5 @@ Route::group(['prefix' => 'api/user'], function() {
     Route::post('playlists_video_remove', 'UserApiController@playlists_video_remove');
 
 });
+
+Route::any('api_revamp_upgrade', 'ApplicationController@api_revamp_upgrade');

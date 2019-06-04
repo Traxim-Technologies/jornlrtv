@@ -1053,4 +1053,52 @@ class ApplicationController extends Controller {
         return response()->json($response_array , 200);
 
     }
+
+    /**
+     * @method api_revamp_upgrade()
+     *
+     * @uses 
+     *
+     * @created
+     *
+     * @updated
+     *
+     * 
+     */
+
+    public function api_revamp_upgrade(Request $request) {
+
+        $users = User::get();
+
+        $subscribed_users = 0;
+
+        foreach ($users as $key => $user_details) {
+
+            // Is current subscription update
+
+            $user_payment = UserPayment::where('user_id', $user_details->id)
+                                ->where('status', PAID_STATUS)
+                                ->orderBy('user_payments.updated_at', 'desc')
+                                ->first();
+
+            if($user_payment) {
+
+                $user_payment->is_current = DEFAULT_TRUE;
+
+                $user_payment->save();
+
+                $subscribed_users += 1;
+            }
+        
+        }
+
+        $data['subscribed_users'] = $subscribed_users;
+
+        $data['total_users'] = count($users);
+
+        $response_array = ['success' => true, 'data' => $data];
+
+        return response()->json($response_array, 200);
+
+    }
 }

@@ -2058,9 +2058,11 @@ class NewUserApiController extends Controller
 
             $base_query = UserPayment::where('user_id', $request->id)->select('user_payments.id as provider_subscription_payment_id', 'user_payments.*');
 
-            $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('updated_at', 'desc')->get();
+            $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('user_payments.updated_at', 'desc')->get();
 
             foreach ($user_payments as $key => $payment_details) {
+
+                $payment_details->is_autorenewal = ($payment_details->is_current && strtotime($payment_details->expiry_date) > strtotime(date('Y-m-d H:i:s')) ) ? YES : NO;
 
                 $payment_details->title = $payment_details->description = "";
 
