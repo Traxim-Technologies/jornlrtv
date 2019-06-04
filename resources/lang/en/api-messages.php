@@ -90,6 +90,18 @@ return array(
 	'subscription_payment_success' => 'Payment success..!!',
 	'subscription_payment_error' => 'The subscription payment failed..!!',
 
+	'subscription_autorenewal_pause_failed' => 'Auto-renewal pause failed.!!',
+	'subscription_autorenewal_enable_failed' => 'Auto-renewal enable failed.!!',
+
+	'subscription_autorenewal_paused' => 'Auto-renewal paused.',
+	'subscription_autorenewal_enabled' => 'Auto-renewal enabled. Enjoy the videos without any interruption',
+
+	'subscription_autorenewal_already_paused' => 'Auto-renewal already paused.',
+	'subscription_autorenewal_already_enabled' => 'Auto-renewal already enabled.',
+
+
+	'subscription_payment_details_not_found' => 'Subscription payment not found.!!',
+
 	// Coupon codes
 
 	'coupon_code_not_found' => 'The coupon code is not valid',

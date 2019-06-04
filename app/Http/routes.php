@@ -1184,6 +1184,12 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('subscriptions_payment_by_paypal', 'NewUserApiController@subscriptions_payment_by_paypal');
 
+        // Automatic subscription with cancel @todo change to newuserAPi
+
+        Route::post('subscriptions_autorenewal_pause', 'NewUserApiController@subscriptions_autorenewal_pause');
+
+        Route::post('subscriptions_autorenewal_enable', 'NewUserApiController@subscriptions_autorenewal_enable');
+
         // Coupon codes
 
         Route::post('coupon_codes_check', 'NewUserApiController@coupon_codes_check');
@@ -1262,12 +1268,6 @@ Route::group(['prefix' => 'api/user'], function() {
         
         Route::post('video_tapes_comments', 'NewUserApiController@video_tapes_comments');
 
-
-        // Automatic subscription with cancel @todo change to newuserAPi
-
-        Route::post('subscriptions_autorenewal_pause', 'UserApiController@subscriptions_autorenewal_pause');
-
-        Route::post('subscriptions_autorenewal_enable', 'UserApiController@subscriptions_autorenewal_enable');
     });
 
     //categories @todo change to newuserAPi

@@ -51,6 +51,8 @@ class NewUserApiController extends Controller
 
 	public function __construct(Request $request) {
 
+        Log::info("Request Info".print_r($request->all(), true));
+
         $this->loginUser = User::CommonResponse()->find($request->id);
 
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
@@ -2084,6 +2086,136 @@ class NewUserApiController extends Controller
 
     }
 
+   /**
+     * @method subscriptions_autorenewal_pause
+     *
+     * @uses To cancel automatic subscription
+     *
+     * @created Vithya
+     *
+     * @updated
+     *
+     * @param object $request - USer details & payment details
+     *
+     * @return boolean response with message
+     */
+    
+    public function subscriptions_autorenewal_pause(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                    [
+                        'cancel_reason' => 'required',
+                    ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+
+            DB::beginTransaction();
+
+            // Get the current subscription 
+            // @todo handle based on the current subscription
+
+            $user_payment = UserPayment::where('user_id', $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+
+            if(!$user_payment) {
+
+                throw new Exception(CommonHelper::error_message(220), 220);
+            }
+
+            // Check the subscription is already cancelled
+
+            if($user_payment->is_cancelled == AUTORENEWAL_CANCELLED) {
+
+                throw new Exception(CommonHelper::error_message(221), 221);
+
+            }
+
+            $user_payment->is_cancelled = AUTORENEWAL_CANCELLED;
+
+            $user_payment->cancel_reason = $request->cancel_reason;
+
+            $user_payment->save();
+
+            $data = ['user_payment_id' => $user_payment->id];
+
+            DB::commit();
+
+            return $this->sendResponse($message = CommonHelper::success_message(224), 224, $data);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        
+        }
+
+    }
+
+    /**
+     * @method subscriptions_autorenewal_enable
+     *
+     * @uses Enable auto renewal for the current subscription
+     *
+     * @created Vithya
+     *
+     * @updated
+     *
+     * @param object $request - USer details & payment details
+     *
+     * @return boolean response with message
+     */
+    
+    public function subscriptions_autorenewal_enable(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            // Get the current subscription 
+            // @todo handle based on the current subscription
+
+            $user_payment = UserPayment::where('user_id', $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+
+            if(!$user_payment) {
+
+                throw new Exception(CommonHelper::error_message(220), 220);
+            }
+
+            // Check the subscription is already enabled
+
+            if($user_payment->is_cancelled == AUTORENEWAL_ENABLED) {
+
+                throw new Exception(CommonHelper::error_message(222), 222);
+
+            }
+
+            $user_payment->is_cancelled = AUTORENEWAL_ENABLED;
+          
+            $user_payment->save();
+
+            $data = ['user_payment_id' => $user_payment->id];
+
+            DB::commit();
+
+            return $this->sendResponse($message = CommonHelper::success_message(225), 225, $data);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        
+        }
+
+    }
+
     /**
      * @method wishlist_list()
      *
@@ -3554,7 +3686,7 @@ class NewUserApiController extends Controller
                     ->groupBy('video_tape_id')
                     ->avg('rating');
 
-            VideoTape::where('id', $request->video_tape_id)->update(['user_ratings' => $user_ratings]);
+            VideoTape::where('video_tapes.id', $request->video_tape_id)->update(['user_ratings' => $user_ratings]);
 
             $data = UserRating::where('id', $user_rating->id)->CommonResponse()->first();    
 

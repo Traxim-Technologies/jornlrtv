@@ -221,6 +221,21 @@ class CommonHelper {
             case 217:
                 $string = apitr('video_comment_failed');
                 break;
+            case 218:
+                $string = apitr('subscription_autorenewal_pause_failed');
+                break;
+            case 219:
+                $string = apitr('subscription_autorenewal_enable_failed');
+                break;
+            case 220:
+                $string = apitr('subscription_payment_details_not_found');
+                break;
+            case 221:
+                $string = apitr('subscription_autorenewal_already_paused');
+                break;
+            case 222:
+                $string = apitr('subscription_autorenewal_already_enabled');
+                break;
             
 
             // USE BELOW CONSTANTS FOR AUTHENTICATION CHECK
@@ -352,6 +367,12 @@ class CommonHelper {
                 break;
             case 223: 
                 $string = apitr('video_comment_success');
+                break;
+            case 224:
+                $string = apitr('subscription_autorenewal_paused');
+                break;
+            case 225:
+                $string = apitr('subscription_autorenewal_enabled');
                 break;
 
             default:
