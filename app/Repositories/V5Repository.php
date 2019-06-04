@@ -225,22 +225,88 @@ class V5Repository {
 
  	}
 
-      public static function single_video_response($video_tape_id, $user_id) {
+    public static function single_video_response($video_tape_id, $user_id) {
 
-            // $data = array();
+        $user_details = User::find($user_id);
 
-            // $video_tape_details = VideoTape::where('id', $request->video_tape_id)
-            //                         ->where('user_id', $request->id)
-            //                         ->where('status', APPROVED)
-            //                         ->select('id as video_tape_id', 'title', 'description', 'default_image', 'age_limit', 'duration', 'video_publish_type', 'publish_status', 'publish_time', 'is_approved as is_admin_approved', 'status as video_status', 'watch_count', 'is_pay_per_view', 'type_of_subscription', 'ppv_amount', 'category_name','video_type', 'channel_id', 'user_ppv_amount as ppv_revenue', 'amount as ads_revenue', 'category_id')
-            //                         ->first();
+        $video_tape_details = VideoTape::where('video_tapes.id' , $video_tape_id)->ShortVideoResponse()->first();
 
-            // if(!$video_tape_details) {
+        $video_tape_details->currency = Setting::get('currency', '$');
 
-            //     throw new Exception(Helper::get_error_message(906), 906);
-            // }
-      
-      }
+        $video_tape_details->share_url = route('user.single' , $video_tape_details->video_tape_id);
+
+        $video_tape_details->watch_count = number_format_short($video_tape_details->watch_count);
+
+        $video_tape_details->should_display_ppv = $video_tape_details->is_my_channel = NO;
+
+        $timezone = Setting::get('timezone');
+
+        if($user_details) {
+
+            // check the channer owner status
+
+            $channel_details = Channel::find($video_tape_details->channel_id);
+
+            $is_my_channel = NO;
+
+            if($channel_details) {
+
+                $is_my_channel = $channel_details->user_id == $user_details->id ? YES: NO;
+
+                 // check subscribe status
+
+                $channel_details->is_user_subscribed_the_channel = CHANNEL_UNSUBSCRIBED;
+
+                if($request->id) {
+
+                    if($channel_details->user_id == $request->id) {
+
+
+                        $channel_details->is_user_subscribed_the_channel = CHANNEL_OWNER;
+
+                    } else {
+
+                        $check_channel_subscription = ChannelSubscription::where('user_id', $request->id)->where('channel_id', $channel_details->channel_id)->count();
+
+                        $channel_details->is_user_subscribed_the_channel = $check_channel_subscription ? CHANNEL_SUBSCRIBED : CHANNEL_UNSUBSCRIBED;
+
+                    }
+
+                }
+
+            }
+
+            $video_tape_details->is_my_channel = $is_my_channel;
+
+            // check the PPV status for owner and guest, logged in user
+
+            $should_display_ppv = NO;
+
+            if($is_my_channel == NO) {
+
+                $ppv_details = self::pay_per_views_status_check($user_details->id, $user_details->user_type, $video_tape_details)->getData();
+
+                $watch_video_free = DEFAULT_TRUE;
+
+                $should_display_ppv = $ppv_details->success == $watch_video_free ? NO : YES;
+
+            }
+
+            $video_tape_details->should_display_ppv = $should_display_ppv;
+
+            $video_tape_details->ppv_amount_formatted = formatted_amount($video_tape_details->ppv_amount);
+
+            $timezone = $user_details->timezone;
+       
+        }
+    
+        $video_tape_details->publish_time = $video_tape_details->publish_time ? common_date($video_tape_details->publish_time, $timezone ?: Setting::get('timezone'), 'D M Y'): "0000-00-00";
+
+        $video_tape_details->wishlist_status = VideoHelper::wishlist_status($video_tape_details->video_tape_id, $user_id);
+
+        return $video_tape_details;
+
+    }
 
     /**
      * Function Name : pay_per_views_status_check

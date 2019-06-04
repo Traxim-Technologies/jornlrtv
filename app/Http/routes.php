@@ -1260,21 +1260,24 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('video_tapes_view', 'V5UserApiController@video_tapes_view');
 
-        Route::post('video_tapes_user_view', 'V5UserApiController@video_tapes_user_view');
+        // Route::post('video_tapes_user_view', 'V5UserApiController@video_tapes_user_view');
 
         // Comments management
 
         Route::post('video_tapes_comments_save', 'NewUserApiController@video_tapes_comments_save');
         
-        Route::post('video_tapes_comments', 'NewUserApiController@video_tapes_comments');
 
     });
+
+    Route::post('video_tapes_user_view', 'NewUserApiController@video_tapes_user_view');
+
+    Route::post('video_tapes_comments', 'NewUserApiController@video_tapes_comments');
 
     //categories @todo change to newuserAPi
 
     Route::post('categories_list', 'UserApiController@categories_list');
 
-    Route::post('categories_view', 'UserApiController@categories_view');
+    Route::post('categories_view', 'NewUserApiController@categories_view');
 
     Route::post('categories_videos', 'UserApiController@categories_videos');
 

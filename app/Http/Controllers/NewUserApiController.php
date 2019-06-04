@@ -3749,6 +3749,41 @@ class NewUserApiController extends Controller
             
             }
 
+            $video_details = VideoTape::VerifiedVideo()->where('video_tapes.id', $request->video_tape_id)->first();
+
+            // check the video record
+
+            if(!$video_details) {
+
+                throw new Exception(CommonHelper::error_message(200), 200);
+                
+            }
+
+            // Check the video is in flag list
+
+            $flag_details = Flag::where('video_tape_id', $request->video_tape_id)->where('user_id', $request->id)->count();
+
+            if($flag_details) {
+
+                throw new Exception("Error Processing Request", 1);
+                
+            }
+
+            $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->user_id);
+
+            // PPV status
+            // channel subscription status
+            // Like dislike status
+            // Wishlist status
+            // Spam video status
+            // Playlist ids 
+            // Video details 
+            // Channel details
+
+            $data = $video_tape_details;
+
+            return $this->sendResponse($message = "", $code = 100, $data);
+
         } catch(Exception $e) {
 
             return $this->sendError($e->getMessage(), $e->getCode());
@@ -3756,5 +3791,56 @@ class NewUserApiController extends Controller
         }
 
     }
+
+        /**
+     * Function Name : categories_view()
+     *
+     * category details based on id
+     *
+     * @created Vithya
+     *
+     * @updated -
+     *
+     * @param - 
+     * 
+     * @return response of json
+     */
+    public function categories_view(Request $request) {
+
+        $basicValidator = Validator::make(
+                $request->all(),
+                array(
+                    'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                )
+        );
+
+        if($basicValidator->fails()) {
+
+            $error_messages = implode(',', $basicValidator->messages()->all());
+
+            $response_array = ['success'=>false, 'error_messages'=>$error_messages];              
+
+        } else {
+
+            // For common response
+
+            $category_details = Category::select('id as category_id', 'name', 'image as image', 'image as cover', 'description')->where('status', CATEGORY_APPROVE_STATUS)
+                ->where('id', $request->category_id)
+                ->first();
+
+
+            $video_tapes = VideoHelper::categories_based_videos($request);
+
+            $data['details'] = $category_details;
+
+            $data['video_tapes'] = $video_tapes;
+
+            $response_array = ['success' => true, 'data' => $data];
+
+        }
+
+        return response()->json($response_array);
+    }
+
 
 }

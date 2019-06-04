@@ -288,6 +288,10 @@ class V5UserApiController extends Controller
 
             $data = new \stdClass();
 
+            $channel_details->image = $channel_details->channel_image;
+
+            $channel_details->cover = $channel_details->channel_cover;
+
             $channel_details->no_of_videos = videos_count($request->channel_id);
 
             $channel_details->no_of_subscribers = subscriberscnt($request->channel_id);

@@ -76,6 +76,14 @@ class VideoTape extends Model
     
     }
 
+    public function scopeVerifiedVideo($query) {
+
+         return $query
+                ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED);
+
+    }
 
     /**
      * Scope a query to only include active users.

@@ -1518,3 +1518,20 @@ function type_of_subscription($status) {
         ];
     return $list_status[$status];
 }
+
+function common_date($date , $timezone , $format = "d M Y h:i A") {
+
+    if($date == "0000-00-00 00:00:00") {
+
+        return $date;
+    }
+
+    if($timezone) {
+
+        $date = convertTimeToUSERzone($date , $timezone , $format);
+
+    }
+
+    return date($format , strtotime($date));
+
+}
