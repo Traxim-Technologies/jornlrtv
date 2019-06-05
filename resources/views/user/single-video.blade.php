@@ -99,7 +99,7 @@
                                           <!--  <p class="hidden-xs">share</p> -->
                                        </a>
 
-                                       <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#" style="display: none;">
+                                       <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
                                           <i class="material-icons">playlist_add</i>&nbsp;Save
                                        </a>
          
@@ -560,13 +560,15 @@
                   
                   <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
 
-                  <?php /** @foreach($playlists as $report)  
+                   @foreach($playlists as $report)  
 
                      <div class="report_list">
 
-                        <label class="playlist-container">One
+                        <label class="playlist-container">{{ $report->title}}
                            
-                           <input type="checkbox">
+                           <input type="checkbox" onclick="update_playlist_video({{$video->video_tape_id}} , {{ $report->playlist_id }} , this)" id="playlist_{{ $report->playlist_id }}" @if($report->is_video_exists == DEFAULT_TRUE) checked @endif>
+                           
+                           <!-- <input type="hidden" name="playlist_id[]" id="playlist_id_{{$report->playlist_id }}" value="{{$report->playlist_id }}"> -->
                            
                            <span class="playlist-checkmark"></span>
 
@@ -575,7 +577,11 @@
                      </div>
 
                      <div class="clearfix"></div>
-                  @endforeach */ ?>
+                  @endforeach 
+
+                  <div class="">
+                     <label></label>
+                  </div>
 
                   <div class="pull-right">
                      <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
@@ -1349,6 +1355,45 @@
    
    }
    
+   // to add video to playlist
+   function update_playlist_video(video_id, playlist_id,e) {
+   
+      var id = e.id;
+      var status;
+
+      if($('#'+id).prop("checked") == true) {
+
+         var status = 1;
+      } 
+ 
+      else if($('#'+id).prop("checked") == false) {
+
+         var status = 0;
+      }
+
+      $.ajax({
+         url : "{{route('user.playlist.video.update')}}",
+         data : {video_tape_id : video_id, playlist_id : playlist_id, status : status},
+         type: "POST",
+         success : function(data) {
+            if (data.success) {
+               
+               alert(data.message);
+            } else {
+
+               console.log(data.error_messages);
+            }
+
+         },
+
+         error : function(data) {
+   
+         },
+
+      })
+
+   }   
+
    function likeVideo(video_id) {
    
        $.ajax({

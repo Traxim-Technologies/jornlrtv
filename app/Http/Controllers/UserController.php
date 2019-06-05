@@ -535,9 +535,6 @@ class UserController extends Controller {
             $channel_playlists = $this->UserAPI->playlists($request)->getData();
            
             $channel_playlists = $channel_playlists->data;
-
-            // dd($channel_playlists);
-
            
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
@@ -591,6 +588,7 @@ class UserController extends Controller {
             $request->request->add([ 
                 'id'=>Auth::user()->id,
                 'age_limit'=>Auth::user()->age_limit,
+                'view_type' => VIEW_TYPE_OWNER
             ]);
 
         } else {
@@ -599,8 +597,39 @@ class UserController extends Controller {
             ]);
         }
 
-        $data = $this->UserAPI->video_detail($request)->getData();
+        $data= $this->UserAPI->video_detail($request)->getData();
 
+        // get user playlists
+        $data->response_array->playlists =  $this->UserAPI->playlists($request)->getData();
+
+        // check video already exists in user playlits
+        $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
+
+        $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
+            ->where('video_tape_id', $request->video_tape_id)
+            ->where('user_id', Auth::user()->id)
+            ->get();
+
+        $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
+        
+        // to set video exists in playlist    
+        $i = 0;
+       
+        foreach ($data->response_array->playlists->data as $value) {
+                          
+            if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
+
+                $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
+            
+            } else  { 
+                
+                $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
+            }
+
+            $i++;
+        }
+
+        // video url
         if (isset($data->url)) {
 
             return redirect($data->url);
@@ -617,7 +646,7 @@ class UserController extends Controller {
                 $this->watch_count($request);
 
             }
-        
+            // dd($response->playlists->data);
             return view('user.single-video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -642,7 +671,8 @@ class UserController extends Controller {
                         ->with('subscriberscnt', $response->subscriberscnt)
                         ->with('comment_rating_status', $response->comment_rating_status)
                         ->with('embed_link', $response->embed_link)
-                        ->with('tags', $response->tags);
+                        ->with('tags', $response->tags)
+                        ->with('playlists', $response->playlists->data);
        
         } else {
 
@@ -1909,6 +1939,49 @@ class UserController extends Controller {
 
             }
         }
+
+    }
+
+    /**
+     * @method playlist_video_update
+     *
+     * @uses To add video to playlist 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - Video id, playlist id
+     * 
+     * @return success/failure message
+     *
+     */
+    public function playlist_video_update(Request $request)  {
+
+        Log::info("playlist_video".print_r($request->all(), true));
+        
+        $request->request->add([
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+        
+        if($request->status == DEFAULT_TRUE)  {
+
+            Log::info("Status 1"); 
+
+            $response = $this->UserAPI->playlists_video_status($request)->getData();
+        
+        } 
+
+        if($request->status == DEFAULT_FALSE) {
+            Log::info("Status 0"); 
+            $response = $this->UserAPI->playlists_video_remove($request)->getData();
+        
+        }
+
+        // dd($response);
+        
+        return response()->json($response);
 
     }
 

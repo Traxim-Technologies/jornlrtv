@@ -372,3 +372,22 @@
 .pagination{
   margin-bottom: 00px;
 }
+
+.shareUrl-input {
+    width: 80%;
+    padding: 10px 0;
+    border: 2px solid rgba(0,0,0,.09);
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: rgba(255,255,255,0.9);
+    background: #202e78;
+    background: -webkit-linear-gradient(to right, #202e78, #e4b99c);
+    background: linear-gradient(to right, #202e78, #e4b99c);
+    &: hover,;
+    &: focus,;
+    &: active {;
+    border-color: rgba(0,0,0,.3);
+    background: white;
+    }: ;
+}

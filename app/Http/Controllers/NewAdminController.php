@@ -108,7 +108,8 @@ class NewAdminController extends Controller {
     public function __construct()
     {
         $this->middleware('admin');  
-    }   
+    } 
+      
     public function check_role(Request $request) {
         
         if(Auth::guard('admin')->check()) {
@@ -213,9 +214,7 @@ class NewAdminController extends Controller {
                         ->withPage('users')
                         ->with('sub_page','users-view')
                         ->with('users' , $users);
-
-
-            
+           
         } catch (Exception $e) {
 
             $error = $e->getMessage();
@@ -2284,6 +2283,7 @@ class NewAdminController extends Controller {
                     ->with('sub_page','coupons-view')
                     ->with('coupon_details',$coupon_details);
        
+
         } catch( Exception $e) {
             
             $error = $e->getMessage();
@@ -5324,8 +5324,8 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error', $error);
         }
-
     }
+
     /**
      * Function Name: custom_push()
      *
@@ -5645,7 +5645,6 @@ class NewAdminController extends Controller {
         }
     }
 
-
     /**
      * Function Name : sub_admins_delete()
      *
@@ -5661,7 +5660,7 @@ class NewAdminController extends Controller {
      */
     public function sub_admins_delete(Request $request) {
 
-         try {
+        try {
 
             DB::beginTransaction();
             

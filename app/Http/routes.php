@@ -869,6 +869,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('playlist/list/', 'UserController@playlist_single')->name('playlist.single');
 
+    Route::post('/playlist_video_update', 'UserController@playlist_video_update')->name('playlist.video.update');
+
 });
 
 Route::group(['prefix' => 'userApi'], function() {

@@ -7466,7 +7466,6 @@ class UserApiController extends Controller {
      */
 
     public function playlists_video_status(Request $request) {
-
         try {
 
             DB::beginTransaction();
@@ -7670,7 +7669,6 @@ class UserApiController extends Controller {
         }
     
     }
-
 
     /**
      *

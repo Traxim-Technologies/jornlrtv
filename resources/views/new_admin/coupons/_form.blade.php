@@ -23,6 +23,7 @@
 		</div>
 		
 		<div class="form-group">
+			
 			<div class="col-sm-6">
 
 				<label for = "amount_type" class="control-label"> * {{tr('amount_type')}}</label>
@@ -31,10 +32,14 @@
 
 					<option>{{tr('choose')}} {{tr('amount_type')}}</option>
 
-					<option value="{{PERCENTAGE}}" {{$coupon_details->amount_type == 0 ?'selected="selected"':''}}>{{tr('percentage_amount')}}</option>
+					<option value="{{PERCENTAGE}}" {{ $coupon_details->amount_type == 0 ? 'selected="selected"' : '' }}> {{tr('percentage_amount')}}
+					</option>
 
-					<option value="{{ABSOULTE}}" {{$coupon_details->amount_type == 1 ?'selected="selected"':''}}>{{tr('absoulte_amount')}}</option>
+					<option value="{{ABSOULTE}}" {{$coupon_details->amount_type == 1 ? 'selected="selected"' : '' }}> {{tr('absoulte_amount')}} 
+					</option>
+				
 				</select> 
+
 			</div>
 
 			<div class="col-sm-6">
