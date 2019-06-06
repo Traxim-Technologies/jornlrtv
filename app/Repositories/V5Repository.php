@@ -340,6 +340,17 @@ class V5Repository {
 
         $video_tape_details->my_rating = $rating_data;
 
+        $category_details = Category::where('id', $video_tape_details->category_id)->where('status',  APPROVED)->first();
+
+        $video_tape_details->category_id = $video_tape_details->category_name = "";
+
+        if($category_details) {
+
+            $video_tape_details->category_id = $category_details->id;
+
+            $video_tape_details->category_name = $category_details->name;
+        }
+
 
         return $video_tape_details;
 

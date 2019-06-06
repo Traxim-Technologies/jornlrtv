@@ -551,6 +551,8 @@ class VideoHelper {
 
             $suggestion_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
+            $suggestion_video_ids[] = $request->video_tape_id;
+
             // Get the channel videos 
 
             $suggestion_channel_ids = VideoTape::whereIn('video_tapes.id', $suggestion_video_ids)->whereNotIn('video_tapes.id', $spam_video_ids)->lists('channel_id')->toArray();

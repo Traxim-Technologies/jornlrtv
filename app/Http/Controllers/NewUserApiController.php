@@ -3784,8 +3784,6 @@ class NewUserApiController extends Controller
 
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->user_id);
 
-            
-
             $video_tape_details->tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
                                             ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
                                             ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
