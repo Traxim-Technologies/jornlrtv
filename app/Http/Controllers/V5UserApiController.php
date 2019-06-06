@@ -423,7 +423,7 @@ class V5UserApiController extends Controller
 
             $video_tape_ids = $video_tape_base_query->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderby = 'video_tapes.updated_at', $other_select_columns = "", $is_random_order = "", $is_owner = $request->view_type == VIEW_TYPE_OWNER ? YES : NO);
 
             // $data->video_tapes = $video_tapes;
             $data = $video_tapes;

@@ -146,7 +146,7 @@ class V5Repository {
 	 * @return
 	 */
 
- 	public static function video_list_response($video_tape_ids, $user_id, $orderby = 'video_tapes.updated_at', $other_select_columns = "", $is_random_order = "") {
+ 	public static function video_list_response($video_tape_ids, $user_id, $orderby = 'video_tapes.updated_at', $other_select_columns = "", $is_random_order = "", $is_owner = NO) {
 
         $user_details = User::find($user_id);
 
@@ -162,13 +162,21 @@ class V5Repository {
 
         }
 
+        // @todo
+
  		if($other_select_columns != "") {
 
- 			$base_query = $base_query->ShortVideoResponse($other_select_columns);
+            if($is_owner == YES) {
+                $base_query = $base_query->OwnerShortVideoResponse($other_select_columns);
+
+            } else {
+                $base_query = $base_query->ShortVideoResponse($other_select_columns);
+
+            }
 
  		} else {
 
- 			$base_query = $base_query->ShortVideoResponse();
+ 			$base_query = $is_owner == YES ? $base_query->OwnerShortVideoResponse($other_select_columns) : $base_query->ShortVideoResponse();
  		}
  		
  		$video_tapes = $base_query->get();
