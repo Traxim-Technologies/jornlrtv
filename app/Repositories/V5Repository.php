@@ -19,6 +19,8 @@ use App\VideoTape, App\PayPerView;
 
 use App\Channel;
 
+use App\UserRating;
+
 class V5Repository {
 
 
@@ -303,6 +305,33 @@ class V5Repository {
         $video_tape_details->publish_time = $video_tape_details->publish_time ? common_date($video_tape_details->publish_time, $timezone ?: Setting::get('timezone'), 'D M Y'): "0000-00-00";
 
         $video_tape_details->wishlist_status = VideoHelper::wishlist_status($video_tape_details->video_tape_id, $user_id);
+
+        $video_tape_details->history_status = count(Helper::history_status($user_id,$video_tape_id)) > 0? 1 : 0;
+
+
+        $video_tape_details->is_user_subscribed_the_channel = check_channel_status($user_id, $video_tape_details->channel_id);
+
+        $video_tape_details->is_liked = Helper::like_status($user_id, $video_tape_id);
+
+        $video_tape_details->total_channel_subscribers = subscriberscnt($video_tape_details->channel_id);
+
+        $my_rating = UserRating::where('user_id', $user_id)->where('video_tape_id', $video_tape_id)->where('rating', '>', 0)->first();
+
+        $video_tape_details->is_user_rated = NO;
+
+        $rating_data = [];
+
+        if ($my_rating) {
+
+            $video_tape_details->is_user_rated = YES;
+
+            $rating_data['comment'] = $my_rating->comment;
+
+            $rating_data['ratings'] = $my_rating->rating;
+        }
+
+        $video_tape_details->my_rating = $rating_data;
+
 
         return $video_tape_details;
 

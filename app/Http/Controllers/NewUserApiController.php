@@ -45,6 +45,8 @@ use App\Flag, App\UserRating;
 
 use App\Channel, App\ChannelSubscription;
 
+use App\VideoTapeTag;
+
 class NewUserApiController extends Controller
 {
     protected $skip, $take, $loginUser, $currency;
@@ -3684,9 +3686,9 @@ class NewUserApiController extends Controller
 
             $user_rating->video_tape_id = $request->video_tape_id;
 
-            $user_rating->rating = $request->ratings ?: 0;
+            $user_rating->rating = $request->rating ?: 0;
 
-            $user_rating->comment = $request->comments ? $request->comments: '';
+            $user_rating->comment = $request->comment ? $request->comment: '';
 
             $user_rating->save();
 
@@ -3698,9 +3700,9 @@ class NewUserApiController extends Controller
                     ->groupBy('video_tape_id')
                     ->avg('rating');
 
-            VideoTape::where('video_tapes.id', $request->video_tape_id)->update(['user_ratings' => $user_ratings]);
+            VideoTape::where('video_tapes.id', $request->video_tape_id)->update(['video_tapes.user_ratings' => $user_ratings]);
 
-            $data = UserRating::where('id', $user_rating->id)->CommonResponse()->first();    
+            $data = UserRating::where('user_ratings.id', $user_rating->id)->CommonResponse()->first();    
 
             DB::commit();
 
@@ -3769,8 +3771,6 @@ class NewUserApiController extends Controller
                 
             }
 
-            $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->user_id);
-
             // PPV status
             // channel subscription status
             // Like dislike status
@@ -3779,6 +3779,44 @@ class NewUserApiController extends Controller
             // Playlist ids 
             // Video details 
             // Channel details
+
+            $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->user_id);
+
+            
+
+            $video_tape_details->tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                                            ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                                            ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
+                                            ->where('video_tape_id', $request->video_tape_id)
+                                            ->get()
+                                            ->toArray();
+
+            $resolutions = [];
+
+            if($video_tape_details->video_resolutions) {
+
+                $exp_resolution = explode(',', $video_tape_details->video_resolutions);
+
+                $exp_resize_path = $video_tape_details->video_path ? explode(',', $video_tape_details->video_path) : [];
+
+                foreach ($exp_resolution as $key => $value) {
+                    
+                    $resolutions[$value] = isset($exp_resize_path[$key]) ? 
+                    $exp_resize_path[$key] : $video_tape_details->video;
+
+                }
+
+                $resolutions['original'] = $video_tape_details->video;
+
+            }
+
+            if (!$resolutions) {
+
+                $resolutions['original'] = $video_tape_details->video;
+                
+            }
+
+            $video_tape_details->resolutions = $resolutions;
 
             $data = $video_tape_details;
 
