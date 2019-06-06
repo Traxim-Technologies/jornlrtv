@@ -2341,7 +2341,7 @@ class NewUserApiController extends Controller
 
                     $data = ['wishlist_id' => $wishlist_details->id];
                
-                    return $this->sendResponse(CommonHelper::success_message(200), 200, $data = ['wishlist_id' => $wishlist_details->id]);
+                    return $this->sendResponse(CommonHelper::success_message(200), 200, $data = ['wishlist_id' => $wishlist_details->id, 'wishlist_status' => $wishlist_details->status]);
 
                 }
 
