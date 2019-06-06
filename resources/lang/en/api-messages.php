@@ -167,6 +167,8 @@ return array(
 	'channel_subscribed' => 'Subscription Added',
 	'channel_unsubscribed' => 'Subscription Removed',
 
+	'channel_not_found' => 'The channel is not available or not found.!',
+
 	// Comments 
 
 	'video_comment_success' => 'Comment added',

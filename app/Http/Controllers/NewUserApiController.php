@@ -3533,6 +3533,8 @@ class NewUserApiController extends Controller
                                     ->where('id', $request->channel_id)
                                     ->first();
 
+            // @todo $channel_deyails handle excpetion
+
             $channel_subscription_details = ChannelSubscription::where('user_id', $request->id)
                         ->where('channel_id',$request->channel_id)
                         ->first();
@@ -3830,8 +3832,8 @@ class NewUserApiController extends Controller
 
     }
 
-        /**
-     * Function Name : categories_view()
+    /**
+     * @method categories_view()
      *
      * category details based on id
      *
@@ -3880,5 +3882,138 @@ class NewUserApiController extends Controller
         return response()->json($response_array);
     }
 
+    /**
+     * @method create_channel()
+     *
+     * @uses To create a channel based on the logged in user
+     *
+     * @created Vidhya R
+     *
+     * @updated vidhya R
+     *
+     * @param object $request - User id, token
+     *
+     * @return success/failure message of boolean 
+     */ 
+    public function channels_save(Request $request) {
+
+        try {
+
+            // Check the use can create multiple channel
+
+            if(!$request->channel_id) {
+
+                $channels = getChannels($request->id);
+
+                if((count($channels) > 0 && Setting::get('multi_channel_status'))) {
+
+                    throw new Exception(Helper::get_error_message(164), 164); // @todo 
+                    
+                }
+
+            } else {
+
+                $channel_details = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+                if(!$channel_details) {
+
+                    throw new Exception(CommonHelper::error_message(223), 223);            
+
+                }
+            }
+
+            $user_details = User::find($request->id);
+
+            if(!$user_details) {
+
+                throw new Exception(CommonHelper::error_message(1002), 1002);
+                
+            }
+
+            DB::beginTransaction();
+
+            $response = CommonRepo::channel_save($request)->getData();
+
+            if($response->success) {
+
+                DB::commit();
+
+                $response_array = ['success'=>true, 'data'=>$response->data, 'message'=>$response->message];
+               
+                return response()->json($response_array);
+
+            } else {
+
+                throw new Exception($response->error_messages, $response->error_code);
+                
+            }
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+    /**
+     * @method channels_delete()
+     *
+     * @uses To delete a channel based on logged in user id & channel id (Form Rendering)
+     *
+     * @created Vithya R
+     *
+     * @updated vithya R
+     * 
+     * @param integer $request - Channel Id
+     *
+     * @return response with flash message
+     */
+    public function channels_delete(Request $request) {
+
+        try {
+
+            $validator = Validator::make( $request->all(), array(
+                            'channel_id' => 'required|exists:channels,id',
+                        ));
+
+            if($validator->fails()) {
+
+                    $error_messages = implode(',', $validator->messages()->all());
+
+                    $response_array = ['success'=> false, 'error_messages'=>$error_messages];
+
+                    // return back()->with('flash_errors', $error_messages);
+
+            }
+
+            DB::beginTransaction();
+
+            $channel_details = Channel::where('user_id', $request->id)->where('id', $request->channel_id)->first();
+
+            if(!$channel_details) {
+
+                throw new Exception(CommonHelper::error_message(223), 223);            
+
+            }
+
+            $channel_details->delete();
+
+            DB::commit();
+
+            $response_array = ['success'=>true, 'message'=>tr('channel_delete_success')];
+
+            return response()->json($response_array);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
 
 }

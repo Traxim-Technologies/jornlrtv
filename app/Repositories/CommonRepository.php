@@ -296,7 +296,7 @@ class CommonRepository {
 
             $message = $e->getMessage();
 
-            $response_array = ['success' => false, 'error_messages' => $message];
+            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $e->getCode()];
         }    
 
         return response()->json($response_array, 200);    

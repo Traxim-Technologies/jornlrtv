@@ -1115,7 +1115,7 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::post('/forgot_password', 'NewUserApiController@forgot_password');
 
-    Route::group(['middleware' => 'UserApiVal'] , function() {
+    Route::group(['middleware' => 'NewUserApiVal'] , function() {
 
         Route::post('/profile','NewUserApiController@profile'); // 1
 
@@ -1163,7 +1163,7 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::post('suggestions', 'NewUserApiController@suggestions');
 
-    Route::group(['middleware' => 'UserApiVal'] , function() {
+    Route::group(['middleware' => 'NewUserApiVal'] , function() {
 
         // Redeems management 
 
@@ -1243,6 +1243,12 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('channels_subscribed', 'V5UserApiController@channels_subscribed');
 
         Route::post('channels_unsubscribe_subscribe', 'NewUserApiController@channels_unsubscribe_subscribe');
+
+        Route::post('channels_save', 'NewUserApiController@channels_save');
+
+        Route::post('channels_delete', 'UserApiController@channel_delete');
+
+        Route::post('channels_edit', 'UserApiController@channel_edit');
 
         // Referrals 
 

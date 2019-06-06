@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use App\Requests;
 
+use App\Helpers\CommonHelper;
+
 use Hash, Auth, AWS, Mail ,File ,Log ,Storage ,Setting ,DB;
 
 use App\Admin;
@@ -11,6 +13,30 @@ use App\Admin;
 use App\User; 
 
 class CommonHelper {
+
+    // Note: $error is passed by reference
+    
+    public static function is_token_valid($entity, $id, $token, &$error) {
+
+        if (
+            ( $entity== USER && ($row = User::where('id', '=', $id)->where('token', '=', $token)->first()) ) ||
+            ( $entity== PROVIDER && ($row = Provider::where('id', '=', $id)->where('token', '=', $token)->first()) )
+        ) {
+
+            if ($row->token_expiry > time()) {
+                // Token is valid
+                $error = NULL;
+                return true;
+            } else {
+                $error = ['success' => false, 'error' => CommonHelper::error_message(1003), 'error_code' => 1003];
+                return FALSE;
+            }
+        }
+
+        $error = ['success' => false, 'error' => CommonHelper::error_message(1004), 'error_code' => 1004];
+        return FALSE;
+   
+    }
 
 	public static function send_email($page,$subject,$email,$email_data) {
 
@@ -235,6 +261,9 @@ class CommonHelper {
                 break;
             case 222:
                 $string = apitr('subscription_autorenewal_already_enabled');
+                break;
+            case 223:
+                $string = apitr('channel_not_found');
                 break;
             
 
