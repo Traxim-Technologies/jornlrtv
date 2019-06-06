@@ -1208,6 +1208,13 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('wishlist_operations' , 'NewUserApiController@wishlist_operations');
 
+
+        // Like & Dislikes
+
+        Route::post('video_tapes_like' , 'NewUserApiController@video_tapes_like');
+
+        Route::post('video_tapes_dislike' , 'NewUserApiController@video_tapes_dislike');
+
         // History Management
 
         Route::post('/video_tapes_history', 'NewUserApiController@video_tapes_history');

@@ -563,6 +563,12 @@ class VideoHelper {
 
             $video_tape_ids = VideoTape::whereNotIn('video_tapes.id', $spam_video_ids)->whereIn('channel_id', $suggestion_channel_ids)->orderByRaw('RAND()')->lists('video_tapes.id')->toArray();
 
+            if(!$video_tape_ids) {
+
+                $video_tape_ids = VideoTape::whereNotIn('video_tapes.id', $spam_video_ids)->orderByRaw('RAND()')->lists('video_tapes.id')->toArray();
+
+            }
+
             $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.updated_at", $other_select_columns = 'video_tapes.description', $is_random_order = YES);
 
             return $video_tapes;

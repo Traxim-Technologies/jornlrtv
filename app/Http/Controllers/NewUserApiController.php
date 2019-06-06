@@ -47,6 +47,8 @@ use App\Channel, App\ChannelSubscription;
 
 use App\VideoTapeTag;
 
+use App\LikeDislikeVideo;
+
 class NewUserApiController extends Controller
 {
     protected $skip, $take, $loginUser, $currency;
@@ -4011,6 +4013,184 @@ class NewUserApiController extends Controller
             return $this->sendError($e->getMessage(), $e->getCode());
 
         }
+
+    }
+
+    /**
+     * Like Videos
+     *
+     * @return JSON Response
+     */
+
+    public function video_tapes_like(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+        ]);
+
+        if ($validator->fails()) {
+            
+            $error_messages = implode(',', $validator->messages()->all());
+            
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
+                    'error_code' => 101, 'error_messages'=>$error_messages);
+
+        } else {
+
+            $model = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                    ->where('user_id',$request->id)->first();
+
+            $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('like_status', DEFAULT_TRUE)
+                ->count();
+
+            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('dislike_status', DEFAULT_TRUE)
+                ->count();
+
+            if (!$model) {
+
+                $model = new LikeDislikeVideo;
+
+                $model->video_tape_id = $request->video_tape_id;
+
+                $model->user_id = $request->id;
+
+                $model->like_status = DEFAULT_TRUE;
+
+                $model->dislike_status = DEFAULT_FALSE;
+
+                $model->save();
+
+
+                $data['like_count'] = number_format_short($like_count+1);
+
+                $data['dislike_count'] = number_format_short($dislike_count);
+
+                $response_array = ['success'=>true, 'data' => $data];
+
+            } else {
+
+                if($model->dislike_status) {
+
+                    $model->like_status = DEFAULT_TRUE;
+
+                    $model->dislike_status = DEFAULT_FALSE;
+
+                    $model->save();
+
+                    $data['like_count'] = number_format_short($like_count+1);
+
+                    $data['dislike_count'] = number_format_short($dislike_count-1);
+
+                    $response_array = ['success'=>true, 'data' => $data];
+
+
+                } else {
+
+                    $model->delete();
+
+                    $data['like_count'] = number_format_short($like_count-1);
+
+                    $data['dislike_count'] = number_format_short($dislike_count);
+
+                    $response_array = ['success'=>true, 'data' => $data];
+
+                }
+
+            }
+
+        }
+
+        return response()->json($response_array);
+
+    }
+
+    /**
+     * Dis Like Videos
+     *
+     * @return JSON Response
+     */
+
+    public function video_tapes_dislike(Request $request) {
+
+        $validator = Validator::make($request->all() , [
+            'video_tape_id' => 'required|exists:video_tapes,id',
+        ]);
+
+        if ($validator->fails()) {
+            
+            $error_messages = implode(',', $validator->messages()->all());
+            
+            $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
+                    'error_code' => 101, 'error_messages'=>$error_messages);
+
+        } else {
+
+            $model = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                    ->where('user_id',$request->id)->first();
+
+            $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('like_status', DEFAULT_TRUE)
+                ->count();
+
+            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('dislike_status', DEFAULT_TRUE)
+                ->count();
+
+            if (!$model) {
+
+                $model = new LikeDislikeVideo;
+
+                $model->video_tape_id = $request->video_tape_id;
+
+                $model->user_id = $request->id;
+
+                $model->like_status = DEFAULT_FALSE;
+
+                $model->dislike_status = DEFAULT_TRUE;
+
+                $model->save();
+
+                $data['like_count'] = number_format_short($like_count);
+
+                $data['dislike_count'] = number_format_short($dislike_count+1);
+
+                $response_array = ['success'=>true, 'data' => $data];
+
+            } else {
+
+                if($model->like_status) {
+
+                    $model->like_status = DEFAULT_FALSE;
+
+                    $model->dislike_status = DEFAULT_TRUE;
+
+                    $model->save();
+
+                    $data['like_count'] = number_format_short($like_count-1);
+
+                    $data['dislike_count'] = number_format_short($dislike_count+1);
+
+                    $response_array = ['success'=>true, 'data' => $data];
+
+                } else {
+
+                    $model->delete();
+
+                    $data['like_count'] = number_format_short($like_count);
+
+                    $data['dislike_count'] = number_format_short($dislike_count-1);
+
+                    $response_array = ['success'=>true, 'data' => $data];
+
+                }
+
+            }
+
+        }
+
+        return response()->json($response_array);
 
     }
 

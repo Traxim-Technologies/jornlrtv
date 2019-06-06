@@ -28,8 +28,6 @@ class V5Repository {
 
     public static function home_first_section(Request $request) {
 
-      // Log::info("home_first_section".print_r($request->all() , true));
-
     	try {
 
             $user_details = User::find($request->id);
