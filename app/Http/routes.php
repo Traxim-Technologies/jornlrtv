@@ -1103,6 +1103,11 @@ Route::group(['prefix' => 'userApi'], function(){
 
 
 Route::group(['prefix' => 'api/user'], function() {
+
+    Route::post('project/configurations' , 'ApplicationController@configuration_site');
+
+    Route::post('spam_reasons' , 'UserApiController@reasons'); // @todo change USERAPI
+
     /***
      *
      * User Account releated routs
