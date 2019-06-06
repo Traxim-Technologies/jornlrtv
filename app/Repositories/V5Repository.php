@@ -21,6 +21,8 @@ use App\Channel;
 
 use App\UserRating;
 
+use App\Category;
+
 class V5Repository {
 
 
