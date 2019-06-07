@@ -19,8 +19,7 @@ class CommonHelper {
     public static function is_token_valid($entity, $id, $token, &$error) {
 
         if (
-            ( $entity== USER && ($row = User::where('id', '=', $id)->where('token', '=', $token)->first()) ) ||
-            ( $entity== PROVIDER && ($row = Provider::where('id', '=', $id)->where('token', '=', $token)->first()) )
+            ( $entity== USER && ($row = User::where('id', '=', $id)->where('token', '=', $token)->first()))
         ) {
 
             if ($row->token_expiry > time()) {

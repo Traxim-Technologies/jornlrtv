@@ -1535,3 +1535,16 @@ function common_date($date , $timezone , $format = "d M Y h:i A") {
     return date($format , strtotime($date));
 
 }
+
+function video_type_text($video_type) {
+
+    $video_types = [
+        VIDEO_TYPE_UPLOAD => apitr('VIDEO_TYPE_UPLOAD'),
+        VIDEO_TYPE_LIVE => apitr('VIDEO_TYPE_LIVE'),
+        VIDEO_TYPE_YOUTUBE => apitr('VIDEO_TYPE_YOUTUBE'),
+        VIDEO_TYPE_OTHERS => apitr('VIDEO_TYPE_OTHERS')
+    ];
+
+    return isset($video_types[$video_type]) ? $video_types[$video_type] : "NONE";
+
+}

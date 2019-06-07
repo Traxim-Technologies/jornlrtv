@@ -547,7 +547,9 @@ class VideoHelper {
 
             }
 
-            $take = Setting::get('admin_take_count', 12); $skip = $request->skip ?: 0;
+            $take = $request->take ?: Setting::get('admin_take_count', 12); 
+
+            $skip = $request->skip ?: 0;
 
             $suggestion_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
@@ -568,6 +570,8 @@ class VideoHelper {
                 $video_tape_ids = VideoTape::whereNotIn('video_tapes.id', $spam_video_ids)->orderByRaw('RAND()')->lists('video_tapes.id')->toArray();
 
             }
+
+            $video_tape_ids = array_slice($video_tape_ids, 0, $take);
 
             $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.updated_at", $other_select_columns = 'video_tapes.description', $is_random_order = YES);
 

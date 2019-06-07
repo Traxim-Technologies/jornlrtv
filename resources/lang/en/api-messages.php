@@ -174,4 +174,11 @@ return array(
 	'video_comment_success' => 'Comment added',
 	'video_comment_failed' => 'Comment add failed',
 
+	// Videos management
+
+	'VIDEO_TYPE_UPLOAD' => 'Direct Upload',
+	'VIDEO_TYPE_LIVE' => 'Live TV',
+	'VIDEO_TYPE_YOUTUBE' => 'YouTube',
+	'VIDEO_TYPE_OTHERS' => 'Others',
+
 );

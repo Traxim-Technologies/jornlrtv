@@ -23,6 +23,10 @@ use App\UserRating;
 
 use App\Category;
 
+use App\VideoTapeTag;
+
+use App\ChannelSubscription;
+
 class V5Repository {
 
 
@@ -267,16 +271,16 @@ class V5Repository {
 
                 $channel_details->is_user_subscribed_the_channel = CHANNEL_UNSUBSCRIBED;
 
-                if($request->id) {
+                if($user_id) {
 
-                    if($channel_details->user_id == $request->id) {
+                    if($channel_details->user_id == $user_id) {
 
 
                         $channel_details->is_user_subscribed_the_channel = CHANNEL_OWNER;
 
                     } else {
 
-                        $check_channel_subscription = ChannelSubscription::where('user_id', $request->id)->where('channel_id', $channel_details->channel_id)->count();
+                        $check_channel_subscription = ChannelSubscription::where('user_id', $user_id)->where('channel_id', $channel_details->channel_id)->count();
 
                         $channel_details->is_user_subscribed_the_channel = $check_channel_subscription ? CHANNEL_SUBSCRIBED : CHANNEL_UNSUBSCRIBED;
 
@@ -351,6 +355,53 @@ class V5Repository {
             $video_tape_details->category_name = $category_details->name;
         }
 
+        $video_tape_details->tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
+                                            ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
+                                            ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
+                                            ->where('video_tape_id', $video_tape_id)
+                                            ->get()
+                                            ->toArray();
+
+        $resolution_video = VideoTape::find($video_tape_id);
+
+        $resolutions = [];
+
+        if($resolution_video->video_resolutions) {
+
+            $exp_resolution = explode(',', $resolution_video->video_resolutions);
+
+            $exp_resize_path = $resolution_video->video_path ? explode(',', $resolution_video->video_path) : [];
+
+            foreach ($exp_resolution as $key => $value) {
+                
+                $resolutions[$value] = isset($exp_resize_path[$key]) ? 
+                $exp_resize_path[$key] : $resolution_video->video;
+
+            }
+
+            $resolutions['original'] = $resolution_video->video;
+
+        }
+
+        if (!$resolutions) {
+
+            $resolutions['original'] = $resolution_video->video;
+            
+        }
+
+        $video_tape_details->resolutions = $resolutions;
+
+        $video_tape_details->android_video_url = $video_tape_details->ios_video_url = $video_tape_details->website_video_url =  $resolution_video->video;
+
+        if($resolution_video->video_type == VIDEO_TYPE_UPLOAD) {
+
+            $video_tape_details->android_video_url = Helper::convert_rtmp_to_secure(get_video_end($data['video']) , $data['video']);
+
+            $video_tape_details->ios_video_url = Helper::convert_hls_to_secure(get_video_end($data['video']) , $data['video']); 
+
+        }
+
+        $video_tape_details->video_type_text = video_type_text($video_tape_details->video_type);
 
         return $video_tape_details;
 

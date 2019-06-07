@@ -3663,8 +3663,8 @@ class NewUserApiController extends Controller
                 $request->all(),
                 [
                     'video_tape_id' => 'required|integer|exists:video_tapes,id',
-                    'ratings' => 'integer|in:'.RATINGS,
-                    'comments' => '',
+                    'rating' => 'integer|in:'.RATINGS,
+                    'comment' => 'required',
                 ],
                 array(
                     'exists' => 'The :attribute doesn\'t exists please provide correct video id',
@@ -3692,7 +3692,7 @@ class NewUserApiController extends Controller
 
             $user_rating->rating = $request->rating ?: 0;
 
-            $user_rating->comment = $request->comment ? $request->comment: '';
+            $user_rating->comment = $request->comment ?: '';
 
             $user_rating->save();
 
@@ -3727,11 +3727,11 @@ class NewUserApiController extends Controller
     /**
      * @method video_tapes_user_view
      *
-     * @uses 
+     * @uses video tape details
      *
-     * @created
+     * @created vithya R
      *
-     * @updated
+     * @updated vithya R
      *
      * @param integer video_tape_id
      *
@@ -3775,50 +3775,7 @@ class NewUserApiController extends Controller
                 
             }
 
-            // PPV status
-            // channel subscription status
-            // Like dislike status
-            // Wishlist status
-            // Spam video status
-            // Playlist ids 
-            // Video details 
-            // Channel details
-
-            $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->user_id);
-
-            $video_tape_details->tags = VideoTapeTag::select('tag_id', 'tags.name as tag_name')
-                                            ->leftJoin('tags', 'tags.id', '=', 'video_tape_tags.tag_id')
-                                            ->where('video_tape_tags.status', TAG_APPROVE_STATUS)
-                                            ->where('video_tape_id', $request->video_tape_id)
-                                            ->get()
-                                            ->toArray();
-
-            $resolutions = [];
-
-            if($video_tape_details->video_resolutions) {
-
-                $exp_resolution = explode(',', $video_tape_details->video_resolutions);
-
-                $exp_resize_path = $video_tape_details->video_path ? explode(',', $video_tape_details->video_path) : [];
-
-                foreach ($exp_resolution as $key => $value) {
-                    
-                    $resolutions[$value] = isset($exp_resize_path[$key]) ? 
-                    $exp_resize_path[$key] : $video_tape_details->video;
-
-                }
-
-                $resolutions['original'] = $video_tape_details->video;
-
-            }
-
-            if (!$resolutions) {
-
-                $resolutions['original'] = $video_tape_details->video;
-                
-            }
-
-            $video_tape_details->resolutions = $resolutions;
+            $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
 
             $data = $video_tape_details;
 
@@ -3839,9 +3796,9 @@ class NewUserApiController extends Controller
      *
      * @created Vithya
      *
-     * @updated -
+     * @updated
      *
-     * @param - 
+     * @param
      * 
      * @return response of json
      */
