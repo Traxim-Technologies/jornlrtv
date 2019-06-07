@@ -395,13 +395,13 @@ class V5Repository {
 
         if($resolution_video->video_type == VIDEO_TYPE_UPLOAD) {
 
-            $video_tape_details->android_video_url = Helper::convert_rtmp_to_secure(get_video_end($video_tape_details->video) , $video_tape_details->video);
+            $video_tape_details->android_video_url = Helper::convert_rtmp_to_secure(get_video_end($resolution_video->video) , $resolution_video->video);
 
-            $video_tape_details->ios_video_url = Helper::convert_hls_to_secure(get_video_end($video_tape_details->video) , $video_tape_details->video); 
+            $video_tape_details->ios_video_url = Helper::convert_hls_to_secure(get_video_end($resolution_video->video) , $resolution_video->video); 
 
         }
 
-        $video_tape_details->video_type_text = video_type_text($video_tape_details->video_type);
+        $video_tape_details->video_type_text = video_type_text($resolution_video->video_type);
 
         return $video_tape_details;
 
