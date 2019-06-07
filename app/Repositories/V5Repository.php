@@ -395,9 +395,9 @@ class V5Repository {
 
         if($resolution_video->video_type == VIDEO_TYPE_UPLOAD) {
 
-            $video_tape_details->android_video_url = Helper::convert_rtmp_to_secure(get_video_end($data['video']) , $data['video']);
+            $video_tape_details->android_video_url = Helper::convert_rtmp_to_secure(get_video_end($video_tape_details->video) , $video_tape_details->video);
 
-            $video_tape_details->ios_video_url = Helper::convert_hls_to_secure(get_video_end($data['video']) , $data['video']); 
+            $video_tape_details->ios_video_url = Helper::convert_hls_to_secure(get_video_end($video_tape_details->video) , $video_tape_details->video); 
 
         }
 
