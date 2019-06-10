@@ -1299,7 +1299,7 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::post('categories_videos', 'UserApiController@categories_videos');
 
-    Route::post('categories_channels_list', 'UserApiController@categories_channels_list');
+    Route::post('categories_channels_list', 'NewUserApiController@categories_channels_list');
 
     // Tags @todo change to newuserAPi
 
