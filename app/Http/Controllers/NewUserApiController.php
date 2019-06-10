@@ -3541,6 +3541,8 @@ class NewUserApiController extends Controller
                         ->where('channel_id',$request->channel_id)
                         ->first();
 
+            $is_user_subscribed_the_channel = NO;
+
             if($channel_subscription_details) {
 
                 // unsubscribe the details
@@ -3575,11 +3577,13 @@ class NewUserApiController extends Controller
 
                 $message = CommonHelper::success_message(221); $code = 221;
 
+                $is_user_subscribed_the_channel = YES;
+
             }
                 
             DB::commit();
 
-            $data = ['channel_id' => $request->channel_id];
+            $data = ['channel_id' => $request->channel_id, 'is_user_subscribed_the_channel' => $is_user_subscribed_the_channel];
 
             return $this->sendResponse($message, $code, $data);
 
