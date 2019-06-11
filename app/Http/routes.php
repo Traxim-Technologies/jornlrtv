@@ -1167,7 +1167,7 @@ Route::group(['prefix' => 'api/user'], function() {
     Route::post('categories_based_videos', 'NewUserApiController@categories_based_videos');
 
     Route::post('suggestions', 'NewUserApiController@suggestions');
-    
+
     Route::post('video_tapes_search', 'NewUserApiController@video_tapes_search');
 
     Route::group(['middleware' => 'NewUserApiVal'] , function() {
@@ -1245,15 +1245,9 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('bell_notifications_update', 'UserApiController@bell_notifications_update');
 
         Route::post('bell_notifications_count', 'UserApiController@bell_notifications_count');
-
+        
         // Channels @todo change to new userapi
 
-        Route::post('channels_index', 'V5UserApiController@channels_index');
-
-        Route::post('channels_view', 'V5UserApiController@channels_view');
-
-        Route::post('channel_based_videos', 'V5UserApiController@channel_based_videos');
-        
         Route::post('channels_subscribed', 'V5UserApiController@channels_subscribed');
 
         Route::post('channels_unsubscribe_subscribe', 'NewUserApiController@channels_unsubscribe_subscribe');
@@ -1288,6 +1282,16 @@ Route::group(['prefix' => 'api/user'], function() {
         
 
     });
+
+    // Channels @todo change to new userapi
+
+    Route::post('channels_index', 'V5UserApiController@channels_index');
+
+    Route::post('channels_view', 'V5UserApiController@channels_view');
+
+    Route::post('channel_based_videos', 'V5UserApiController@channel_based_videos');
+
+    // Single page
 
     Route::post('video_tapes_user_view', 'NewUserApiController@video_tapes_user_view');
 
