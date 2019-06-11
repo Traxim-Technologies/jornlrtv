@@ -1419,6 +1419,10 @@ class NewUserApiController extends Controller
                 
             $user_details = User::find($request->id);
 
+            if(!$user_details) {
+                throw new Exception(CommonHelper::error_message(1002), 1002);
+            }
+
             if($request->type == EMAIL_NOTIFICATION) {
 
                 $user_details->email_notification_status = $request->status;
@@ -1427,39 +1431,33 @@ class NewUserApiController extends Controller
 
             if($request->type == PUSH_NOTIFICATION) {
 
-                $user_details->push_notification_status = $request->status;
+                $user_details->push_status = $request->status;
 
             }
 
             $user_details->save();
 
-            $message = $request->status ? CommonHelper::success_message(206) : CommonHelper::success_message(207);
+            $code = $request->status ? 206 : 207;
 
-            $data = ['id' => $user_details->id , 'token' => $user_details->token];
+            $message = CommonHelper::success_message($code);
 
-            $response_array = [
-                'success' => true ,'message' => $message, 
-                'email_notification_status' => (int) $user_details->email_notification_status,  // Don't remove int (used ios)
-                'push_notification_status' => (int) $user_details->push_notification_status,    // Don't remove int (used ios)
-                'data' => $data
-            ];
+            $data = [
+                    'id' => $user_details->id , 
+                    'token' => $user_details->token, 
+                    'email_notification_status' => (int) $user_details->email_notification_status,  // Don't remove int (used ios)
+                    'push_status' => (int) $user_details->push_status,    // Don't remove int (used ios)
+                ];
                 
-            
             DB::commit();
 
-            return response()->json($response_array , 200);
+            return $this->sendResponse($message, $code, $data);
 
         } catch (Exception $e) {
 
             DB::rollback();
 
-            $error = $e->getMessage();
+            return $this->sendError($e->getMessage(), $e->getCode());
 
-            $code = $e->getCode();
-
-            $response_array = ['success'=>false, 'error'=>$error, 'error_code'=>$code];
-
-            return response()->json($response_array);
         }
 
     }
@@ -4240,7 +4238,7 @@ class NewUserApiController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'key' => 'required'
+                'key' => ''
             ]);
 
             if($validator->fails()) {

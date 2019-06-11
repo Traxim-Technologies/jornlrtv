@@ -16,6 +16,10 @@ class AddApiRevampMigrations extends Migration
             $table->integer('is_current')->default(0)->after('status');
             $table->string('currency')->default(Setting::get('currency', '$'))->after('amount');
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('email_notification_status')->default(1)->after('push_status');
+        });
     }
 
     /**
@@ -28,6 +32,10 @@ class AddApiRevampMigrations extends Migration
         Schema::table('user_payments', function (Blueprint $table) {
             $table->dropColumn('is_current');
             $table->dropColumn('currency');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('email_notification_status');
         });
     }
 }

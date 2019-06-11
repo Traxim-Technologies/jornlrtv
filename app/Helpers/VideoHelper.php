@@ -255,8 +255,12 @@ class VideoHelper {
                             ->where('channels.is_approved', ADMIN_CHANNEL_APPROVED)
                             ->where('channels.status', USER_CHANNEL_APPROVED)
                             ->where('categories.status', APPROVED)
-                            ->where('title', 'like', "%".$request->key."%")
                             ->orderby('video_tapes.updated_at' , 'desc');
+
+            if($request->key) {
+                
+                $base_query = $base_query->where('title', 'like', "%".$request->key."%");
+            }
 
             // check page type 
 
