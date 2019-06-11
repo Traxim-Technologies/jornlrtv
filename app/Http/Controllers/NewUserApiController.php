@@ -3167,7 +3167,7 @@ class NewUserApiController extends Controller
      * @param @todo not yet completed
      *
      * @return json repsonse
-     */     
+     */
 
     public function ppv_payment_by_stripe(Request $request) {
 
@@ -4166,7 +4166,7 @@ class NewUserApiController extends Controller
      *
      * @param Object $request - USer Details
      *
-     * @return array of channel list
+     * @return array of channel list @todo
      */
     public function categories_channels_list(Request $request) {
 
@@ -4233,4 +4233,32 @@ class NewUserApiController extends Controller
 
     }
 
+    // @todo proper structure
+
+    public function video_tapes_search(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'key' => 'required'
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+            
+            $video_tapes = VideoHelper::video_tapes_search($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+    }
 }

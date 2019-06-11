@@ -1167,6 +1167,8 @@ Route::group(['prefix' => 'api/user'], function() {
     Route::post('categories_based_videos', 'NewUserApiController@categories_based_videos');
 
     Route::post('suggestions', 'NewUserApiController@suggestions');
+    
+    Route::post('video_tapes_search', 'NewUserApiController@video_tapes_search');
 
     Route::group(['middleware' => 'NewUserApiVal'] , function() {
 
