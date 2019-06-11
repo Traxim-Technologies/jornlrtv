@@ -258,8 +258,6 @@ class V5Repository {
 
         $timezone = Setting::get('timezone');
 
-        $video_tape_details->publish_time = common_date($video_tape_details->publish_time, "", 'd M Y');
-
         if($user_details) {
 
             // check the channer owner status
@@ -319,7 +317,7 @@ class V5Repository {
        
         }
     
-        $video_tape_details->publish_time = $video_tape_details->publish_time ? common_date($video_tape_details->publish_time, $timezone ?: Setting::get('timezone'), 'D M Y'): "0000-00-00";
+        $video_tape_details->publish_time = $video_tape_details->publish_time ? common_date($video_tape_details->publish_time, $timezone ?: Setting::get('timezone'), 'd M Y'): "0000-00-00";
 
         $video_tape_details->wishlist_status = VideoHelper::wishlist_status($video_tape_details->video_tape_id, $user_id);
 
