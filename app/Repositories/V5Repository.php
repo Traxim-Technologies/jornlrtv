@@ -187,6 +187,7 @@ class V5Repository {
 
         foreach ($video_tapes as $key => $video_tape_details) {
 
+
             $video_tape_details->currency = Setting::get('currency', '$');
 
             $video_tape_details->share_url = route('user.single' , $video_tape_details->video_tape_id);
@@ -230,7 +231,9 @@ class V5Repository {
                 $video_tape_details->ppv_amount_formatted = formatted_amount($video_tape_details->ppv_amount);
            
             }
-        
+
+            $video_tape_details->publish_time = common_date($video_tape_details->publish_time, "", 'd M Y');
+
             $video_tape_details->wishlist_status = VideoHelper::wishlist_status($video_tape_details->video_tape_id, $user_id);
 
         }
