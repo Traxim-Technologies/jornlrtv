@@ -4,8 +4,34 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Setting;
+
 class Subscription extends Model
 {
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCommonResponse($query) {
+
+        $currency = Setting::get('currency') ?: "$";
+
+        return $query->select('subscriptions.id as subscription_id', 
+                'subscriptions.title' , 
+                'subscriptions.description' , 
+                'subscriptions.plan' , 
+                // 'subscriptions.picture' , 
+                \DB::raw("'$currency' as currency"),
+                'subscriptions.amount' , 
+                // 'subscriptions.plan_type' , 
+                'subscriptions.status',
+                'subscriptions.created_at',
+                'subscriptions.updated_at'
+                );
+    }
+
 	 /**
      * The attributes that are mass assignable.
      *

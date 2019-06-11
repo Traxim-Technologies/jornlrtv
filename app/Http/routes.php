@@ -28,6 +28,7 @@ Route::get('/clear-cache', function() {
 
 Route::post('project/configurations' , 'ApplicationController@configuration_site');
 
+Route::get('pages/list' , 'ApplicationController@static_pages_api');
 
 
 // UI
@@ -871,6 +872,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('/playlist_video_update', 'UserController@playlist_video_update')->name('playlist.video.update');
 
+    Route::post('/playlist/save/video_add', 'UserController@playlist_save_video_add')->name('playlist.save.video_add');
+
 });
 
 Route::group(['prefix' => 'userApi'], function() {
@@ -1082,6 +1085,8 @@ Route::group(['prefix' => 'userApi'], function() {
 
     Route::post('/video_tapes_view', 'V5UserApiController@video_tapes_view');
 
+    Route::post('/playlists/video_save', 'UserApiController@playlists_video_save');
+
 });
 
 
@@ -1098,5 +1103,240 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('v5/channels_view', 'V5UserApiController@channels_view');
 
     Route::post('v5/channel_based_videos', 'V5UserApiController@channel_based_videos');
+    
+    Route::post('v5/channels_subscribed', 'V5UserApiController@channels_subscribed');
 
 });
+
+
+// NEW COLLECTIONS:
+
+
+Route::group(['prefix' => 'api/user'], function() {
+
+    Route::post('project/configurations' , 'ApplicationController@configuration_site');
+
+    Route::post('spam_reasons' , 'UserApiController@reasons'); // @todo change USERAPI
+
+    /***
+     *
+     * User Account releated routs
+     *
+     */
+
+    Route::post('/register','NewUserApiController@register');
+    
+    Route::post('/login','NewUserApiController@login');
+
+    Route::post('/forgot_password', 'NewUserApiController@forgot_password');
+
+    Route::group(['middleware' => 'NewUserApiVal'] , function() {
+
+        Route::post('/profile','NewUserApiController@profile'); // 1
+
+        Route::post('/update_profile', 'NewUserApiController@update_profile'); // 2
+
+        Route::post('/change_password', 'NewUserApiController@change_password'); // 3
+
+        Route::post('/delete_account', 'NewUserApiController@delete_account'); // 4
+
+        Route::post('/push_notification_update', 'NewUserApiController@push_notification_status_change');  // 5
+
+        Route::post('/email_notification_update', 'NewUserApiController@email_notification_status_change'); // 6
+
+        Route::post('/logout', 'NewUserApiController@logout'); // 7
+
+        // CARDS curd Operations
+
+        Route::post('cards_add', 'NewUserApiController@cards_add'); // 15
+
+        Route::post('cards_list', 'NewUserApiController@cards_list'); // 16
+
+        Route::post('cards_delete', 'NewUserApiController@cards_delete'); // 17
+
+        Route::post('cards_default', 'NewUserApiController@cards_default'); // 18
+
+    });
+
+    //configurations
+
+    Route::post('notification/settings', 'NewUserApiController@notification_settings'); // 22
+
+    // Static pages
+
+    Route::get('pages/list' , 'NewUserApiController@static_pages_api');
+
+    // Core api's
+
+    Route::post('home', 'NewUserApiController@home');
+
+    Route::post('trending', 'NewUserApiController@trending');
+
+    Route::post('tags_based_videos', 'NewUserApiController@tags_based_videos');
+
+    Route::post('categories_based_videos', 'NewUserApiController@categories_based_videos');
+
+    Route::post('suggestions', 'NewUserApiController@suggestions');
+
+    Route::group(['middleware' => 'NewUserApiVal'] , function() {
+
+        // Redeems management 
+
+        Route::post('redeems', 'NewUserApiController@redeems');
+
+        Route::post('redeems_request_send', 'NewUserApiController@redeems_request_send');
+
+        Route::post('redeems_request_cancel', 'NewUserApiController@redeems_request_cancel');
+
+
+        // Subscriptions management
+
+        Route::post('subscriptions', 'NewUserApiController@subscriptions');
+
+        Route::post('subscriptions_history', 'NewUserApiController@subscriptions_history');
+
+        Route::post('subscriptions_payment_by_stripe', 'NewUserApiController@subscriptions_payment_by_stripe');
+
+        Route::post('subscriptions_payment_by_paypal', 'NewUserApiController@subscriptions_payment_by_paypal');
+
+        // Automatic subscription with cancel @todo change to newuserAPi
+
+        Route::post('subscriptions_autorenewal_pause', 'NewUserApiController@subscriptions_autorenewal_pause');
+
+        Route::post('subscriptions_autorenewal_enable', 'NewUserApiController@subscriptions_autorenewal_enable');
+
+        // Coupon codes
+
+        Route::post('coupon_codes_check', 'NewUserApiController@coupon_codes_check');
+
+        // PPV Management
+
+        Route::post('ppv_videos', 'NewUserApiController@ppv_videos');
+
+        Route::post('ppv_payment_by_stripe', 'NewUserApiController@ppv_payment_by_stripe');
+
+        Route::post('ppv_payment_by_paypal', 'NewUserApiController@ppv_payment_by_paypal');
+
+        // Wishlist
+
+        Route::post('wishlist' , 'NewUserApiController@wishlist_list');
+
+        Route::post('wishlist_operations' , 'NewUserApiController@wishlist_operations');
+
+
+        // Like & Dislikes
+
+        Route::post('video_tapes_like' , 'NewUserApiController@video_tapes_like');
+
+        Route::post('video_tapes_dislike' , 'NewUserApiController@video_tapes_dislike');
+
+        // History Management
+
+        Route::post('/video_tapes_history', 'NewUserApiController@video_tapes_history');
+
+        Route::post('/video_tapes_history_add', 'NewUserApiController@video_tapes_history_add');
+
+        Route::post('/video_tapes_history_remove', 'NewUserApiController@video_tapes_history_remove');
+
+        // Spam Management
+
+        Route::post('/spam_videos', 'NewUserApiController@spam_videos');
+
+        Route::post('/spam_videos_add', 'NewUserApiController@spam_videos_add');
+
+        Route::post('/spam_videos_remove', 'NewUserApiController@spam_videos_remove');
+
+        // Bell notifications @todo change to new userapi
+
+        Route::post('bell_notifications/', 'UserApiController@bell_notifications');
+
+        Route::post('bell_notifications_update', 'UserApiController@bell_notifications_update');
+
+        Route::post('bell_notifications_count', 'UserApiController@bell_notifications_count');
+
+        // Channels @todo change to new userapi
+
+        Route::post('channels_index', 'V5UserApiController@channels_index');
+
+        Route::post('channels_view', 'V5UserApiController@channels_view');
+
+        Route::post('channel_based_videos', 'V5UserApiController@channel_based_videos');
+        
+        Route::post('channels_subscribed', 'V5UserApiController@channels_subscribed');
+
+        Route::post('channels_unsubscribe_subscribe', 'NewUserApiController@channels_unsubscribe_subscribe');
+
+        Route::post('channels_save', 'NewUserApiController@channels_save');
+
+        Route::post('channels_delete', 'UserApiController@channel_delete');
+
+        Route::post('channels_edit', 'UserApiController@channel_edit');
+
+        // Referrals 
+
+        Route::post('/referrals', 'UserApiController@referrals')->name('referrals');
+
+        // Videos management @todo change to New user api
+
+        Route::post('video_tapes_revenues', 'UserApiController@video_tapes_revenues');
+
+        Route::post('video_tapes_status', 'UserApiController@video_tapes_status');
+
+        Route::post('video_tapes_ppv_status', 'UserApiController@video_tapes_ppv_status');
+
+        Route::post('video_tapes_delete', 'UserApiController@video_tapes_delete');
+
+        Route::post('video_tapes_view', 'V5UserApiController@video_tapes_view');
+
+        // Route::post('video_tapes_user_view', 'V5UserApiController@video_tapes_user_view');
+
+        // Comments management
+
+        Route::post('video_tapes_comments_save', 'NewUserApiController@video_tapes_comments_save');
+        
+
+    });
+
+    Route::post('video_tapes_user_view', 'NewUserApiController@video_tapes_user_view');
+
+    Route::post('video_tapes_comments', 'NewUserApiController@video_tapes_comments');
+
+    //categories @todo change to newuserAPi
+
+    Route::post('categories_list', 'UserApiController@categories_list');
+
+    Route::post('categories_view', 'NewUserApiController@categories_view');
+
+    Route::post('categories_videos', 'UserApiController@categories_videos');
+
+    Route::post('categories_channels_list', 'UserApiController@categories_channels_list');
+
+    // Tags @todo change to newuserAPi
+
+    Route::post('tags_list', 'UserApiController@tags_list');
+
+    Route::post('tags_view', 'UserApiController@tags_view');
+
+    Route::post('tags_videos', 'UserApiController@tags_videos');
+
+    // Referrals 
+
+    Route::post('/referrals_check', 'UserApiController@referrals_check');
+
+    // User Playlists @todo change to New user api
+
+    Route::post('playlists/', 'UserApiController@playlists');
+
+    Route::post('playlists_save', 'UserApiController@playlists_save');
+
+    Route::post('playlists_delete', 'UserApiController@playlists_delete');
+
+    Route::post('playlists_view', 'UserApiController@playlists_view');
+
+    Route::post('playlists_video_status', 'UserApiController@playlists_video_status');
+
+    Route::post('playlists_video_remove', 'UserApiController@playlists_video_remove');
+
+});
+
+Route::any('api_revamp_upgrade', 'ApplicationController@api_revamp_upgrade');

@@ -14,7 +14,7 @@ use Exception, Validator, DB, Setting;
 class version4AdminController extends Controller
 {
     /**
-     * Function Name : video_tapes_youtube_grapper_save()
+     * @method video_tapes_youtube_grapper_save()
      * 
      * Get the videos based on the channel ID from youtube API 
      *
@@ -241,7 +241,7 @@ class version4AdminController extends Controller
     }
 
     /**
-     * function name: redeems_payout_direct()
+     * @method redeems_payout_direct()
      *
      * @uses used for the payout user by offlin
      *

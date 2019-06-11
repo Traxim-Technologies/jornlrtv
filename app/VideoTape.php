@@ -76,6 +76,14 @@ class VideoTape extends Model
     
     }
 
+    public function scopeVerifiedVideo($query) {
+
+         return $query
+                ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED);
+
+    }
 
     /**
      * Scope a query to only include active users.
@@ -108,6 +116,49 @@ class VideoTape extends Model
                 'video_tapes.ppv_amount',
                 'video_tapes.is_approved as is_admin_approved',
                 'video_tapes.status as video_status',
+                'video_tapes.publish_time',
+                'video_publish_type',
+                'publish_status',
+                'video_tapes.video_type',
+                \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created'),
+                \DB::raw('DATE_FORMAT(video_tapes.updated_at , "%e %b %y") as updated')
+            
+            );
+    
+    }
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+
+    public function scopeOwnerShortVideoResponse($query) {
+
+        return $query
+            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+            // ->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
+            // ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+            // ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED_STATUS)
+            ->select(
+                'video_tapes.id as video_tape_id' ,
+                'video_tapes.title',
+                'video_tapes.description',
+                'video_tapes.default_image as video_image',
+                'video_tapes.watch_count',
+                'video_tapes.duration',
+                'channels.id as channel_id' ,
+                'channels.name as channel_name',
+                'channels.status as channel_status',
+                'channels.picture as channel_image',
+                'video_tapes.age_limit',
+                'video_tapes.type_of_user',
+                'video_tapes.type_of_subscription',
+                'video_tapes.is_pay_per_view',
+                'video_tapes.ppv_amount',
+                'video_tapes.is_approved as is_admin_approved',
+                'video_tapes.status as video_status',
+                'video_tapes.publish_time',
                 'video_publish_type',
                 'publish_status',
                 \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created'),

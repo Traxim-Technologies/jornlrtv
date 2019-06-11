@@ -129,7 +129,9 @@ class UserApiController extends Controller {
                 'referrals_check',
                 'categories_list',
                 'categories_view',
-                'categories_channels_list'
+                'categories_channels_list',
+                'playlists_view',
+                'playlists'
             ]));
 
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
@@ -3412,7 +3414,7 @@ class UserApiController extends Controller {
                                                 $user->user_type = SUBSCRIBED_USER;
 
                                                 $user->expiry_date = $user_payment->expiry_date;
-/*
+                            /*
                                                 $now = time(); // or your date as well
 
                                                 $end_date = strtotime($user->expiry_date);
@@ -3743,7 +3745,7 @@ class UserApiController extends Controller {
 
         $skip = $this->skip ?: 0;
 
-        $rake = $request->rake ?: (Setting::get('admin_take_count', 12));
+        $take = $request->take ?: (Setting::get('admin_take_count', 12));
 
         // Load Flag videos based on logged in user id
         $model = Flag::where('flags.user_id', $request->id)
@@ -5485,6 +5487,8 @@ class UserApiController extends Controller {
             $category = Category::find($video->category_id);
 
             $video['category_unique_id'] = $category ? $category->unique_id : '';
+
+            $video['category_name'] = $category ? $category->name : '';
 
             $response_array = [
                 'tags'=>$tags,
@@ -7300,10 +7304,53 @@ class UserApiController extends Controller {
 
         try {
 
+            $validator = Validator::make($request->all(), [
+                'skip' => 'numeric',
+                'channel_id' => 'exists:channels,id',
+                'view_type' => 'required'
+            ]);
+
+            if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+                
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            // Guests can access only channel playlists  - Required channel_id
+
+            // Logged in users playlists - required - Required viewer_type 
+
+            // Logged in user access other channel playlist  - required channel_id
+
+            // Logged in user access owned channel playlist - required channel_id
+
+            if(($request->id && $request->view_type == VIEW_TYPE_VIEWER)|| (!$request->id && $request->view_type == VIEW_TYPE_VIEWER)) {
+
+                if(!$request->channel_id) {
+
+                    throw new Exception("Channel ID is required", 101);
+                    
+
+                }
+                
+            }
+
             $base_query = Playlist::where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
 
-            if($request->view_type == VIEW_TYPE_OWNER) {
+            // While owner access the users playlists
+
+            if($request->view_type == VIEW_TYPE_OWNER && !$request->channel_id) {
+
+                $base_query = $base_query->where('playlists.user_id', $request->id)->where('channel_id', 0);
+
+            }
+
+            // While owner access the channel playlists
+
+            if($request->view_type == VIEW_TYPE_OWNER && $request->channel_id) {
 
                 $base_query = $base_query->where('playlists.user_id', $request->id);
             }
@@ -7333,9 +7380,28 @@ class UserApiController extends Controller {
 
                 $playlist_details->is_selected = $check_video ? YES : NO;
 
-                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
+                 // Total Video count start
+
+                $total_video_query = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id);
+
+                if($request->id) {
+
+                    $flag_video_ids = flag_videos($request->id);
+
+                    if($flag_video_ids) {
+
+                        $playlist_details->total_videos = $total_video_query->whereNotIn('playlist_videos.video_tape_id', $flag_video_ids);
+
+                    }
+
+                }
+
+                $playlist_details->total_videos = $total_video_query->count();
+               
+                // Total Video count end
 
                 $playlist_details->share_link = url('/');
+            
             }
 
             $response_array = ['success' => true, 'data' => $playlists];
@@ -7466,6 +7532,7 @@ class UserApiController extends Controller {
      */
 
     public function playlists_video_status(Request $request) {
+       
         try {
 
             DB::beginTransaction();
@@ -7493,6 +7560,21 @@ class UserApiController extends Controller {
                     throw new Exception($error_messages, 101);
                     
                 }
+
+                // check the video added in spams (For Viewer)
+
+                if(!$request->channel_id && $request->id) {
+
+                    $flagged_videos = getFlagVideos($request->id);
+
+                    if(in_array($request->video_tape_id, $flagged_videos)) {
+
+                        throw new Exception(tr('video_in_spam_list'), 101);
+                        
+                    }
+                }
+
+                // Spam check end
 
                 $playlist_ids = explode(',', $request->playlist_id);
 
@@ -7617,7 +7699,7 @@ class UserApiController extends Controller {
 
                 if($flagged_videos) {
 
-                    $video_tape_base_query->whereNotIn('video_tapes.id', $flagged_videos);
+                    $video_tape_base_query->whereNotIn('playlist_videos.video_tape_id', $flagged_videos);
 
                 }
 
@@ -7739,6 +7821,91 @@ class UserApiController extends Controller {
     }
 
     /**
+     *
+     * Function name: playlists_video_save()
+     *
+     * @uses add the video to playlist
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param integer video_tape_id, playlistid
+     *
+     * @return JSON Response
+     */
+
+    public function playlists_video_save(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(),[
+                    'playlist_id' =>'required|exists:playlists,id',
+                    'video_tape_id' => 'required|exists:video_tapes,id',
+                ],
+                [
+                    'exists' => 'The :attribute doesn\'t exists please add to playlist',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            }
+
+            // check the video added in spams (For Viewer)
+
+            if(!$request->channel_id && $request->id) {
+
+                $flagged_videos = getFlagVideos($request->id);
+
+                if(in_array($request->video_tape_id, $flagged_videos)) {
+
+                    throw new Exception(tr('video_in_spam_list'), 101);
+                    
+                }
+            }
+
+            // Spam check end
+                
+            $playlist_video_details = new PlaylistVideo;
+
+            $playlist_video_details->user_id = $request->id;
+
+            $playlist_video_details->playlist_id = $request->playlist_id;
+
+            $playlist_video_details->video_tape_id = $request->video_tape_id;
+
+            $playlist_video_details->status = APPROVED;
+
+            $playlist_video_details->save();
+
+            DB::commit();
+
+            $response_array = ['success' => true, 'message' => Helper::get_message(126), 'code' => 126];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+    
+    }
+
+    /**
      * Function Name : playlists_delete()
      *
      * @uses used to delete the user selected playlist
@@ -7822,14 +7989,13 @@ class UserApiController extends Controller {
 
         try {
 
-            $skip = $this->skip ?: 0;
-
-            $take = $this->take ?: TAKE_COUNT;
+            $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
                                         ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
                                         ->skip($skip)
                                         ->take($take)
+                                        ->orderBy('bell_notifications.created_at', 'desc')
                                         ->get();
 
             foreach ($bell_notifications as $key => $bell_notification_details) {
@@ -7846,7 +8012,7 @@ class UserApiController extends Controller {
 
                     $video_tape_details = VideoTape::find($bell_notification_details->video_tape_id);
 
-                    $picture = $video_tape_details ? $video_tape_details->picture : $picture;
+                    $picture = $video_tape_details ? $video_tape_details->default_image : $picture;
 
                 }
 

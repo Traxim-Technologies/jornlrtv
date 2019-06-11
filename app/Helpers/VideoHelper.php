@@ -10,6 +10,13 @@ use App\Wishlist;
 
 use App\VideoTape;
 
+use App\UserHistory;
+
+use App\PayPerView;
+
+use App\Flag;
+
+
 class VideoHelper {
 
     protected $skip, $take;
@@ -24,7 +31,270 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: wishlist_videos()
+     * @method mobile_home()
+     *
+     * @uses used to get the list of videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function mobile_home($request) {
+
+        try {
+
+            $base_query = VideoTape::where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                            ->where('channels.is_approved', ADMIN_CHANNEL_APPROVED)
+                            ->where('channels.status', USER_CHANNEL_APPROVED)
+                            ->where('categories.status', CATEGORY_APPROVE_STATUS)
+                            ->orderby('video_tapes.created_at' , 'desc');
+
+            // check page type 
+
+            $base_query = self::get_page_type_query($request, $base_query);
+
+            // Check any flagged videos are present
+
+            $spam_video_ids = self::get_flag_video_ids($request->id);
+            
+            if($spam_video_ids) {
+
+                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
+
+            }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+            $take = $request->take ?: (Setting::get('take') ?: 12);
+
+            $skip = $request->skip ?: 0;
+
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+
+    /**
+     *
+     * @method trending()
+     *
+     * @uses used to get the list of trending videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function trending($request) {
+
+        try {
+
+            $base_query = VideoTape::where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                            ->where('channels.is_approved', ADMIN_CHANNEL_APPROVED)
+                            ->where('channels.status', USER_CHANNEL_APPROVED)
+                            ->where('categories.status', APPROVED)
+                            ->orderby('video_tapes.watch_count' , 'desc');
+
+            // check page type 
+
+            $base_query = self::get_page_type_query($request, $base_query);
+
+            // Check any flagged videos are present
+
+            $spam_video_ids = self::get_flag_video_ids($request->id);
+            
+            if($spam_video_ids) {
+
+                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
+
+            }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+            $take = $request->take ?: (Setting::get('take') ?: 12);
+
+            $skip = $request->skip ?: 0;
+
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+    /**
+     *
+     * @method tags_based_videos()
+     *
+     * @uses used to get the list of tags_based_videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function tags_based_videos($request) {
+
+        try {
+
+            $base_query = VideoTape::where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                            ->where('channels.is_approved', ADMIN_CHANNEL_APPROVED)
+                            ->where('channels.status', USER_CHANNEL_APPROVED)
+                            ->where('categories.status', APPROVED)
+                            ->where('tag_id', $request->tag_id)
+                            ->orderby('video_tapes.updated_at' , 'desc');
+
+            // check page type 
+
+            $base_query = self::get_page_type_query($request, $base_query);
+
+            // Check any flagged videos are present
+
+            $spam_video_ids = self::get_flag_video_ids($request->id);
+            
+            if($spam_video_ids) {
+
+                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
+
+            }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+            $take = $request->take ?: (Setting::get('take') ?: 12);
+
+            $skip = $request->skip ?: 0;
+
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+    /**
+     *
+     * @method categories_based_videos()
+     *
+     * @uses used to get the list of categories_based_videos
+     *
+     * @created Vidhya R
+     *
+     * @updated Vidhya R
+     *
+     * @param integer $user_id
+     *
+     * @param integer $skip
+     *
+     * @return list of videos
+     */
+
+    public static function categories_based_videos($request) {
+
+        try {
+
+            $base_query = VideoTape::where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED)   
+                            ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id') 
+                            ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.publish_status' , VIDEO_PUBLISHED)
+                            ->where('channels.is_approved', ADMIN_CHANNEL_APPROVED)
+                            ->where('channels.status', USER_CHANNEL_APPROVED)
+                            ->where('categories.status', APPROVED)
+                            ->where('video_tapes.category_id', $request->category_id)
+                            ->orderby('video_tapes.updated_at' , 'desc');
+
+            // check page type 
+
+            $base_query = self::get_page_type_query($request, $base_query);
+
+            // Check any flagged videos are present
+
+            $spam_video_ids = self::get_flag_video_ids($request->id);
+            
+            if($spam_video_ids) {
+
+                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
+
+            }
+
+            $base_query->where('video_tapes.age_limit','<=', checkAge($request));
+
+            $take = $request->take ?: (Setting::get('take') ?: 12);
+
+            $skip = $request->skip ?: 0;
+
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+
+            return $video_tapes;
+
+        }  catch( Exception $e) {
+
+            return [];
+
+        }
+
+    }
+
+    /**
+     *
+     * @method wishlist_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -53,7 +323,7 @@ class VideoHelper {
 
             // Check any flagged videos are present
 
-            $spam_video_ids = flag_videos($request->id);
+            $spam_video_ids = self::get_flag_video_ids($request->id);
             
             if($spam_video_ids) {
 
@@ -67,13 +337,11 @@ class VideoHelper {
 
             $wishlist_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($wishlist_video_ids, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
+            $video_tapes = V5Repo::video_list_response($wishlist_video_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
 
             return $video_tapes;
 
         }  catch( Exception $e) {
-
-            dd($e->getMessage());
 
             return [];
 
@@ -83,7 +351,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: history_videos()
+     * @method history_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -104,9 +372,9 @@ class VideoHelper {
 
         try {
 
-            $base_query = UserHistory::select('user_histories.admin_video_id')
-                                ->where('user_histories.sub_profile_id' , $request->id)
-                                ->leftJoin('video_tapes', 'video_tapes.id', '=' , 'user_histories.admin_video_id')
+            $base_query = UserHistory::select('user_histories.video_tape_id')
+                                ->where('user_histories.user_id' , $request->id)
+                                ->leftJoin('video_tapes', 'video_tapes.id', '=' , 'user_histories.video_tape_id')
                                 ->orderby('user_histories.updated_at', 'desc');
             // check page type 
 
@@ -114,29 +382,19 @@ class VideoHelper {
 
             // Check any flagged videos are present
 
-            $spam_video_ids = self::getFlagVideos($request->id);
+            $spam_video_ids = self::get_flag_video_ids($request->id);
             
             if($spam_video_ids) {
 
-                // $base_query->whereNotIn('user_histories.admin_video_id', $spam_video_ids);
+                $base_query->whereNotIn('user_histories.video_tape_id', $spam_video_ids);
 
             }
-
-            // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($sub_profile_id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('wishlists.admin_video_id', $continue_watching_video_ids);
-
-            // }
 
             $take = Setting::get('admin_take_count', 12);
 
             $skip = $request->skip ?: 0;
 
-            $user_history_ids = $base_query->skip($skip)->take($take)->lists('admin_video_id')->toArray();
+            $user_history_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
             $video_tapes = V5Repo::video_list_response($user_history_ids, $orderBy = "created_at", $other_select_columns = 'video_tapes.description');
 
@@ -152,7 +410,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: new_releases_videos()
+     * @method ppv_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -162,50 +420,40 @@ class VideoHelper {
      *
      * @param integer $user_id
      *
-     * @param integer $sub_profile_id
-     *
      * @param integer $skip
      *
      * @return list of videos
      */
 
-    public static function new_releases_videos($request) {
+    public static function ppv_videos($request) {
 
         try {
 
-            $base_query = VideoTape::orderby('video_tapes.created_at' , 'desc');
-
+            $base_query = PayPerView::select('pay_per_views.video_id')
+                                ->where('pay_per_views.user_id' , $request->id)
+                                ->leftJoin('video_tapes', 'video_tapes.id', '=' , 'pay_per_views.video_id')
+                                ->orderby('pay_per_views.updated_at', 'desc');
             // check page type 
 
             $base_query = self::get_page_type_query($request, $base_query);
-                       
+
             // Check any flagged videos are present
 
-            $spam_video_ids = self::getFlagVideos($request->id);
+            $spam_video_ids = self::get_flag_video_ids($request->id);
             
             if($spam_video_ids) {
 
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
+                $base_query->whereNotIn('pay_per_views.video_id', $spam_video_ids);
 
             }
-
-            // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($request->id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            // }
 
             $take = Setting::get('admin_take_count', 12);
 
             $skip = $request->skip ?: 0;
 
-            $new_video_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
+            $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($new_video_ids);
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $orderBy = "created_at", $other_select_columns = 'video_tapes.description');
 
             return $video_tapes;
 
@@ -219,7 +467,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: continue_watching_videos()
+     * @method spam_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -229,111 +477,30 @@ class VideoHelper {
      *
      * @param integer $user_id
      *
-     * @param integer $sub_profile_id
-     *
      * @param integer $skip
      *
      * @return list of videos
      */
 
-    public static function continue_watching_videos($request) {
+    public static function spam_videos($request) {
 
         try {
 
-            $base_query = ContinueWatchingVideo::where('continue_watching_videos.sub_profile_id', $request->id)
-                                ->leftJoin('video_tapes', 'video_tapes.id', '=', 'continue_watching_videos.admin_video_id')
-                                ->orderby('continue_watching_videos.updated_at', 'desc');
+            $base_query = Flag::where('flags.user_id', $request->id)
+                            ->where('flags.status', DEFAULT_TRUE)
+                            ->leftJoin('video_tapes', 'flags.video_tape_id', '=', 'video_tapes.id')
+                            ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED)
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
+                            ->where('video_tapes.age_limit','<=', checkAge($request))
+                            ->orderBy('flags.created_at', 'desc');
 
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-                       
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('admin_video_id', $spam_video_ids);
-
-            }
-
-            $take = Setting::get('admin_take_count', 12);
+            $take = $request->take ?: (Setting::get('take') ?: 12);
 
             $skip = $request->skip ?: 0;
 
-            $continue_watching_video_ids = $base_query->skip($skip)->take($take)->lists('admin_video_id')->toArray();
+            $spam_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($continue_watching_video_ids);
-
-            return $video_tapes;
-
-        }  catch( Exception $e) {
-
-            return [];
-
-        }
-
-    }
-
-
-    /**
-     *
-     * Function Name: trending_videos()
-     *
-     * @uses used to get the list of contunue watching videos
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @param integer $skip
-     *
-     * @return list of videos
-     */
-
-    public static function trending_videos($request) {
-
-        try {
-
-            $base_query = AdminVideo::where('video_tapes.watch_count' , '>' , 0)
-                            ->orderby('video_tapes.watch_count' , 'desc');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-                       
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
-
-            }
-
-            // // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($sub_profile_id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            // }
-
-            $take = Setting::get('admin_take_count', 12);
-
-            $skip = $request->skip ?: 0;
-
-            $trending_video_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
-
-            $video_tapes = V5Repo::video_list_response($trending_video_ids);
+            $video_tapes = V5Repo::video_list_response($spam_video_ids, $request->id, $orderBy = "video_tapes.created_at", $other_select_columns = 'video_tapes.description');
 
             return $video_tapes;
 
@@ -347,78 +514,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: original_videos()
-     *
-     * @uses used to get the list of contunue watching videos
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @param integer $skip
-     *
-     * @return list of videos
-     */
-
-    public static function original_videos($request) {
-
-        try {
-
-            $base_query = AdminVideo::where('video_tapes.is_original_video', YES)
-                            ->orderby('video_tapes.updated_at' , 'desc');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-                       
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
-
-            }
-
-            // // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($sub_profile_id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            // }
-
-            $take = Setting::get('admin_take_count', 12);
-
-            $skip = $request->skip ?: 0;
-
-            $original_video_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
-
-
-            $video_tapes = V5Repo::video_list_response($original_video_ids);
-
-            return $video_tapes;
-
-        }  catch( Exception $e) {
-
-            Log::info("original_videos".$e->getMessage());
-
-            return [];
-
-        }
-
-    }
-
-    /**
-     *
-     * Function Name: suggestion_videos()
+     * @method suggestion_videos()
      *
      * @uses used to get the list of contunue watching videos
      *
@@ -439,39 +535,45 @@ class VideoHelper {
 
         try {
 
-            $base_query = UserHistory::where('sub_profile_id' , $request->id)->orderByRaw('RAND()');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
+            $base_query = UserHistory::where('user_id' , $request->id)->orderByRaw('RAND()');
                        
             // Check any flagged videos are present
 
-            $spam_video_ids = self::getFlagVideos($request->id);
+            $spam_video_ids = self::get_flag_video_ids($request->id);
             
             if($spam_video_ids) {
 
-                $base_query->whereNotIn('user_histories.admin_video_id', $spam_video_ids);
+                $base_query->whereNotIn('user_histories.video_tape_id', $spam_video_ids);
 
             }
 
-            // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($sub_profile_id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('user_histories.admin_video_id', $continue_watching_video_ids);
-
-            // }
-
-            $take = Setting::get('admin_take_count', 12);
+            $take = $request->take ?: Setting::get('admin_take_count', 12); 
 
             $skip = $request->skip ?: 0;
 
-            $suggestion_video_ids = $base_query->skip($skip)->take($take)->lists('admin_video_id')->toArray();
+            $suggestion_video_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($suggestion_video_ids);
+            $suggestion_video_ids[] = $request->video_tape_id;
+
+            // Get the channel videos 
+
+            $suggestion_channel_ids = VideoTape::whereIn('video_tapes.id', $suggestion_video_ids)->whereNotIn('video_tapes.id', $spam_video_ids)->lists('channel_id')->toArray();
+
+            // Based on the selected channel ids
+
+            $spam_video_ids[] = $request->video_tape_id;
+
+            $video_tape_ids = VideoTape::whereNotIn('video_tapes.id', $spam_video_ids)->whereIn('channel_id', $suggestion_channel_ids)->orderByRaw('RAND()')->lists('video_tapes.id')->toArray();
+
+            if(!$video_tape_ids) {
+
+                $video_tape_ids = VideoTape::whereNotIn('video_tapes.id', $spam_video_ids)->orderByRaw('RAND()')->lists('video_tapes.id')->toArray();
+
+            }
+
+            $video_tape_ids = array_slice($video_tape_ids, 0, $take);
+
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderBy = "video_tapes.updated_at", $other_select_columns = 'video_tapes.description', $is_random_order = YES);
 
             return $video_tapes;
 
@@ -485,365 +587,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: banner_videos()
-     *
-     * @uses used to get the list of contunue watching videos
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @param integer $skip
-     *
-     * @return list of videos
-     */
-
-    public static function banner_videos($request) {
-
-        try {
-
-            $base_query = AdminVideo::orderby('video_tapes.created_at' , 'desc');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-                       
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
-
-            }
-
-            // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($request->id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            // }
-
-            $take = Setting::get('admin_take_count', 12);
-
-            $skip = $request->skip ?: 0;
-
-            $banner_video_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
-
-            $video_tapes = V5Repo::video_list_response($banner_video_ids, $orderby = 'video_tapes.watch_count');
-
-            foreach ($video_tapes as $key => $admin_video_details) {
-
-                $admin_video_details->banner_image = $admin_video_details->default_image;
-
-                $admin_video_details->wishlist_status = VideoHelper::wishlist_status($admin_video_details->admin_video_id,$request->id);
-
-            }
-
-            return $video_tapes;
-
-
-        }  catch( Exception $e) {
-
-            return [];
-
-        }
-
-    }
-
-    /**
-     *
-     * Function Name: category_videos()
-     *
-     * @uses used to get the list of contunue watching videos
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @param integer $skip
-     *
-     * @return list of videos
-     */
-
-    public static function category_videos($request) {
-
-        try {
-
-            $category_ids = is_array($request->category_id) ? $request->category_id : [$request->category_id];
-
-            $base_query = AdminVideo::whereIn('video_tapes.category_id', $category_ids)
-                                ->orderby('video_tapes.created_at' , 'desc');
-                       
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
-
-            }
-
-            // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($request->id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            // }
-
-            $take = Setting::get('admin_take_count', 12);
-
-            $skip = $request->skip ?: 0;
-
-            $category_video_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
-
-            $video_tapes = V5Repo::video_list_response($category_video_ids);
-
-            return $video_tapes;
-
-        }  catch( Exception $e) {
-
-            return [];
-
-        }
-
-    }
-
-    /**
-     *
-     * Function Name: sub_category_videos()
-     *
-     * @uses used to get the list of contunue watching videos
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @param integer $skip
-     *
-     * @return list of videos
-     */
-
-    public static function sub_category_videos($request) {
-
-        try {
-
-            $sub_category_ids = is_array($request->sub_category_id) ? $request->sub_category_id : [$request->sub_category_id];
-
-            $base_query = AdminVideo::whereIn('video_tapes.sub_category_id', $sub_category_ids)
-                            ->orderby('video_tapes.created_at' , 'desc');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-                       
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
-
-            }
-
-            // Check any video present in continue watching
-
-            $continue_watching_video_ids = continueWatchingVideos($request->id);
-            
-            if($continue_watching_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            }
-
-            $take = Setting::get('admin_take_count', 12);
-
-            $skip = $request->skip ?: 0;
-
-            $sub_category_video_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
-
-            $video_tapes = V5Repo::video_list_response($sub_category_video_ids);
-
-            return $video_tapes;
-
-        }  catch( Exception $e) {
-
-            return [];
-
-        }
-
-    }
-
-    /**
-     *
-     * Function Name: genre_videos()
-     *
-     * @uses used to get the list of contunue watching videos
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @param integer $skip
-     *
-     * @return list of videos
-     */
-
-    public static function genre_videos($request) {
-
-        try {
-
-            $genre_ids = is_array($request->genre_id) ? $request->genre_id : [$request->genre_id];
-
-            $base_query = AdminVideo::whereIn('video_tapes.genre_id', $genre_ids)
-                            ->orderby('video_tapes.created_at' , 'desc');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-                       
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
-
-            }
-
-            // Check any video present in continue watching
-
-            // $continue_watching_video_ids = continueWatchingVideos($request->id);
-            
-            // if($continue_watching_video_ids) {
-
-            //     $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            // }
-
-            $take = Setting::get('admin_take_count', 12);
-
-            $skip = $request->skip ?: 0;
-
-            $genre_video_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
-
-            $video_tapes = V5Repo::video_list_response($genre_video_ids);
-
-            return $video_tapes;
-
-        }  catch( Exception $e) {
-
-            return [];
-
-        }
-
-    }
-
-    /**
-     *
-     * Function Name: cast_crews_videos()
-     *
-     * @uses used to get the list of contunue watching videos
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @param integer $skip
-     *
-     * @return list of videos
-     */
-
-    public static function cast_crews_videos($request) {
-
-        try {
-
-            $cast_crew_ids = is_array($request->cast_crew_id) ? $request->cast_crew_id : [$request->cast_crew_id];
-
-            $base_query = VideoCastCrew::whereIn('video_cast_crews.cast_crew_id', $cast_crew_ids)
-                                    ->leftJoin('video_tapes', 'video_tapes.id', '=' , 'video_cast_crews.admin_video_id')
-                                    ->orderby('video_cast_crews.created_at' , 'desc');
-
-            // check page type 
-
-            $base_query = self::get_page_type_query($request, $base_query);
-                       
-            // Check any flagged videos are present
-
-            $spam_video_ids = self::getFlagVideos($request->id);
-            
-            if($spam_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $spam_video_ids);
-
-            }
-
-            // Check any video present in continue watching
-
-            $continue_watching_video_ids = continueWatchingVideos($request->id);
-            
-            if($continue_watching_video_ids) {
-
-                $base_query->whereNotIn('video_tapes.id', $continue_watching_video_ids);
-
-            }
-
-            $take = Setting::get('admin_take_count', 12);
-
-            $skip = $request->skip ?: 0;
-
-            $cast_crew_ids = $base_query->skip($skip)->take($take)->lists('video_tapes.id')->toArray();
-
-            $video_tapes = V5Repo::video_list_response($cast_crew_ids);
-
-            return $video_tapes;
-
-        }  catch( Exception $e) {
-
-            return [];
-
-        }
-
-    }
-
-
-    /**
-     *
-     * Function Name: wishlist_status()
+     * @method wishlist_status()
      *
      * @uses used to get the wishlist status of the video
      *
@@ -857,10 +601,10 @@ class VideoHelper {
      *
      * @return boolean 
      */
-    public static function wishlist_status($admin_video_id,$sub_profile_id) {
+    public static function wishlist_status($video_tape_id,$user_id) {
 
-        $wishlist_details = Wishlist::where('admin_video_id' , $admin_video_id)
-                        ->where('sub_profile_id' , $sub_profile_id)
+        $wishlist_details = Wishlist::where('video_tape_id' , $video_tape_id)
+                        ->where('user_id' , $user_id)
                         ->where('status' , YES)
                         ->count();
 
@@ -873,7 +617,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: history_status()
+     * @method history_status()
      *
      * @uses used to get the wishlist status of the video
      *
@@ -899,7 +643,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: like_status()
+     * @method like_status()
      *
      * @uses used to get the like status of the video
      *
@@ -939,7 +683,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: likes_count()
+     * @method likes_count()
      *
      * @uses used to get the like status of the video
      *
@@ -960,243 +704,9 @@ class VideoHelper {
         return $likes_count ?: 0;
 
     }
-
     /**
      *
-     * Function Name: download_button_status()
-     *
-     * @uses used to get the like status of the video
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @return boolean 
-     */
-    public static function download_button_status($admin_video_id , $user_id, $admin_video_download_status, $user_type, $is_ppv) {
-
-        $offline_video_details = OfflineAdminVideo::where('admin_video_id' , $admin_video_id)
-                                        ->where('user_id', $user_id)
-                                        ->first();
-
-        $download_button_status = DOWNLOAD_BTN_DONT_SHOW;
-
-        if($offline_video_details) {
-
-            if(in_array($offline_video_details->download_status, [DOWNLOAD_INITIATE_STAUTS, DOWNLOAD_PROGRESSING_STAUTS])) {
-
-                $download_button_status = DOWNLOAD_BTN_ONPROGRESS;
-
-            } elseif ($offline_video_details->download_status == DOWNLOAD_COMPLETE_STAUTS) {
-                
-                $download_button_status = DOWNLOAD_BTN_COMPLETED;
-
-            } elseif (in_array( $offline_video_details->download_status, [DOWNLOAD_PAUSE_STAUTS, DOWNLOAD_CANCEL_STAUTS, DOWNLOAD_DELETE_STAUTS]) && $admin_video_download_status == DOWNLOAD_ON && $user_type == SUBSCRIBED_USER && $is_ppv == NO) {
-                
-                $download_button_status = DOWNLOAD_BTN_SHOW;
-
-            }
-        
-        } else {
-
-            if($admin_video_download_status == DOWNLOAD_ON) {
-
-                if($user_type == NON_SUBSCRIBED_USER) {
-
-                    $download_button_status == DOWNLOAD_BTN_USER_NEEDS_TO_SUBSCRIBE;
-
-                } elseif ($is_ppv == YES) {
-
-                    $download_button_status = DOWNLOAD_BTN_USER_NEEDS_PAY_FOR_VIDEO;
-
-                } else {
-
-                    $download_button_status = DOWNLOAD_BTN_SHOW;
-                }
-            }
-
-        }
-
-        return $download_button_status;
-
-    }
-
-    /**
-     *
-     * Function Name: download_button_status()
-     *
-     * @uses used to get the like status of the video
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @return boolean 
-     */
-    public static function download_status_text($offline_video_status) {
-
-        $text = "";
-
-        switch ($offline_video_status) {
-
-            case DOWNLOAD_INITIATE_STAUTS:
-                    
-                $text = tr('download_initiated');
-
-                break;
-
-            case DOWNLOAD_PROGRESSING_STAUTS:
-                    
-                $text = tr('download_progressing');
-
-                break;
-
-            case DOWNLOAD_PAUSE_STAUTS:
-                    
-                $text = tr('download_paused');
-
-                break;
-
-            case DOWNLOAD_COMPLETE_STAUTS:
-                    
-                $text = tr('download_completed');
-
-                break;
-
-            case DOWNLOAD_CANCEL_STAUTS:
-                    
-                $text = tr('download_cancelled');
-
-                break;
-            
-            default:
-                $text = "";
-
-                break;
-        }
-
-        return $text;
-
-    }  
-
-    /**
-     *
-     * Function Name: download_button_status()
-     *
-     * @uses used to get the like status of the video
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param integer $user_id
-     *
-     * @param integer $sub_profile_id
-     *
-     * @return boolean 
-     */
-    public static function get_video_resolutions($request) {
-
-        $resolutions_data = $download_urls = [];
-
-        $video_resolutions = explode(',', $request->video_resolutions);
-
-        $video_resize_path = $request->video_resize_path ? explode(',', $request->video_resize_path) : [];
-
-        if($video_resize_path && $video_resolutions) {
-
-            foreach ($video_resolutions as $key => $value) {
-            
-                $download_url = new \stdClass();
-
-                $download_url->title = $value;
-
-                $download_url->type = "MP4";
-
-                $video_link = $normal_converted_vod_video = $download_url->link = isset($video_resize_path[$key]) ? $video_resize_path[$key] : $admin_video_details->video;
-
-                $request->video = $video_link;
-
-                $normal_converted_vod_video = self::get_streaming_link_video($video_link, $request); 
-
-                $resolutions_data[$value] = $normal_converted_vod_video;
-                
-                array_push($download_urls, $download_url);
-
-            }
-
-        }
-
-        $resolutions_data['original'] = self::get_streaming_link_video($request->video, $request);
-
-        return [$resolutions_data, $download_urls];
-
-    }  
-
-
-    /**
-     *
-     * Function Name: get_rtmp_link_video()
-     *
-     * @uses used to convert the normal video to RTMP Video
-     *
-     * @created Vidhya R
-     *
-     * @updated Vidhya R
-     *
-     * @param string $video_link
-     *
-     * @return string $normal_converted_video 
-     */
-    public static function get_streaming_link_video($video_link, $request) {
-
-        // Check video video_type
-
-        if($request->video_type == VIDEO_TYPE_YOUTUBE) {
-
-            if ($request->device_type != DEVICE_WEB) {
-
-                $normal_converted_video = get_api_youtube_link($video_link);
-
-            } else {
-
-                $normal_converted_video = get_youtube_embed_link($video_link);
-
-            }
-
-        } elseif ($request->video_type == VIDEO_TYPE_UPLOAD && $request->video_upload_type == VIDEO_UPLOAD_TYPE_DIRECT) {
-
-            if(check_valid_url($request->video)) {
-
-                $stream_url_rtmp_or_hls = $request->device_type == DEVICE_IOS ? Setting::get('HLS_STREAMING_URL') : Setting::get('streaming_url');
-
-                if($stream_url_rtmp_or_hls) {
-
-                    $normal_converted_video = $stream_url_rtmp_or_hls.get_video_end($request->video);
-                }
-
-            }
-            
-        } else {
-
-            $normal_converted_video = $request->video;
-        }
-
-        return $normal_converted_video;
-
-    }
-
-    /**
-     *
-     * Function Name: get_page_type_query()
+     * @method get_page_type_query()
      *
      * @uses based on the page type, change the query
      *
@@ -1244,7 +754,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: get_ppv_page_type()
+     * @method get_ppv_page_type()
      *
      * @uses based on the page type, change the query
      *
@@ -1307,7 +817,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: get_ppv_page_type()
+     * @method get_ppv_page_type()
      *
      * @uses based on the page type, change the query
      *
@@ -1333,7 +843,7 @@ class VideoHelper {
 
     /**
      *
-     * Function Name: getFlagVideos()
+     * @method get_flag_video_ids()
      *
      * @uses based on the page type, change the query
      *
@@ -1345,20 +855,20 @@ class VideoHelper {
      * 
      * @return $base_query 
      */
-    public static function getFlagVideos($sub_profile_id) {
+    public static function get_flag_video_ids($user_id) {
 
         // Load Flag videos based on logged in user id
         
-        $video_tape_ids = Flag::where('flags.sub_profile_id', $sub_profile_id)
+        $video_tape_ids = Flag::where('flags.user_id', $user_id)
                             ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
-                            ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED_STATUS)
-                            ->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
+                            ->where('video_tapes.is_approved' , ADMIN_VIDEO_APPROVED)
+                            ->where('video_tapes.status' , USER_VIDEO_APPROVED)
                             ->pluck('video_tape_id')
                             ->toArray();
 
-        // Return array of id's
+        // Return array of id's   
+
         return $video_tape_ids;
     }
-
 
 }

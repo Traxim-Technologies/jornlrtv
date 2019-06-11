@@ -271,6 +271,10 @@ class CommonRepository {
 
                 if ($channel_details->save()) {
 
+                    // For response purpose
+
+                    $channel_details->channel_id = $channel_details->id;
+
                     DB::commit();
 
                 } else {
@@ -292,7 +296,7 @@ class CommonRepository {
 
             $message = $e->getMessage();
 
-            $response_array = ['success' => false, 'error_messages' => $message];
+            $response_array = ['success' => false, 'error_messages' => $message, 'error_code' => $e->getCode()];
         }    
 
         return response()->json($response_array, 200);    

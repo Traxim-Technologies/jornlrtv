@@ -25,7 +25,7 @@ class V5UserApiController extends Controller
 
 	public function __construct(Request $request) {
 
-        $this->middleware('UserApiVal', ['except' => ['channels_index']]);
+        $this->middleware('UserApiVal', ['except' => ['channels_index', 'channels_view', 'channel_based_videos']]);
 
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
 
@@ -198,7 +198,7 @@ class V5UserApiController extends Controller
 
                 $channel_details->no_of_videos = videos_count($channel_details->channel_id);
 
-                $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
+                $channel_details->no_of_subscribers = subscriberscnt($channel_details->channel_id);
 
                 // check my channel and subscribe status
 
@@ -237,7 +237,7 @@ class V5UserApiController extends Controller
     }
 
     /**
-     * Function Name : channels_view()
+     * @method channels_view()
      *
      * @uses used to get the channel details
      *
@@ -288,9 +288,15 @@ class V5UserApiController extends Controller
 
             $data = new \stdClass();
 
+            $channel_details->name = $channel_details->channel_name;
+
+            $channel_details->image = $channel_details->channel_image;
+
+            $channel_details->cover = $channel_details->channel_cover;
+
             $channel_details->no_of_videos = videos_count($request->channel_id);
 
-            $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
+            $channel_details->no_of_subscribers = subscriberscnt($request->channel_id);
 
             // check my channel and subscribe status
 
@@ -316,7 +322,7 @@ class V5UserApiController extends Controller
 
             }
 
-            $data->channel_details = $channel_details;
+            $data->details = $channel_details;
 
             // Videos with skip and take
 
@@ -417,9 +423,10 @@ class V5UserApiController extends Controller
 
             $video_tape_ids = $video_tape_base_query->skip($this->skip)->take($this->take)->pluck('video_tapes.id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id, $orderby = 'video_tapes.updated_at', $other_select_columns = "", $is_random_order = "", $is_owner = $request->view_type == VIEW_TYPE_OWNER ? YES : NO);
 
-            $data->video_tapes = $video_tapes;
+            // $data->video_tapes = $video_tapes;
+            $data = $video_tapes;
 
             return $this->sendResponse($message = "", $code = "", $data);
 
@@ -432,7 +439,7 @@ class V5UserApiController extends Controller
     }
 
     /**
-     * Function Name : video_tapes_view()
+     * @method video_tapes_view()
      *
      * @uses used to get the channel details
      *
@@ -509,6 +516,86 @@ class V5UserApiController extends Controller
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
             return response()->json($response_array, 200);
+        }
+
+    }
+
+    /**
+     * @method subscribed_channels
+     *
+     * @uses list of channels subscribed by the loggedin user
+     * 
+     * @created vithya R
+     *
+     * @updated vithya R
+     * 
+     * @param Object $request - Subscribed plan Details
+     *
+     * @return array of channel subscribed plans
+     */
+    
+    public function channels_subscribed(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                [
+                    'skip' => 'required',
+                ]
+            );
+
+            if ($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 906);
+                
+            }
+
+
+            $subscribed_channel_ids = ChannelSubscription::where('user_id', $request->id)->pluck('channel_id')->toArray();
+
+            $base_query = Channel::whereIn('channels.id', $subscribed_channel_ids)->BaseResponse();
+
+            $channels = $base_query->skip($this->skip)->take($this->take)->get();
+
+            foreach ($channels as $key => $channel_details) {
+
+                $channel_details->no_of_videos = videos_count($channel_details->channel_id);
+
+                $channel_details->no_of_subscribers = $channel_details->getChannelSubscribers()->count();
+
+                // check my channel and subscribe status
+
+                $channel_details->is_my_channel = NO;
+
+                $channel_details->is_user_subscribed_the_channel = CHANNEL_UNSUBSCRIBED;
+
+                if($request->id) {
+
+                    if($channel_details->user_id == $request->id) {
+
+                        $channel_details->is_my_channel = YES;
+
+                        $channel_details->is_user_subscribed_the_channel = CHANNEL_OWNER;
+
+                    } else {
+
+                        $check_channel_subscription = ChannelSubscription::where('user_id', $request->id)->where('channel_id', $channel_details->channel_id)->count();
+
+                        $channel_details->is_user_subscribed_the_channel = $check_channel_subscription ? CHANNEL_SUBSCRIBED : CHANNEL_UNSUBSCRIBED;
+
+                    }
+
+                }
+
+            }
+            
+            return $this->sendResponse($message = "", $code = 0, $channels);
+
+        } catch (Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
         }
 
     }

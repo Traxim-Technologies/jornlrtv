@@ -533,6 +533,8 @@ class UserController extends Controller {
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
            
             $channel_playlists = $this->UserAPI->playlists($request)->getData();
+
+            dd($channel_playlists);
            
             $channel_playlists = $channel_playlists->data;
            
@@ -597,37 +599,7 @@ class UserController extends Controller {
             ]);
         }
 
-        $data= $this->UserAPI->video_detail($request)->getData();
-
-        // get user playlists
-        $data->response_array->playlists =  $this->UserAPI->playlists($request)->getData();
-
-        // check video already exists in user playlits
-        $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
-
-        $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
-            ->where('video_tape_id', $request->video_tape_id)
-            ->where('user_id', Auth::user()->id)
-            ->get();
-
-        $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
-        
-        // to set video exists in playlist    
-        $i = 0;
-       
-        foreach ($data->response_array->playlists->data as $value) {
-                          
-            if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
-
-                $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
-            
-            } else  { 
-                
-                $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
-            }
-
-            $i++;
-        }
+        $data = $this->UserAPI->video_detail($request)->getData();
 
         // video url
         if (isset($data->url)) {
@@ -636,6 +608,36 @@ class UserController extends Controller {
         }
 
         if ($data->success) {
+
+            // get user playlists
+            $data->response_array->playlists =  $this->UserAPI->playlists($request)->getData();
+
+            // check video already exists in user playlits
+            $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
+
+            $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
+                ->where('video_tape_id', $request->video_tape_id)
+                ->where('user_id', Auth::user()->id)
+                ->get();
+
+            $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
+            
+            // to set video exists in playlist    
+            $i = 0;
+           
+            foreach ($data->response_array->playlists->data as $value) {
+                              
+                if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
+
+                    $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
+                
+                } else  { 
+                    
+                    $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
+                }
+
+                $i++;
+            }
 
             $response = $data->response_array;
 
@@ -678,7 +680,7 @@ class UserController extends Controller {
 
             $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
 
-            return back()->with('flash_error', $error_message);
+            return redirect()->back()->with('flash_error', $error_message);
             
         } 
     }
@@ -1942,48 +1944,7 @@ class UserController extends Controller {
 
     }
 
-    /**
-     * @method playlist_video_update
-     *
-     * @uses To add video to playlist 
-     *
-     * @created Anjana H
-     *
-     * @updated Anjana H
-     *
-     * @param Integer $request - Video id, playlist id
-     * 
-     * @return success/failure message
-     *
-     */
-    public function playlist_video_update(Request $request)  {
 
-        Log::info("playlist_video".print_r($request->all(), true));
-        
-        $request->request->add([
-            'id' => Auth::user()->id,
-            'token'=>Auth::user()->token
-        ]);
-        
-        if($request->status == DEFAULT_TRUE)  {
-
-            Log::info("Status 1"); 
-
-            $response = $this->UserAPI->playlists_video_status($request)->getData();
-        
-        } 
-
-        if($request->status == DEFAULT_FALSE) {
-            Log::info("Status 0"); 
-            $response = $this->UserAPI->playlists_video_remove($request)->getData();
-        
-        }
-
-        // dd($response);
-        
-        return response()->json($response);
-
-    }
 
 
     public function likeVideo(Request $request)  {
@@ -3405,7 +3366,6 @@ class UserController extends Controller {
      *
      * @return JSON Response
      */
-
     public function playlists(Request $request) {
 
         try {
@@ -3462,7 +3422,6 @@ class UserController extends Controller {
      *
      * @return JSON Response
      */
-
     public function playlists_save(Request $request) {
 
         try {
@@ -3539,7 +3498,7 @@ class UserController extends Controller {
     
     }
 
-      /**
+    /**
      *
      * Function name: playlist_single()
      *
@@ -3783,8 +3742,6 @@ class UserController extends Controller {
     
     }
 
-
-
     /**
      *
      * Function name: playlists_video_remove()
@@ -3898,6 +3855,109 @@ class UserController extends Controller {
             }
 
             return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    }
+
+    /**
+     * @method playlist_video_update
+     *
+     * @uses To add video to playlist 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer $request - Video id, playlist id
+     * 
+     * @return success/failure message
+     *
+     */
+    public function playlist_video_update(Request $request)  {
+
+        // Log::info("playlist_video".print_r($request->all(), true));
+        
+        $request->request->add([
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+        
+        if($request->status == DEFAULT_TRUE)  {
+
+            $response = $this->UserAPI->playlists_video_status($request)->getData();
+        
+        } 
+
+        if($request->status == DEFAULT_FALSE) {
+
+            $response = $this->UserAPI->playlists_video_remove($request)->getData();
+        
+        }
+      
+        return response()->json($response);
+    }
+
+
+    /**
+     *
+     * @method playlist_save_video_add()
+     *
+     * @uses to save playlist and add video in playlist
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param request title, privacy( )
+     *
+     * @return JSON Response
+     */
+    public function playlist_save_video_add(Request $request) {
+
+        try {
+           
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token
+            ]);
+            
+            $playlists_response = $this->UserAPI->playlists_save($request)->getData();
+            
+            $request->request->add([
+                'playlist_id'=> $playlists_response->data->playlist_id,
+            ]);
+
+            Log::info("playlists_details ".print_r($request->all(), true));
+
+            $response = $this->UserAPI->playlists_video_save($request)->getData();
+            
+            // Log::info("playlists_video_save ".print_r($response, true));
+
+            if($response->success) {
+
+                $response->playlist_id = $playlists_response->data->playlist_id;
+
+                $response->title = $playlists_response->data->title;
+            
+                Log::info("playlists_video_response ".print_r($response, true));
+
+                return response()->json($response);   
+
+            } else {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+            
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            $error_code = $e->getCode();
+
+            $response = ['success' => false, 'error_messages' => $error, 'error_code' => $error_code];
+       
+            return response()->json($response);
 
         }
 

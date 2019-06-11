@@ -76,6 +76,17 @@ function tr($key , $otherkey = "") {
     return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), $locale);
 }
 
+function apitr($key , $otherkey = "") {
+
+    if (!\Session::has('locale'))
+
+        \Session::put('locale', \Config::get('app.locale'));
+
+    // return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
+
+    return \Lang::choice('api-messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
+}
+
 function envfile($key) {
 
     $data = EnvEditorHelper::getEnvValues();
@@ -613,7 +624,8 @@ function getFlagVideos($id) {
         ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
         ->where('video_tapes.is_approved' , 1)
         ->where('video_tapes.status' , 1)
-        ->pluck('video_tape_id')->toArray();
+        ->pluck('video_tape_id')
+        ->toArray();
     // Return array of id's
     return $model;
 }
@@ -1483,4 +1495,69 @@ function userChannelId() {
 
         return route('user.subscriptions');
     }
+}
+
+function formatted_amount($amount = 0.00, $currency = "") {
+
+    $currency = $currency ?: Setting::get('currency', '$');
+
+    $formatted_amount = $currency."".$amount;
+
+    return $formatted_amount;
+}
+
+function generate_payment_id($user_id = 0, $other_id = 0, $amount = 0) {
+
+    $payment_id = $user_id."-".$other_id."-".strtoupper(uniqid()).$amount;
+
+    return $payment_id;
+}
+
+function type_of_user($status) {
+
+    $list_status = [
+            NORMAL_USER => tr('normal_users'),
+            PAID_USER => tr('paid_users'),
+            BOTH_USERS => tr('both_users')
+        ];
+    return $list_status[$status];
+}
+
+function type_of_subscription($status) {
+
+    $list_status = [
+            ONE_TIME_PAYMENT => tr('one_time_payment'),
+            RECURRING_PAYMENT => tr('recurring_payment')
+        ];
+    return $list_status[$status];
+}
+
+function common_date($date , $timezone , $format = "d M Y h:i A") {
+
+    if($date == "0000-00-00 00:00:00") {
+
+        return $date;
+    }
+
+    if($timezone) {
+
+        $date = convertTimeToUSERzone($date , $timezone , $format);
+
+    }
+
+    return date($format , strtotime($date));
+
+}
+
+function video_type_text($video_type) {
+
+    $video_types = [
+        VIDEO_TYPE_UPLOAD => apitr('VIDEO_TYPE_UPLOAD'),
+        VIDEO_TYPE_LIVE => apitr('VIDEO_TYPE_LIVE'),
+        VIDEO_TYPE_YOUTUBE => apitr('VIDEO_TYPE_YOUTUBE'),
+        VIDEO_TYPE_OTHERS => apitr('VIDEO_TYPE_OTHERS')
+    ];
+
+    return isset($video_types[$video_type]) ? $video_types[$video_type] : "NONE";
+
 }
