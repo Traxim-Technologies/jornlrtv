@@ -258,6 +258,8 @@ class V5Repository {
 
         $timezone = Setting::get('timezone');
 
+        $video_tape_details->publish_time = common_date($video_tape_details->publish_time, "", 'd M Y');
+
         if($user_details) {
 
             // check the channer owner status
