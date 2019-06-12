@@ -508,6 +508,10 @@
          
          <div class="modal-header">
 
+         <!-- if user logged in let create, update playlist -->
+         
+         @if(Auth::check())
+
             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
             <h4 class="modal-title">{{tr('save_to')}}</h4>
@@ -522,15 +526,15 @@
                   
                   <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
 
-                  @if(isset($playlists))
+                  @if($playlists !='')
 
-                     @foreach($playlists as $report)  
+                     @foreach($playlists as $playlist_details)  
 
-                        <div class="report_list" id="user_playlists">
+                        <div class="report_list">
 
-                           <label class="playlist-container">{{ $report->title}}
+                           <label class="playlist-container">{{ $playlist_details->title}}
                               
-                              <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $report->playlist_id }} , this)" id="playlist_{{ $report->playlist_id }}" @if($report->is_video_exists == DEFAULT_TRUE) checked @endif>
+                              <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
                                                          
                               <span class="playlist-checkmark"></span>
 
@@ -543,16 +547,18 @@
                      @endforeach 
 
                   @endif
+
+                  <div id="user_playlists"></div>
                   
-                  <div class="pull-right">
+                 <!--  <div class="pull-right">
                         <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
-                     </div>
+                     </div> -->
 
                   <div class="clearfix"></div>
 
                </form>
                <hr>
-               <button onclick="$('#create_playlist_form').toggle()"><i class="fa fa-plus"></i></button><label>Create New Playlist</label>
+               <button onclick="$('#create_playlist_form').toggle()"><i class="fa fa-plus"></i></button><label>{{tr('create_playlist')}}</label>
                
                <div class="" id="create_playlist_form" style="display: none">
                   
@@ -574,8 +580,22 @@
                </div>
 
             </div>
-            
+         
          </div>
+
+         <!-- if user not logged in ask for login -->
+
+         @else
+
+              <div class="menu4 top nav-space">
+                  <p>{{tr('signin_nav_content')}}</p>
+
+                  <form method="get" action="{{route('user.login.form')}}">
+                      <button type="submit">{{tr('login')}}</button>
+                  </form>
+              </div> 
+
+          @endif 
 
       </div>
       <!-- modal content ends -->
@@ -1391,16 +1411,19 @@
            success : function(data) {
                if (data.success) {
 
+                  $('#playlist_title').removeAttr('value');  
+
+                  $('#create_playlist_form').hide();
+
                   alert(data.message);
 
-                  var labal = '<labal class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ', this)" checked><span class="playlist-checkmark"></span></labal>';
+                  var labal = '<labal class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></labal>';
 
                   $('#user_playlists').append(labal);
 
                } else {
                   
                   alert(data.error_messages);
-
                }
            },
    

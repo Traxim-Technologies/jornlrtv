@@ -643,6 +643,7 @@ function loadChannels() {
     $age = 0;
 
     if(Auth::check()) {
+
         $age = \Auth::user()->age_limit;
 
         $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
@@ -661,7 +662,7 @@ function loadChannels() {
                 ->havingRaw('COUNT(video_tapes.id) > 0')
                 ->groupBy('video_tapes.channel_id')
                 ->get();
-    
+   
     return $model;
 }
 

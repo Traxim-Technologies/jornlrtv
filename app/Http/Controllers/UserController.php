@@ -386,7 +386,6 @@ class UserController extends Controller {
 
         }
 
-
         $response = $this->UserAPI->channel_list($request)->getData();
 
 
@@ -514,6 +513,8 @@ class UserController extends Controller {
                 'age' => \Auth::check() ? \Auth::user()->age_limit : "",
                 'id'=> \Auth::check() ? \Auth::user()->id : "",
                 'channel_id'=> $id,
+                'view_type' => \Auth::check() ? VIEW_TYPE_OWNER : VIEW_TYPE_VIEWER 
+
             ]);
 
             if ($request->id != $channel->user_id || !Auth::check()) {
@@ -521,7 +522,6 @@ class UserController extends Controller {
                 if ($channel->status == USER_CHANNEL_DECLINED || $channel->is_approved == ADMIN_CHANNEL_DECLINED) {
 
                     return redirect()->to('/')->with('flash_error', tr('channel_declined'));
-
                 }
  
             }
@@ -531,10 +531,10 @@ class UserController extends Controller {
             $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
 
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
-           
+
             $channel_playlists = $this->UserAPI->playlists($request)->getData();
 
-            dd($channel_playlists);
+            // dd($channel_playlists);
            
             $channel_playlists = $channel_playlists->data;
            
@@ -582,7 +582,7 @@ class UserController extends Controller {
     public function single_video(Request $request) {
 
         $request->request->add([ 
-                'video_tape_id' => $request->id,
+            'video_tape_id' => $request->id,
         ]);
 
         if (Auth::check()) {
@@ -594,11 +594,14 @@ class UserController extends Controller {
             ]);
 
         } else {
+
              $request->request->add([ 
                 'id'=> '',
+                'view_type' => VIEW_TYPE_VIEWER,
+                // 'channel_id' => VIEW_TYPE_VIEWER
             ]);
         }
-
+        
         $data = $this->UserAPI->video_detail($request)->getData();
 
         // video url
@@ -610,37 +613,49 @@ class UserController extends Controller {
         if ($data->success) {
 
             // get user playlists
-            $data->response_array->playlists =  $this->UserAPI->playlists($request)->getData();
+            $data->response_array->playlists = $this->UserAPI->playlists($request)->getData();
 
-            // check video already exists in user playlits
-            $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
-
-            $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
-                ->where('video_tape_id', $request->video_tape_id)
-                ->where('user_id', Auth::user()->id)
-                ->get();
-
-            $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
-            
-            // to set video exists in playlist    
-            $i = 0;
+            $playlists = array();
            
-            foreach ($data->response_array->playlists->data as $value) {
-                              
-                if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
-
-                    $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
-                
-                } else  { 
-                    
-                    $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
-                }
-
-                $i++;
-            }
-
             $response = $data->response_array;
 
+            if ($data->response_array->playlists->success) {
+                  
+                // check video already exists in user playlits
+                $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
+
+                $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
+                    ->where('video_tape_id', $request->video_tape_id)
+                    ->where('user_id', Auth::user()->id)
+                    ->get();
+
+                $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
+                
+                // to set video exists in playlist    
+                $i = 0;
+               
+                foreach ($data->response_array->playlists->data as $value) {
+                                  
+                    if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
+
+                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
+                    
+                    } else  { 
+                        
+                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
+                    }
+
+                    $i++;
+                }
+
+                $playlists = $response->playlists->data;
+
+            } else {
+
+                $playlists = '';
+
+            }
+            
             // Video is autoplaying ,so we are incrementing the watch count 
 
             if ($request->id != $response->video->channel_created_by) {
@@ -648,7 +663,7 @@ class UserController extends Controller {
                 $this->watch_count($request);
 
             }
-            // dd($response->playlists->data);
+
             return view('user.single-video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -674,7 +689,8 @@ class UserController extends Controller {
                         ->with('comment_rating_status', $response->comment_rating_status)
                         ->with('embed_link', $response->embed_link)
                         ->with('tags', $response->tags)
-                        ->with('playlists', $response->playlists->data);
+                        // ->with('playlists', $response->playlists->data)
+                        ->with('playlists', $playlists);
        
         } else {
 
@@ -3885,7 +3901,8 @@ class UserController extends Controller {
         
         if($request->status == DEFAULT_TRUE)  {
 
-            $response = $this->UserAPI->playlists_video_status($request)->getData();
+            // $response = $this->UserAPI->playlists_video_status($request)->getData();
+            $response = $this->UserAPI->playlists_video_save($request)->getData();
         
         } 
 

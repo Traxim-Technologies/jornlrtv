@@ -7326,13 +7326,12 @@ class UserApiController extends Controller {
 
             // Logged in user access owned channel playlist - required channel_id
 
-            if(($request->id && $request->view_type == VIEW_TYPE_VIEWER)|| (!$request->id && $request->view_type == VIEW_TYPE_VIEWER)) {
+            if(($request->id && $request->view_type == VIEW_TYPE_VIEWER) || (!$request->id && $request->view_type == VIEW_TYPE_VIEWER)) {
 
                 if(!$request->channel_id) {
 
                     throw new Exception("Channel ID is required", 101);
                     
-
                 }
                 
             }
