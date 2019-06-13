@@ -3605,6 +3605,54 @@ class NewAdminController extends Controller {
     }
 
     /**
+     * Function Name : pages_status()
+     *
+     * @uses To change the status of the pages, based on page id. only admin can access this option
+     * 
+     * @created Bhawya N
+     *
+     * @updated Bhawya N 
+     *
+     * @param object $request - Page Id
+     *
+     * @return response of html page with details
+     */
+    public function pages_status(Request $request) {
+
+        try {
+
+            DB::beginTransaction();
+       
+            $page_details = Page::find($request->page_id);
+
+            if(!$page_details) {
+                
+                throw new Exception(tr('admin_page_not_found'), 101);
+            } 
+            
+            $page_details->status = $page_details->status == APPROVED ? DECLINED : APPROVED;
+
+            $message = $page_details->status == APPROVED ? tr('admin_page_approve_success') : tr('admin_page_decline_success');
+
+            if( $page_details->save() ) {
+
+                DB::commit();
+
+                return back()->with('flash_success', $message);
+            } 
+
+            throw new Exception(tr('admin_page_status_error'), 101);
+            
+        } catch( Exception $e) {
+
+            DB::rollback();
+            
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.pages.index')->with('flash_error',$error);
+        }
+    }
+    /**
      * Function Name : banner_ads_index()
      *
      * @uses To list out banner_ads object details
