@@ -1682,8 +1682,8 @@ return array(
 	'admin_page_decline_confirmation' => 'Do you want decline this Page',
 	'admin_page_approve_confirmation' => 'Do you want approve this Page',
 
-	'admin_page_approve_success'=>'Sub Admin has been approved successfully',
-	'admin_page_decline_success'=>'Sub Admin has been declined successfully',
+	'admin_page_approve_success'=>'Page has been approved successfully',
+	'admin_page_decline_success'=>'Page has been declined successfully',
 
 	// New Admin banner_ad
 
