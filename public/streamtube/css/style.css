@@ -1148,10 +1148,8 @@ history (single page) css
 }
 .description p{
 	color: #767676;
-    margin-top: 3px;
     font-size: 12px;
     line-height: 16px;
-    margin-bottom:4px;
     display: block;
   	display: -webkit-box;
   /* Fallback for non-webkit */
@@ -4678,9 +4676,6 @@ input:checked + .slider{
 .user-upload-btn:hover, .user-upload-btn:active, .user-upload-btn:focus {
 	background: #d80606;
 	color: white;
-}
-.channel-view.col-lg-3{
-	width: 20% !important;
 }
 
 .search-query {
