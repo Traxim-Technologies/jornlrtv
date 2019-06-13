@@ -506,15 +506,14 @@ class UserController extends Controller {
     public function channel_videos($id , Request $request) {
 
         $channel = Channel::where('id', $id)->first();
-
+         
         if ($channel) {
 
             $request->request->add([ 
                 'age' => \Auth::check() ? \Auth::user()->age_limit : "",
                 'id'=> \Auth::check() ? \Auth::user()->id : "",
                 'channel_id'=> $id,
-                'view_type' => \Auth::check() ? VIEW_TYPE_OWNER : VIEW_TYPE_VIEWER 
-
+                'view_type' => \Auth::check() ? \Auth::user()->id == $channel->user_id ? VIEW_TYPE_OWNER : VIEW_TYPE_VIEWER : VIEW_TYPE_VIEWER 
             ]);
 
             if ($request->id != $channel->user_id || !Auth::check()) {
@@ -533,9 +532,7 @@ class UserController extends Controller {
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
 
             $channel_playlists = $this->UserAPI->playlists($request)->getData();
-
-            // dd($channel_playlists);
-           
+                   
             $channel_playlists = $channel_playlists->data;
            
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
@@ -3387,8 +3384,11 @@ class UserController extends Controller {
         try {
 
             $request->request->add([
+                
                 'id'=> Auth::user()->id,
-                'token'=> Auth::user()->token
+                'token'=> Auth::user()->token,
+                'view_type' => \Auth::check() ? VIEW_TYPE_OWNER : VIEW_TYPE_VIEWER 
+
             ]);
 
             $response = $this->UserAPI->playlists($request)->getData();
@@ -3565,6 +3565,8 @@ class UserController extends Controller {
           
             $video_tapes = $response->data->video_tapes;
             
+            // dd($playlist_details);
+
             return view('user.playlists.playlist_single_videos')
                     ->with('playlist_details', $playlist_details)
                     ->with('video_tapes', $video_tapes);

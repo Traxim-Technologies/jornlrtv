@@ -856,7 +856,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
 
-    Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
+    // Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
+    
+    Route::any('/playlists/view', 'UserController@playlist_single')->name('playlists.view');
 
     Route::any('/playlists/video_status', 'UserController@playlists_video_status')->name('playlists.video_status');
 

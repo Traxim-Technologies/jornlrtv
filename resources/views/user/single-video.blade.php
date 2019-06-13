@@ -526,7 +526,7 @@
                   
                   <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
 
-                  @if($playlists !='')
+                  @if($playlists != '')
 
                      @foreach($playlists as $playlist_details)  
 
@@ -588,7 +588,7 @@
          @else
 
               <div class="menu4 top nav-space">
-                  <p>{{tr('signin_nav_content')}}</p>
+                  <p>{{tr('signid_for_playlist')}}</p>
 
                   <form method="get" action="{{route('user.login.form')}}">
                       <button type="submit">{{tr('login')}}</button>
@@ -1417,7 +1417,7 @@
 
                   alert(data.message);
 
-                  var labal = '<labal class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></labal>';
+                  var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></label>';
 
                   $('#user_playlists').append(labal);
 
@@ -1425,7 +1425,7 @@
                   
                   alert(data.error_messages);
                }
-           },
+            },
    
            error : function(data) {
            },

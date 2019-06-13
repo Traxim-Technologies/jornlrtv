@@ -7317,7 +7317,7 @@ class UserApiController extends Controller {
                 throw new Exception($error_messages, 101);
                 
             }
-
+            // dd($request->all());
             // Guests can access only channel playlists  - Required channel_id
 
             // Logged in users playlists - required - Required viewer_type 
@@ -7344,7 +7344,6 @@ class UserApiController extends Controller {
             if($request->view_type == VIEW_TYPE_OWNER && !$request->channel_id) {
 
                 $base_query = $base_query->where('playlists.user_id', $request->id)->where('channel_id', 0);
-
             }
 
             // While owner access the channel playlists
