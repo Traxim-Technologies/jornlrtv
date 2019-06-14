@@ -342,6 +342,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/pages/delete/', 'NewAdminController@pages_delete')->name('pages.delete');
 
+    Route::get('/pages/status', 'NewAdminController@pages_status')->name('pages.status');
+
     // New Admin Pages methods ends
 
 
