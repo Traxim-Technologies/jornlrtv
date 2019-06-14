@@ -491,7 +491,7 @@ class UserController extends Controller {
     }
 
     /**
-     * Function Name : channels_view()
+     * Function Name : channel_view()
      *
      * @uses Based on the channel id , channel related videos will display
      *
@@ -503,7 +503,7 @@ class UserController extends Controller {
      *
      * @return channel videos list
      */
-    public function channels_view($id , Request $request) {
+    public function channel_view($id , Request $request) {
 
         $channel = Channel::where('id', $id)->first();
          
@@ -3894,8 +3894,9 @@ class UserController extends Controller {
         
         if($request->status == DEFAULT_TRUE)  {
 
-            // $response = $this->UserAPI->playlists_video_status($request)->getData();
-            $response = $this->UserAPI->playlists_video_save($request)->getData();
+            $response = $this->UserAPI->playlists_video_status($request)->getData();
+            
+            // $response = $this->UserAPI->playlists_video_save($request)->getData();
         
         } 
 
@@ -3938,12 +3939,8 @@ class UserController extends Controller {
                 'playlist_id'=> $playlists_response->data->playlist_id,
             ]);
 
-            Log::info("playlists_details ".print_r($request->all(), true));
-
-            $response = $this->UserAPI->playlists_video_save($request)->getData();
+            $response = $this->UserAPI->playlists_video_status($request)->getData();
             
-            // Log::info("playlists_video_save ".print_r($response, true));
-
             if($response->success) {
 
                 $response->playlist_id = $playlists_response->data->playlist_id;
