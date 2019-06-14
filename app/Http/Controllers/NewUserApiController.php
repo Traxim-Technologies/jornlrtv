@@ -3870,7 +3870,7 @@ class NewUserApiController extends Controller
 
                 $channels = getChannels($request->id);
 
-                if((count($channels) > 0 && Setting::get('multi_channel_status'))) {
+                if((count($channels) > 0 && Setting::get('multi_channel_status') == NO)) {
 
                     throw new Exception(Helper::get_error_message(164), 164); // @todo 
                     
