@@ -180,5 +180,8 @@ return array(
 	'VIDEO_TYPE_LIVE' => 'Live TV',
 	'VIDEO_TYPE_YOUTUBE' => 'YouTube',
 	'VIDEO_TYPE_OTHERS' => 'Others',
+	
+	'referral_code_share_message' => 'Join me on :otherkey! You\'ll get :referral_commission off when you sign up using my code: :referral_code. Signup now: ',
+
 
 );

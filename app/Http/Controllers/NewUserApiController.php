@@ -2062,9 +2062,15 @@ class NewUserApiController extends Controller
 
             $base_query = UserPayment::where('user_id', $request->id)->select('user_payments.id as user_payment_id', 'user_payments.*');
 
-            $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('user_payments.updated_at', 'desc')->get();
+            $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('user_payments.is_current', 'desc')->get();
 
             foreach ($user_payments as $key => $payment_details) {
+
+                $payment_details->coupon_amount_formatted = formatted_amount($payment_details->coupon_amount);
+
+                $payment_details->subscription_amount_formatted = formatted_amount($payment_details->subscription_amount);
+
+                $payment_details->amount_formatted = formatted_amount($payment_details->amount);
 
                 $payment_details->title = $payment_details->description = "";
 
