@@ -1419,6 +1419,10 @@ class NewUserApiController extends Controller
                 
             $user_details = User::find($request->id);
 
+            if(!$user_details) {
+                throw new Exception(CommonHelper::error_message(1002), 1002);
+            }
+
             if($request->type == EMAIL_NOTIFICATION) {
 
                 $user_details->email_notification_status = $request->status;
@@ -1427,39 +1431,33 @@ class NewUserApiController extends Controller
 
             if($request->type == PUSH_NOTIFICATION) {
 
-                $user_details->push_notification_status = $request->status;
+                $user_details->push_status = $request->status;
 
             }
 
             $user_details->save();
 
-            $message = $request->status ? CommonHelper::success_message(206) : CommonHelper::success_message(207);
+            $code = $request->status ? 206 : 207;
 
-            $data = ['id' => $user_details->id , 'token' => $user_details->token];
+            $message = CommonHelper::success_message($code);
 
-            $response_array = [
-                'success' => true ,'message' => $message, 
-                'email_notification_status' => (int) $user_details->email_notification_status,  // Don't remove int (used ios)
-                'push_notification_status' => (int) $user_details->push_notification_status,    // Don't remove int (used ios)
-                'data' => $data
-            ];
+            $data = [
+                    'id' => $user_details->id , 
+                    'token' => $user_details->token, 
+                    'email_notification_status' => (int) $user_details->email_notification_status,  // Don't remove int (used ios)
+                    'push_status' => (int) $user_details->push_status,    // Don't remove int (used ios)
+                ];
                 
-            
             DB::commit();
 
-            return response()->json($response_array , 200);
+            return $this->sendResponse($message, $code, $data);
 
         } catch (Exception $e) {
 
             DB::rollback();
 
-            $error = $e->getMessage();
+            return $this->sendError($e->getMessage(), $e->getCode());
 
-            $code = $e->getCode();
-
-            $response_array = ['success'=>false, 'error'=>$error, 'error_code'=>$code];
-
-            return response()->json($response_array);
         }
 
     }
@@ -2064,9 +2062,15 @@ class NewUserApiController extends Controller
 
             $base_query = UserPayment::where('user_id', $request->id)->select('user_payments.id as user_payment_id', 'user_payments.*');
 
-            $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('user_payments.updated_at', 'desc')->get();
+            $user_payments = $base_query->skip($this->skip)->take($this->take)->orderBy('user_payments.is_current', 'desc')->get();
 
             foreach ($user_payments as $key => $payment_details) {
+
+                $payment_details->coupon_amount_formatted = formatted_amount($payment_details->coupon_amount);
+
+                $payment_details->subscription_amount_formatted = formatted_amount($payment_details->subscription_amount);
+
+                $payment_details->amount_formatted = formatted_amount($payment_details->amount);
 
                 $payment_details->title = $payment_details->description = "";
 
@@ -3167,7 +3171,7 @@ class NewUserApiController extends Controller
      * @param @todo not yet completed
      *
      * @return json repsonse
-     */     
+     */
 
     public function ppv_payment_by_stripe(Request $request) {
 
@@ -3541,6 +3545,8 @@ class NewUserApiController extends Controller
                         ->where('channel_id',$request->channel_id)
                         ->first();
 
+            $is_user_subscribed_the_channel = NO;
+
             if($channel_subscription_details) {
 
                 // unsubscribe the details
@@ -3575,11 +3581,13 @@ class NewUserApiController extends Controller
 
                 $message = CommonHelper::success_message(221); $code = 221;
 
+                $is_user_subscribed_the_channel = YES;
+
             }
                 
             DB::commit();
 
-            $data = ['channel_id' => $request->channel_id];
+            $data = ['channel_id' => $request->channel_id, 'is_user_subscribed_the_channel' => $is_user_subscribed_the_channel];
 
             return $this->sendResponse($message, $code, $data);
 
@@ -4151,4 +4159,110 @@ class NewUserApiController extends Controller
 
     }
 
+    /**
+     * Function Name : categories_channels_list
+     *
+     * To list out all the channels which is in active status
+     *
+     * @created Vithya 
+     *
+     * @updated 
+     *
+     * @param Object $request - USer Details
+     *
+     * @return array of channel list @todo
+     */
+    public function categories_channels_list(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),
+                    [
+                        'category_id' => 'required|exists:categories,id,status,'.CATEGORY_APPROVE_STATUS,
+                    ]
+            );
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            $base_query = Channel::BaseResponse()->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
+                    ->where('video_tapes.category_id', $request->category_id)
+                    ->groupBy('video_tapes.channel_id');
+
+            $channels = $base_query->skip($this->skip)->take($this->take)->get();
+
+            foreach ($channels as $key => $channel_details) {
+
+                $channel_details->no_of_videos = videos_count($channel_details->channel_id);
+
+                $channel_details->no_of_subscribers = subscriberscnt($channel_details->channel_id);
+
+                // check my channel and subscribe status
+
+                $channel_details->is_my_channel = NO;
+
+                $channel_details->is_user_subscribed_the_channel = CHANNEL_UNSUBSCRIBED;
+
+                if($request->id) {
+
+                    if($channel_details->user_id == $request->id) {
+
+                        $channel_details->is_my_channel = YES;
+
+                        $channel_details->is_user_subscribed_the_channel = CHANNEL_OWNER;
+
+                    } else {
+
+                        $check_channel_subscription = ChannelSubscription::where('user_id', $request->id)->where('channel_id', $channel_details->channel_id)->count();
+
+                        $channel_details->is_user_subscribed_the_channel = $check_channel_subscription ? CHANNEL_SUBSCRIBED : CHANNEL_UNSUBSCRIBED;
+
+                    }
+
+                }
+
+            }
+            
+            return $this->sendResponse($message = "", $code = 0, $channels);
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
+
+    }
+
+    // @todo proper structure
+
+    public function video_tapes_search(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'key' => ''
+            ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+            }
+            
+            $video_tapes = VideoHelper::video_tapes_search($request);
+
+            return $this->sendResponse($message = "", $success_code = "", $video_tapes);
+
+
+        } catch(Exception  $e) {
+            
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+    }
 }

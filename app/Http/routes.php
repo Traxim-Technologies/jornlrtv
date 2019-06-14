@@ -342,6 +342,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/pages/delete/', 'NewAdminController@pages_delete')->name('pages.delete');
 
+    Route::get('/pages/status', 'NewAdminController@pages_status')->name('pages.status');
+
     // New Admin Pages methods ends
 
 
@@ -1181,6 +1183,8 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::post('suggestions', 'NewUserApiController@suggestions');
 
+    Route::post('video_tapes_search', 'NewUserApiController@video_tapes_search');
+
     Route::group(['middleware' => 'NewUserApiVal'] , function() {
 
         // Redeems management 
@@ -1256,15 +1260,9 @@ Route::group(['prefix' => 'api/user'], function() {
         Route::post('bell_notifications_update', 'UserApiController@bell_notifications_update');
 
         Route::post('bell_notifications_count', 'UserApiController@bell_notifications_count');
-
+        
         // Channels @todo change to new userapi
 
-        Route::post('channels_index', 'V5UserApiController@channels_index');
-
-        Route::post('channels_view', 'V5UserApiController@channels_view');
-
-        Route::post('channel_based_videos', 'V5UserApiController@channel_based_videos');
-        
         Route::post('channels_subscribed', 'V5UserApiController@channels_subscribed');
 
         Route::post('channels_unsubscribe_subscribe', 'NewUserApiController@channels_unsubscribe_subscribe');
@@ -1300,6 +1298,16 @@ Route::group(['prefix' => 'api/user'], function() {
 
     });
 
+    // Channels @todo change to new userapi
+
+    Route::post('channels_index', 'V5UserApiController@channels_index');
+
+    Route::post('channels_view', 'V5UserApiController@channels_view');
+
+    Route::post('channel_based_videos', 'V5UserApiController@channel_based_videos');
+
+    // Single page
+
     Route::post('video_tapes_user_view', 'NewUserApiController@video_tapes_user_view');
 
     Route::post('video_tapes_comments', 'NewUserApiController@video_tapes_comments');
@@ -1312,7 +1320,7 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::post('categories_videos', 'UserApiController@categories_videos');
 
-    Route::post('categories_channels_list', 'UserApiController@categories_channels_list');
+    Route::post('categories_channels_list', 'NewUserApiController@categories_channels_list');
 
     // Tags @todo change to newuserAPi
 
