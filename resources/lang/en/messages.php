@@ -2071,5 +2071,8 @@ return array(
 	'create_playlist' => 'Create New Playlist',
 	'signid_for_playlist' => 'Sign in to add this video to a playlist',
 
+	'save' => 'Save',
+	'create' => 'Create',
+	'playlist_name_placeholder' => 'Enter playlist name',
 
 );

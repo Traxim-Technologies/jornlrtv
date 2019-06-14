@@ -453,11 +453,11 @@ class NewUserApiController extends Controller
 
             }
 
-            if(Setting::get('is_account_email_verification') == YES) {
+            if(Setting::get('email_verify_control') == YES) {
 
                 if(!$user_details->is_verified) {
 
-                    Helper::check_email_verification("" , $user_details->id, $error);
+                    Helper::check_email_verification("" , $user_details, $error);
 
                     $email_active = DEFAULT_FALSE;
 
@@ -3331,7 +3331,7 @@ class NewUserApiController extends Controller
 
                 } catch(Stripe_CardError | Stripe_InvalidRequestError | Stripe_AuthenticationError | Stripe_ApiConnectionError | Stripe_Error $e) {
 
-                    $error_message = $e->getMessage();
+                    $error = $e->getMessage();
 
                     $error_code = $e->getCode();
 
@@ -3341,7 +3341,7 @@ class NewUserApiController extends Controller
 
                     // @todo changes
 
-                    $response_array = ['success' => false, 'error'=> $error_message , 'error_code' => 205];
+                    $response_array = ['success' => false, 'error'=> $error , 'error_code' => 205];
 
                     return response()->json($response_array);
 
@@ -3781,7 +3781,7 @@ class NewUserApiController extends Controller
 
             if($flag_details) {
 
-                throw new Exception("Error Processing Request", 1); // @todo
+                throw new Exception(CommonHelper::error_message(224), 224); 
                 
             }
 
@@ -3874,7 +3874,7 @@ class NewUserApiController extends Controller
 
                 if((count($channels) > 0 && Setting::get('multi_channel_status') == NO)) {
 
-                    throw new Exception(Helper::get_error_message(164), 164); // @todo 
+                    throw new Exception(CommonHelper::error_message(225), 225); // @todo 
                     
                 }
 
@@ -4015,7 +4015,9 @@ class NewUserApiController extends Controller
                 ->where('dislike_status', DEFAULT_TRUE)
                 ->count();
 
-            // $is_liked_
+            $is_liked = YES;
+
+            $message = CommonHelper::success_message(226);
 
             if (!$model) {
 
@@ -4030,7 +4032,6 @@ class NewUserApiController extends Controller
                 $model->dislike_status = DEFAULT_FALSE;
 
                 $model->save();
-
 
                 $data['like_count'] = number_format_short($like_count+1);
 
@@ -4052,22 +4053,29 @@ class NewUserApiController extends Controller
 
                     $data['dislike_count'] = number_format_short($dislike_count-1);
 
-                    $response_array = ['success'=>true, 'data' => $data];
 
 
                 } else {
 
                     $model->delete();
 
+                    $is_liked = NO;
+
+                    $message = CommonHelper::success_message(227);
+
                     $data['like_count'] = number_format_short($like_count-1);
 
                     $data['dislike_count'] = number_format_short($dislike_count);
 
-                    $response_array = ['success'=>true, 'data' => $data];
+                    $response_array = ['success' => true, 'data' => $data];
 
                 }
 
             }
+
+            $data['is_liked'] = $is_liked;
+
+            $response_array = ['success' => true, 'message' => $message,'data' => $data];
 
         }
 
@@ -4107,6 +4115,8 @@ class NewUserApiController extends Controller
                 ->where('dislike_status', DEFAULT_TRUE)
                 ->count();
 
+            $is_disliked = YES; $message = CommonHelper::success_message(228);
+
             if (!$model) {
 
                 $model = new LikeDislikeVideo;
@@ -4125,8 +4135,6 @@ class NewUserApiController extends Controller
 
                 $data['dislike_count'] = number_format_short($dislike_count+1);
 
-                $response_array = ['success'=>true, 'data' => $data];
-
             } else {
 
                 if($model->like_status) {
@@ -4141,21 +4149,23 @@ class NewUserApiController extends Controller
 
                     $data['dislike_count'] = number_format_short($dislike_count+1);
 
-                    $response_array = ['success'=>true, 'data' => $data];
-
                 } else {
 
                     $model->delete();
+
+                    $is_disliked = NO;
+
+                    $message = CommonHelper::success_message(229);
 
                     $data['like_count'] = number_format_short($like_count);
 
                     $data['dislike_count'] = number_format_short($dislike_count-1);
 
-                    $response_array = ['success'=>true, 'data' => $data];
-
                 }
 
             }
+
+            $response_array = ['success' => true, 'message' => $message, 'data' => $data];
 
         }
 

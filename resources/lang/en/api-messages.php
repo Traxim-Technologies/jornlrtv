@@ -161,6 +161,12 @@ return array(
 	// Video Tapes
 
 	'video_tape_not_found' => 'The video details is not found.',
+	'video_tape_in_spam_list' => 'The video in spam list.',
+
+	'video_tape_liked' => 'The video liked',
+	'video_tape_like_removed' => 'The like removed',
+	'video_tape_disliked' => 'The video disliked',
+	'video_tape_dislike_removed' => 'The dislike removed',
 
 	// Channels
 
@@ -168,6 +174,8 @@ return array(
 	'channel_unsubscribed' => 'Subscription Removed',
 
 	'channel_not_found' => 'The channel is not available or not found.!',
+
+	'channel_create_purchase_subscription_error' => 'Purchase a plan to create channel.',
 
 	// Comments 
 

@@ -111,68 +111,6 @@
 
 <!-- Share Modal end -->
 
-<!-- PLAYLIST POPUPSTART -->
-
-<div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$video->video_tape_id}}" role="dialog">
-   
-   <div class="modal-dialog">
-      <!-- Modal content-->
-      
-      <div class="modal-content">
-         
-         <div class="modal-header">
-
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-            <h4 class="modal-title">{{tr('save_to')}}</h4>
-
-         </div>
-
-         <div class="modal-body">
-
-            <div class="more-content" id="user-playlists-form">
-
-               <form name="user-playlists" method="post" id="user-playlists" action="{{route('user.add.spam_video')}}">
-                  
-                  <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
-
-                  <?php /** @foreach($playlists as $report)  
-
-                     <div class="report_list">
-
-                        <label class="playlist-container">One
-                           
-                           <input type="checkbox">
-                           
-                           <span class="playlist-checkmark"></span>
-
-                        </label>
-
-                     </div>
-
-                     <div class="clearfix"></div>
-                  @endforeach */ ?>
-
-                  <div class="pull-right">
-                     <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
-                  </div>
-
-                  <div class="clearfix"></div>
-
-               </form>
-            
-            </div>
-            
-         </div>
-      </div>
-      <!-- modal content ends -->
-   </div>
-
-</div>
-
-<!-- PLAYLIST POPUPEND -->
-
-
 <!-- EMBED LINK start -->
 
 <div class="modal fade modal-top" id="copy-embed" role="dialog">
@@ -209,3 +147,120 @@
 </div>
 
 <!-- Embed link End -->
+
+<!-- PLAYLIST POPUPSTART -->
+
+<div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$video->video_tape_id}}" role="dialog">
+   
+   <div class="modal-dialog">
+      <!-- Modal content-->
+      
+      <div class="modal-content">
+        
+        <!-- if user logged in let create, update playlist -->
+         
+        @if(Auth::check())
+         
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h4 class="modal-title">{{tr('save_to')}}</h4>
+
+            </div>
+
+            <div class="modal-body">
+                
+                @if(!empty($playlists))
+
+                    <div class="more-content" id="user-playlists-form">
+                        
+                        <form name="user-playlists" method="post" id="user-playlists" action="{{route('user.add.spam_video')}}">
+                          
+                            <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
+
+                            @foreach($playlists as $playlist_details)  
+
+                                <div class="report_list">
+
+                                   <label class="playlist-container">{{ $playlist_details->title}}
+                                      
+                                      <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
+                                                                 
+                                      <span class="playlist-checkmark"></span>
+
+                                   </label>
+
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                             @endforeach
+
+                          <div id="user_playlists"></div>
+                         
+                          <div class="clearfix"></div>
+
+                        </form>
+
+                    </div>
+
+                    <hr>
+
+                @endif  
+
+                <div class="more-content">
+                
+                    <div onclick="$('#create_playlist_form').toggle()">
+
+                        <label><i class="fa fa-plus"></i> {{tr('create_playlist')}}</label>
+
+                    </div>
+                   
+                    <div class="" id="create_playlist_form" style="display: none">
+                    
+                        <div class="form-group">
+                            
+                            <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}">
+
+                            <div class="" style="display: none;">
+
+                                <label for="playlist_privacy">Privacy</label>
+                                <select id="playlist_privacy" name="playlist_privacy" class="form-control">
+                                   <option value="PUBLIC">PUBLIC</option>
+                                   <option value="PRIVETE">PRIVETE</option>
+                                   <option value="UNLISTED">UNLISTED</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick='playlist_save_video_add("{{ $video->video_tape_id }}")'>{{tr('create')}} </button>
+
+                    </div>
+
+                </div>
+         
+            </div>
+
+         <!-- if user not logged in ask for login -->
+
+         @else
+
+            <div class="menu4 top nav-space">
+                  
+                <p>{{tr('signid_for_playlist')}}</p>
+
+                <a href="{{route('user.login.form')}}" class="btn btn-sm btn-primary">{{tr('login')}}</a>
+
+            </div> 
+
+          @endif 
+
+      </div>
+      <!-- modal content ends -->
+   </div>
+
+</div>
+
+<!-- PLAYLIST POPUPEND -->
+

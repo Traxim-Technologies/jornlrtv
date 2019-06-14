@@ -264,6 +264,12 @@ class CommonHelper {
             case 223:
                 $string = apitr('channel_not_found');
                 break;
+            case 224:
+                $string = apitr('video_tape_in_spam_list');
+                break;
+            case 225:
+                $string = apitr('channel_create_purchase_subscription_error');
+                break;
             
 
             // USE BELOW CONSTANTS FOR AUTHENTICATION CHECK
@@ -401,6 +407,18 @@ class CommonHelper {
                 break;
             case 225:
                 $string = apitr('subscription_autorenewal_enabled');
+                break;
+            case 226:
+                $string = apitr('video_tape_liked');
+                break;
+            case 227:
+                $string = apitr('video_tape_like_removed');
+                break;
+            case 228:
+                $string = apitr('video_tape_disliked');
+                break;
+            case 229:
+                $string = apitr('video_tape_dislike_removed');
                 break;
 
             default:

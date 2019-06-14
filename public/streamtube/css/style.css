@@ -4336,7 +4336,7 @@ input:checked + .slider{
   padding-left: 35px;
   margin-bottom: 12px;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 14px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -4358,9 +4358,9 @@ input:checked + .slider{
   position: absolute;
   top: 0;
   left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #828282;
 }
 
 /* On mouse-over, add a grey background color */
@@ -4370,7 +4370,8 @@ input:checked + .slider{
 
 /* When the checkbox is checked, add a blue background */
 .playlist-container input:checked ~ .playlist-checkmark {
-  background-color: #2196F3;
+  background-color: #065fd4;
+  border: 1px solid #065fd4;
 }
 
 /* Create the playlist-checkmark/indicator (hidden when not checked) */
@@ -4387,8 +4388,8 @@ input:checked + .slider{
 
 /* Style the playlist-checkmark/indicator */
 .playlist-container .playlist-checkmark:after {
-  left: 9px;
-  top: 5px;
+  left: 7px;
+  top: 4px;
   width: 5px;
   height: 10px;
   border: solid white;
@@ -4481,4 +4482,14 @@ input:checked + .slider{
 	border-radius:25px;
 	object-fit: cover;
 	object-position: center;
+}
+
+.modal-content {
+	border-radius: 0px;
+}
+
+.global_playlist_id_modal {
+	color: #5f5f5f;
+    font-weight: normal;
+    letter-spacing: 0.5px;
 }

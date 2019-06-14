@@ -12,21 +12,33 @@
         
         @include('notification.notify')
 
-        @if(count($video_tapes) > 0)
 
             <div class="slide-area1 col-sm-4 col-md-4">
                 
                 <div class="new-history">
                 
                     <div class="content-head">
-                   
-                        @if(count($video_tapes) > 0)
 
+                        @if($video_tapes)
+                   
                             <a href="{{route('user.single', $video_tapes[0]->video_tape_id)}}">
                             
                                 <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video_tapes[0]->video_image}}" class="slide-img1 placeholder" />
 
                             </a>
+
+                        @else
+
+                   
+                            <a href="#">
+                            
+                                <img src="{{asset('streamtube/images/playlist.jpg')}}" data-src="{{asset('streamtube/images/playlist.jpg')}}" class="slide-img1 placeholder" />
+
+                            </a>
+
+                        @endif
+
+
 
                             <h3> {{$playlist_details->title }} </h3>
                             <p> {{tr('total_videos')}} : {{$playlist_details->total_videos }} </p>
@@ -38,11 +50,7 @@
                                 <h4 style="display: inline;">{{$playlist_details->user_name}}</h4>
                             </a>
 
-                        @else
-                                
-                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
-
-                        @endif
+                        
 
                     </div>
 
@@ -169,9 +177,8 @@
             
             </div>
 
-        @else
               
-        <div class="new-history">
+        <!-- <div class="new-history">
               
             <div class="content-head">
             
@@ -187,9 +194,7 @@
        
             <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
     
-        </div>
-
-        @endif
+        </div> -->
 
       </div>
 
