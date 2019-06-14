@@ -1323,17 +1323,17 @@ Route::group(['prefix' => 'api/user'], function() {
 
     // User Playlists @todo change to New user api
 
-    Route::post('playlists/', 'UserApiController@playlists');
+    Route::post('playlists/', 'NewUserApiController@playlists');
 
-    Route::post('playlists_save', 'UserApiController@playlists_save');
+    Route::post('playlists_save', 'NewUserApiController@playlists_save');
 
-    Route::post('playlists_delete', 'UserApiController@playlists_delete');
+    Route::post('playlists_delete', 'NewUserApiController@playlists_delete');
 
-    Route::post('playlists_view', 'UserApiController@playlists_view');
+    Route::post('playlists_view', 'NewUserApiController@playlists_view');
 
-    Route::post('playlists_video_status', 'UserApiController@playlists_video_status');
+    Route::post('playlists_video_status', 'NewUserApiController@playlists_video_status');
 
-    Route::post('playlists_video_remove', 'UserApiController@playlists_video_remove');
+    Route::post('playlists_video_remove', 'NewUserApiController@playlists_video_remove');
 
 });
 

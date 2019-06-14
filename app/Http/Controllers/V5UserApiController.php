@@ -290,6 +290,8 @@ class V5UserApiController extends Controller
 
             $channel_details->name = $channel_details->channel_name;
 
+            $channel_details->description = $channel_details->channel_description;
+            
             $channel_details->image = $channel_details->channel_image;
 
             $channel_details->cover = $channel_details->channel_cover;
