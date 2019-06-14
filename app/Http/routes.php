@@ -606,9 +606,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('wishlist', 'UserController@wishlist')->name('wishlist');
 
-    Route::get('channel/{id}', 'UserController@channel_videos')->name('channel');
+    Route::get('channel/{id}', 'UserController@channel_view')->name('channel');
 
-    Route::get('video/{id}', 'UserController@single_video')->name('single');
+    Route::get('video/{id}', 'UserController@video_view')->name('single');
 
     // Wishlist
 
@@ -858,6 +858,7 @@ Route::group(['as' => 'user.'], function(){
 
     // Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
     
+    // @todo check where method being used
     Route::any('/playlists/view', 'UserController@playlist_single')->name('playlists.view');
 
     Route::any('/playlists/video_status', 'UserController@playlists_video_status')->name('playlists.video_status');

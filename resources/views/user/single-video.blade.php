@@ -119,7 +119,6 @@
                                              <i class="material-icons">share</i>&nbsp;Share
                                              <!--  <p class="hidden-xs">share</p> -->
                                           </a>                                            
-
                                           <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
                                              <i class="material-icons">playlist_add</i>&nbsp;Save
                                           </a>
@@ -188,23 +187,19 @@
                                            
                                           <div class="col-xs-12 col-md-7 col-sm-7 col-lg-7">
                                            
-                                             <div class="username">
+                                            <div class="username">
                                                 <a href="{{route('user.channel',$video->channel_id)}}">
                                                     {{$video->channel_name}}
                                                 </a>
-                                             </div>
+                                            </div>
 
-                                             <div class="username">
-                                                <a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a>
-                                             </div>
-
-                                             <h5 class="rating no-margin mt-5">
+                                            <h5 class="rating no-margin mt-5">
                                                 <span class="rating1"><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                 <span class="rating1"><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                 <span class="rating1"><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                 <span class="rating1"><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                 <span class="rating1"><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                             </h5>
+                                            </h5>
 
                                           </div>
                                           
@@ -505,62 +500,62 @@
       <!-- Modal content-->
       
       <div class="modal-content">
+        
+        <!-- if user logged in let create, update playlist -->
          
-         <div class="modal-header">
-
-         <!-- if user logged in let create, update playlist -->
+        @if(Auth::check())
          
-         @if(Auth::check())
+            <div class="modal-header">
 
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-            <h4 class="modal-title">{{tr('save_to')}}</h4>
+                <h4 class="modal-title">{{tr('save_to')}}</h4>
 
-         </div>
+            </div>
 
-         <div class="modal-body">
+            <div class="modal-body">
+                
+                @if(!empty($playlists))
 
-            <div class="more-content" id="user-playlists-form">
+                <div class="more-content" id="user-playlists-form">
+                    
+                    <form name="user-playlists" method="post" id="user-playlists" action="{{route('user.add.spam_video')}}">
+                      
+                        <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
 
-               <form name="user-playlists" method="post" id="user-playlists" action="{{route('user.add.spam_video')}}">
-                  
-                  <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
+                        @foreach($playlists as $playlist_details)  
 
-                  @if($playlists != '')
+                            <div class="report_list">
 
-                     @foreach($playlists as $playlist_details)  
+                               <label class="playlist-container">{{ $playlist_details->title}}
+                                  
+                                  <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
+                                                             
+                                  <span class="playlist-checkmark"></span>
 
-                        <div class="report_list">
+                               </label>
 
-                           <label class="playlist-container">{{ $playlist_details->title}}
-                              
-                              <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
-                                                         
-                              <span class="playlist-checkmark"></span>
+                            </div>
 
-                           </label>
+                            <div class="clearfix"></div>
 
-                        </div>
+                         @endforeach
 
-                        <div class="clearfix"></div>
+                      <div id="user_playlists"></div>
+                     
+                      <div class="clearfix"></div>
 
-                     @endforeach 
+                    </form>
 
-                  @endif
+                </div>
 
-                  <div id="user_playlists"></div>
-                  
-                 <!--  <div class="pull-right">
-                        <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
-                     </div> -->
+                <hr>
 
-                  <div class="clearfix"></div>
+                @endif                  
 
-               </form>
-               <hr>
-               <button onclick="$('#create_playlist_form').toggle()"><i class="fa fa-plus"></i></button><label>{{tr('create_playlist')}}</label>
+                <button onclick="$('#create_playlist_form').toggle()"><i class="fa fa-plus"></i></button><label>{{tr('create_playlist')}}</label>
                
-               <div class="" id="create_playlist_form" style="display: none">
+                <div class="" id="create_playlist_form" style="display: none">
                   
                   <div class="form-group">
                      <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="Enter playlist name">
@@ -577,11 +572,9 @@
 
                   <button onclick="playlist_save_video_add({{ $video->video_tape_id }})"> Create </button>
 
-               </div>
-
-            </div>
+                </div>
          
-         </div>
+            </div>
 
          <!-- if user not logged in ask for login -->
 
@@ -603,52 +596,6 @@
 
 </div>
 
-<!-- <div class="modal modal-top1"  role="dialog" id="global_playlist_id_{{$video->video_tape_id}}">
-  
-   <div class="modal-dialog modal-sm">
-
-      <div class="modal-content">
-         <form action="" method="POST">
-               <div class="modal-header">
-
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                  <h4 class="modal-title share-title">{{tr('save_to')}}</h4>
-
-               </div>
-
-               <div class="modal-body">
-                  
-                  <div>
-
-                     <label class="playlist-container">One
-                        <input type="checkbox" checked="checked">
-                        <span class="playlist-checkmark"></span>
-                     </label>
-                     <label class="playlist-container">Two
-                        <input type="checkbox">
-                        <span class="playlist-checkmark"></span>
-                     </label>
-                     <label class="playlist-container">Three
-                        <input type="checkbox">
-                        <span class="playlist-checkmark"></span>
-                     </label>
-                     <label class="playlist-container">Four
-                        <input type="checkbox">
-                        <span class="playlist-checkmark"></span>
-                     </label>
-
-                  </div>
-
-               </div>
-
-         </form>
-      </div>
-   
-   </div>
-
-</div>
- -->
 <!-- PLAYLIST POPUPEND -->
 
 <div class="modal fade modal-top" id="copy-embed" role="dialog">

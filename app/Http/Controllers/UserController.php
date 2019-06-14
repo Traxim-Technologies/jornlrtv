@@ -491,7 +491,7 @@ class UserController extends Controller {
     }
 
     /**
-     * Function Name : channel_videos()
+     * Function Name : channels_view()
      *
      * @uses Based on the channel id , channel related videos will display
      *
@@ -503,7 +503,7 @@ class UserController extends Controller {
      *
      * @return channel videos list
      */
-    public function channel_videos($id , Request $request) {
+    public function channels_view($id , Request $request) {
 
         $channel = Channel::where('id', $id)->first();
          
@@ -564,7 +564,7 @@ class UserController extends Controller {
     }
 
     /**
-     * Function Name : single_video()
+     * Function Name : video_view()
      * 
      * @uses To view single video based on video id
      *
@@ -576,7 +576,7 @@ class UserController extends Controller {
      *
      * @return based on video displayed all the details'
      */
-    public function single_video(Request $request) {
+    public function video_view(Request $request) {
 
         $request->request->add([ 
             'video_tape_id' => $request->id,
@@ -595,7 +595,6 @@ class UserController extends Controller {
              $request->request->add([ 
                 'id'=> '',
                 'view_type' => VIEW_TYPE_VIEWER,
-                // 'channel_id' => VIEW_TYPE_VIEWER
             ]);
         }
         
@@ -609,6 +608,7 @@ class UserController extends Controller {
 
         if ($data->success) {
 
+            // @todo minimize the code
             // get user playlists
             $data->response_array->playlists = $this->UserAPI->playlists($request)->getData();
 
@@ -646,11 +646,6 @@ class UserController extends Controller {
                 }
 
                 $playlists = $response->playlists->data;
-
-            } else {
-
-                $playlists = '';
-
             }
             
             // Video is autoplaying ,so we are incrementing the watch count 
@@ -660,7 +655,7 @@ class UserController extends Controller {
                 $this->watch_count($request);
 
             }
-
+            
             return view('user.single-video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -686,16 +681,14 @@ class UserController extends Controller {
                         ->with('comment_rating_status', $response->comment_rating_status)
                         ->with('embed_link', $response->embed_link)
                         ->with('tags', $response->tags)
-                        // ->with('playlists', $response->playlists->data)
                         ->with('playlists', $playlists);
        
-        } else {
-
-            $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
-
-            return redirect()->back()->with('flash_error', $error_message);
-            
         } 
+       
+        $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
+
+        return redirect()->back()->with('flash_error', $error_message);
+        
     }
 
     /**
@@ -3565,9 +3558,7 @@ class UserController extends Controller {
           
             $video_tapes = $response->data->video_tapes;
             
-            // dd($playlist_details);
-
-            return view('user.playlists.playlist_single_videos')
+            return view('user.playlists.view')
                     ->with('playlist_details', $playlist_details)
                     ->with('video_tapes', $video_tapes);
 

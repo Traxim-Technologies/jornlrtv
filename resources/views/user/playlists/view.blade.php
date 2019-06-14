@@ -22,24 +22,25 @@
                    
                         @if(count($video_tapes) > 0)
 
-                          <a href="{{route('user.single', $video_tapes[0]->video_tape_id)}}">
+                            <a href="{{route('user.single', $video_tapes[0]->video_tape_id)}}">
                             
-                             <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video_tapes[0]->video_image}}" class="slide-img1 placeholder" />
+                                <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video_tapes[0]->video_image}}" class="slide-img1 placeholder" />
 
-                          </a>
+                            </a>
 
-                          <h3> {{$playlist_details->title }} </h3>
-                          <p> {{tr('total_videos')}} : {{$playlist_details->total_videos }} </p>
+                            <h3> {{$playlist_details->title }} </h3>
+                            <p> {{tr('total_videos')}} : {{$playlist_details->total_videos }} </p>
 
-                          <p> {{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>
-                          <hr>
+                            <p> {{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>
+                            <hr>
 
-                               <img class="img-circle " width="70px" src="{{$playlist_details->user_picture}}" style="margin-right: 10px">
-                                <span ><h4 style="display: inline;"><a href="{{route('user.profile')}}">{{$playlist_details->user_name}}</a></h4></span>
+                            <a href="{{route('user.profile')}}"><img class="img-circle " width="70px" src="{{$playlist_details->user_picture}}" style="margin-right: 10px">
+                                <h4 style="display: inline;">{{$playlist_details->user_name}}</h4>
+                            </a>
 
                         @else
                                 
-                          <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
                         @endif
 
@@ -47,21 +48,21 @@
 
                 </div>
              
-             </div>
+            </div>
 
-             <div class="slide-area1 col-sm-8 col-md-8">
+            <div class="slide-area1 col-sm-8 col-md-8">
                 
                 <div class="new-history">
                       
                     <div class="content-head">
                     
-                       <div>
+                        <div>
                           
-                          <h4 class="bold no-margin-top">
+                            <h4 class="bold no-margin-top">
                                {{tr('playlist_videos')}} - {{$playlist_details->title}}
-                          </h4>
+                            </h4>
                  
-                       </div>              
+                        </div>              
                     
                     </div>
 
@@ -115,7 +116,7 @@
 
                                           <div class="cross-mark1">
                                             
-                                             <a onclick="return confirm(&quot;{{ substr($video_tape_details->title, 0 , 15)}}.. {{tr('user_playlist_delete_confirm') }}&quot;)" href="{{route('user.playlists.video_remove' , ['video_tape_id' => $video_tape_details->video_tape_id, 'playlist_id' => $playlist_details->playlist_id])}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                             <a onclick="return confirm(&quot;{{ substr($video_tape_details->title, 0 , 15)}}.. {{tr('user_playlist_video_remove_confirm') }}&quot;)" href="{{route('user.playlists.video_remove' , ['video_tape_id' => $video_tape_details->video_tape_id, 'playlist_id' => $playlist_details->playlist_id])}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                           </div>
                                           <!--end of cross-mark-->  
 

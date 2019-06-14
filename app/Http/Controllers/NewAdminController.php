@@ -1236,7 +1236,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : channels_view
+     * Function Name : channel_view
      *
      * @uses To view the channel based on the channel id
      *
@@ -1249,7 +1249,7 @@ class NewAdminController extends Controller {
      * @return view page
      *
      */
-    public function channels_view(Request $request) {
+    public function channel_view(Request $request) {
 
         try {
 
