@@ -6,12 +6,14 @@
 
 @section('breadcrumb')
 
+     
     <li><a href="{{ route('admin.channels.index') }}"><i class="fa fa-suitcase"></i> {{ tr('channels') }}</a></li>
     <li class="active">{{ tr('view_channel') }}</li>
 
 @endsection 
 
 @section('content') 
+
 
 <div class="col-md-12">
 
@@ -33,7 +35,7 @@
            
             <div class="row">
                 
-                <div class="col-sm-3 border-right">
+                <div class="col-sm-4 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.videos', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_video_tape_count }}</a></h5>
                         <span class="description-text">{{ tr('videos') }}</span>
@@ -42,25 +44,16 @@
                 </div>
                 <!-- /.col -->
                 
-                <div class="col-sm-3 border-right">
+                <div class="col-sm-4 border-right">
                     <div class="description-block">
                         <h5 class="description-header"><a  target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_channel_subscribers_count }}</a></h5>
                         <span class="description-text">{{ tr('subscribers') }}</span>
                     </div>
                     <!-- /.description-block -->
                 </div>
-                <!-- /.col --> 
-
-                <div class="col-sm-3 border-right">
-                    <div class="description-block">
-                        <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.playlists.index', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_playlist_count }}</a></h5>
-                        <span class="description-text">{{ tr('playlist') }}</span>
-                    </div>
-                    <!-- /.description-block -->
-                </div>
                 <!-- /.col -->
                 
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <div class="description-block">
                         <h5 class="description-header">{{ Setting::get('currency') }} {{ number_format_short($channel_earnings) }}</h5>
                         <span class="description-text">{{ tr('earnings') }}</span>
@@ -125,8 +118,7 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab_1" data-toggle="tab">{{ tr('about_channel') }}</a></li>
                         <li><a href="#tab_2" data-toggle="tab">{{ tr('videos') }}</a></li>
-                        <li><a href="#tab_3" data-toggle="tab">{{ tr('subscribers') }}</a></li> 
-                        <li><a href="#tab_4" data-toggle="tab">{{ tr('playlist') }}</a></li>
+                        <li><a href="#tab_3" data-toggle="tab">{{ tr('subscribers') }}</a></li>
                     </ul>
                     <div class="tab-content">
                         

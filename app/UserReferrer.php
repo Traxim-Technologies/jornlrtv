@@ -10,8 +10,7 @@ class UserReferrer extends Model
 
         return $this->belongsTo('App\User', 'user_id');
     }
-
-
+    
     /**
      * Get the flag record associated with the user.
      */

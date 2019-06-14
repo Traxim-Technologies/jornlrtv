@@ -371,7 +371,6 @@ if (!defined('DECLINED')) define('DECLINED',0);
 
 if (!defined('WISHLIST_DELETE_ALL')) define('WISHLIST_DELETE_ALL', 1);
 
-
 // These constants are used identify the home page api types http://prntscr.com/mahza1
 
 if(!defined('API_PAGE_TYPE_HOME')) define('API_PAGE_TYPE_HOME', 'HOME');

@@ -460,6 +460,7 @@
                     $string = tr('add_card_is_not_enabled');
                     break;
 
+
                 case 1000:
                     $string = tr('video_is_in_flag_list');
                     break;

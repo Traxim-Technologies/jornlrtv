@@ -139,7 +139,7 @@
               ]
         
         });
-    
+        @if(Auth::check())
         $.post('{{ route("user.bell_notifications.index")}}', {'is_json': 1})
 
         .done(function(response) {
@@ -229,7 +229,7 @@
         }
 
         setInterval(loadNotificationsCount, 10000);
-
+    @endif
     });
 
 

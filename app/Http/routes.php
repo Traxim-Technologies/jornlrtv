@@ -560,29 +560,6 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::post('sub_admins/save', 'NewAdminController@sub_admins_save')->name('sub_admins.save');
 
-
-    // New Admin Playlist methods begins
-    
-    Route::get('/channel/playlists/index', 'NewAdminController@channels_playlists_index')->name('channels.playlists.index');
-
-    Route::get('/channel/playlists/create', 'NewAdminController@channels_playlists_create')->name('channels.playlists.create');
-
-    Route::get('/channel/playlists/edit', 'NewAdminController@channels_playlists_edit')->name('channels.playlists.edit');
-
-    Route::post('/channel/playlists/save', 'NewAdminController@channels_playlists_save')->name('channels.playlists.save');
-
-    Route::get('/channel/playlists/view', 'NewAdminController@channels_playlists_view')->name('channels.playlists.view');
-
-    Route::get('/channel/playlists/delete', 'NewAdminController@channels_playlists_delete')->name('channels.playlists.delete');
-
-    Route::get('/channel/playlists/status', 'NewAdminController@channels_playlists_status')->name('channels.playlists.status.change');
-
-    Route::get('/channel/playlist/video/remove', 'NewAdminController@channels_playlists_video_remove')->name('channels.playlist.video.delete');
-
-    // Route::get('playlist/videos', 'NewAdminController@playlist_videos')->name('playlists.videos');
-
-    // Route::get('playlist/channels', 'NewAdminController@playlist_channels')->name('playlisst.channels');
-
 });
 
 Route::group(['middleware' => ['SubAdminMiddleware', 'admin'], 'prefix' => 'subadmin', 'as' => 'subadmin.'], function () {
