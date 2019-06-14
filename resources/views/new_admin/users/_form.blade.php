@@ -71,7 +71,7 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <label for="exampleInputEmail1">{{ tr('confirm_password') }} </label>
+                                    <label for="exampleInputEmail1">{{ tr('confirm_password') }} * </label>
                                     <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="{{ tr('confirm_password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
                                 </div>
 
@@ -92,7 +92,8 @@
                         <div class="col-lg-12">
                             <label for="{{ tr('dob') }}">{{ tr('description') }} </label>
                          
-                            <textarea type="text" name="description" class="form-control" id="description" placeholder="{{ tr('description') }}" maxlength="255">{{old('description') ?: $user_details->description }}</textarea>
+                            <textarea type="text" name="description" class="form-control" id="description" placeholder="{{ tr('description') }}" maxlength="255">
+                            <?php echo $user_details->description ?></textarea>
                         </div>
 
                     </div>

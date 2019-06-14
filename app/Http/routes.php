@@ -585,9 +585,9 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('wishlist', 'UserController@wishlist')->name('wishlist');
 
-    Route::get('channel/{id}', 'UserController@channel_videos')->name('channel');
+    Route::get('channel/{id}', 'UserController@channel_view')->name('channel');
 
-    Route::get('video/{id}', 'UserController@single_video')->name('single');
+    Route::get('video/{id}', 'UserController@video_view')->name('single');
 
     // Wishlist
 
@@ -835,7 +835,10 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
 
-    Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
+    // Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
+    
+    // @todo check where method being used
+    Route::any('/playlists/view', 'UserController@playlist_single')->name('playlists.view');
 
     Route::any('/playlists/video_status', 'UserController@playlists_video_status')->name('playlists.video_status');
 
@@ -845,9 +848,17 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('/referrals/view', 'UserController@referrals_view')->name('referrals.view');
 
+    // =================== v5.0 ==================
+
+    Route::get('playlist/list/', 'UserController@playlist_single')->name('playlist.single');
+
+    Route::post('/playlist_video_update', 'UserController@playlist_video_update')->name('playlist.video.update');
+
+    Route::post('/playlist/save/video_add', 'UserController@playlist_save_video_add')->name('playlist.save.video_add');
+
 });
 
-Route::group(['prefix' => 'userApi'], function(){
+Route::group(['prefix' => 'userApi'], function() {
 
     Route::post('/watch_count', 'UserController@watch_count');
 
@@ -1055,6 +1066,8 @@ Route::group(['prefix' => 'userApi'], function(){
     Route::post('/video_tapes_delete', 'UserApiController@video_tapes_delete');
 
     Route::post('/video_tapes_view', 'V5UserApiController@video_tapes_view');
+
+    Route::post('/playlists/video_save', 'UserApiController@playlists_video_save');
 
 });
 

@@ -158,7 +158,7 @@
 
 	            							<ul class="admin-action btn btn-default">
 
-	            								<li class="@if($i < 2) dropdown @else dropup @endif">									               
+	            								<li class="dropdown">									               
 									                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 									                  {{ tr('action') }} <span class="caret"></span>
 									                </a>

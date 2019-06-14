@@ -466,6 +466,10 @@
                     break;
                 case 1001:
                     $string = tr('video_not_found');
+                    break; 
+
+                case 1002:
+                    $string = tr('video_is_declined');
                     break;
 
                 case 502:

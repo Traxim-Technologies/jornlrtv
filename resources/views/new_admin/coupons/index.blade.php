@@ -19,7 +19,7 @@
 
 			@include('notification.notify')
 
-			<div class="box box-info">
+			<div class="box">
 				
 				<div class="box-header label-primary">
 					<b style="font-size: 18px;">{{ tr('coupons') }}</b>

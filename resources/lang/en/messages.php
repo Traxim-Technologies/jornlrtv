@@ -1975,6 +1975,8 @@ return array(
 
 	'admin_channel_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
 
+	'admin_channel_playlist_video_delete_confirmation'=>"Do you want to delete this(:otherkey) video from playlist?",
+
 	'admin_channel_playlist_create_success' => "Playlist created successfully!",
 
 	'admin_channel_playlist_update_success' => "Playlist created successfully!",
@@ -2025,10 +2027,10 @@ return array(
 	'referral_details' => 'Referral Details',
 	'referral_code' => 'Referral Code',
 	'referral_earnings' => 'Total Referral Revenue',
-	'referral_count' => 'Refered Count',
+	'referral_count' => 'Referred Count',
 	'referral_commission' => 'Referral Commission',
 
-	'admin_user_refered_accounts_not_found' => 'Sorry! User\'s Refered user details not found',
+	'admin_user_refered_accounts_not_found' => 'Sorry! User\'s Referred user details not found',
 
 	'referrals' => 'REFERRALS',
 	'total_referrals' => 'Total Referrals',
@@ -2064,5 +2066,10 @@ return array(
 
 	/* - - - - - - - - used for header for each section  - - - - - - - - - - */
 
+	'last_updated' => 'Last updated on',
 	'video_in_spam_list' => 'The video in spams list.Please unspam the video',
+	'create_playlist' => 'Create New Playlist',
+	'signid_for_playlist' => 'Sign in to add this video to a playlist',
+
+
 );

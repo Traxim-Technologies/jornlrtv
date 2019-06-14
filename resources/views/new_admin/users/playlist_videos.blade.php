@@ -62,7 +62,7 @@
 								      	</td>
 
 								      	<td>
-								      		<a href="{{ route('admin.videos.view' ,  ['admin_video_id' => $playlists_video_details->id] ) }}">
+								      		<a href="{{ route('admin.video_tapes.view' ,  ['admin_video_id' => $playlists_video_details->id] ) }}">
 								      		{{ $playlists_video_details->video_tape_title }}
 								      		</a>
 									    </td>

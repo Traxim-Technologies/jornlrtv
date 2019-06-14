@@ -100,7 +100,7 @@
                     <div class="col-sm-12">
                     <hr>
                         <strong>{{ tr('description') }}</strong>
-                        <p><?= $subscription_details->description ?></p>
+                        <p><?php echo $subscription_details->description ?></p>
                     </div>
 
         	</div>

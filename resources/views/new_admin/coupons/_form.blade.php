@@ -16,13 +16,14 @@
 
 			<div class="col-sm-6">
 
-				<label for="coupon_code" class="control-label"> {{tr('coupon_code')}} *</label>
+				<label for="coupon_code" class="control-label"> * {{tr('coupon_code')}}</label>
 
 				<input type="text" name="coupon_code" min="5" max="10" class="form-control" pattern="[A-Z0-9]+" placeholder="{{tr('enter_coupon_code')}}" value="{{ old('coupon_code') ?: $coupon_details->coupon_code }}" required><span class="help-block">{{tr('note')}} : {{tr('coupon_code_note')}}</span>
 			</div>
 		</div>
 		
 		<div class="form-group">
+			
 			<div class="col-sm-6">
 
 				<label for = "amount_type" class="control-label"> * {{tr('amount_type')}}</label>
@@ -31,10 +32,14 @@
 
 					<option>{{tr('choose')}} {{tr('amount_type')}}</option>
 
-					<option value="{{PERCENTAGE}}" {{$coupon_details->amount_type == 0 ?'selected="selected"':''}}>{{tr('percentage_amount')}}</option>
+					<option value="{{PERCENTAGE}}" {{ $coupon_details->amount_type == 0 ? 'selected="selected"' : '' }}> {{tr('percentage_amount')}}
+					</option>
 
-					<option value="{{ABSOULTE}}" {{$coupon_details->amount_type == 1 ?'selected="selected"':''}}>{{tr('absoulte_amount')}}</option>
+					<option value="{{ABSOULTE}}" {{$coupon_details->amount_type == 1 ? 'selected="selected"' : '' }}> {{tr('absoulte_amount')}} 
+					</option>
+				
 				</select> 
+
 			</div>
 
 			<div class="col-sm-6">

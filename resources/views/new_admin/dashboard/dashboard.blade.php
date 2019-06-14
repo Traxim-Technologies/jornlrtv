@@ -284,7 +284,7 @@ use  Carbon\Carbon;
                                             <a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $video_details->video_tape_id] )}}" class="product-title">{{substr($video_details->title, 0,50)}}
                                                 <span class="label label-warning pull-right">{{$video_details->duration}}</span>
                                             </a>
-                                            <span class="product-description">
+                                            <span class="product-description text-black" >
                                               <?= substr($video_details->description , 0 , 70) ?>
                                             </span>
                                       </div>

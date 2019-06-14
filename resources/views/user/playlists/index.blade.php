@@ -19,10 +19,10 @@
 			<div class="row col-md-12">
 
 				<div class="slide-area1 recom-area">
+                   
                     <div class="box-head recom-head">
 						<h3 class="no-margin text-left">{{tr('playlists')}} ({{count($playlists)}})</h3>
                     </div>
-
 
                     @if(count($playlists) > 0)
 

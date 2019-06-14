@@ -193,7 +193,7 @@
 											                  	 	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('delete') }}</a>
 
 											                  	@else
-										                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{ route('admin.video_tapes.delete' , array('id' => $video->video_tape_id)) }}">{{ tr('delete') }}</a>
+										                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{ route('admin.video_tapes.delete' , array('video_tape_id' => $video->video_tape_id)) }}">{{ tr('delete') }}</a>
 										                  		@endif
 										                  	</li>
 									                  	@endif

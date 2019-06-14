@@ -108,7 +108,8 @@ class NewAdminController extends Controller {
     public function __construct()
     {
         $this->middleware('admin');  
-    }
+    } 
+      
     public function check_role(Request $request) {
         
         if(Auth::guard('admin')->check()) {
@@ -213,9 +214,7 @@ class NewAdminController extends Controller {
                         ->withPage('users')
                         ->with('sub_page','users-view')
                         ->with('users' , $users);
-
-
-            
+           
         } catch (Exception $e) {
 
             $error = $e->getMessage();
@@ -330,14 +329,16 @@ class NewAdminController extends Controller {
             $user_details = $request->user_id ? User::find($request->user_id) : new User;
 
             $new_user = NEW_USER;
+            
+            if ($user_details->id != '') {
 
-            if ($user_details->id) {
-
-                $new_user = EXISTING_USER;
+                $new_user = NO;
 
                 $message = tr('admin_user_update_success');
 
             } else {
+                
+                $new_user = YES;
 
                 $user_details->password = ($request->password) ? \Hash::make($request->password) : null;
 
@@ -351,7 +352,7 @@ class NewAdminController extends Controller {
 
                 $user_details->timezone = $request->has('timezone') ? $request->timezone : '';
             }
-            
+
             $user_details->name = $request->has('name') ? $request->name : '';
 
             $user_details->email = $request->has('email') ? $request->email: '';
@@ -370,7 +371,7 @@ class NewAdminController extends Controller {
 
                 $from = new \DateTime($user_details->dob);
 
-                $to   = new \DateTime('today');
+                $to = new \DateTime('today');
 
                 $user_details->age_limit = $from->diff($to)->y;
             }
@@ -380,7 +381,7 @@ class NewAdminController extends Controller {
                 throw new Exception(tr('admin_user_min_age_error'), 101);
             }
 
-            if ($new_user) {
+            if ($new_user == YES) {
 
                 $email_data['name'] = $user_details->name;
 
@@ -411,7 +412,7 @@ class NewAdminController extends Controller {
 
                 $user_details->picture = Helper::normal_upload_picture($request->file('picture'), "/uploads/images/users/");
             }
-
+            
             if ($user_details->save()) {
 
                 // Check the default subscription and save the user type
@@ -673,7 +674,6 @@ class NewAdminController extends Controller {
                     Channel::where('user_id', $users_details->id)->update(['is_approved'=>ADMIN_CHANNEL_DECLINED]);
 
                     VideoTape::where('user_id', $users_details->id)->update(['is_approved'=>ADMIN_VIDEO_DECLINED_STATUS]);
-
                 }
 
                 DB::commit();
@@ -728,7 +728,6 @@ class NewAdminController extends Controller {
                 DB::commit();
 
                 return back()->with('flash_success',$message);
-
             }
             
             throw new Exception(tr('admin_user_verification_save_error'), 101);
@@ -1237,7 +1236,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : channels_view
+     * Function Name : channel_view
      *
      * @uses To view the channel based on the channel id
      *
@@ -1250,7 +1249,7 @@ class NewAdminController extends Controller {
      * @return view page
      *
      */
-    public function channels_view(Request $request) {
+    public function channel_view(Request $request) {
 
         try {
 
@@ -2245,7 +2244,7 @@ class NewAdminController extends Controller {
         $coupon_details = new Coupon;
 
         $coupon_details->expiry_date = date('Y-m-d');
-
+        
         return view('new_admin.coupons.create')
                     ->with('page' , 'coupons')
                     ->with('sub_page','coupons-create')
@@ -2284,6 +2283,7 @@ class NewAdminController extends Controller {
                     ->with('sub_page','coupons-view')
                     ->with('coupon_details',$coupon_details);
        
+
         } catch( Exception $e) {
             
             $error = $e->getMessage();
@@ -2330,7 +2330,7 @@ class NewAdminController extends Controller {
                 throw new Exception( $error, 101);
             }
 
-            if($request->coupon_id !=''){
+            if($request->coupon_id != ''){
                                        
                 $coupon_detail = Coupon::find($request->coupon_id); 
 
@@ -2399,9 +2399,7 @@ class NewAdminController extends Controller {
             if($coupon_detail->save()) {
 
                 DB::commit();
-                
-                $message = $request->coupon_id ? tr('admin_coupon_create_success'): tr('admin_coupon_update_success');
-                
+                               
                 return redirect()->route('admin.coupons.view',['coupon_id' =>$coupon_detail->id ])->with('flash_success',$message);
             } 
 
@@ -4571,7 +4569,8 @@ class NewAdminController extends Controller {
                 'title' => 'required|max:255',
                 'plan' => 'required|integer|between:1,12',
                 'amount' => 'required',
-                'picture' => 'mimes:jpeg,png,jpg'
+                'picture' => 'mimes:jpeg,png,jpg',
+                'description' => 'max:255',
             ]);
 
             if($validator->fails()) {
@@ -4590,6 +4589,8 @@ class NewAdminController extends Controller {
             $subscription_details->plan = $request->plan;  
 
             $subscription_details->amount = $request->amount;
+
+            $subscription_details->description = $request->description;
             
             if($request->hasFile('picture')) {
                 
@@ -5325,7 +5326,7 @@ class NewAdminController extends Controller {
      * @return success/error message
      */
     public function settings_save(Request $request) {
-
+        
         try {
             
             DB::beginTransaction();
@@ -5348,7 +5349,7 @@ class NewAdminController extends Controller {
                     $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
                
                 } else {
-
+                    
                     $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
 
                     if( $result == TRUE ) {
@@ -5372,8 +5373,8 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error', $error);
         }
-
     }
+
     /**
      * Function Name: custom_push()
      *
@@ -5685,15 +5686,14 @@ class NewAdminController extends Controller {
                     ->with('page', 'sub-admins')
                     ->with('sub_page', 'sub-admins-view')
                     ->with('sub_admin_details', $sub_admin_details);
-       
-        } catch( Exception $e) {
+        
+           } catch( Exception $e) {
             
             $error = $e->getMessage();
 
             return redirect()->route('admin.sub_admins.index')->with('flash_error',$error);
         }
     }
-
 
     /**
      * Function Name : sub_admins_delete()
@@ -5710,7 +5710,7 @@ class NewAdminController extends Controller {
      */
     public function sub_admins_delete(Request $request) {
 
-         try {
+        try {
 
             DB::beginTransaction();
             
@@ -5794,9 +5794,17 @@ class NewAdminController extends Controller {
             $sub_admin_details->description = $request->description ? $request->description : '';
 
             $sub_admin_details->role = SUBADMIN;
+                
+            if (!$sub_admin_details->id) {
 
-            $sub_admin_details->picture = asset('placeholder.png');
-            
+                $new_password = $request->password;
+                
+                $sub_admin_details->password = \Hash::make($new_password);
+
+                $sub_admin_details->picture = asset('placeholder.png');
+
+            }
+
             if($request->hasFile('picture')) {
 
                 if($request->sub_admin_id) {
@@ -5805,13 +5813,6 @@ class NewAdminController extends Controller {
                 }
 
                 $sub_admin_details->picture = Helper::normal_upload_picture($request->picture, "/uploads/sub_admins/");
-            }
-                
-            if (!$sub_admin_details->id) {
-
-                $new_password = $request->password;
-                
-                $sub_admin_details->password = \Hash::make($new_password);
             }
 
             $sub_admin_details->timezone = $request->timezone;
@@ -6619,7 +6620,7 @@ class NewAdminController extends Controller {
                     ->where('video_tape_id', $request->id)->get(12);
 
 
-            $page = 'video_tapes'; $sub_page = 'video_tapes-create';
+            $page = 'video_tapes'; $sub_page = 'video_tapes-view';
 
             if($video_tape_details->is_banner == 1) {
 
@@ -6679,7 +6680,7 @@ class NewAdminController extends Controller {
             
             DB::commit();
 
-            return redirect()->route('admin.video_tapes.index')->with('flash_success', tr('video_delete_success'));
+            return redirect()->back()->with('flash_success', tr('video_delete_success'));
                 
         } catch (Exception $e) {
             
@@ -7000,6 +7001,202 @@ class NewAdminController extends Controller {
 
             return back()->with('flash_error', $error);
         }
+    }
+
+    /**
+     * Function Name : channels_playlists_index()
+     *
+     * @uses To list out channel's  playlist based channel_id
+     *
+     * @created Anjana H 
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) channel_id
+     *
+     * @return View page
+     */
+    public function channels_playlists_index(Request $request) {
+
+        try {
+            
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details) {
+
+                throw new Exception( tr('admin_channel_not_found'), 101);
+            } 
+            
+            $base_query = Playlist::where('playlists.channel_id', $request->channel_id)
+                                ->orderBy('playlists.updated_at', 'desc');
+
+            $playlists = $base_query->CommonResponse()->get();
+
+            foreach ($playlists as $key => $playlist_details) {
+                
+                $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
+            }
+
+            return view('new_admin.channels.playlist_index')
+                    ->with('page', 'channels')
+                    ->with('sub_page', 'channels-view')
+                    ->with('playlists', $playlists)
+                    ->with('channel_details', $channel_details);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+        }
+    
+    }
+
+    /**
+     * Function Name : channels_playlists_view()
+     *
+     * @uses to list out playlist details based on playlist_id of a channel
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param Integer (request) playlist_id
+     * 
+     * @return view page
+     */
+    public function channels_playlists_view(Request $request) {
+
+        try {
+
+            $playlist_details = Playlist::find($request->playlist_id );
+
+            if(!$playlist_details) {
+
+                throw new Exception( tr('admin_user_playlist_not_found'), 101);
+            } 
+
+            $channel_details = Channel::find($request->channel_id);
+
+            if(!$channel_details) {
+
+                throw new Exception( tr('admin_channel_not_found'), 101);
+            }
+
+            $playlists_videos = PlaylistVideo::where('playlist_id', $request->playlist_id)
+                        ->leftjoin('video_tapes','video_tapes.id','=','playlist_videos.video_tape_id')
+                        ->leftjoin('channels','channels.id','=','video_tapes.channel_id')
+                        ->addSelect('playlist_videos.id as playlist_video_id','playlist_videos.created_at as created_at')
+                        ->addSelect('channels.name as channel_name')
+                        ->addSelect('video_tapes.title as video_tape_title', 'video_tapes.id as video_tape_id')
+                        ->get();            
+
+            $playlist_details->total_videos = $playlists_videos->count();
+
+            return view('new_admin.channels.playlist_videos')
+                    ->with('page', 'channels')
+                    ->with('sub_page', 'channels-view')
+                    ->with('channel_details', $channel_details)
+                    ->with('playlists_videos', $playlists_videos)
+                    ->with('playlist_details', $playlist_details);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+
+        }
+        
+    }
+
+    /**
+     * Function Name : channels_playlists_delete()
+     *
+     * @uses To delete the playlist based on playlist_id
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana Hdd
+     *
+     * @param object $request - playlist id
+     *
+     * @return success/failure message
+     */
+    public function channels_playlists_delete(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $playlist_details = Playlist::find( $request->playlist_id );
+
+            if(!$playlist_details) {
+
+                throw new Exception( tr('admin_channel_playlist_not_found'), 101);
+            } 
+
+            if( $playlist_details->delete()) {
+               
+                DB::commit();
+                
+                return redirect()->back()->with('flash_success', tr('admin_channel_playlist_delete_success'));
+            }
+
+            throw new Exception(tr('admin_channel_playlist_delete_error'), 101);
+
+        } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return back()->withInput()->with('flash_error',$error);
+        }
+    }
+
+    /**
+     * Function Name : channels_playlists_video_remove()
+     *
+     * @uses To delete video from channel playlist's list 
+     * 
+     * @created Anjana H
+     *
+     * @updated Anjana H  
+     *
+     * @param Integer (request) - $playlist_video_id
+     *
+     * @return view page
+     */
+    public function channels_playlists_video_remove(Request $request) {
+
+        try {
+            
+            DB::beginTransaction();
+
+            $playlist_video_details = PlaylistVideo::find( $request->playlist_video_id );
+
+            if(!$playlist_video_details) {
+
+                throw new Exception( tr('admin_channel_playlist_video_not_found'), 101);
+            } 
+
+            if( $playlist_video_details->delete()) {
+               
+                DB::commit();
+                
+                return redirect()->back()->with('flash_success', tr('admin_channel_playlist_video_delete_success'));
+            }
+
+            throw new Exception(tr('admin_channel_playlist_video_delete_error'), 101);
+
+        } catch(Exception $e) {
+
+            $error = $e->getMessage();
+
+            return back()->with('flash_error', $error);
+
+        }
 
     }
     /**
@@ -7262,8 +7459,6 @@ class NewAdminController extends Controller {
 
                 throw new Exception(tr('admin_channel_playlist_not_found'), 101);
             }
-
-            // dd($playlist_details->status);
 
             $playlist_details->status = $playlist_details->status == APPROVED ? DECLINED : APPROVED;
 

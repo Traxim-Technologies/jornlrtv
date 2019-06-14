@@ -381,6 +381,7 @@
                                                 <!--history-image-->
 
                                                 <div class="history-title">
+                                                   
                                                     <div class="history-head row">
                                                         <div class="cross-title2">
                                                             <h5 class="payment_class unset-height">
@@ -598,11 +599,14 @@
                                     @else
 
                                     <!-- <p style="color: #000">{{tr('no_video_found')}}</p> -->
-                                    <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif
+                                    <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> 
+
+                                    @endif
 
                                 </div>
 
                             </div>
+
                         </div>
 
                     </li>
@@ -615,6 +619,89 @@
                             </div>
                         </div>
 
+                    </li>
+                    
+                    <li role="tabpanel" class="tab-pane" id="playlist">
+
+                        <div class="recom-area abt-sec">
+                           
+                            <div class="abt-sec-head">
+
+                                <div class="new-history1">
+                                    
+                                    <div class="content-head">
+                                        
+                                        <div>
+                                            <h4 style="color: #000;">{{tr('playlists')}}&nbsp;&nbsp;
+                                            @if(Auth::check())
+
+                                            @endif
+                                            </h4>
+                                        </div>
+
+                                    </div>
+
+                                    @if(count($channel_playlists) > 0)
+                                   
+                                    <div class="recommend-list row">
+
+                                        @foreach($channel_playlists as $channel_playlist_details)
+
+                                        <div class="slide-box recom-box">
+
+                                            <div class="slide-image">
+
+                                                <!-- <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">   -->
+
+                                                <a href="{{route('user.playlist.single', ['playlist_id' => $channel_playlist_details->playlist_id])}}">         
+                                                    <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$channel_playlist_details->picture}}" class="slide-img1 placeholder" />
+                                                </a>
+
+                                                <div class="video_amount">
+
+                                                    <a href="{{route('user.playlists.delete', ['playlist_id' => $channel_playlist_details->playlist_id])}}" onclick="return confirm(&quot;{{ substr($channel_playlist_details->title, 0 , 15)}} - {{tr('user_playlist_delete_confirm') }}&quot;)" class="playlist-delete"><i class="fa fa-trash"></i></a>
+
+                                                </div>
+
+                                                <div class="video_duration">
+                                                    {{$channel_playlist_details->total_videos}} {{tr('videos')}}
+                                                </div>
+                                            
+                                            </div>
+
+                                            <div class="video-details recom-details">
+                                                
+                                                <div class="video-head">
+                                                    <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">{{$channel_playlist_details->title}}</a>
+                                                </div>
+                                               
+
+                                                <span class="video_views">
+                                                    <div>
+
+                                                    </div>
+                                                    {{$channel_playlist_details->created_at}}
+                                                </span> 
+                                        
+                                            </div>
+                                            <!--end of video-details-->
+
+                                        </div>
+
+                                        @endforeach
+
+                                    @else
+
+                                        <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
+
+                                    @endif
+
+                                </div>
+                            
+                            </div>
+                        
+                        </div>
+                    
                     </li>
 
                     <li role="tabpanel" class="tab-pane" id="payment_managment">
@@ -775,6 +862,8 @@
                          </div>
 
                     </li>
+
+
                 
                 </ul>
 

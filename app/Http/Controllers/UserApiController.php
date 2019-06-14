@@ -136,11 +136,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : update_profile()
+     * @method update_profile()
      * 
      * @usage_place : MOBILE & WEB
      * 
-     * Save any changes to the users profile.
+     * @uses To save any changes to the users profile.
      * 
      * @param object $request - User Details
      *
@@ -264,11 +264,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : change_password
+     * @method change_password
      *
      * @usage_place : MOBILE & WEB
      *
-     * To change the password who has logged in user
+     * @uses To change the password who has logged in user
      *
      * @param Object $request - User PAssword Details
      *
@@ -313,11 +313,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : add_history()
+     * @method add_history()
      *
      * @usage_place : MOBILE & WEB
      *
-     * To Add in history based on user, once he complete the video , the video will save
+     * @uses To Add in history based on user, once he complete the video , the video will save
      *
      * @param Integer $request - Video Id
      *
@@ -404,11 +404,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : delete_history()
+     * @method delete_history()
      *
      * @usage_place : MOBILE & WEB
      *
-     * To Delete a history based on user
+     * @uses To Delete a history based on user
      *
      * @param Integer $request - Video Id
      *
@@ -453,7 +453,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : wishlist_create()     
+     * @method wishlist_create()     
      *
      * @uses To add a video to wishlist based on details
      *
@@ -534,7 +534,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : wishlist_delete()     
+     * @method wishlist_delete()     
      *
      * @uses To delete wishlist(s) based on details
      *
@@ -610,11 +610,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : add_comment()
+     * @method add_comment()
      *
      * @usage_place : MOBILE & WEB
      * 
-     * To Add comment based on single video
+     * @uses To Add comment based on single video
      *
      * @param integer $video_tape_id - Video Tape ID
      *
@@ -672,9 +672,9 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : delete_account()
+     * @method delete_account()
      *
-     * To delete account , based on the user
+     * @uses To delete account , based on the user
      *
      * @param object $request - User Details
      *
@@ -1680,7 +1680,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function single_video()
+     * @method single_video()
      *
      * Return particular video details 
      *
@@ -2137,7 +2137,7 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : redeem_request_list()
+     * @method redeem_request_list()
      * 
      * List of redeem requests based on logged in user id 
      *
@@ -3929,11 +3929,11 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : search_channels_list
+     * @method search_channels_list
      *
      * @usage_place : WEB
      *
-     * To list out all the channels which based on search
+     * @uses To list out all the channels which based on search
      *
      * @param Object $request - USer Details
      *
@@ -4026,7 +4026,7 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : stripe_ppv()
+     * @method stripe_ppv()
      * 
      * Pay the payment for Pay per view through stripe
      *
@@ -4465,7 +4465,7 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name :  wishlist_list()
+     * @method  wishlist_list()
      * 
      * @usage_place : WEB
      * 
@@ -4548,7 +4548,7 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : watch_list()
+     * @method watch_list()
      * 
      * @usage_place : WEB
      *
@@ -4628,7 +4628,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : recently_added()
+     * @method recently_added()
      *
      * @usage_place : WEB
      *
@@ -4696,11 +4696,11 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : trending_list()
+     * @method trending_list()
      *
      * @usage_place : WEB
      *
-     * To display based on watch count, no of users seen videos
+     * @uses To display based on watch count, no of users seen videos
      *
      * @param object $request - User Details
      *
@@ -4763,11 +4763,11 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : suggestion_videos()
+     * @method suggestion_videos()
      *
      * @usage_place : WEB
      *
-     * To get suggestion video to see the user
+     * @uses To get suggestion video to see the user
      *
      * @param object $request - User Details
      *
@@ -4835,11 +4835,11 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : channel_list
+     * @method channel_list
      *
      * @usage_place : WEB
      *
-     * To list out all the channels which is in active status
+     * @uses To list out all the channels which is in active status
      *
      * @param Object $request - USer Details
      *
@@ -4931,11 +4931,11 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : channel_list
+     * @method channel_list
      *
      * @usage_place : MOBILE
      *
-     * To list out all the channels which is subscribed the logged in user
+     * @uses To list out all the channels which is subscribed the logged in user
      *
      * @param Object $request - Subscribed plan Details
      *
@@ -4975,11 +4975,11 @@ class UserApiController extends Controller {
 
     }
     /**
-     * Function Name : channel_videos()
+     * @method channel_videos()
      *
      * @usage_place : WEB
      *
-     * To list out all the videos based on the channel id
+     * @uses To list out all the videos based on the channel id
      *
      * @param integer $channel_id - Channel Id
      * 
@@ -5008,7 +5008,6 @@ class UserApiController extends Controller {
 
             } else {
 
-
                 $videos_query->where('video_tapes.status' , USER_VIDEO_APPROVED_STATUS)
                     ->where('video_tapes.is_approved', ADMIN_VIDEO_APPROVED_STATUS)
                         ->where('video_tapes.publish_status' , 1)   
@@ -5026,6 +5025,8 @@ class UserApiController extends Controller {
                         ->where('channels.status', 1)
                         ->where('channels.is_approved', 1)
                         ->where('categories.status', CATEGORY_APPROVE_STATUS);
+
+            
             
         }
 
@@ -5070,11 +5071,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : channel_trending()
+     * @method channel_trending()
      *
      * @usage_place : WEB
      *
-     * To list out channel trending videos 
+     * @uses To list out channel trending videos 
      *
      * @param integer $id - Channel Id
      *
@@ -5154,11 +5155,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : payment_videos()
+     * @method payment_videos()
      *
      * @usage_place : WEB
      *
-     * To list out payment videos 
+     * @uses To list out payment videos 
      *
      * @param integer $id - Channel Id
      *
@@ -5197,11 +5198,11 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : single_video()
+     * @method single_video()
      *
      * @usage_place : WEB
      * 
-     * To view single video based on video id
+     * @uses To view single video based on video id
      *
      * @param integer $request - Video id
      *
@@ -5503,9 +5504,9 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : create_channel()
+     * @method create_channel()
      *
-     * To create a channel based on the logged in user
+     * @uses To create a channel based on the logged in user
      *
      * @param object $request - User id, token
      *
@@ -5550,9 +5551,9 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : channel_edit()
+     * @method channel_edit()
      *
-     * To edit a channel based on logged in user id (Form Rendering)
+     * @uses To edit a channel based on logged in user id (Form Rendering)
      *
      * @param integer $id - Channel Id
      *
@@ -5602,9 +5603,9 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : channel_delete()
+     * @method channel_delete()
      *
-     * To delete a channel based on logged in user id & channel id (Form Rendering)
+     * @uses To delete a channel based on logged in user id & channel id (Form Rendering)
      *
      * @param integer $request - Channel Id
      *
@@ -5650,9 +5651,9 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Nmae : ppv_list()
+     * @method Nmae : ppv_list()
      * 
-     * to list out  all the paid videos by logged in user using PPV
+     * @uses To list out  all the paid videos by logged in user using PPV
      *
      * @param object $request - User id, token 
      *
@@ -5816,9 +5817,9 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : paypal_ppv()
+     * @method paypal_ppv()
      * 
-     * Pay the payment for Pay per view through paypal
+     * @uses Pay the payment for Pay per view through paypal
      *
      * @param object $request - video tape id
      * 
@@ -6089,12 +6090,13 @@ class UserApiController extends Controller {
     
 
     }
-        /**
+    
+    /**
      * FOR MOBILE APP WE ARE USING THIS
      *  
-     * Function Name: cards_add()
+     * @method cards_add()
      *
-     * Description: add card using stripe payment
+     * @uses add card using stripe payment
      *
      * @created Vidhya R
      *
@@ -6242,9 +6244,9 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : tags_list
+     * @method tags_list
      *
-     * To list out all active tags
+     * @uses To list out all active tags
      *
      * @created Vithya
      *
@@ -6274,9 +6276,9 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : tags_view
+     * @method tags_view
      *
-     * To get any one of the tag details
+     * @uses To get any one of the tag details
      *
      * @created Vithya
      *
@@ -6304,13 +6306,13 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : tags_videos()
+     * @method tags_videos()
+     *
+     * @uses To display based on tag
      *
      * @created Vithya
      *
      * @updated -
-     *
-     * To display based on tag
      *
      * @param object $request - User Details
      *
@@ -6409,9 +6411,9 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : categories_list()
+     * @method categories_list()
      *
-     * Load all the active categories
+     * @uses Load all the active categories
      *
      * @created Vithya
      *
@@ -6431,9 +6433,9 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : categories_view()
+     * @method categories_view()
      *
-     * category details based on id
+     * @uses category details based on id
      *
      * @created Vithya
      *
@@ -6493,13 +6495,13 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : categories_videos()
+     * @method categories_videos()
+     *
+     * @uses To display based on category
      *
      * @created Vithya
      *
-     * @updated -
-     *
-     * To display based on category
+     * @updated 
      *
      * @param object $request - User Details
      *
@@ -6599,9 +6601,9 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function Name : categories_channels_list
+     * @method categories_channels_list
      *
-     * To list out all the channels which is in active status
+     * @uses To list out all the channels which is in active status
      *
      * @created Vithya 
      *
@@ -6717,9 +6719,9 @@ class UserApiController extends Controller {
 
 
    /**
-    * Function Name : autorenewal_cancel
+    * @method autorenewal_cancel
     *
-    * To cancel automatic subscription
+    * @uses To cancel automatic subscription
     *
     * @created Vithya
     *
@@ -6809,9 +6811,9 @@ class UserApiController extends Controller {
     }
 
    /**
-    * Function Name : autorenewal_enable
+    * @method autorenewal_enable
     *
-    * To enable automatic subscription
+    * @uses To enable automatic subscription
     *
     * @created Vithya
     *
@@ -6881,9 +6883,9 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : check_coupon_applicable_to_user()
+     * @method check_coupon_applicable_to_user()
      *
-     * To check the coupon code applicable to the user or not
+     * @uses To check the coupon code applicable to the user or not
      *
      * @created_by Vithya
      *
@@ -6949,7 +6951,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : apply_coupon_subscription()
+     * @method apply_coupon_subscription()
      *
      * Apply coupon to subscription if the user having coupon codes
      *
@@ -7070,7 +7072,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : apply_coupon_video_tapes()
+     * @method apply_coupon_video_tapes()
      *
      * Apply coupon to PPV if the user having coupon codes
      *
@@ -7180,7 +7182,7 @@ class UserApiController extends Controller {
 
 
     /**
-     * Function : custom_live_videos()
+     * @method custom_live_videos()
      *
      * @created Vithya R 
      *
@@ -7224,7 +7226,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: custom_live_videos_view()
+     * @method custom_live_videos_view()
      *
      * @uses get the details of the selected custom video (Live TV)
      *
@@ -7277,7 +7279,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: playlists()
+     * @method playlists()
      *
      * @uses get the playlists
      *
@@ -7316,13 +7318,12 @@ class UserApiController extends Controller {
 
             // Logged in user access owned channel playlist - required channel_id
 
-            if(($request->id && $request->view_type == VIEW_TYPE_VIEWER)|| (!$request->id && $request->view_type == VIEW_TYPE_VIEWER)) {
+            if(($request->id && $request->view_type == VIEW_TYPE_VIEWER) || (!$request->id && $request->view_type == VIEW_TYPE_VIEWER)) {
 
                 if(!$request->channel_id) {
 
                     throw new Exception("Channel ID is required", 101);
                     
-
                 }
                 
             }
@@ -7335,7 +7336,6 @@ class UserApiController extends Controller {
             if($request->view_type == VIEW_TYPE_OWNER && !$request->channel_id) {
 
                 $base_query = $base_query->where('playlists.user_id', $request->id)->where('channel_id', 0);
-
             }
 
             // While owner access the channel playlists
@@ -7343,13 +7343,12 @@ class UserApiController extends Controller {
             if($request->view_type == VIEW_TYPE_OWNER && $request->channel_id) {
 
                 $base_query = $base_query->where('playlists.user_id', $request->id);
-
             }
 
             if($request->channel_id) {
 
                 $base_query = $base_query->where('playlists.channel_id', $request->channel_id);
-            }
+            }          
 
             $skip = $this->skip ?: 0;
 
@@ -7415,7 +7414,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: playlists_save()
+     * @method playlists_save()
      *
      * @uses get the playlists
      *
@@ -7506,7 +7505,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: playlists_add_video()
+     * @method playlists_add_video()
      *
      * @uses get the playlists
      *
@@ -7520,7 +7519,7 @@ class UserApiController extends Controller {
      */
 
     public function playlists_video_status(Request $request) {
-
+       
         try {
 
             DB::beginTransaction();
@@ -7637,7 +7636,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: playlists_view()
+     * @method playlists_view()
      *
      * @uses get the playlists
      *
@@ -7664,7 +7663,6 @@ class UserApiController extends Controller {
             if($request->view_type == VIEW_TYPE_OWNER) {
 
                 $playlist_base_query = $playlist_base_query->where('playlists.user_id', $request->id);
-
             }
 
             $playlist_details = $playlist_base_query->CommonResponse()->first();
@@ -7678,7 +7676,6 @@ class UserApiController extends Controller {
             $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
             $video_tape_base_query = PlaylistVideo::where('playlist_videos.playlist_id', $request->playlist_id);
-
 
             // Check the flag videos
 
@@ -7742,10 +7739,9 @@ class UserApiController extends Controller {
     
     }
 
-
     /**
      *
-     * Function name: playlists_video_remove()
+     * @method playlists_video_remove()
      *
      * @uses Remove the video from playlist
      *
@@ -7759,7 +7755,6 @@ class UserApiController extends Controller {
      */
 
     public function playlists_video_remove(Request $request) {
-
 
         try {
 
@@ -7813,7 +7808,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : playlists_delete()
+     * @method playlists_delete()
      *
      * @uses used to delete the user selected playlist
      *
@@ -7824,6 +7819,7 @@ class UserApiController extends Controller {
      * @param integer $playlist_id
      *
      * @return JSON Response
+     *
      */
     public function playlists_delete(Request $request) {
 
@@ -7874,13 +7870,11 @@ class UserApiController extends Controller {
             $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
             return response()->json($response_array);
-
         }
-
     }
 
     /**
-     * Function Name : bell_notifications()
+     * @method bell_notifications()
      *
      * @uses list of notifications for user
      *
@@ -7950,7 +7944,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : bell_notifications_update()
+     * @method bell_notifications_update()
      *
      * @uses list of notifications for user
      *
@@ -7995,7 +7989,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : bell_notifications_count()
+     * @method bell_notifications_count()
      * 
      * @uses Get the notification count
      *
@@ -8019,8 +8013,8 @@ class UserApiController extends Controller {
 
     }
 
-        /**
-     * Function Name : video_tapes_youtube_grapper_save()
+    /**
+     * @method video_tapes_youtube_grapper_save()
      * 
      * Get the videos based on the channel ID from youtube API 
      *
@@ -8220,7 +8214,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : referrals()
+     * @method referrals()
      *
      * @uses signup user through referrals
      *
@@ -8312,7 +8306,7 @@ class UserApiController extends Controller {
     }
 
     /**
-     * Function Name : referrals_check()
+     * @method referrals_check()
      *
      * @uses check valid referral
      *
@@ -8371,7 +8365,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: video_tapes_revenues()
+     * @method video_tapes_revenues()
      *
      * @uses Video revenue details
      *
@@ -8430,7 +8424,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: video_tapes_status()
+     * @method video_tapes_status()
      *
      * @uses upate the ppv status
      *
@@ -8495,7 +8489,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: video_tapes_ppv_status()
+     * @method video_tapes_ppv_status()
      *
      * @uses upate the ppv status
      *
@@ -8564,7 +8558,7 @@ class UserApiController extends Controller {
 
     /**
      *
-     * Function name: video_tapes_delete()
+     * @method video_tapes_delete()
      *
      * @uses delete video
      *
