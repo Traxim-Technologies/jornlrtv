@@ -173,7 +173,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_index()
+     * @method users_index()
      *
      * @uses To list out users object details
      *
@@ -224,7 +224,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_create()
+     * @method users_create()
      *
      * @uses To create a user object details
      *
@@ -247,7 +247,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_edit
+     * @method users_edit
      *
      * @uses To edit a user based on their id
      *
@@ -288,7 +288,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_save
+     * @method users_save
      *
      * @uses To save/update user object based on user id or details
      *
@@ -446,7 +446,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_view
+     * @method users_view
      *
      * @uses To view user details based on user id
      *
@@ -582,7 +582,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : users_delete
+     * @method users_delete
      *
      * @uses To delete user details based on user id
      *
@@ -637,7 +637,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_status_change
+     * @method users_status_change
      *
      * @uses To update the user status to APPROVE/DECLINE based on user id
      *
@@ -743,7 +743,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_wishlist
+     * @method users_wishlist
      *
      * @uses To list out all the wishlist details based on user id
      *
@@ -796,7 +796,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_wishlist_delete
+     * @method users_wishlist_delete
      *
      * @uses To delete the user wishlist based on wishlist id
      *
@@ -843,7 +843,7 @@ class NewAdminController extends Controller {
     }    
 
     /**
-     * Function Name : users_history_delete
+     * @method users_history_delete
      *
      * @uses To delete the user history based on history id
      *
@@ -890,7 +890,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_history
+     * @method users_history
      *
      * @uses To list down all the videos based on hstory
      *
@@ -944,7 +944,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : users_subscriptions
+     * @method users_subscriptions
      *
      * To subscribe a new plans based on users
      *
@@ -991,7 +991,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : users_subscription_save
+     * @method users_subscription_save
      *
      * To save subscription details based on user id
      *
@@ -1045,7 +1045,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : users_channels
+     * @method users_channels
      *
      * To list out all the channels based on users id
      *
@@ -1092,7 +1092,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_index()
+     * @method channels_index()
      *
      * @uses To list out channels object details
      *
@@ -1119,7 +1119,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_create
+     * @method channels_create
      *
      * @uses To create a new channel
      *
@@ -1162,7 +1162,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_edit
+     * @method channels_edit
      *
      * @uses To edit the channel based on the channel id
      *
@@ -1206,7 +1206,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_save
+     * @method channels_save
      *
      * @uses To save the channel video object details
      *
@@ -1236,7 +1236,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : channel_view
+     * @method channel_view
      *
      * @uses To view the channel based on the channel id
      *
@@ -1301,7 +1301,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_delete
+     * @method channels_delete
      *
      * @uses To delete the channel based on channel id
      *
@@ -1347,7 +1347,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_status_change
+     * @method channels_status_change
      *
      * @uses To change the channel status of approve and decline 
      *
@@ -1405,7 +1405,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_videos
+     * @method channels_videos
      *
      * @uses To list out particular channel videos based on channel id
      *
@@ -1450,7 +1450,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_subscribers
+     * @method channels_subscribers
      *
      * @uses To list channel subscribers based on channel id
      *
@@ -1489,7 +1489,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : categories_index()
+     * @method categories_index()
      *
      * @uses To list out categories object details
      *
@@ -1514,7 +1514,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : categories_create()
+     * @method categories_create()
      *
      * @uses To create a category object details
      *
@@ -1537,7 +1537,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : categories_edit
+     * @method categories_edit
      *
      * @uses To edit a category based on their id
      *
@@ -1580,7 +1580,7 @@ class NewAdminController extends Controller {
 
     
     /**
-     * Function Name : categories_save
+     * @method categories_save
      *
      * @uses To save/update category object based on category id or details
      *
@@ -1745,7 +1745,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : categories_delete()
+     * @method categories_delete()
      *
      * @uses To delete the category based on category id
      *
@@ -1809,7 +1809,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : categories_videos()
+     * @method categories_videos()
      *
      * @uses To display videos  based on category
      *
@@ -1858,7 +1858,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : categories_channels
+     * @method categories_channels
      *
      * @uses To list out channels based on category
      *
@@ -1911,7 +1911,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : categories_status()
+     * @method categories_status()
      *
      * To change the category status approve/decline
      *
@@ -1962,7 +1962,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : tags_index()
+     * @method tags_index()
      *
      * @uses To list out tags object details
      *
@@ -1988,7 +1988,7 @@ class NewAdminController extends Controller {
     }
     
     /**
-     * Function Name : tags_save
+     * @method tags_save
      *
      * @uses To save/update tag object based on tag id or details
      *
@@ -2050,7 +2050,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : tags_delete
+     * @method tags_delete
      *
      * @uses To delete tag details based on tag id
      *
@@ -2097,7 +2097,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : tags_status_change
+     * @method tags_status_change
      *
      * @uses To change the tag status of approve and decline 
      *
@@ -2156,7 +2156,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : tags_videos
+     * @method tags_videos
      *
      * @uses List of videos displayed based on tags
      *
@@ -2204,7 +2204,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : coupons_index()
+     * @method coupons_index()
      *
      * @uses To list out coupons object details
      *
@@ -2227,7 +2227,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : coupons_create()
+     * @method coupons_create()
      *
      * @uses To create a coupon object details
      *
@@ -2252,7 +2252,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : coupons_edit
+     * @method coupons_edit
      *
      * @uses To edit a coupon based on their id
      *
@@ -2417,7 +2417,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : coupons_view
+     * @method coupons_view
      *
      * @uses To view the coupon based on the coupon id
      *
@@ -2456,7 +2456,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : coupons_delete
+     * @method coupons_delete
      *
      * @uses To delete coupons details based on coupons id
      *
@@ -2503,7 +2503,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : coupons_status_change
+     * @method coupons_status_change
      *
      * @uses To update the coupon status to APPROVE/DECLINE based on coupon id
      *
@@ -2553,7 +2553,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : ads_details_index()
+     * @method ads_details_index()
      *
      * @uses To list out ads_details object details
      *
@@ -2576,7 +2576,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : ads_details_create()
+     * @method ads_details_create()
      *
      * @uses To create a ads_detail object details
      *
@@ -2599,7 +2599,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : ads_details_view
+     * @method ads_details_view
      *
      * @uses To view the ads_detail based on the ads_detail id
      *
@@ -2638,7 +2638,7 @@ class NewAdminController extends Controller {
     }
     
     /**
-     * Function Name : ads_details_save
+     * @method ads_details_save
      *
      * @uses To save/update ads_detail object based on ads_detail_id or details
      *
@@ -2674,7 +2674,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : ads_details_edit
+     * @method ads_details_edit
      *
      * @uses To edit a ads_detail based on their id
      *
@@ -2716,7 +2716,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : ads_details_delete
+     * @method ads_details_delete
      *
      * @uses To delete the ads_details based on ads_details id
      *
@@ -2782,7 +2782,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : ads_details_status
+     * @method ads_details_status
      *
      * @uses To delete the ads_details based on ads_details id
      *
@@ -2877,7 +2877,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_ads_index()
+     * @method video_ads_index()
      *
      * @uses To list out videos ads list with videos
      *
@@ -2905,7 +2905,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_ads_view()
+     * @method video_ads_view()
      *
      * @uses To get ads with video (Single video based on id)
      *
@@ -2944,7 +2944,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : video_ads_edit()
+     * @method video_ads_edit()
      *
      * @uses To edit a assigned ad videos edit details
      *
@@ -3010,7 +3010,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_ads_save()
+     * @method video_ads_save()
      *
      * @uses To save the video ads when edit by the admin
      *
@@ -3045,7 +3045,7 @@ class NewAdminController extends Controller {
     }    
 
     /**
-     * Function Name : video_ads_delete()
+     * @method video_ads_delete()
      *
      * @uses To delete assigned video ads based on video ad
      *
@@ -3090,7 +3090,7 @@ class NewAdminController extends Controller {
     }
 
         /**
-     * Function Name : video_assign_ad()
+     * @method video_assign_ad()
      *
      * To assign singl/multiple based on ads with video details
      *
@@ -3127,7 +3127,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_ads_inter_ads()
+     * @method video_ads_inter_ads()
      *
      * To add between ads details based on video details
      *
@@ -3372,7 +3372,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : pages_create()
+     * @method pages_create()
      *
      * @uses To list out pages object details
      *
@@ -3395,7 +3395,7 @@ class NewAdminController extends Controller {
     }
       
     /**
-     * Function Name : pages_edit()
+     * @method pages_edit()
      *
      * @uses To display and update pages object details based on the pages id
      *
@@ -3432,7 +3432,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : pages_save()
+     * @method pages_save()
      *
      * @uses To save the page object details of new/existing based on details
      *
@@ -3603,7 +3603,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : pages_status()
+     * @method pages_status()
      *
      * @uses To change the status of the pages, based on page id. only admin can access this option
      * 
@@ -3651,7 +3651,7 @@ class NewAdminController extends Controller {
         }
     }
     /**
-     * Function Name : banner_ads_index()
+     * @method banner_ads_index()
      *
      * @uses To list out banner_ads object details
      *
@@ -3674,7 +3674,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : banner_ads_create()
+     * @method banner_ads_create()
      *
      * @uses To create a banner_ads object details
      *
@@ -3701,7 +3701,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : banner_ads_edit
+     * @method banner_ads_edit
      *
      * @uses To edit a banner_ads based on their id
      *
@@ -3739,7 +3739,7 @@ class NewAdminController extends Controller {
     
     }
      /**
-     * Function Name : banner_ad_save
+     * @method banner_ad_save
      *
      * @uses To save/update banner_ad object based on banner_ad id or details
      *
@@ -3818,7 +3818,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : banner_ads_delete
+     * @method banner_ads_delete
      *
      * @uses To delete banner_ad details based on banner_ad id
      *
@@ -3889,7 +3889,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name :  banner_ads_status_change
+     * @method  banner_ads_status_change
      *
      * @uses To update the banner_ad status to APPROVE/DECLINE based on banner_ad id
      *
@@ -3939,7 +3939,7 @@ class NewAdminController extends Controller {
     }
 
         /**
-     * Function Name : banner_ads_view
+     * @method banner_ads_view
      *
      * @uses To view the banner_ad based on the banner_ad id
      *
@@ -4051,7 +4051,7 @@ class NewAdminController extends Controller {
     }
     
     /**
-     * Function Name : banner_videos_create()
+     * @method banner_videos_create()
      *
      * To create a banner video based on id
      *
@@ -4076,7 +4076,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : banner_videos_set()
+     * @method banner_videos_set()
      *
      * @uses To set a video as banner based on video id
      *
@@ -4122,7 +4122,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : banner_videos()
+     * @method banner_videos()
      *
      * @uses To list out all the banner videos 
      *
@@ -4151,7 +4151,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : banner_videos_remove()
+     * @method banner_videos_remove()
      *
      * @uses To remove a banner video based on id
      *
@@ -4203,7 +4203,7 @@ class NewAdminController extends Controller {
     }
 
         /**
-     * Function Name : custom_live_videos_index()
+     * @method custom_live_videos_index()
      *
      * @uses To list out custom_live_videos object details
      *
@@ -4226,7 +4226,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : custom_live_videos_create()
+     * @method custom_live_videos_create()
      *
      * @uses To create a user object details
      *
@@ -4249,7 +4249,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : users_edit
+     * @method users_edit
      *
      * @uses To edit a user based on their id
      *
@@ -4367,7 +4367,7 @@ class NewAdminController extends Controller {
         }
     }
     /**
-     * Function Name : custom_live_videos_delete
+     * @method custom_live_videos_delete
      *
      * @uses To delete the custom_live_video based on custom_live_video id
      *
@@ -4412,7 +4412,7 @@ class NewAdminController extends Controller {
         }    
     }
         /**
-     * Function Name : custom_live_videos_status_change
+     * @method custom_live_videos_status_change
      *
      * @uses To change the custom_live_video status of approve and decline 
      *
@@ -4462,7 +4462,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : subscriptions_index()
+     * @method subscriptions_index()
      *
      * @uses To list out subscriptions object details
      *
@@ -4485,7 +4485,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : subscriptions_create()
+     * @method subscriptions_create()
      *
      * @uses To create a subscription object details
      *
@@ -4508,7 +4508,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : subscriptions_edit
+     * @method subscriptions_edit
      *
      * @uses To update a subscription details based on their id
      *
@@ -4546,7 +4546,7 @@ class NewAdminController extends Controller {
     }
     
     /**
-     * Function Name : subscriptions_save
+     * @method subscriptions_save
      *
      * @uses To save/update subscription object based on subscription id or details
      *
@@ -4661,7 +4661,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : subscriptions_delete
+     * @method subscriptions_delete
      *
      * @uses To delete the subscription based on subscription id
      *
@@ -4708,7 +4708,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : subscriptions_status_change
+     * @method subscriptions_status_change
      *
      * @uses To update the subscription status to APPROVE/DECLINE based on subscription id
      *
@@ -4793,7 +4793,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : auto_renewal_subscribers
+     * @method auto_renewal_subscribers
      *
      * @uses To list out auto-renewal subscribers
      *
@@ -4873,7 +4873,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : auto_renewal_cancelled_subscribers
+     * @method auto_renewal_cancelled_subscribers
      *
      * @uses To list out auto-renewal cancelled subscribers
      *
@@ -4939,7 +4939,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : user_subscription_auto_renewal_disable
+     * @method user_subscription_auto_renewal_disable
      *
      * @uses To disable auto-renewal subscription, user can cancel subscription auto-renewal
      *
@@ -4989,7 +4989,7 @@ class NewAdminController extends Controller {
     }
    
     /**
-     * Function Name : user_subscription_enable
+     * @method user_subscription_enable
      *
      * To prevent automatic subscriptioon, user have option to cancel subscription
      *
@@ -5192,7 +5192,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : user_reviews()
+     * @method user_reviews()
      *
      * @uses list out the reviews given by user
      *
@@ -5470,7 +5470,7 @@ class NewAdminController extends Controller {
     }
 
       /**
-     * Function Name : ads_details_ad_status_change()
+     * @method ads_details_ad_status_change()
      *
      * To change the status of the ad details (Video Ad enable/disable)
      *
@@ -5528,7 +5528,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : user_reviews_delete
+     * @method user_reviews_delete
      *
      * @uses To delete user_reviews details based on UserRating id
      *
@@ -5575,7 +5575,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : sub_admins_index()
+     * @method sub_admins_index()
      *
      * @uses To list out subadmins (only admin can access this option)
      * 
@@ -5598,7 +5598,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : sub_admins_create()
+     * @method sub_admins_create()
      *
      * To create a sub admin only admin can access this option
      * 
@@ -5621,7 +5621,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : sub_admins_edit()
+     * @method sub_admins_edit()
      *
      * @uses To edit a sub admin based on subadmin id only  admin can access this option
      * 
@@ -5659,7 +5659,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : sub_admins_view()
+     * @method sub_admins_view()
      *
      * @uses To view a sub admin based on sub admin id only admin can access this option
      * 
@@ -5696,7 +5696,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : sub_admins_delete()
+     * @method sub_admins_delete()
      *
      * @uses To delete a sub admin based on sub admin id. only admin can access this option
      * 
@@ -5741,7 +5741,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : sub_admins_save()
+     * @method sub_admins_save()
      *
      * @uses To save the sub admin details
      * 
@@ -5846,7 +5846,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : sub_admins_status()
+     * @method sub_admins_status()
      *
      * @uses To change the status of the sub admin, based on sub admin id. only admin can access this option
      * 
@@ -5895,7 +5895,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : playlists_index()
+     * @method playlists_index()
      *
      * @uses To list out user playlist
      * 
@@ -5952,7 +5952,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : playlists_delete()
+     * @method playlists_delete()
      *
      * @uses To delete user playlist 
      * 
@@ -5998,7 +5998,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : playlist_video()
+     * @method playlist_video()
      *
      * @uses To list users playlist videos
      * 
@@ -6047,7 +6047,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : playlists_video_remove()
+     * @method playlists_video_remove()
      *
      * @uses To delete video from user playlist 
      * 
@@ -6093,7 +6093,7 @@ class NewAdminController extends Controller {
     }
     
     /**
-     * Function Name : video_tapes_index
+     * @method video_tapes_index
      *
      * @uses List of videos displayed and also based on user it will list out
      *
@@ -6151,7 +6151,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_tapes_create
+     * @method video_tapes_create
      *
      * @uses To create new video 
      *
@@ -6197,7 +6197,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_edit
+     * @method videos_edit
      *
      * @uses To Edit a video based on video id
      *
@@ -6263,7 +6263,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_tapes_save()
+     * @method video_tapes_save()
      *
      * To Save video based on new /edit video details
      *
@@ -6303,7 +6303,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : video_tapes_images()
+     * @method video_tapes_images()
      *
      * @uses To get images which is uploaded based on the video_tape_id
      *
@@ -6341,7 +6341,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : video_ads_create()
+     * @method video_ads_create()
      *
      * @uses  To create a video ads based on video id
      *
@@ -6402,7 +6402,7 @@ class NewAdminController extends Controller {
         }
     }
         /**
-     * Function Name : video_tapes_default_image_save()
+     * @method video_tapes_default_image_save()
      *
      * @uses To set the default image based on object details
      *
@@ -6433,7 +6433,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_tapes_upload_image()
+     * @method video_tapes_upload_image()
      *
      * To save the image based on object details
      *
@@ -6455,7 +6455,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_status()
+     * @method videos_status()
      *
      * To change the status of approve/decline video
      *
@@ -6499,7 +6499,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : video_tapes_publish()
+     * @method video_tapes_publish()
      *
      * To publish the video based on changing the status of the video
      *
@@ -6538,7 +6538,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : video_tapes_view
+     * @method video_tapes_view
      *
      * @uses get video details
      *
@@ -6650,7 +6650,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : videos_delete()
+     * @method videos_delete()
      *
      * To delete a video based on video id
      *
@@ -6692,7 +6692,7 @@ class NewAdminController extends Controller {
     }
     
     /**
-     * Function Name : spam_videos()
+     * @method spam_videos()
      *
      * @uses Load all the videos from flag table
      *
@@ -6718,7 +6718,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : spam_videos_user_reports()
+     * @method spam_videos_user_reports()
      *
      * @uses Load all the flags based on the video id
      *
@@ -6744,7 +6744,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : spam_videos_each_user_reports()
+     * @method spam_videos_each_user_reports()
      *
      * Load all the flags based on the user id
      *
@@ -6766,7 +6766,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : spam_videos_unspam()
+     * @method spam_videos_unspam()
      *
      * Unsapm video based on flag id
      *
@@ -6800,7 +6800,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_tapes_wishlist
+     * @method video_tapes_wishlist
      *
      * @uses To list out all the wishlist details based on user
      *
@@ -6836,7 +6836,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : videos_set_ppv
+     * @method videos_set_ppv
      *
      * Brief : To save the payment details
      *
@@ -6892,7 +6892,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_tapes_remove_ppv
+     * @method video_tapes_remove_ppv
      *
      * Brief : To remove PPV Details
      *
@@ -6923,7 +6923,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : video_tapes_compression_complete()
+     * @method video_tapes_compression_complete()
      *
      * @uses To complete the compressing videos
      *
@@ -7004,7 +7004,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_playlists_index()
+     * @method channels_playlists_index()
      *
      * @uses To list out channel's  playlist based channel_id
      *
@@ -7053,7 +7053,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_playlists_view()
+     * @method channels_playlists_view()
      *
      * @uses to list out playlist details based on playlist_id of a channel
      *
@@ -7111,7 +7111,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_playlists_delete()
+     * @method channels_playlists_delete()
      *
      * @uses To delete the playlist based on playlist_id
      *
@@ -7156,7 +7156,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_playlists_video_remove()
+     * @method channels_playlists_video_remove()
      *
      * @uses To delete video from channel playlist's list 
      * 
@@ -7200,7 +7200,7 @@ class NewAdminController extends Controller {
 
     }
     /**
-     * Function Name : channels_playlists_create()
+     * @method channels_playlists_create()
      *
      * @uses To create a playlist object details based on channel id
      *
@@ -7252,7 +7252,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_playlists_save
+     * @method channels_playlists_save
      *
      * @uses To save/update channel object based on channel id or details
      *
@@ -7367,7 +7367,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * Function Name : channels_playlists_edit
+     * @method channels_playlists_edit
      *
      * @uses To edit a playlist based on playlist_id
      *
@@ -7435,7 +7435,7 @@ class NewAdminController extends Controller {
 
 
     /**
-     * Function Name : channels_playlists_status
+     * @method channels_playlists_status
      *
      * @uses To change the channel playlist status to approve or decline 
      *

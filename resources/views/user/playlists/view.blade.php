@@ -29,7 +29,6 @@
 
                         @else
 
-                   
                             <a href="#">
                             
                                 <img src="{{asset('streamtube/images/playlist.jpg')}}" data-src="{{asset('streamtube/images/playlist.jpg')}}" class="slide-img1 placeholder" />
@@ -38,20 +37,16 @@
 
                         @endif
 
+                        <h3> {{$playlist_details->title }} </h3>
 
+                        <p> {{tr('total_videos')}} : {{$playlist_details->total_videos }} </p>
 
-                            <h3> {{$playlist_details->title }} </h3>
-                            <p> {{tr('total_videos')}} : {{$playlist_details->total_videos }} </p>
+                        <p> {{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>
+                        <hr>
 
-                            <p> {{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>
-                            <hr>
-
-                            <a href="{{route('user.profile')}}"><img class="img-circle " width="70px" src="{{$playlist_details->user_picture}}" style="margin-right: 10px">
-                                <h4 style="display: inline;">{{$playlist_details->user_name}}</h4>
-                            </a>
-
-                        
-
+                        <a href="{{route('user.profile')}}"><img class="img-circle " width="70px" src="{{$playlist_details->user_picture}}" style="margin-right: 10px">
+                            <h4 style="display: inline;">{{$playlist_details->user_name}}</h4>
+                        </a>
                     </div>
 
                 </div>
