@@ -2075,4 +2075,8 @@ return array(
 	'create' => 'Create',
 	'playlist_name_placeholder' => 'Enter playlist name',
 
+	'plan_text' => 'Plan',
+
+	'user_is_verified' => 'Verified',
+
 );

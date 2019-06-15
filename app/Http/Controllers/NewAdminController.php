@@ -208,7 +208,7 @@ class NewAdminController extends Controller {
                 
             }
 
-            $users = $base_query->get();
+            $users = $base_query->paginate(10);
 
             return view('new_admin.users.index')
                         ->withPage('users')
@@ -266,7 +266,7 @@ class NewAdminController extends Controller {
           
             $user_details = User::find($request->user_id);
 
-            if( !$user_details ) {
+            if(!$user_details) {
 
                 throw new Exception( tr('admin_user_not_found'), 101);
             }
@@ -465,7 +465,7 @@ class NewAdminController extends Controller {
                
             $user_details = User::find($request->user_id) ;
             
-            if( count($user_details) == 0 ) {
+            if(!$user_details) {
 
                 throw new Exception(tr('admin_user_not_found'), 101);
             } 
@@ -909,7 +909,7 @@ class NewAdminController extends Controller {
 
             $user_details = User::find($request->user_id);
 
-            if(count($user_details) == 0) {
+            if(!$user_details) {
 
                 throw new Exception(tr('admin_user_not_found'), 101);
             }
@@ -961,23 +961,29 @@ class NewAdminController extends Controller {
 
         try {
 
-            $subscriptions = Subscription::orderBy('created_at','desc')->get();
+            // Check the user details
 
-            $payments = []; 
+            $user_details = User::find($request->user_id);
 
-            if($request->user_id) {
+            if(!$user_details) {
 
-                $payments = UserPayment::select('user_payments.*', 'subscriptions.title')
-                            ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
-                            ->orderBy('user_payments.created_at' , 'desc')
-                            ->where('user_payments.user_id' , $request->user_id)->get();
+                throw new Exception(tr('admin_user_not_found'), 101);
+                
             }
 
+            $subscriptions = Subscription::orderBy('created_at','desc')->get();
+
+            $payments = UserPayment::where('user_payments.user_id' , $request->user_id)
+                                ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
+                                ->select('user_payments.*', 'subscriptions.title')
+                                ->orderBy('user_payments.created_at' , 'desc')
+                                ->get();
+
             return view('new_admin.subscriptions.user_plans')
-                        ->withPage('users')
+                        ->with('page', 'users')
                         ->with('sub_page','users-view')
+                        ->with('user_details', $user_details)
                         ->with('subscriptions' , $subscriptions)
-                        ->with('user_id', $request->user_id)
                         ->with('payments', $payments); 
             
         } catch (Exception $e) {
@@ -1064,7 +1070,7 @@ class NewAdminController extends Controller {
 
             $user_details = User::find($request->user_id);
 
-            if(count($user_details) == 0) {
+            if(!$user_details) {
 
                 throw new Exception(tr('admin_user_not_found'), 101);
             }
@@ -5913,7 +5919,7 @@ class NewAdminController extends Controller {
             
             $user_details = User::find($request->user_id);
 
-            if( count($user_details) == 0 ) {
+            if(!$user_details) {
 
                 throw new Exception( tr('admin_user_not_found'), 101);
             } 
