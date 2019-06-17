@@ -208,7 +208,7 @@ class NewAdminController extends Controller {
                 
             }
 
-            $users = $base_query->paginate(10);
+            $users = $base_query->get();
 
             return view('new_admin.users.index')
                         ->withPage('users')
