@@ -2406,6 +2406,8 @@ class NewAdminController extends Controller {
             if($coupon_detail->save()) {
 
                 DB::commit();
+
+                $message = $request->coupon_id ? tr('admin_coupon_create_success'): tr('admin_coupon_update_success');
                                
                 return redirect()->route('admin.coupons.view',['coupon_id' =>$coupon_detail->id ])->with('flash_success',$message);
             } 
