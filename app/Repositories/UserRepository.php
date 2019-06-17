@@ -8,9 +8,9 @@ use App\User;
 
 use App\Helpers\Helper;
 
-use Log;
+use Log, Validator, Setting;
 
-use Validator;
+use App\UserReferrer, App\Referral;
 
 class UserRepository {
 
