@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'verifyUser' => \App\Http\Middleware\CheckUserVerification::class,
         'AdminMiddleware' => \App\Http\Middleware\AdminMiddleware::class,
         'SubAdminMiddleware' => \App\Http\Middleware\SubAdminMiddleware::class,
+        'ChannelOwner' => \App\Http\Middleware\ChannelOwner::class,
         
     ];
 }

@@ -41,4 +41,28 @@ class Playlist extends Model
         );
 
     }
+
+    public function getPlaylistVideos() {
+        return $this->hasMany('App\PlaylistVideo');
+    }
+
+    public static function boot() {
+        //execute the parent's boot method 
+        parent::boot();
+
+        //delete your related models here
+        static::deleting(function($model) {
+
+            if (count($model->getPlaylistVideos) > 0) {
+
+                foreach ($model->getPlaylistVideos as $key => $value) {
+
+                   $value->delete();    
+
+                }
+
+            }
+        });
+    
+    }
 }

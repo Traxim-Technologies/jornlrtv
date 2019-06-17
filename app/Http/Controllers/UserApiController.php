@@ -90,6 +90,10 @@ use App\PlaylistVideo;
 
 use App\BellNotification;
 
+use App\Referral;
+
+use App\UserReferrer;
+
 
 class UserApiController extends Controller {
 
@@ -934,6 +938,12 @@ class UserApiController extends Controller {
 
                 // Send welcome email to the new user:
                 if($new_user) {
+
+                    if($request->referral_code) {
+
+                        UserRepo::referral_register($request->referral_code, $user);
+
+                    }
                     // Check the default subscription and save the user type 
 
                     user_type_check($user->id);
@@ -7436,6 +7446,7 @@ class UserApiController extends Controller {
             $validator = Validator::make($request->all(),[
                 'title' => 'required|max:255',
                 'playlist_id' => 'exists:playlists,id,user_id,'.$request->id,
+                'channel_id' => 'exists:channels,id'
             ],
             [
                 'exists' => Helper::get_error_message(175)
@@ -7468,6 +7479,8 @@ class UserApiController extends Controller {
             }
 
             $playlist_details->user_id = $request->id;
+
+            $playlist_details->channel_id = $request->channel_id ?: "";
 
             $playlist_details->title = $playlist_details->description = $request->title ?: "";
 
