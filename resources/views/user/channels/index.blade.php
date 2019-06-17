@@ -478,62 +478,52 @@
                                                                                     </div>
                                                                                     <div class="modal-body pay-perview">
 
-                                                                                        <h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
-                                                                                        <div>
-                                                                                            <label class="radio1">
-                                                                                                <input id="radio1" type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
-                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
-                                                                                            </label>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <label class="radio1">
-                                                                                                <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
-                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('paid_user')}}
-                                                                                            </label>
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <label class="radio1">
-                                                                                                <input id="radio2" type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
-                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('both_user')}}
-                                                                                            </label>
-                                                                                        </div>
+                                                                                    <h4 class="black-clr text-left">{{tr('type_of_user')}}</h4>
+                                                                                    <div>
+                                                                                        <label class="radio1">
 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <label class="radio1">
+
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <label class="radio1">
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                    <div class="clearfix"></div>
+                                                                                            <h4 class="black-clr text-left">{{tr('type_of_subscription')}}</h4>
+                                                                                    <div>
+                                                                                        <label class="radio1">
+                                                                                            
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                    {{{$video->type_of_subscription}}}
+                                                                                    <label class="radio1">              
+                                                                                    <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
+                                                                                            <div class="clearfix"></div>
+                                                                                                <h4 class="black-clr text-left">{{tr('amount')}}</h4>
+                                                                                            <div>
+                                                     
+                                                                                            <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
+                                                                                            <!-- /input-group -->
+                                                                                        </div>
                                                                                         <div class="clearfix"></div>
-
-                                                                                        <h4 class="black-clr text-left">{{tr('type_of_subscription')}}</h4>
-                                                                                        <div>
-
-                                                                                            <label class="radio1">
-                                                                                                <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription > 0) ? (($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : '') : 'checked'}} required>
-                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('one_time_payment')}}
-                            </label>
-                            </div>
-                                <div>
-                                {{{$video->type_of_subscription}}}
-                                <label class="radio1">              
-                                <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
-                                                                                                <span class="outer"><span class="inner"></div>
-
-                                        </label>
-                                        <div class="clearfix"></div>
-                                            <h4 class="black-clr text-left">{{tr('amount')}}</h4>
-                                        <div>
- 
-                                        <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
-                                        <!-- /input-group -->
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    </div>
-                                    <div class="modal-footer border-0">
-                                        <div class="pull-left">
-                                        @if($video->ppv_amount > 0)
-                                            <a class="btn btn-danger" href="{{route('user.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a> @endif
-                                        </div>
-                                        <div class="pull-right">
-                                        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                        <button type="submit" class="btn btn-info">Submit</button>
-                                    </div>
-                                    <div class="clearfix"></div>
+                                                                                        </div>
+                                                                                        <div class="modal-footer border-0">
+                                                                                            <div class="pull-left">
+                                                                                            @if($video->ppv_amount > 0)
+                                                                                                <a class="btn btn-danger" href="{{route('user.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a> @endif
+                                                                                            </div>
+                                                                                            <div class="pull-right">
+                                                                                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                                                                                            <button type="submit" class="btn btn-info">Submit</button>
+                                                                                        </div>
+                                                                                        <div class="clearfix"></div>
                                                                                    </div>
                                                                                 </form>
                                                                             </div>
@@ -719,27 +709,27 @@
                                     <!-- dashboard -->
                                     <div class="row">
                                         <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                                			<div class="ppv-dashboard">
-                                				<div class="ppv-dashboard-left">
-                                					<img src="{{asset('images/video-camera.png')}}">
-                                				</div>
-                                				<div class="ppv-dashboard-right">
-                                					<p>Total videos</p>
-                                					<h2 class="">150</h2>
-                                				</div>
-                                			</div>
-                                		</div> -->
+                                            <div class="ppv-dashboard">
+                                                <div class="ppv-dashboard-left">
+                                                    <img src="{{asset('images/video-camera.png')}}">
+                                                </div>
+                                                <div class="ppv-dashboard-right">
+                                                    <p>Total videos</p>
+                                                    <h2 class="">150</h2>
+                                                </div>
+                                            </div>
+                                        </div> -->
                                                                         <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                                			<div class="ppv-dashboard">
-                                				<div class="ppv-dashboard-left">
-                                					<img src="{{asset('images/video-cash.png')}}">
-                                				</div>
-                                				<div class="ppv-dashboard-right">
-                                					<p>paid videos</p>
-                                					<h2 class="">100</h2>
-                                				</div>
-                                			</div>
-                                		</div> -->
+                                            <div class="ppv-dashboard">
+                                                <div class="ppv-dashboard-left">
+                                                    <img src="{{asset('images/video-cash.png')}}">
+                                                </div>
+                                                <div class="ppv-dashboard-right">
+                                                    <p>paid videos</p>
+                                                    <h2 class="">100</h2>
+                                                </div>
+                                            </div>
+                                        </div> -->
                                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                             <div class="ppv-dashboard">
                                                 <div class="ppv-dashboard-left">
@@ -934,45 +924,45 @@
 
     /*$(window).scroll(function() {
 
-	    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+        if($(window).scrollTop() == $(document).height() - $(window).height()) {
 
-	    	var value = $('ul#channel-navigation-menu').find('li.active').attr('id');
+            var value = $('ul#channel-navigation-menu').find('li.active').attr('id');
 
-	    	//alert(value);
+            //alert(value);
 
-	    	if (value == 'videos_sec') {
+            if (value == 'videos_sec') {
 
-		    	if (!stopScroll) {
+                if (!stopScroll) {
 
-					// console.log("New Length " +searchLength);
+                    // console.log("New Length " +searchLength);
 
-					if (searchLength > 0) {
+                    if (searchLength > 0) {
 
-						videos(searchLength);
+                        videos(searchLength);
 
-					}
+                    }
 
-				}
-			}
+                }
+            }
 
-			if (value == 'payment_managment_sec') {
+            if (value == 'payment_managment_sec') {
 
-				if (!stopPaymentScroll) {
+                if (!stopPaymentScroll) {
 
-					// console.log("New Length " +searchLength);
+                    // console.log("New Length " +searchLength);
 
-					if (searchPaymentLength > 0) {
+                    if (searchPaymentLength > 0) {
 
-						payment_videos(searchPaymentLength);
+                        payment_videos(searchPaymentLength);
 
-					}
+                    }
 
-				}
-			}
+                }
+            }
 
-		}
+        }
 
-	});*/
+    });*/
 
     function videos(cnt) {
 
@@ -1097,3 +1087,16 @@
 </script>
 
 @endsection
+                                                                                                <input id="radio1" type="radio" name="type_of_user" value="{{NORMAL_USER}}" {{($video->type_of_user > 0) ? (($video->type_of_user == NORMAL_USER) ? 'checked' : '') : 'checked'}} required>
+                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('normal_user')}}
+                               
+                                                                                               <input id="radio2" type="radio" name="type_of_user" value="{{PAID_USER}}" {{($video->type_of_user == PAID_USER) ? 'checked' : ''}} required>
+                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('paid_user')}}
+                                   
+                                                                                                <input id="radio2" type="radio" name="type_of_user" value="{{BOTH_USERS}}" {{($video->type_of_user == BOTH_USERS) ? 'checked' : ''}} required>
+                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('both_user')}}
+                                        
+                                                                                                <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription > 0) ? (($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : '') : 'checked'}} required>
+                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('one_time_payment')}}
+                         
+                                                                                                <span class="outer"><span class="inner"></div>
