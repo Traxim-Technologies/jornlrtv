@@ -9,8 +9,11 @@
 @endsection
 
 @section('breadcrumb')
-     
+
+    <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-user"></i> {{ tr('users') }}</a></li>
+
     <li class="active"><i class="fa fa-user"></i> {{ tr('playlist') }}</li>
+
 @endsection
 
 @section('content')

@@ -1902,7 +1902,7 @@ return array(
 
 	'user_wishlist_delete_confirm' => 'Do you want to remove this video from wishlist?',
 	
-	'user_spamvideo_delete_confirm' => 'Do you want to remove this video from sapmlist?',
+	'user_spamvideo_delete_confirm' => 'Do you want to remove this video from Spam list?',
 	
 	'user_channel_delete_confirm' => 'Do you want to delete this channel?',
 	

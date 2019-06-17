@@ -3512,7 +3512,7 @@ class UserController extends Controller {
 
     /**
      *
-     * Function name: playlist_single()
+     * Function name: playlists_view()
      *
      * @uses get the playlists
      *

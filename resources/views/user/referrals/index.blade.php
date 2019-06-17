@@ -55,7 +55,7 @@
 		            	<p>{{tr('total')}} <span class="pull-right">{{$user_referrer_details->total_referrals}}</span></p>
 		            	<hr>
 
-		            	<p>Earnnings <span class="pull-right"> {{Setting::get('currency')}} {{$user_referrer_details->total_referrals_earnings ?: 0.00}}</span></p>
+		            	<p>Earnings <span class="pull-right"> {{Setting::get('currency')}} {{$user_referrer_details->total_referrals_earnings ?: 0.00}}</span></p>
 		            	<hr>
 			            
 			            

@@ -170,14 +170,15 @@
             </div>
 
             <div class="modal-body">
-            
+
+                @if(!empty($playlists))
+
                 <div class="more-content" id="user-playlists-form">
                     
                     <form name="user-playlists" method="post" id="user-playlists" action="#">
                       
                         <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
 
-                        @if(!empty($playlists))
 
                             @foreach($playlists as $playlist_details)  
 
@@ -197,7 +198,6 @@
 
                             @endforeach
 
-                        @endif  
 
                       <div id="user_playlists"></div>
                      
@@ -208,6 +208,8 @@
                 </div>
 
                 <hr>
+
+                @endif  
 
                 <div class="more-content">
                 
