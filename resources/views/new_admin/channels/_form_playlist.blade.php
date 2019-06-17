@@ -1,3 +1,4 @@
+    
     <form action="{{  Setting::get('admin_delete_control') == YES ? '#' : route('admin.channels.playlists.save') }}" method="POST" enctype="multipart/form-data" role="form">
 
         <div class="box-body">
