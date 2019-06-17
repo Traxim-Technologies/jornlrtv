@@ -4057,25 +4057,11 @@ class UserController extends Controller {
 
         $user_referrer_details = UserReferrer::where('user_id', $request->parent_user_id)->first();
 
-        $subscription_payments = UserPayment::select('user_payments.*', 'subscriptions.title')
-                            ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
-                            ->orderBy('user_payments.created_at' , 'desc')
-                            ->where('user_payments.user_id' , $user_details->id)
-                            ->get();
-
-        $ppv_payments = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
-                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
-                            ->leftJoin('users', 'users.id', '=', 'pay_per_views.user_id')
-                            ->where('pay_per_views.user_id' , $user_details->id)
-                            ->orderBy('pay_per_views.created_at' , 'desc')->get();
-
         return view('user.referrals.view')
                     ->with('page', 'users')
                     ->with('sub_page', 'view-user')
                     ->with('user_details', $user_details)
-                    ->with('user_referrer_details', $user_referrer_details)
-                    ->with('subscription_payments', $subscription_payments)
-                    ->with('ppv_payments', $ppv_payments);
+                    ->with('user_referrer_details', $user_referrer_details);
 
     } 
 

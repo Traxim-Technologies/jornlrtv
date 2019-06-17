@@ -22,17 +22,19 @@
 
 			@include('notification.notify')
 
-				<div class="spacing1 top"></div>
+			<div class="spacing1 top"></div>
 
 			<div class="col-md-8">
 
-				<h2 class="no-margin">Sperad the word and earn rewards</h2>
+				<h2 class="no-margin">Spread the word and earn rewards</h2>
 
 				<p class="text-gray referrals-text">When someone signs up with your unique referral link, you will get below benifits</p>
 
 				<li class="referrals-text">Subscription commission</li>
 
 				<li class="referrals-text">PPV commission</li>
+
+				<li class="referrals-text">Referral commission</li>
 
 				<h4 class="shareUrl-headerText">Click to Copy Invite Link</h4>
 	        	
@@ -57,7 +59,6 @@
 
 		            	<p>Earnings <span class="pull-right"> {{Setting::get('currency')}} {{$user_referrer_details->total_referrals_earnings ?: 0.00}}</span></p>
 		            	<hr>
-			            
 			            
 			        </div>
 
@@ -138,6 +139,7 @@
 			</div>
 
         </div>
+
     </div>
 
 </div>
