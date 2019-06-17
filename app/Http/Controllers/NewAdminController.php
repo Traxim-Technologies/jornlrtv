@@ -1295,6 +1295,7 @@ class NewAdminController extends Controller {
                         ->with('channel_details' , $channel_details)
                         ->with('channel_earnings', $channel_earnings)
                         ->with('videos', $videos)
+                        ->with('channel_playlists', $channel_playlists);
                         ->with('channel_subscriptions', $channel_subscriptions);
             
         } catch (Exception $e) {
