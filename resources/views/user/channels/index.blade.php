@@ -506,40 +506,34 @@
                                                                                             <label class="radio1">
                                                                                                 <input id="radio2" type="radio" name="type_of_subscription" value="{{ONE_TIME_PAYMENT}}" {{($video->type_of_subscription > 0) ? (($video->type_of_subscription == ONE_TIME_PAYMENT) ? 'checked' : '') : 'checked'}} required>
                                                                                                 <span class="outer"><span class="inner"></span></span>{{tr('one_time_payment')}}
-                                                                                            </label>
-                                                                                        </div>
-                                                                                        <div>
+                            </label>
+                            </div>
+                                <div>
+                                {{{$video->type_of_subscription}}}
+                                <label class="radio1">              
+                                <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
+                                                                                                <span class="outer"><span class="inner"></div>
 
-                                                                                            {{{$video->type_of_subscription}}}
-                                                                                            <label class="radio1">
-                                                                                                <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
-                                                                                                <span class="outer"><span class="inner"></span></span>{{tr('recurring_payment')}}
-                                                                                            </label>
-                                                                                        </div>
-
-                                                                                        <div class="clearfix"></div>
-
-                                                                                        <h4 class="black-clr text-left">{{tr('amount')}}</h4>
-                                                                                        <div>
-                                                                                            <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
-                                                                                            <!-- /input-group -->
-
-                                                                                        </div>
-
-                                                                                        <div class="clearfix"></div>
-                                                                                    </div>
-
-                                                                                    <div class="modal-footer border-0">
-                                                                                        <div class="pull-left">
-                                                                                            @if($video->ppv_amount > 0)
-                                                                                            <a class="btn btn-danger" href="{{route('user.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a> @endif
-                                                                                        </div>
-                                                                                        <div class="pull-right">
-                                                                                            <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                                                                            <button type="submit" class="btn btn-info">Submit</button>
-                                                                                        </div>
-                                                                                        <div class="clearfix"></div>
-                                                                                    </div>
+                                        <div class="clearfix"></div>
+                                            <h4 class="black-clr text-left">{{tr('amount')}}</h4>
+                                        <div>
+ 
+                                        <input type="number" required value="{{$video->ppv_amount}}" name="ppv_amount" class="form-control" id="amount" placeholder="{{tr('amount')}}" step="any" maxlength="6">
+                                        <!-- /input-group -->
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    </div>
+                                    <div class="modal-footer border-0">
+                                        <div class="pull-left">
+                                        @if($video->ppv_amount > 0)
+                                            <a class="btn btn-danger" href="{{route('user.remove_pay_per_view', $video->video_tape_id)}}">{{tr('remove_pay_per_view')}}</a> @endif
+                                        </div>
+                                        <div class="pull-right">
+                                        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                                        <button type="submit" class="btn btn-info">Submit</button>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                                                                   </div>
                                                                                 </form>
                                                                             </div>
                                                                         </div>
@@ -651,17 +645,19 @@
 
                                             <div class="slide-image">
 
-                                                <!-- <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">   -->
-
-                                                <a href="{{route('user.playlist.single', ['playlist_id' => $channel_playlist_details->playlist_id])}}">         
+                                                <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">  
                                                     <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$channel_playlist_details->picture}}" class="slide-img1 placeholder" />
                                                 </a>
+                                        
+                                                @if(Auth::check())
 
                                                 <div class="video_amount">
 
                                                     <a href="{{route('user.playlists.delete', ['playlist_id' => $channel_playlist_details->playlist_id])}}" onclick="return confirm(&quot;{{ substr($channel_playlist_details->title, 0 , 15)}} - {{tr('user_playlist_delete_confirm') }}&quot;)" class="playlist-delete"><i class="fa fa-trash"></i></a>
 
                                                 </div>
+
+                                                @endif 
 
                                                 <div class="video_duration">
                                                     {{$channel_playlist_details->total_videos}} {{tr('videos')}}
@@ -863,8 +859,6 @@
 
                     </li>
 
-
-                
                 </ul>
 
                 <div class="sidebar-back"></div>

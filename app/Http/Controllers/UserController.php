@@ -109,7 +109,8 @@ class UserController extends Controller {
                 'tags_videos',
                 'referrals_signup',
                 'channel_view',
-                'video_view'
+                'video_view',
+                'playlists_view'
 
         ]]);
 
@@ -3524,14 +3525,19 @@ class UserController extends Controller {
      * @return 
      *
      */
-    public function playlist_single(Request $request) {
+    public function playlists_view(Request $request) {
         
         try {
 
-            $request->request->add([
-                'id'=> Auth::user()->id,
-                'token'=> Auth::user()->token
-            ]);
+            if (Auth::check()) {
+
+                $request->request->add([ 
+                    'id'=>Auth::user()->id,
+                    'token'=> Auth::user()->token
+
+                ]);
+
+            } 
 
             $response = $this->UserAPI->playlists_view($request)->getData();
          
@@ -3578,64 +3584,6 @@ class UserController extends Controller {
             return redirect()->to('/')->with('flash_error' , $error_messages);
         }
 
-    }
-
-    /**
-     *
-     * Function name: playlists_view()
-     *
-     * @uses get the playlists
-     *
-     * @created vithya R
-     *
-     * @updated vithya R
-     *
-     * @param integer channel_id (Optional)
-     *
-     * @return JSON Response
-     */
-
-    public function playlists_view(Request $request) {
-
-        try {
-
-            $request->request->add([
-                'id'=> Auth::user()->id,
-                'token'=> Auth::user()->token
-            ]);
-
-            $response = $this->UserAPI->playlists_view($request)->getData();
-
-            if($response->success == false) {
-
-                throw new Exception($response->error_messages, $response->error_code);
-            }
-
-            if($request->is_json) {
-
-                return response()->json($response, 200);
-            }
-
-            $playlist_details = $response->data;
-
-            $video_tapes = $response->data->video_tapes;
-            
-            return view('user.playlists.videos')->with('playlist_details', $playlist_details)->with('video_tapes', $video_tapes);
-
-        } catch(Exception $e) {
-
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
-            if($request->is_json) {
-
-                return response()->json($response_array);
-            }
-
-            return redirect()->to('/')->with('flash_error' , $error_messages);
-        }
-    
     }
 
     /**
