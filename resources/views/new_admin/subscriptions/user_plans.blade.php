@@ -17,7 +17,9 @@
 @section('breadcrumb')
      
     <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-user"></i>{{ tr('users') }}</a></li>
+    
     <li><a href="{{ route('admin.users.view',['user_id' => $user_details->id] ) }}"><i class="fa fa-user"></i>{{ tr('view_user') }}</a></li>
+
     <li class="active"><i class="fa fa-key"></i> {{ tr('subscriptions') }}</li>
 @endsection
 

@@ -170,14 +170,14 @@
             </div>
 
             <div class="modal-body">
-                
-                @if(!empty($playlists))
+            
+                <div class="more-content" id="user-playlists-form">
+                    
+                    <form name="user-playlists" method="post" id="user-playlists" action="#">
+                      
+                        <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
 
-                    <div class="more-content" id="user-playlists-form">
-                        
-                        <form name="user-playlists" method="post" id="user-playlists" action="{{route('user.add.spam_video')}}">
-                          
-                            <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
+                        @if(!empty($playlists))
 
                             @foreach($playlists as $playlist_details)  
 
@@ -195,19 +195,19 @@
 
                                 <div class="clearfix"></div>
 
-                             @endforeach
+                            @endforeach
 
-                          <div id="user_playlists"></div>
-                         
-                          <div class="clearfix"></div>
+                        @endif  
 
-                        </form>
+                      <div id="user_playlists"></div>
+                     
+                      <div class="clearfix"></div>
 
-                    </div>
+                    </form>
 
-                    <hr>
+                </div>
 
-                @endif  
+                <hr>
 
                 <div class="more-content">
                 
