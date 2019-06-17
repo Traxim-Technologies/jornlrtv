@@ -514,6 +514,7 @@
                                 <input id="radio2" type="radio" name="type_of_subscription" value="{{RECURRING_PAYMENT}}" {{($video->type_of_subscription == RECURRING_PAYMENT) ? 'checked' : ''}} required>
                                                                                                 <span class="outer"><span class="inner"></div>
 
+                                        </label>
                                         <div class="clearfix"></div>
                                             <h4 class="black-clr text-left">{{tr('amount')}}</h4>
                                         <div>
