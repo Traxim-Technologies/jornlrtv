@@ -110,11 +110,8 @@ class UserController extends Controller {
                 'referrals_signup',
                 'channel_view',
                 'video_view',
-<<<<<<< HEAD
                 'playlists_view'
-=======
-                'playlist_single'
->>>>>>> a312f779f2ce224a039ae494c266ce48c364cb93
+
 
         ]]);
 
@@ -3531,13 +3528,8 @@ class UserController extends Controller {
      */
     public function playlists_view(Request $request) {
         
-        // dd( $request->all());
+        try {
 
-<<<<<<< HEAD
-=======
-        // try {
-
->>>>>>> a312f779f2ce224a039ae494c266ce48c364cb93
             if (Auth::check()) {
 
                 $request->request->add([ 
@@ -3547,14 +3539,6 @@ class UserController extends Controller {
                 ]);
 
             } 
-<<<<<<< HEAD
-=======
-
-            // $request->request->add([
-            //     'id'=> Auth::user()->id,
-            //     'token'=> Auth::user()->token
-            // ]);
->>>>>>> a312f779f2ce224a039ae494c266ce48c364cb93
 
             $response = $this->UserAPI->playlists_view($request)->getData();
          
@@ -3587,19 +3571,19 @@ class UserController extends Controller {
                     ->with('playlist_details', $playlist_details)
                     ->with('video_tapes', $video_tapes);
 
-        // } catch(Exception $e) {
+        } catch(Exception $e) {
 
-        //     $error_messages = $e->getMessage(); $error_code = $e->getCode();
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
 
-        //     $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
-        //     if($request->is_json) {
+            if($request->is_json) {
 
-        //         return response()->json($response_array);
-        //     }
+                return response()->json($response_array);
+            }
 
-        //     return redirect()->to('/')->with('flash_error' , $error_messages);
-        // }
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+        }
 
     }
 
