@@ -637,11 +637,7 @@
                                             <div class="slide-image">
 
                                                 <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">  
-<<<<<<< HEAD
-=======
 
-                                               <!--  <a href="{{route('user.playlist.single', ['playlist_id' => $channel_playlist_details->playlist_id])}}">   -->       
->>>>>>> a312f779f2ce224a039ae494c266ce48c364cb93
                                                     <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$channel_playlist_details->picture}}" class="slide-img1 placeholder" />
                                                 </a>
                                         
