@@ -433,9 +433,17 @@ class V5Repository {
 
         if ($video_data) {
 
+            if($video_data->is_pay_per_view && !$user_id) {
+                
+                $response_array = ['success'=>false, 'message'=>Helper::get_message(125), 'code'=>125];
+
+                return response()->json($response_array, 200);
+
+            }
+
             // Check the video having ppv or not
 
-            if ($video_data->is_pay_per_view) {
+            if ($video_data->is_pay_per_view && $user_id) {
 
                 $is_ppv_applied_for_user = DEFAULT_FALSE; // To check further steps , the user is applicable or not
 
