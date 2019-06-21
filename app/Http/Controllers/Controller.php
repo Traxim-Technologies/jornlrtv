@@ -34,7 +34,7 @@ class Controller extends BaseController
             $response['data'] = $result;
         // }
 
-        return response()->json($response, 200);
+        return response()->json($response, 200, [], JSON_PRESERVE_ZERO_FRACTION);
     }
 
 

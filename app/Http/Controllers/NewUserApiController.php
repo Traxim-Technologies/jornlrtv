@@ -2914,6 +2914,8 @@ class NewUserApiController extends Controller
 
         try {
 
+            // To remove the redeems while redeem requests skip & take
+
             if($request->skip == 0) {
 
                 $redeem_details = Redeem::where('user_id' , $request->id)->select('total' , 'paid' , 'remaining' , 'status')->first();
@@ -2944,12 +2946,15 @@ class NewUserApiController extends Controller
                 $redeem_details->paid_formatted = formatted_amount($redeem_details->paid);
 
                 $data['redeems'] = $redeem_details;
+            
             }
 
+            // dd($redeem_details);
+
             $redeems_history = RedeemRequest::where('user_id' , $request->id)
-                    ->CommonResponse()
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+                                    ->CommonResponse()
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
 
             foreach ($redeems_history as $key => $details) {
 
