@@ -419,3 +419,8 @@ if(!defined('VIEW_TYPE_OWNER')) define('VIEW_TYPE_OWNER', 'owner');
 if(!defined('VIEW_TYPE_VIEWER')) define('VIEW_TYPE_VIEWER', 'viewer');
 
 
+if(!defined('PAY_WATCH_VIDEO')) define('PAY_WATCH_VIDEO', 1);
+
+if(!defined('FREE_VIDEO')) define('FREE_VIDEO', 0);
+
+

@@ -224,7 +224,7 @@ class V5Repository {
 
                     // Log::info("watch_video_free".print_r($ppv_details, true));
 
-                    $should_display_ppv = $ppv_details->success == false ? DEFAULT_TRUE : DEFAULT_FALSE;
+                    $should_display_ppv = $ppv_details->success == false ? PAY_WATCH_VIDEO : FREE_VIDEO;
 
                 }
 
