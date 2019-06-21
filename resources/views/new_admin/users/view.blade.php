@@ -145,7 +145,26 @@
 		              </a>
 		            </li>
 
+		            <li class="list-group-item">
+
+		            	<b>{{ tr('created') }}</b> 
+			            <div class="pull-right">
+			              	{{$user_details->created_at}}
+		              	</div>
+		            	
+		            </li>
+
+		            <li class="list-group-item">
+
+		            	<b>{{ tr('updated') }}</b> 
+			            <div class="pull-right">
+			              	{{$user_details->updated_at}}
+		              	</div>
+		            	
+		            </li>
+
 		          </ul>
+
 		          <center>
 
 		          	@if(Setting::get('admin_delete_control') == YES )
