@@ -7332,7 +7332,7 @@ class UserApiController extends Controller {
 
                 if(!$request->channel_id) {
 
-                    throw new Exception("Channel ID is required", 101);
+                    throw new Exception("Channel ID is required", 101); // @todo update proper message
                     
                 }
                 

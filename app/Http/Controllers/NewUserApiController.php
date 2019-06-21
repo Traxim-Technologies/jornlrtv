@@ -3911,7 +3911,9 @@ class NewUserApiController extends Controller
 
             } else {
 
-                throw new Exception($response->error, $response->error_code);
+                // @todo check and replace error_messages
+
+                throw new Exception($response->error_messages, $response->error_code);
                 
             }
 
