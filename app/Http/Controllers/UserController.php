@@ -109,7 +109,9 @@ class UserController extends Controller {
                 'tags_videos',
                 'referrals_signup',
                 'channel_view',
-                'video_view'
+                'video_view',
+                'playlists_view'
+
 
         ]]);
 
@@ -3511,7 +3513,7 @@ class UserController extends Controller {
 
     /**
      *
-     * Function name: playlist_single()
+     * Function name: playlists_view()
      *
      * @uses get the playlists
      *
@@ -3524,14 +3526,19 @@ class UserController extends Controller {
      * @return 
      *
      */
-    public function playlist_single(Request $request) {
+    public function playlists_view(Request $request) {
         
         try {
 
-            $request->request->add([
-                'id'=> Auth::user()->id,
-                'token'=> Auth::user()->token
-            ]);
+            if (Auth::check()) {
+
+                $request->request->add([ 
+                    'id'=>Auth::user()->id,
+                    'token'=> Auth::user()->token
+
+                ]);
+
+            } 
 
             $response = $this->UserAPI->playlists_view($request)->getData();
          
@@ -3578,64 +3585,6 @@ class UserController extends Controller {
             return redirect()->to('/')->with('flash_error' , $error_messages);
         }
 
-    }
-
-    /**
-     *
-     * Function name: playlists_view()
-     *
-     * @uses get the playlists
-     *
-     * @created vithya R
-     *
-     * @updated vithya R
-     *
-     * @param integer channel_id (Optional)
-     *
-     * @return JSON Response
-     */
-
-    public function playlists_view(Request $request) {
-
-        try {
-
-            $request->request->add([
-                'id'=> Auth::user()->id,
-                'token'=> Auth::user()->token
-            ]);
-
-            $response = $this->UserAPI->playlists_view($request)->getData();
-
-            if($response->success == false) {
-
-                throw new Exception($response->error_messages, $response->error_code);
-            }
-
-            if($request->is_json) {
-
-                return response()->json($response, 200);
-            }
-
-            $playlist_details = $response->data;
-
-            $video_tapes = $response->data->video_tapes;
-            
-            return view('user.playlists.videos')->with('playlist_details', $playlist_details)->with('video_tapes', $video_tapes);
-
-        } catch(Exception $e) {
-
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
-            if($request->is_json) {
-
-                return response()->json($response_array);
-            }
-
-            return redirect()->to('/')->with('flash_error' , $error_messages);
-        }
-    
     }
 
     /**
@@ -4109,25 +4058,11 @@ class UserController extends Controller {
 
         $user_referrer_details = UserReferrer::where('user_id', $request->parent_user_id)->first();
 
-        $subscription_payments = UserPayment::select('user_payments.*', 'subscriptions.title')
-                            ->leftjoin('subscriptions', 'subscriptions.id', '=', 'user_payments.subscription_id')
-                            ->orderBy('user_payments.created_at' , 'desc')
-                            ->where('user_payments.user_id' , $user_details->id)
-                            ->get();
-
-        $ppv_payments = PayPerView::select('pay_per_views.*', 'video_tapes.title', 'users.name as user_name')
-                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'pay_per_views.video_id')
-                            ->leftJoin('users', 'users.id', '=', 'pay_per_views.user_id')
-                            ->where('pay_per_views.user_id' , $user_details->id)
-                            ->orderBy('pay_per_views.created_at' , 'desc')->get();
-
         return view('user.referrals.view')
                     ->with('page', 'users')
                     ->with('sub_page', 'view-user')
                     ->with('user_details', $user_details)
-                    ->with('user_referrer_details', $user_referrer_details)
-                    ->with('subscription_payments', $subscription_payments)
-                    ->with('ppv_payments', $ppv_payments);
+                    ->with('user_referrer_details', $user_referrer_details);
 
     } 
 

@@ -12,7 +12,6 @@
         
         @include('notification.notify')
 
-
             <div class="slide-area1 col-sm-4 col-md-4">
                 
                 <div class="new-history">
@@ -22,17 +21,13 @@
                         @if($video_tapes)
                    
                             <a href="{{route('user.single', $video_tapes[0]->video_tape_id)}}">
-                            
                                 <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video_tapes[0]->video_image}}" class="slide-img1 placeholder" />
-
                             </a>
 
                         @else
 
                             <a href="#">
-                            
                                 <img src="{{asset('streamtube/images/playlist.jpg')}}" data-src="{{asset('streamtube/images/playlist.jpg')}}" class="slide-img1 placeholder" />
-
                             </a>
 
                         @endif
@@ -44,9 +39,12 @@
                         <p> {{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>
                         <hr>
 
-                        <a href="{{route('user.profile')}}"><img class="img-circle " width="70px" src="{{$playlist_details->user_picture}}" style="margin-right: 10px">
-                            <h4 style="display: inline;">{{$playlist_details->user_name}}</h4>
+                        @if(Auth::check())
+                        <a href="{{route('user.profile')}}">
+                            <img class="img-circle " width="70px" src="{{$playlist_details->user_picture}}" style="margin-right: 10px">
+                            <h4 style="display: inline;">{{ Auth::user()->name }}</h4>
                         </a>
+                        @endif
                     </div>
 
                 </div>

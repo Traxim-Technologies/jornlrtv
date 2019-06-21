@@ -849,16 +849,15 @@ Route::group(['as' => 'user.'], function(){
 
     // User Playlists
 
+    // =============== v5.0 ==================
+
     Route::any('/playlists/', 'UserController@playlists')->name('playlists.index');
 
     Route::any('/playlists/save', 'UserController@playlists_save')->name('playlists.save');
 
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
-
-    // Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
-    
-    // @todo check where method being used
-    Route::any('/playlists/view', 'UserController@playlist_single')->name('playlists.view');
+   
+    Route::any('/playlists/view', 'UserController@playlists_view')->name('playlists.view');
 
     Route::any('/playlists/video_status', 'UserController@playlists_video_status')->name('playlists.video_status');
 
@@ -867,10 +866,6 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/referrals', 'UserController@referrals')->name('referrals');
 
     Route::get('/referrals/view', 'UserController@referrals_view')->name('referrals.view');
-
-    // =================== v5.0 ==================
-
-    Route::get('playlist/list/', 'UserController@playlist_single')->name('playlist.single');
 
     Route::post('/playlist_video_update', 'UserController@playlist_video_update')->name('playlist.video.update');
 

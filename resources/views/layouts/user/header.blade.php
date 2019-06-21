@@ -51,8 +51,6 @@
 
             @if(Auth::check())
 
-                
-
                 <div class="y-button profile-button">
 
                    <div class="dropdown pull-right">

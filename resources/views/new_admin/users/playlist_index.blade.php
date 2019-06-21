@@ -73,7 +73,6 @@
 								 		<td><a href="{{ route('admin.users.playlist.view' ,  ['playlist_id' => $playlist_details->playlist_id] ) }}"> {{ $playlist_details->total_videos }}</a>
 								 		</td>								      	
 								      	
-
 								      	<td> {{ $playlist_details->created_at  }} </td>
 								      	
 								      	<td>
@@ -89,6 +88,9 @@
 	          									</a>
 
 	          								@endif
+
+	          								<a href="{{ route('admin.users.playlist.view' ,  ['playlist_id' => $playlist_details->playlist_id] ) }}" class="btn btn-primary" ><b><i class="fa fa-eye"></i></b> </a>
+
 								      	</td>
 
 								    </tr>

@@ -32,7 +32,6 @@
 
 			<div class="box-primary referral-box">
 	          	
-	          
 	            <div class="box-body table-responsive">
 
 	            	<div class="col-md-12">
@@ -93,111 +92,6 @@
 				                <b>{{$user_referrer_details->total_referrals_earnings}}</b>
 				            </p>
 					    </div>
-
-					</div>
-
-					<div class="col-md-6">
-
-						<h3 class="text-uppercase">{{tr('subscriptions')}}</h3>
-
-						<hr>
-
-						@if(count($subscription_payments) > 0)
-
-			              	<table id="example1" class="table table-bordered table-striped">
-
-								<thead>
-								    <tr>
-								      	<th>{{tr('id')}}</th>
-								      	<th>{{tr('subscription')}}</th>
-								      	<!-- <th>{{tr('payment_id')}}</th> -->
-								      	<th>{{tr('amount')}}</th>
-								      	<th>{{tr('referral_commission')}}</th>
-								      	
-								    </tr>
-								</thead>
-
-								<tbody>
-
-									@foreach($subscription_payments as $i => $payment)
-
-									    <tr>
-									      	<td>{{$i+1}}</td>
-									      	<td>{{$payment->title}}</td>
-									      	<!-- <td>{{$payment->payment_id}}</td> -->
-									      	<td>{{Setting::get('currency')}} {{$payment->amount ?: 0.00}}</td>
-									      	<td>{{Setting::get('currency')}} {{$payment->referral_commission ?: 0.00}}</td>
-									    </tr>
-
-									@endforeach
-
-								</tbody>
-							</table>
-
-							<div>
-								
-							</div>
-						@else
-							<h3 class="no-result">{{tr('no_subscription_found')}}</h3>
-						@endif
-
-					</div>
-
-					<div class="col-md-6">
-
-						<h3 class="text-uppercase">{{tr('pay_per_view')}}</h3>
-
-						<hr>
-
-						@if(count($ppv_payments) > 0)
-
-			              	<table id="example1" class="table table-bordered table-striped">
-
-								<thead>
-								    <tr>
-
-										<th>{{tr('id')}}</th>
-										<th>{{tr('video')}}</th>
-										<th>{{tr('amount')}}</th>
-								      	<th>{{tr('referral_commission')}}</th>
-								    </tr>
-								</thead>
-
-								<tbody>
-
-									@foreach($ppv_payments as $i => $payment)
-
-									    <tr>
-									      	<td>{{$i+1}}</td>
-
-									      	<td>
-
-								      			<a href="{{route('admin.videos.view' , array('id' => $payment->video_id))}}">
-								      				{{$payment->title ?: "-"}}
-								      			</a>
-
-									      	</td>
-
-									      	<td>{{Setting::get('currency')}} {{$payment->amount ?: 0.00}}</td>
-
-									      	<td>{{Setting::get('currency')}} {{$payment->referral_commission ?: 0.00}}</td>
-
-
-									    </tr>	
-
-
-										
-
-									@endforeach
-								</tbody>
-							
-							</table>
-
-						@else
-
-							<h3 class="no-result">{{tr('no_result_found')}}</h3>
-
-						@endif
 
 					</div>
 

@@ -4,7 +4,7 @@
 
 @section('content-header') 
 
-{{ tr('channel') }} - <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a>
+{{ tr('channel') }} - <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }} </a>
 
 @endsection
 
