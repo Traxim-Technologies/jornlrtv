@@ -232,6 +232,15 @@ class V5Repository {
 
                 $video_tape_details->ppv_amount_formatted = formatted_amount($video_tape_details->ppv_amount);
            
+            } else {
+
+                // Guest user pay and watch video
+
+                if($video_tape_details->is_pay_per_view == YES) {
+
+                    $video_tape_details->should_display_ppv = PAY_WATCH_VIDEO;
+                        
+                }
             }
 
             $video_tape_details->publish_time = common_date($video_tape_details->publish_time, "", 'd M Y');
