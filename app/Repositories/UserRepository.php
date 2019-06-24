@@ -12,8 +12,6 @@ use Log, Validator, Setting;
 
 use App\UserReferrer, App\Referral;
 
-use App\Redeem;
-
 class UserRepository {
 
     public static function request_validation($data = [] , &$errors = [] , $user) {
