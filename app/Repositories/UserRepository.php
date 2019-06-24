@@ -326,9 +326,9 @@ class UserRepository {
             $user_referral_details->save();
 
             // user redeems starts
-            $reffereal_commission = Setting::get('referral_commission') ?: 0;
+            $referral_commission = Setting::get('referral_commission') ?: 0;
 
-            add_to_redeem($user_referral_details->user_id , $reffereal_commission);
+            add_to_redeem($user_referral_details->user_id , $referral_commission);
 
         }
 
