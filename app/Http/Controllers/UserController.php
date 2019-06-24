@@ -1792,55 +1792,7 @@ class UserController extends Controller {
 
     public function redeems(Request $request) {
 
-        // try {
-
-        //     $request->request->add([
-                
-        //         'id'=> Auth::user()->id,
-        //         'token'=> Auth::user()->token,
-        //         'view_type' => \Auth::check() ? VIEW_TYPE_OWNER : VIEW_TYPE_VIEWER 
-
-        //     ]);
-
-        //     $response = $this->UserAPI->redeems($request)->getData();
-
-        //     if($response->success == false) {
-
-        //         throw new Exception($response->error_messages, $response->error_code);
-        //     }
-
-        //     if($request->is_json) {
-
-        //         return response()->json($response, 200);
-        //     }
-
-        //     $redeems = $response->data;
-
-        //     // dd('controller');
-
-        //     // return view('user.playlists.index')->with('playlists', $playlists);
-
-        //     return view('user.redeems.index');
-
-
-        // } catch(Exception $e) {
-
-        //     $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-        //     $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
-        //     if($request->is_json) {
-
-        //         return response()->json($response_array);
-        //     }
-
-        //     return redirect()->to('/')->with('flash_error' , $error_messages);
-
-        // }
-// $remaining = Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining: 0;
-
-// dd(Auth::user()->userRedeem);
-            return view('user.redeems.index');
+        return view('user.redeems.index');
 
     }
 
