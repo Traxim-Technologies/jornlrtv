@@ -153,32 +153,29 @@
 <div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$video->video_tape_id}}" role="dialog">
    
    <div class="modal-dialog">
-      <!-- Modal content-->
-      
-      <div class="modal-content">
         
-        <!-- if user logged in let create, update playlist -->
-         
-        @if(Auth::check())
-         
-            <div class="modal-header">
+        <!-- Modal content-->
+        <div class="modal-content">
+        
+            <!-- if user logged in let create, update playlist -->
+             
+            @if(Auth::check())
+             
+                <div class="modal-header">
 
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                <h4 class="modal-title">{{tr('save_to')}}</h4>
+                    <h4 class="modal-title">{{tr('save_to')}}</h4>
 
-            </div>
+                </div>
 
-            <div class="modal-body">
+                <div class="modal-body">
 
-                @if(!empty($playlists))
+                    @if(!empty($playlists))
 
-                <div class="more-content" id="user-playlists-form">
-                    
-                    <form name="user-playlists" method="post" id="user-playlists" action="#">
-                      
+                    <div class="more-content" id="user-playlists-form">
+                                              
                         <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
-
 
                             @foreach($playlists as $playlist_details)  
 
@@ -198,68 +195,78 @@
 
                             @endforeach
 
-
-                      <div id="user_playlists"></div>
-                     
-                      <div class="clearfix"></div>
-
-                    </form>
-
-                </div>
-
-                <hr>
-
-                @endif  
-
-                <div class="more-content">
-                
-                    <div onclick="$('#create_playlist_form').toggle()">
-
-                        <label><i class="fa fa-plus"></i> {{tr('create_playlist')}}</label>
+                        <div id="user_playlists"></div>
+                         
+                        <div class="clearfix"></div>
 
                     </div>
-                   
-                    <div class="" id="create_playlist_form" style="display: none">
                     
-                        <div class="form-group">
-                            
-                            <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}">
+                    @else
+     
+                    <div id="user-playlists-form">
+     
+                        <div id="user_playlists"></div>
+                         
+                        <div class="clearfix"></div>
 
-                            <div class="" style="display: none;">
+                    </div>
+                    
+                    @endif  
+             
+                </div>
 
-                                <label for="playlist_privacy">Privacy</label>
-                                <select id="playlist_privacy" name="playlist_privacy" class="form-control">
-                                   <option value="PUBLIC">PUBLIC</option>
-                                   <option value="PRIVETE">PRIVETE</option>
-                                   <option value="UNLISTED">UNLISTED</option>
-                                </select>
+                <div class="modal-footer">
+                    
+                    <div class="more-content">
+                    
+                        <div onclick="$('#create_playlist_form').toggle()">
+
+                            <label><i class="fa fa-plus"></i> {{tr('create_playlist')}}</label>
+
+                        </div>
+                       
+                        <div class="" id="create_playlist_form" style="display: none">
+                        
+                            <div class="form-group">
+                                
+                                <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}">
+
+                                <div class="" style="display: none;">
+
+                                    <label for="playlist_privacy">Privacy</label>
+                                    <select id="playlist_privacy" name="playlist_privacy" class="form-control">
+                                       <option value="PUBLIC">PUBLIC</option>
+                                       <option value="PRIVETE">PRIVETE</option>
+                                       <option value="UNLISTED">UNLISTED</option>
+                                    </select>
+                                </div>
                             </div>
+
+                            <button class="btn btn-primary" onclick='playlist_save_video_add("{{ $video->video_tape_id }}")'>{{tr('create')}} </button>
+
                         </div>
 
-                        <button class="btn btn-primary" onclick='playlist_save_video_add("{{ $video->video_tape_id }}")'>{{tr('create')}} </button>
-
                     </div>
 
                 </div>
-         
-            </div>
 
-         <!-- if user not logged in ask for login -->
+             <!-- if user not logged in ask for login -->
 
-         @else
+            @else
 
-            <div class="menu4 top nav-space">
-                  
-                <p>{{tr('signid_for_playlist')}}</p>
+                <div class="menu4 top nav-space">
+                      
+                    <p>{{tr('signid_for_playlist')}}</p>
 
-                <a href="{{route('user.login.form')}}" class="btn btn-sm btn-primary">{{tr('login')}}</a>
+                    <a href="{{route('user.login.form')}}" class="btn btn-sm btn-primary">{{tr('login')}}</a>
 
-            </div> 
+                </div> 
 
-          @endif 
+            @endif 
 
-      </div>
-      <!-- modal content ends -->
+        </div>
+        <!-- modal content ends -->
+
    </div>
 
 </div>

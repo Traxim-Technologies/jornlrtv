@@ -1126,35 +1126,41 @@
 
       var privacy = $("#playlist_privacy" ).val();
 
-      if(title == '') { alert("Title for playlist required"); }
+      if(title == '') { 
 
-      $.ajax({
-           url : "{{route('user.playlist.save.video_add')}}",
-           data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
-           type: "post",
-           success : function(data) {
-               if (data.success) {
+         alert("Title for playlist required");
 
-                  $('#playlist_title').removeAttr('value');  
+      } else {
 
-                  $('#create_playlist_form').hide();
+         $.ajax({
+              url : "{{route('user.playlist.save.video_add')}}",
+              data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
+              type: "post",
+              success : function(data) {
+               
+                  if (data.success) {
 
-                  alert(data.message);
+                     $('#playlist_title').removeAttr('value');  
 
-                  var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></label>';
+                     $('#create_playlist_form').hide();
 
-                  $('#user_playlists').append(labal);
+                     alert(data.message);
 
-               } else {
-                  
-                  alert(data.error_messages);
-               }
-            },
-   
-           error : function(data) {
-           },
-       })
+                     var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></label>';
 
+                     $('#user_playlists').append(labal);
+
+                  } else {
+                     
+                     alert(data.error_messages);
+                  }
+               },
+      
+              error : function(data) {
+              },
+         })
+
+      }
    }  
 
    function likeVideo(video_id) {
