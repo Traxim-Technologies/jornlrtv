@@ -12,6 +12,8 @@ use Log, Validator, Setting;
 
 use App\UserReferrer, App\Referral;
 
+use App\Redeem;
+
 class UserRepository {
 
     public static function request_validation($data = [] , &$errors = [] , $user) {
@@ -324,6 +326,11 @@ class UserRepository {
             $user_referral_details->total_referrals_earnings += (Setting::get('referral_commission') ?: 0);
 
             $user_referral_details->save();
+
+            // user redeems starts
+            $reffereal_commission = Setting::get('referral_commission') ?: 0;
+
+            add_to_redeem($user_referral_details->user_id , $reffereal_commission);
 
         }
 

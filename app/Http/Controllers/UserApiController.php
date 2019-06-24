@@ -2082,7 +2082,7 @@ class UserApiController extends Controller {
 
             $data = Redeem::where('user_id' , $request->id)->select('total' , 'paid' , 'remaining' , 'status')->get()->toArray();
             
-            dd($data);
+            // dd($data);
 
             $response_array = ['success' => true , 'data' => $data];
 
