@@ -64,7 +64,7 @@
 
 			        <div class="card-footer top30">
 
-						<a href="{{route('user.redeems')}}" class="btn btn-primary text-uppercase"><i class="fa fa-money"></i> CHECK REDEEMS</a>			        	
+						<a href="{{route('user.redeems')}}" class="btn btn-primary text-uppercase"><i class="fa fa-money"></i> {{ tr('check_redeems') }}</a>			        	
 			        </div>
 
 			    </div>

@@ -2957,8 +2957,6 @@ class NewUserApiController extends Controller
             
             }
 
-            // dd($redeem_details);
-
             $redeems_history = RedeemRequest::where('user_id' , $request->id)
                                     ->CommonResponse()
                                     ->orderBy('created_at', 'desc')
