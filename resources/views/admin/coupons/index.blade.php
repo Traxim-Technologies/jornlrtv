@@ -50,9 +50,9 @@
 								</td>
 								<td>
 									@if($value->amount_type == 0)
-									{{$value->amount}} %
+									{{ formatted_amount($value->amount) }} %
 									@else
-									{{Setting::get('currency')}} {{$value->amount}} 
+									{{ formatted_amount($value->amount) }} 
 									@endif
 								</td>
 								<td>
