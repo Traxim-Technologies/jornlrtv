@@ -2430,7 +2430,7 @@ class UserController extends Controller {
 
                 if ($ppv_status->success) {
 
-                    return redirect(route('user.single', $video->video_tape_id));
+                    return redirect()->route('user.single', $video->video_tape_id);
                 }
 
             }
@@ -2516,11 +2516,11 @@ class UserController extends Controller {
 
         if($request->payment_type == 1) {
 
-            return redirect(route('user.ppv-video-payment', ['id'=>$id, 'coupon_code'=>$request->coupon_code]));
+            return redirect(route('user.ppv-video-payment', ['id' => $id, 'coupon_code' => $request->coupon_code]));
 
         } else {
 
-            return redirect(route('user.card.ppv-stripe-payment', ['video_tape_id'=>$id, 'coupon_code'=>$request->coupon_code]));
+            return redirect(route('user.card.ppv-stripe-payment', ['video_tape_id' => $id, 'coupon_code' => $request->coupon_code]));
         }
    
     }
