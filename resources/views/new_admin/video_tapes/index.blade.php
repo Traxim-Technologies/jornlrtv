@@ -133,7 +133,7 @@
 
 							      	@endif */?>
 
-							      	<td><b>{{Setting::get('currency')}} {{$video_tape_details->admin_ppv_amount}}</b></td>
+							      	<td><b>{{ formatted_amount($video_tape_details->admin_ppv_amount) }}</b></td>
 
 							      	@if(Setting::get('is_payper_view'))
 							      	<td class="text-center">

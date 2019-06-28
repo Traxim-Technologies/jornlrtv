@@ -61,9 +61,9 @@
 
 								<td>
 									@if($coupon_details->amount_type == PERCENTAGE)
-									{{ $coupon_details->amount }} %
+									{{ formatted_amount($coupon_details->amount) }} %
 									@else
-									{{ Setting::get('currency') }} {{ $coupon_details->amount }} 
+									{{ formatted_amount($coupon_details->amount) }} 
 									@endif
 								</td>
 

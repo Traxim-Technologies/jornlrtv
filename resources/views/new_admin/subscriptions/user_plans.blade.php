@@ -89,7 +89,7 @@
 								      	
 								      	<td>{{ $payment_details->payment_id }}</td>
 								      	
-								      	<td>{{ Setting::get('currency') }} {{ $payment_details->amount }}</td>
+								      	<td>{{ formatted_amount($payment_details->amount) }}</td>
 								      	
 								      	<td>{{ date('d M Y',strtotime($payment_details->expiry_date)) }}</td>
 								      	
@@ -198,7 +198,7 @@
 									<br>
 
 									<p>
-										<span class="btn btn-danger pull-left" style="cursor: default;">{{  Setting::get('currency') }} {{ $subscription_detail->amount }} / {{ $subscription_detail->plan }} M</span>
+										<span class="btn btn-danger pull-left" style="cursor: default;">{{ formatted_amount($subscription_detail->amount) }} / {{ $subscription_detail->plan }} M</span>
 
 										<a href="{{ route('admin.users.subscription.save' , ['subscription_id' => $subscription_detail->id, 'user_id' => $user_details->id]) }}" class="btn btn-success pull-right" onclick="return confirm(&quot;{{ tr('admin_user_subscription_confirm', $subscription_detail->title) }}&quot;)">{{ tr('choose') }}</a>
 									</p>

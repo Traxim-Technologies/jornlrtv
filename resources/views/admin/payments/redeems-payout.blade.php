@@ -77,11 +77,11 @@
                             </tr>
                             <tr>
                                 <th>Tax</th>
-                                <td>{{Setting::get('currency')}} 0.00</td>
+                                <td>{{ formatted_amount(0.00) }} </td>
                             </tr>
                             <tr>
                                 <th>Shipping:</th>
-                                <td>{{Setting::get('currency')}} 0.00</td>
+                                <td>{{ formatted_amount(0.00) }}</td>
                             </tr>
                             <tr>
                                 <th>{{tr('total')}}:</th>

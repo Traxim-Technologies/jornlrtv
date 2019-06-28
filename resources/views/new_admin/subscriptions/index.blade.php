@@ -58,7 +58,7 @@
 
 							      	<td>{{ $subscription_details->plan }}</td>
 
-							      	<td>{{ Setting::get('currency' , "$") }} {{ $subscription_details->amount }}</td>
+							      	<td>{{ formatted_amount($subscription_details->amount) }}</td>
 							      	
 							      	<td class="text-center">
 						      			@if($subscription_details->status == DEFAULT_TRUE)

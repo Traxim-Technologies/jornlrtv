@@ -332,7 +332,7 @@
 			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('paid_amount') }}</th>
-			            		<td>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? number_format_short($user_details->userRedeem->paid) : "0.00" }}</td>
+			            		<td>{{ formatted_amount($user_details->userRedeem ? number_format_short($user_details->userRedeem->paid) : "0.00") }}</td>
 			            	</tr>
 			            	<tr>
 				            	<td>

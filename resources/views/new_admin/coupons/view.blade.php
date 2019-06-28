@@ -6,8 +6,6 @@
 
 @section('breadcrumb')
 
-	 
-
 	<li><a href="{{ route('admin.coupons.index') }}"><i class="fa fa-gift"></i>{{ tr('coupons') }}</a></li>
 
 	<li class="active">{{ tr('view_coupon') }}</li>
@@ -78,9 +76,9 @@
 
 						<strong>{{ tr('amount') }}</strong>
 							@if($coupon_details->amount_type == PERCENTAGE)
-							<span class="label label-primary pull-right">{{ $coupon_details->amount }} % </span>
+							<span class="label label-primary pull-right">{{ formatted_amount($coupon_details->amount) }} % </span>
 							@else
-							<span class="label label-primary pull-right">{{ Setting::get('currency') }}{{ $coupon_details->amount }}</span>
+							<span class="label label-primary pull-right">{{ formatted_amount($coupon_details->amount) }}</span>
 							@endif				
 
 					</div>

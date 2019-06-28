@@ -120,7 +120,7 @@
 
 							      	<td>{{ $payment_details->payment_mode}}</td>
 
-							      	<td>{{ Setting::get('currency')}} {{ $payment_details->amount}}</td>
+							      	<td>{{ formatted_amount($payment_details->amount) }}</td>
 
 							      	<td>{{ $payment_details->reason}}</td>
 
@@ -178,11 +178,11 @@
 							      						</a>
 										      		</li>
 
-										      		<li>{{ tr('total')}} : {{ Setting::get('currency')}} {{ $payment_details->amount}}</li>
+										      		<li>{{ tr('total')}} : {{ formatted_amount($payment_details->amount) }}</li>
 
-										      		<li>{{ tr('admin_ppv_commission')}} : {{ Setting::get('currency')}} {{ $payment_details->admin_ppv_amount}}</li>
+										      		<li>{{ tr('admin_ppv_commission')}} : {{ formatted_amount($payment_details->admin_ppv_amount) }}</li>
 
-										      		<li>{{ tr('user_ppv_commission')}} : {{ Setting::get('currency')}} {{ $payment_details->user_ppv_amount}}</li>
+										      		<li>{{ tr('user_ppv_commission')}} : {{ formatted_amount($payment_details->user_ppv_amount) }}</li>
 
 										      		<li>{{ tr('reason')}} : {{ $payment_details->reason}}</li>
 
@@ -194,11 +194,11 @@
 
 										      		<li>{{ tr('coupon_code')}} : {{ $payment_details->coupon_code}}</li>
 
-											      	<li>{{ tr('coupon_amount')}} : {{ Setting::get('currency')}} {{ $payment_details->coupon_amount? $payment_details->coupon_amount : "0.00"}}</li>
+											      	<li>{{ tr('coupon_amount')}} : {{ formatted_amount($payment_details->coupon_amount? $payment_details->coupon_amount : "0.00") }}</li>
 
-											      	<li>{{ tr('plan_amount')}} : {{ Setting::get('currency')}} {{ $payment_details->ppv_amount ? $payment_details->ppv_amount : "0.00"}}</li>
+											      	<li>{{ tr('plan_amount')}} : {{ formatted_amount($payment_details->ppv_amount ? $payment_details->ppv_amount : "0.00") }}</li>
 
-											      	<li>{{ tr('final_amount')}} : {{ Setting::get('currency')}} {{ $payment_details->amount ? $payment_details->amount : "0.00" }}</li>
+											      	<li>{{ tr('final_amount')}} : {{ formatted_amount($payment_details->amount ? $payment_details->amount : "0.00") }}</li>
 
 											      	<li>{{ tr('is_coupon_applied')}} : 	
 											      	@if($payment_details->is_coupon_applied)

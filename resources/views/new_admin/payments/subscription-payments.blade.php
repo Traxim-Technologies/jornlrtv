@@ -4,7 +4,7 @@
 
 @section('content-header')
 
-{{  tr('subscription_payments')  }} - {{ Setting::get('currency') }} {{ total_subscription_revenue($subscription_details ? $subscription_details->id : "") }}
+{{  tr('subscription_payments')  }} - {{ formatted_amount(total_subscription_revenue($subscription_details ? $subscription_details->id : "")) }}
 
 @endsection
 
@@ -116,17 +116,17 @@
 
 								      	<td>{{ $payment_details->getSubscription ? $payment_details->getSubscription->plan : "" }}</td>
 
-								      	<td class="text-red"><b>{{ Setting::get('currency') }} {{ $payment_details->amount }}</b></td>
+								      	<td class="text-red"><b>{{ formatted_amount($payment_details->amount) }}</b></td>
 
 							   
 							      		<td class="text-capitalize">{{ $payment_details->payment_mode }}</td>
 								      	<td>{{ $payment_details->coupon_code }}</td>
 
-								      	<td>{{ Setting::get('currency') }} {{ $payment_details->coupon_amount? $payment_details->coupon_amount : "0.00" }}</td>
+								      	<td>{{ formatted_amount($payment_details->coupon_amount? $payment_details->coupon_amount : "0.00") }}</td>
 
-								      	<td>{{ Setting::get('currency') }} {{ $payment_details->subscription_amount ? $payment_details->subscription_amount : "0.00" }}</td>
+								      	<td>{{ formatted_amount($payment_details->subscription_amount ? $payment_details->subscription_amount : "0.00") }}</td>
 
-								      	<td>{{ Setting::get('currency') }} {{ $payment_details->amount ? $payment_details->amount : "0.00"  }}</td>
+								      	<td>{{ formatted_amount($payment_details->amount ? $payment_details->amount : "0.00")  }}</td>
 								      	
 								      	<td>{{ date('d M Y',strtotime($payment_details->expiry_date)) }}</td>
 								      	<td>

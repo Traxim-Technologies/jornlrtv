@@ -73,9 +73,9 @@
 
 							      	</td>
 
-							      	<td><b>{{ Setting::get('currency') }}{{ $redeem_request_details->request_amount }}</b></td>
+							      	<td><b>{{ formatted_amount($redeem_request_details->request_amount) }}</b></td>
 
-							      	<td><b>{{ Setting::get('currency') }}{{ $redeem_request_details->paid_amount }}</b></td>
+							      	<td><b>{{ formatted_amount($redeem_request_details->paid_amount) }}</b></td>
 
 							      	<td>{{ $redeem_request_details->created_at ? $redeem_request_details->created_at->diffForHumans() : "" }}</td>
 

@@ -76,7 +76,7 @@
 						      		@endif
 						      	</td>
 
-						      	<td>{{ Setting::get('currency') }} {{ $payment_details->amount }}</td>
+						      	<td>{{ formatted_amount($payment_details->amount) }}</td>
 
 						      	<td>{{ $payment_details->expiry_date }}</td>
 
