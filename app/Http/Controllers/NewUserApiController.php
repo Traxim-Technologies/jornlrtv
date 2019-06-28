@@ -349,6 +349,10 @@ class NewUserApiController extends Controller
 
                 	$data = User::CommonResponse()->find($user_details->id);
 
+                    $data->email_notification_status = (int) $user_details->email_notification_status; // Don't remove int (used ios)
+
+                    $data->push_status = (int) $user_details->push_status; // Don't remove int (used ios)
+
                     $response_array = ['success' => true, 'data' => $data];
 
                 } else {
@@ -498,6 +502,10 @@ class NewUserApiController extends Controller
                 $user_details->save();
 
                 $data = User::CommonResponse()->find($user_details->id);
+
+                $data->email_notification_status = (int) $user_details->email_notification_status; // Don't remove int (used ios)
+
+                $data->push_status = (int) $user_details->push_status; // Don't remove int (used ios)
 
                 $response_array = ['success' => true, 'message' => CommonHelper::success_message(101) , 'data' => $data];
 
@@ -917,9 +925,9 @@ class NewUserApiController extends Controller
 
                     $is_delete_allow = NO ;
 
-                    $error = CommonHelper::error_message(104);
+                    $error = CommonHelper::error_message(108);
          
-                    throw new Exception($error , 104);
+                    throw new Exception($error , 108);
                     
                 }
             

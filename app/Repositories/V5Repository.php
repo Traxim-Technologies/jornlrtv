@@ -196,6 +196,8 @@ class V5Repository {
 
             $video_tape_details->should_display_ppv = $video_tape_details->is_my_channel = NO;
 
+            $video_tape_details->ppv_amount_formatted = formatted_amount($video_tape_details->ppv_amount ?: 0.00);
+
             if($user_details) {
 
                 // check the channer owner status
@@ -229,8 +231,6 @@ class V5Repository {
                 }
 
                 $video_tape_details->should_display_ppv = $should_display_ppv;
-
-                $video_tape_details->ppv_amount_formatted = formatted_amount($video_tape_details->ppv_amount);
            
             } else {
 
