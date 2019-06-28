@@ -451,7 +451,7 @@
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 
-								      	<td><a href="{{route('admin.video_tapes.view' , ['id' => $wishlist_details->video_tape_id] )}}"> {{ $wishlist_details->title }}</a></td>
+								      	<td><a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $wishlist_details->video_tape_id] )}}"> {{ $wishlist_details->title }}</a></td>
 
 								      	<td>{{ $wishlist_details->created_at->diffForHumans() }}</td>
 

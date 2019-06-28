@@ -8,7 +8,15 @@
 	
 	<span class="text-green"> {{ $user->name }} </span>- 
 
-@endif {{ tr('channels') }}
+@endif 
+
+{{ tr('channels') }} 
+
+@if($channel_details)
+
+    - <a href="{{ route('admin.channels.view',['channel_id' =>$channel_details->id ]) }}">{{ $channel_details->name }}</a>
+
+@endif
 
 @endsection
 

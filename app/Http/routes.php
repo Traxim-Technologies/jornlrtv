@@ -288,7 +288,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     // New Admin tags methods begins
 
-    Route::get('/tags', 'NewAdminController@tags_index')->name('tags');
+    Route::get('/tags', 'NewAdminController@tags_index')->name('tags.index');
 
     Route::post('/tags/save', 'NewAdminController@tags_save')->name('tags.save');
 

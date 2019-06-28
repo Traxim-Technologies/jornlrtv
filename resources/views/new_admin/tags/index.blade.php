@@ -97,7 +97,7 @@
 
 						      		<td class="text-center">
 						      		
-					      				<a href="{{ route('admin.tags', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-primary" title="{{tr('edit')}}">	<i class="fa fa-edit"></i>
+					      				<a href="{{ route('admin.tags.index', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-primary" title="{{tr('edit')}}">	<i class="fa fa-edit"></i>
 				              			</a>
 
 						      			<a href="{{ route('admin.tags.delete', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-danger" title="{{tr('delete')}}" onclick="return confirm(&quot;{{ tr('admin_tag_delete_confirmation', $tag_details->name) }}&quot;)" ><i class="fa fa-trash"></i></a>	

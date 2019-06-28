@@ -82,7 +82,7 @@
             </li>
 
             <li id="tags">
-                <a href="{{route('admin.tags')}}">
+                <a href="{{route('admin.tags.index')}}">
                     <i class="fa fa-tag"></i> <span>{{tr('tags')}}</span> 
                 </a>
             </li>

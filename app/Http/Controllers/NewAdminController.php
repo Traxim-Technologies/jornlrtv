@@ -552,7 +552,7 @@ class NewAdminController extends Controller {
                         ->orderBy('user_ratings.created_at', 'desc')
                         ->paginate(12);
                 
-                $users_referral_details = UserReferrer::where('user_id', $request->user_id)                            
+                $users_referral_details = UserReferrer::where('user_id', $request->user_id)
                 ->withCount('getReferral')
                 ->first();
 
@@ -1476,15 +1476,27 @@ class NewAdminController extends Controller {
             
             $channel_subscriptions = ChannelSubscription::orderBy('created_at', 'desc')->get();
 
-            if ($request->channel_id) {
+            $channel_details = '';
+
+            if($request->channel_id) {
+
+                $channel_details = Channel::find($request->channel_id);
+
+                if(!$channel_details) {
+
+                    throw new Exception(tr('admin_channel_not_found'), 101);
+                }
 
                 $channel_subscriptions = ChannelSubscription::where('channel_id', $request->channel_id)->orderBy('created_at', 'desc')->get();
             }   
+            
+            // dd($channel_details); 
 
             return view('new_admin.channels.subscribers')
                         ->withPage('channels')
                         ->with('sub_page','channels-subscribers')
-                        ->with('channel_subscriptions' , $channel_subscriptions);
+                        ->with('channel_subscriptions' , $channel_subscriptions)
+                        ->with('channel_details' , $channel_details);
             
         } catch (Exception $e) {
             
@@ -1982,16 +1994,38 @@ class NewAdminController extends Controller {
      * @return View page
      */
     public function tags_index(Request $request) {
+        
+        try {
 
-        $tag_details = $request->tag_id ? Tag::find($request->tag_id) : new Tag;
+            $tag_details = new Tag;
+            
+            if($request->tag_id) {
 
-        $tags = Tag::orderBy('created_at', 'desc')->get();
+                $tag_details = Tag::find($request->tag_id);
 
-        return view('new_admin.tags.index')
-                    ->with('page', 'tags')
-                    ->with('sub_page', '')
-                    ->with('tag_details', $tag_details)
-                    ->with('tags', $tags);
+                if (!$tag_details) {
+
+                    throw new Exception(tr('admin_tag_not_found'), 101);
+                
+                }
+            }
+
+            $tags = Tag::orderBy('created_at', 'desc')->get();
+
+            return view('new_admin.tags.index')
+                        ->with('page', 'tags')
+                        ->with('sub_page', '')
+                        ->with('tag_details', $tag_details)
+                        ->with('tags', $tags);
+
+        } catch (Exception $e) {
+            
+            DB::commit();
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.tags.index')->with('flash_error',$error);
+        }
     }
     
     /**
