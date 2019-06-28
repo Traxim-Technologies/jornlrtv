@@ -130,7 +130,7 @@
 										</td>
 
 								      	<td>
-								      		<b>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? $user_details->userRedeem->remaining : 0 }}</b>
+								      		<b>{{ formatted_amount($user_details->userRedeem ? $user_details->userRedeem->remaining : 0) }}</b>
 								     	</td>
 
 								      	@if(Setting::get('email_verify_control') == USER_EMAIL_VERIFIED)

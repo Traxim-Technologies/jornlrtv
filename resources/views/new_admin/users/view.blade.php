@@ -306,7 +306,7 @@
 
 			            	<tr>
 			            		<th>{{ tr('referral_earnings') }}</th>
-			            		<td>{{ Setting::get('currency') }} {{ $users_referral_details->total_referrals_earnings }}</td>
+			            		<td>{{ formatted_amount($users_referral_details->total_referrals_earnings) }}</td>
 			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('referral_count') }}</th>
@@ -324,11 +324,11 @@
 	                	<table class="table table-striped">
 			            	<tr>
 			            		<th>{{ tr('total_earning') }}</th>
-			            		<td>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? number_format_short($user_details->userRedeem->total) : "0.00" }}</td>
+			            		<td>{{ formatted_amount($user_details->userRedeem ? number_format_short($user_details->userRedeem->total) : "0.00") }}</td>
 			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('wallet_balance') }}</th>
-			            		<td>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? number_format_short($user_details->userRedeem->remaining) : "0.00" }}</td>
+			            		<td>{{ formatted_amount($user_details->userRedeem ? number_format_short($user_details->userRedeem->remaining) : "0.00") }}</td>
 			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('paid_amount') }}</th>

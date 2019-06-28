@@ -4,7 +4,7 @@
 
 @section('content-header')
 
-{{  tr('subscriptions')  }} - {{ Setting::get('currency') }} {{ total_subscription_revenue() }}
+{{  tr('subscriptions')  }} - {{ formatted_amount(total_subscription_revenue()) }}
 
 @endsection
 

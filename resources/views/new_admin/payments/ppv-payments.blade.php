@@ -4,7 +4,7 @@
 
 @section('content-header')
 
-{{ tr('ppv_payments')}} - {{ Setting::get('currency')}} {{ total_video_revenue('admin')}}
+{{ tr('ppv_payments')}} - {{ formatted_amount(total_video_revenue('admin')) }}
 
 @endsection
 
