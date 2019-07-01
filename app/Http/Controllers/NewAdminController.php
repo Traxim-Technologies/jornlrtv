@@ -5846,6 +5846,8 @@ class NewAdminController extends Controller {
 
                 $sub_admin_details->picture = asset('placeholder.png');
 
+                $sub_admin_details->status = DEFAULT_TRUE;
+
             }
 
             if($request->hasFile('picture')) {
@@ -5863,8 +5865,6 @@ class NewAdminController extends Controller {
             $sub_admin_details->token = Helper::generate_token();
 
             $sub_admin_details->token_expiry = Helper::generate_token_expiry();
-
-            $sub_admin_details->status = DEFAULT_TRUE;
 
             if($sub_admin_details->save()) {
 

@@ -16,7 +16,7 @@ use App\VideoTape;
 use App\AssignVideoAd;
 use App\Language;
 use App\CustomLiveVideo;
-
+use App\Settings;
 
 class AdminRepository {
 
@@ -456,16 +456,13 @@ class AdminRepository {
             DB::beginTransaction();
 
             $validator = Validator::make($request->all(),[
-                    // 'folder_name' => $request->language_id ? 'required|min:2|max:4|unique:languages,folder_name,'.$request->language_id : 'required|max:4|unique:languages,folder_name',
-                    // 'language'=> $request->language_id ? 'required|max:64|unique:languages,language,'.$request->language_id : 'required|max:64|unique:languages,language',  
-
-                    'folder_name' => 'required|max:64',
-                    'language'=> 'required|max:64',
-                    'auth_file'=> !($request->language_id) ? 'required' : '',
-                    'messages_file'=>!($request->language_id) ? 'required' : '',
-                    'pagination_file'=>!($request->language_id) ? 'required' : '',
-                    'passwords_file'=>!($request->language_id) ? 'required' : '',
-                    'validation_file'=>!($request->language_id) ? 'required' : '',
+                'folder_name' => 'required|max:64',
+                'language'=> 'required|max:64',
+                'auth_file'=> !($request->language_id) ? 'required' : '',
+                'messages_file'=>!($request->language_id) ? 'required' : '',
+                'pagination_file'=>!($request->language_id) ? 'required' : '',
+                'passwords_file'=>!($request->language_id) ? 'required' : '',
+                'validation_file'=>!($request->language_id) ? 'required' : '',
             ]);
             
             if($validator->fails()) {
@@ -485,9 +482,10 @@ class AdminRepository {
 
             $language_details->status = APPROVED;
 
+
             if ($request->hasFile('auth_file')) {
 
-                 // Read File Length
+                // Read File Length
 
                 $originallength = readFileLength(base_path().'/resources/lang/en/auth.php');
 
@@ -535,7 +533,7 @@ class AdminRepository {
 
             if ($request->hasFile('pagination_file')) {
 
-                 // Read File Length
+                // Read File Length
 
                 $originallength = readFileLength(base_path().'/resources/lang/en/pagination.php');
 
@@ -602,7 +600,9 @@ class AdminRepository {
                 Helper::upload_language_file($language_details->folder_name, $request->validation_file, 'validation.php');
             } 
 
-            if ($request->language_id) {
+            $language_details->save();
+
+            if ($request->language_id && $language_details->save() ) {
 
                 if($lang != $request->folder_name)  {
                    
@@ -613,9 +613,29 @@ class AdminRepository {
                     rename($current_path,$new_path);
                 }
 
-            }
+                // if currently language file is being changed set in config to
+                $setting_detais = Settings::where('key','default_lang')->first();
 
-            $language_details->save();
+                if (!$setting_detais) { 
+
+                    throw new Exception( tr('something_error'), 101 );           
+                }
+
+                if($lang == $setting_detais->value) {
+
+                    $setting_detais->value = $request->folder_name;
+
+                    $fp = fopen(base_path() .'/config/new_config.php' , 'w');
+
+                    fwrite($fp, "<?php return array( 'locale' => '".$request->language_file."', 'fallback_locale' => '".$request->language_file."');?>");
+                    
+                    fclose($fp);
+                                    
+                    \Log::info("Key : ".config('app.locale'));
+
+                }
+
+            }
 
             if($language_details) {
                 
