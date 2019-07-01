@@ -154,7 +154,7 @@ class LanguageController extends Controller
      */
     public function languages_delete(Request $request) {
 
-        // try {
+        try {
             
             DB::beginTransaction();
 
@@ -175,44 +175,13 @@ class LanguageController extends Controller
 
                     $setting_details->value = 'en';
                     
-                    \Log::info("1");
-
                     if($setting_details->save()) {
                         
                         DB::commit();
                         
                         $dir = base_path('resources/lang/'.$folder_name);
                         
-                        \Log::info("2");
-
                         Helper::delete_language_files($folder_name, DEFAULT_TRUE, '');
-
-                        // if (file_exists($dir.'/auth.php')) {
-
-                        //     Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'auth.php');
-                        // }
-
-                        // if (file_exists($dir.'/messages.php')) {
-
-                        //     Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'messages.php');
-                        // }
-
-                        // if (file_exists($dir.'/passwords.php')) {
-
-                        //     Helper::delete_language_files($folder_name, DEFAULT_FALSE , 'passwords.php');
-                        // }
-
-                        // if (file_exists($dir.'/validation.php')) {
-
-                        //     Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'validation.php');
-                        // }
-
-                        // if (file_exists($dir.'/pagination.php')) {
-
-                        //     Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'pagination.php');
-                        // }
-
-                        // rmdir($dir); 
 
                         return back()->with('flash_success', tr('admin_language_delete_success'));                   
                     } 
@@ -223,14 +192,14 @@ class LanguageController extends Controller
             
             throw new Exception(tr('admin_language_delete_error'), 101);
                    
-        // } catch (Exception $e) {
+        } catch (Exception $e) {
             
-        //     DB::rollback();
+            DB::rollback();
 
-        //     $error = $e->getMessage();
+            $error = $e->getMessage();
 
-        //     return redirect()->route('admin.languages.index')->with('flash_error',$error);
-        // }
+            return redirect()->route('admin.languages.index')->with('flash_error',$error);
+        }
     }
 
     /**

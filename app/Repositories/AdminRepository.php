@@ -620,18 +620,24 @@ class AdminRepository {
 
                     throw new Exception( tr('something_error'), 101 );           
                 }
+                
+                $setting_detais->value = $request->language_file;
 
-                if($lang == $setting_detais->value) {
+                if( $setting_detais->save()) {
+                
+                    if($lang == $setting_detais->value) {
 
-                    $setting_detais->value = $request->folder_name;
+                        $setting_detais->value = $request->folder_name;
 
-                    $fp = fopen(base_path() .'/config/new_config.php' , 'w');
+                        $fp = fopen(base_path() .'/config/new_config.php' , 'w');
 
-                    fwrite($fp, "<?php return array( 'locale' => '".$request->language_file."', 'fallback_locale' => '".$request->language_file."');?>");
-                    
-                    fclose($fp);
-                                    
-                    \Log::info("Key : ".config('app.locale'));
+                        fwrite($fp, "<?php return array( 'locale' => '".$request->language_file."', 'fallback_locale' => '".$request->language_file."');?>");
+                        
+                        fclose($fp);
+                                        
+                        \Log::info("Key : ".config('app.locale'));
+
+                    }
 
                 }
 

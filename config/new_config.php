@@ -1,1 +1,1 @@
-<?php return array( 'locale' => 'hi', 'fallback_locale' => 'hi');?>
+<?php return array( 'locale' => '', 'fallback_locale' => '');?>
