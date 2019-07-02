@@ -2195,55 +2195,6 @@ class NewAdminController extends Controller {
     
     }
 
-
-    // /**
-    //  * @method tags_videos
-    //  *
-    //  * @uses List of videos displayed based on tags
-    //  *
-    //  * @created 
-    //  *
-    //  * @updated 
-    //  *
-    //  * @param
-    //  * 
-    //  * @return response of videos details
-    //  *
-    //  */
-    // public function tags_videos(Request $request) {
-
-    //     try {
-            
-    //         $tag_details = Tag::find($request->tag_id);
-
-    //         if (!$tag_details) {
-
-    //             throw new Exception(tr('admin_tag_not_found'), 101);
-    //         }
-
-    //         $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-    //                     ->videoResponse()
-    //                     ->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
-    //                     ->where('video_tape_tags.tag_id', $request->tag_id)
-    //                     ->orderBy('video_tapes.created_at' , 'desc')
-    //                     ->groupBy('video_tape_tags.video_tape_id')
-    //                     ->get();
-
-    //         return view('new_admin.tags.videos')
-    //                     ->withPage('tags')
-    //                     ->with('sub_page','tags')
-    //                     ->with('videos' , $videos)
-    //                     ->with('tag_details', $tag_details);
-
-    //     } catch (Exception $e) {
-
-    //         $error = $e->getMessage();
-
-    //         return back()->with('flash_error',$error);
-    //     }
-   
-    // }
-
     /**
      * @method coupons_index()
      *
