@@ -1075,7 +1075,6 @@
         }
 
         public static function delete_language_files($folder, $boolean, $filename = NULL) {
-            Log::info("3");
 
             if ($boolean) {
 

@@ -204,7 +204,6 @@ class version4AdminController extends Controller
 	        	throw new Exception(tr('redeem_not_found'), 101);
             }
 
-
             if($redeem_request_details->status == REDEEM_REQUEST_PAID ) {
 
 	        	throw new Exception(tr('redeem_request_status_mismatch'), 101);
@@ -225,7 +224,7 @@ class version4AdminController extends Controller
 
             $data = json_decode(json_encode($invoice_data));
 
-            return view('admin.payments.redeems-payout')->with('data' , $data)->withPage('redeems')->with('sub_page' , 'redeems');
+            return view('new_admin.payments.redeems-payout')->with('data' , $data)->withPage('redeems')->with('sub_page' , 'redeems');
            
 	        
         } catch(Exception $e) {
@@ -314,11 +313,31 @@ class version4AdminController extends Controller
 
                 $message = tr('action_success').' - '.tr('redeem_request_greater_than_your_redeem_amount');
 
-            } else {
+            } else if($request->paid_amount < $redeem_request_details->request_amount) {
 
-                $message = tr('redeems_request_admin_less_amount');
+                $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount ;
 
-                $redeem_amount = 0; // To restrict the redeeem paid amount update
+                $redeem_amount = $request->paid_amount;
+
+                if($redeem_request_details->paid_amount ==  $redeem_request_details->request_amount ) {
+
+                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
+                }
+
+                $redeem_request_details->save();
+                
+                if($redeem_request_details->paid_amount < $redeem_request_details->request_amount) {
+                    
+                    $redeem_details = Redeems::find($redeem_request_details->user_id);
+
+                    if($redeem_details) { 
+                    
+                        $redeem_details->remaining =  $redeem_request_details->request_amount - $request->paid_amount;
+
+                        $redeem_details->save();
+
+                    } 
+                }
 
             }
 

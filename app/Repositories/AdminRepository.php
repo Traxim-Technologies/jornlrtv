@@ -614,20 +614,20 @@ class AdminRepository {
                 }
 
                 // if currently language file is being changed set in config to
-                $setting_detais = Settings::where('key','default_lang')->first();
+                $setting_details = Settings::where('key','default_lang')->first();
 
-                if (!$setting_detais) { 
+                if (!$setting_details) { 
 
                     throw new Exception( tr('something_error'), 101 );           
                 }
                 
-                $setting_detais->value = $request->language_file;
+                $setting_details->value = $request->language_file;
 
-                if( $setting_detais->save()) {
+                if( $setting_details->save()) {
                 
-                    if($lang == $setting_detais->value) {
+                    if($lang == $setting_details->value) {
 
-                        $setting_detais->value = $request->folder_name;
+                        $setting_details->value = $request->folder_name;
 
                         $fp = fopen(base_path() .'/config/new_config.php' , 'w');
 

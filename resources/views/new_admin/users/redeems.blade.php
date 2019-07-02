@@ -98,6 +98,27 @@
 								      			
 								      		</form>
 
+
+								      		<form action="{{route('admin.users.payout.direct')}}" method="post">
+
+					                            <input type="hidden" name="redeem_request_id" value="{{ $redeem_request_details->id }}">
+
+					                            <label>Request amount</label>
+					                            <input type="text" value="{{ $redeem_request_details->request_amount }}" disabled="">
+					                            
+					                            <input type="text" name="paid_amount">
+
+					                            <input type="hidden" name="user_id" value="{{$redeem_request_details->user_id}}">
+
+					                            <?php $confirm_message = tr('redeem_pay_confirm'); ?>
+
+					                            <button type="submit" class="btn btn-success btn-lg" onclick=' return confirm("{{$confirm_message}}")'>
+					                                <i class="fa fa-credit-card"></i> 
+					                                {{tr('direct_payment')}}
+					                            </button>
+
+				                        	</form>
+
 								      	@else
 								      		<span>-</span>
 							      		@endif

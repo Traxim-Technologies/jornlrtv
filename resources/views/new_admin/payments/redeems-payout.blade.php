@@ -75,12 +75,9 @@
                             </tr>
                             <tr>
                                 <th>Tax</th>
-                                <td>formatted_amount(0.00)</td>
+                                <td>{{ formatted_amount(0.00) }}</td>
                             </tr>
-                            <tr>
-                                <th>Shipping:</th>
-                                <td>formatted_amount(0.00)</td>
-                            </tr>
+                        
                             <tr>
                                 <th>{{tr('total')}}:</th>
                                 <td>{{ formatted_amount($data->payout_amount) }}</td>
