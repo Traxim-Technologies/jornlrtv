@@ -1745,7 +1745,7 @@ class NewAdminController extends Controller {
 
             return view('new_admin.categories.view')
                         ->with('page', 'categories')
-                        ->with('sub_page', 'categories')
+                        ->with('sub_page', 'categories-view')
                         ->with('category_videos', $category_videos)
                         ->with('channel_lists', $channel_lists)
                         ->with('category_details', $category_details)
@@ -2074,7 +2074,7 @@ class NewAdminController extends Controller {
 
                 $message =  $request->tag_id ? tr('admin_tag_update_success') : tr('admin_tag_create_success'); 
 
-                return redirect(route('admin.tags'))->with('flash_success',$message);
+                return redirect()->route('admin.tags.index')->with('flash_success',$message);
             } 
 
             throw new Exception(tr('admin_tag_save_error'), 101);            
@@ -2196,53 +2196,53 @@ class NewAdminController extends Controller {
     }
 
 
-    /**
-     * @method tags_videos
-     *
-     * @uses List of videos displayed based on tags
-     *
-     * @created 
-     *
-     * @updated 
-     *
-     * @param
-     * 
-     * @return response of videos details
-     *
-     */
-    public function tags_videos(Request $request) {
+    // /**
+    //  * @method tags_videos
+    //  *
+    //  * @uses List of videos displayed based on tags
+    //  *
+    //  * @created 
+    //  *
+    //  * @updated 
+    //  *
+    //  * @param
+    //  * 
+    //  * @return response of videos details
+    //  *
+    //  */
+    // public function tags_videos(Request $request) {
 
-        try {
+    //     try {
             
-            $tag_details = Tag::find($request->tag_id);
+    //         $tag_details = Tag::find($request->tag_id);
 
-            if (!$tag_details) {
+    //         if (!$tag_details) {
 
-                throw new Exception(tr('admin_tag_not_found'), 101);
-            }
+    //             throw new Exception(tr('admin_tag_not_found'), 101);
+    //         }
 
-            $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->videoResponse()
-                        ->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
-                        ->where('video_tape_tags.tag_id', $request->tag_id)
-                        ->orderBy('video_tapes.created_at' , 'desc')
-                        ->groupBy('video_tape_tags.video_tape_id')
-                        ->get();
+    //         $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
+    //                     ->videoResponse()
+    //                     ->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
+    //                     ->where('video_tape_tags.tag_id', $request->tag_id)
+    //                     ->orderBy('video_tapes.created_at' , 'desc')
+    //                     ->groupBy('video_tape_tags.video_tape_id')
+    //                     ->get();
 
-            return view('new_admin.tags.videos')
-                        ->withPage('tags')
-                        ->with('sub_page','tags')
-                        ->with('videos' , $videos)
-                        ->with('tag_details', $tag_details);
+    //         return view('new_admin.tags.videos')
+    //                     ->withPage('tags')
+    //                     ->with('sub_page','tags')
+    //                     ->with('videos' , $videos)
+    //                     ->with('tag_details', $tag_details);
 
-        } catch (Exception $e) {
+    //     } catch (Exception $e) {
 
-            $error = $e->getMessage();
+    //         $error = $e->getMessage();
 
-            return back()->with('flash_error',$error);
-        }
+    //         return back()->with('flash_error',$error);
+    //     }
    
-    }
+    // }
 
     /**
      * @method coupons_index()
@@ -6156,6 +6156,8 @@ class NewAdminController extends Controller {
             $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->orderBy('video_tapes.created_at' , 'desc');
+            
+            $tag_details = '';
 
             if($request->has('tag_id')) {
 
@@ -6182,7 +6184,8 @@ class NewAdminController extends Controller {
             return view('new_admin.video_tapes.index')
                         ->with('page', 'video_tapes')
                         ->with('sub_page', 'video_tapes-view')
-                        ->with('video_tapes' , $video_tapes); 
+                        ->with('video_tapes' , $video_tapes)
+                        ->with('tag_details' , $tag_details); 
 
         } catch (Exception $e) {
             

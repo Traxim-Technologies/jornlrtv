@@ -2669,6 +2669,7 @@ class UserController extends Controller {
                 } 
             }
         }
+        
         return back()->with('flash_error', tr('admin_published_video_failure'));
     
     }

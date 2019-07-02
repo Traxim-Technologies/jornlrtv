@@ -296,7 +296,9 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/tags/status', 'NewAdminController@tags_status_change')->name('tags.status');
 
-    Route::get('/tags/videos', 'NewAdminController@tags_videos')->name('tags.videos');
+    // Route::get('/tags/videos', 'NewAdminController@tags_videos')->name('tags.videos');
+    
+    Route::get('/tags/videos', 'NewAdminController@video_tapes_index')->name('tags.videos');
 
     // New Admin tags methods ends
 

@@ -38,7 +38,7 @@
 
             <li class="treeview" id="sub-admins">
                 <a href="#">
-                    <i class="fa fa-user"></i> <span>{{tr('sub_admins')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-user-plus"></i> <span>{{tr('sub_admins')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">

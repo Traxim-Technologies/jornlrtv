@@ -10,7 +10,8 @@
 
 @section('breadcrumb')
      
-    <li><a href="{{ route('admin.tags') }}"><i class="fa fa-tag"></i>{{ tr('tags') }}</a></li>
+    <li><a href="{{ route('admin.tags.index') }}"><i class="fa fa-tag"></i>{{ tr('tags') }}</a></li>
+    
     <li class="active"><i class="fa fa-video-camera"></i> {{ tr('videos') }}</li>
 @endsection
 
