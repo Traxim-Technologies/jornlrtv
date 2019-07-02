@@ -398,7 +398,7 @@ class version4AdminController extends Controller
                 if($request->success == false) {
 
                     return redirect()->route('admin.users.redeems')->with('flash_error' , tr('redeem_paypal_cancelled'));
-
+                    
                 }
 
                 $redeem_request_details = RedeemRequest::find($request->redeem_request_id);
@@ -438,11 +438,29 @@ class version4AdminController extends Controller
 
 		                    $redeem_amount = $redeem_request_details->request_amount;
 
-		                } else {
+		                } else if($admin_pay_amount < $redeem_request_details->request_amount) {
 
-		                    $message = tr('redeems_request_admin_less_amount');
+                            $redeem_request_details->paid_amount = $request->paid_amount;
 
-		                    $redeem_amount = 0; // To restrict the redeeem paid amount update
+                            $redeem_amount = $request->paid_amount;
+
+                            $redeem_request_details->status = REDEEM_REQUEST_PAID;
+                          
+                            $redeem_request_details->save();
+                            
+                            if($redeem_request_details->paid_amount < $redeem_request_details->request_amount) {
+                                
+                                $redeem_details = Redeem::where('user_id', $redeem_request_details->user_id)->first();
+
+                                if($redeem_details) { 
+                                
+                                    $redeem_details->remaining += ($redeem_request_details->request_amount - $request->paid_amount);
+
+                                    $redeem_details->save();
+
+                                } 
+
+                            }
 
 		                }
 
@@ -462,6 +480,7 @@ class version4AdminController extends Controller
                     }
                 
                 } else {
+
                     return redirect()->route('admin.users.redeems')->with('flash_error' , tr('redeem_not_found'));
 
                 }
