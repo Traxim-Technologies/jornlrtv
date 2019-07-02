@@ -142,7 +142,7 @@
 
                             <input type="hidden" name="paid_amount" value="{{$data->payout_amount}}">
 
-                            <input type="hidden" name="user_id" value="{{$data->user_id}}">
+                            <input type="hidden" name="user_id" value="{{ $data->user_id }}">
 
                             <?php $confirm_message = tr('redeem_pay_confirm'); ?>
 
@@ -150,21 +150,19 @@
                                 <i class="fa fa-credit-card"></i> 
                                 {{tr('direct_payment')}}
                             </button>
+                       
                         </form>
 
                     @else
                         <span>-</span>
                     @endif
 
-                    
-
                 </div>
+
             </div>
             <!-- /.row -->
 
         </section>
-
-        
 
     </div>
 

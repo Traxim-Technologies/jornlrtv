@@ -6,9 +6,9 @@
 
 {{tr('videos')}}
 
-	@if(isset($channel)) - <span class="text-green"> {{$channel->name}} </span> @endif 
+	@if(isset($channel)) - <a href="{{ route('admin.channels.view',['channel_id' => $channel->id]) }}"> <span class="text-green"> {{$channel->name}} </span></a> @endif 
 
-	@if(!empty($tag_details)) - <span class="text-green"> {{ $tag_details->name }} </span> @endif 
+	@if(!empty($tag_details)) - <a href="{{ route('admin.tags.index') }}"> <span class="text-green"> {{ $tag_details->name }} </span> </a> @endif 
 
 @endsection
 
@@ -55,6 +55,7 @@
 					                  	</li>
 					                </ul>
 								</li>
+								
 							</ul>
 
 						@endif

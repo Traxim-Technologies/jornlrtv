@@ -2056,14 +2056,19 @@ class UserApiController extends Controller {
                     }
 
                 } else {
+                   
                     $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(148) ,'error_code' => 148];
                 }
 
             } else {
+               
                 $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(151) , 'error_code' => 151];
             }
+
         } else {
+            
             $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(147) , 'error_code' => 147];
+        
         }
 
         return response()->json($response_array , 200);

@@ -179,7 +179,7 @@ class version4AdminController extends Controller
      */
 
     public function redeems_payout_invoice(Request $request) {
-
+        
     	try {
 
         	$validator = Validator::make($request->all() , 
@@ -289,11 +289,11 @@ class version4AdminController extends Controller
 
             $message = tr('action_success');
 
-            $redeem_amount = $request->paid_amount ?: 0;
+            $redeem_amount = $admin_pay_amount = $request->paid_amount ?: 0;
 
             // Check the requested and admin paid amount is equal 
 
-            if($request->paid_amount == $redeem_request_details->request_amount) {
+            if($admin_pay_amount == $redeem_request_details->request_amount) {
 
                 $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount;
 
@@ -301,7 +301,7 @@ class version4AdminController extends Controller
 
                 $redeem_request_details->save();
 
-            } else if($request->paid_amount > $redeem_request_details->request_amount) {
+            } else if($admin_pay_amount > $redeem_request_details->request_amount) {
 
                 $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $redeem_request_details->request_amount;
 
@@ -313,30 +313,28 @@ class version4AdminController extends Controller
 
                 $message = tr('action_success').' - '.tr('redeem_request_greater_than_your_redeem_amount');
 
-            } else if($request->paid_amount < $redeem_request_details->request_amount) {
+            } else if($admin_pay_amount < $redeem_request_details->request_amount) {
 
-                $redeem_request_details->paid_amount = $redeem_request_details->paid_amount + $request->paid_amount ;
+                $redeem_request_details->paid_amount = $request->paid_amount;
 
                 $redeem_amount = $request->paid_amount;
 
-                if($redeem_request_details->paid_amount ==  $redeem_request_details->request_amount ) {
-
-                    $redeem_request_details->status = REDEEM_REQUEST_PAID;
-                }
-
+                $redeem_request_details->status = REDEEM_REQUEST_PAID;
+              
                 $redeem_request_details->save();
                 
                 if($redeem_request_details->paid_amount < $redeem_request_details->request_amount) {
                     
-                    $redeem_details = Redeems::find($redeem_request_details->user_id);
+                    $redeem_details = Redeem::where('user_id', $redeem_request_details->user_id)->first();
 
                     if($redeem_details) { 
                     
-                        $redeem_details->remaining =  $redeem_request_details->request_amount - $request->paid_amount;
+                        $redeem_details->remaining += ($redeem_request_details->request_amount - $request->paid_amount);
 
                         $redeem_details->save();
 
                     } 
+
                 }
 
             }

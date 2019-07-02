@@ -213,14 +213,24 @@ thead>tr>th {
 
                 <!-- new ui @ranjitha -->
                 <div class="new-history">
+                    
                     <h4 class="settings">redeems</h4>
+                    
                     <div class="row">
+                        
                         <div class="col-sm-12 col-md-4 col-lg-4">
+                            
                             <div class="new-redeem-sec">
+                                
                                 <div class="circle">
-                                    <div class="circle__content"><b>{{Setting::get('currency')}} {{Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining : "0.00"}}</b></div>
+                                    
+                                    <div class="circle__content">
+                                        <b>{{ Setting::get('currency') }} {{ Auth::user()->userRedeem ? Auth::user()->userRedeem->remaining : "0.00" }}</b>
+                                    </div>
+                                
                                 </div>
-                                <p class="redeem-content">{{tr('redeem_content')}}</p>
+                                
+                                <p class="redeem-content">{{ tr('redeem_content') }}</p>
 
                                 <?php 
 
@@ -230,6 +240,7 @@ thead>tr>th {
                                 ?>
                               
                                 @if(count(Auth::user()->userRedeem) > 0 && $min_status)
+                                
                                 <div class="text-right">
                                     <a href="{{route('user.redeems.send.request')}}" class="btn btn-info">{{tr('send_redeem')}}</a>
                                 </div>
@@ -241,10 +252,14 @@ thead>tr>th {
                                 @endif
 
                             </div>
+                       
                         </div>
+                       
                         <div class="col-sm-12 col-md-8 col-lg-8">
+                       
                             <div class="new-redeem-sec">
                                 <!-- redeems -->
+                       
                                 <div class="timeline">
 
                                     @if(count($redeem_requests = Auth::user()->userRedeemRequests) > 0)
@@ -281,8 +296,11 @@ thead>tr>th {
                                                     @endif
 
                                                 </li>
+                                   
                                             </ul>
+                                   
                                         </div>
+                                   
                                     </div>
                                     @endforeach
 

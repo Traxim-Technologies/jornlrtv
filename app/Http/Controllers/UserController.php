@@ -1791,7 +1791,7 @@ class UserController extends Controller {
      */
 
     public function redeems(Request $request) {
-
+        
         return view('user.redeems.index');
 
     }

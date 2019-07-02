@@ -313,7 +313,7 @@
                 </ul>
             </li>
 
-            @if(Setting::get('admin_language_control') == FALSE)
+            @if(Setting::get('admin_language_control') == YES)
             <li id="languages">
                 <a href="{{route('admin.languages.index')}}">
                     <i class="fa fa-globe"></i> <span>{{tr('languages')}}</span>

@@ -4215,7 +4215,6 @@ class NewAdminController extends Controller {
 
             $video_details = VideoTape::find($request->id);
             
-
             if(!$video_details) {
 
                 throw new Exception(tr('admin_banner_video_not_found'), 101);
@@ -5091,7 +5090,7 @@ class NewAdminController extends Controller {
      *
      * @updated Anjana H
      *
-     * @param integer $id - Optional ( Redeem request id)
+     * @param integer $id - optional ( Redeem request id)
      *
      * @return view page 
      */
@@ -5155,14 +5154,14 @@ class NewAdminController extends Controller {
         $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
         
         return view('new_admin.payments.revenues')
-                        ->withPage('payments')
-                        ->with('sub_page' , 'payments-dashboard')
-                        ->with('total' , $total)
-                        ->with('ppv_total' , $ppv_total)
-                        ->with('ppv_admin_amount' , $ppv_admin_amount)
-                        ->with('ppv_user_amount' , $ppv_user_amount)
-                        ->with('subscription_total' , $subscription_total)
-                        ->with('total_subscribers' , $total_subscribers);
+                    ->withPage('payments')
+                    ->with('sub_page' , 'payments-dashboard')
+                    ->with('total' , $total)
+                    ->with('ppv_total' , $ppv_total)
+                    ->with('ppv_admin_amount' , $ppv_admin_amount)
+                    ->with('ppv_user_amount' , $ppv_user_amount)
+                    ->with('subscription_total' , $subscription_total)
+                    ->with('total_subscribers' , $total_subscribers);
     
     }
 
