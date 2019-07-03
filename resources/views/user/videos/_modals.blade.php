@@ -114,34 +114,50 @@
 <!-- EMBED LINK start -->
 
 <div class="modal fade modal-top" id="copy-embed" role="dialog">
-   <div class="modal-dialog modal-lg">
-      <div class="modal-content content-modal">
-         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 modal-bg-img zero-padding hidden-xs" style="background-image: url({{$video->default_image ? $video->default_image : asset('images/landing-9.png')}});">
-               <h4 class="video-title1">{{$video->title}}</h4>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 right-space">
-               <div class="copy-embed">
-                  <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                     <h4 class="modal-title hidden-xs">{{tr('embed_video')}}</h4>
-                     <h4 class="modal-title visible-xs">{{$video->title}}</h4>
-                  </div>
-                  <div class="modal-body">
-                     <form onsubmit="return false;">
-                        <div class="form-group">
-                           <textarea class="form-control" rows="5" id="embed_link_url" readonly>{{$embed_link}}</textarea>
-                           <p class="underline1"></p>
+    
+    <div class="modal-dialog modal-lg">
+    
+        <div class="modal-content content-modal">
+    
+            <div class="row">
+    
+                <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7 modal-bg-img zero-padding hidden-xs" style="background-image: url({{$video->default_image ? $video->default_image : asset('images/landing-9.png')}});">
+                   <h4 class="video-title1">{{$video->title}}</h4>
+                
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 right-space">
+                
+                    <div class="copy-embed">
+                        
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title hidden-xs">{{tr('embed_video')}}</h4>
+                            <h4 class="modal-title visible-xs">{{$video->title}}</h4>
                         </div>
-                     </form>
-                  </div>
-                  <div class="modal-footer">
-                     <button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" >{{tr('copy')}}</button>
-                  </div>
-               </div>
+                       
+                        <div class="modal-body">
+                            <form onsubmit="return false;">
+                                <div class="form-group">
+                                   <textarea class="form-control" rows="5" id="embed_link_url" readonly>{{$embed_link}}</textarea>
+                                   <p class="underline1"></p>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            
+                            <button class="btn btn-danger pull-right " onclick="copyTextToClipboard();" >{{tr('copy')}}</button>
+                        </div>
+                    
+                    </div>
+                
+                </div>
+            
             </div>
-         </div>
-      </div>
+   
+        </div>
+   
    </div>
 
 </div>
@@ -234,12 +250,15 @@
                                 <div class="" style="display: none;">
 
                                     <label for="playlist_privacy">Privacy</label>
+                                    
                                     <select id="playlist_privacy" name="playlist_privacy" class="form-control">
-                                       <option value="PUBLIC">PUBLIC</option>
-                                       <option value="PRIVETE">PRIVETE</option>
-                                       <option value="UNLISTED">UNLISTED</option>
+                                        <option value="PUBLIC">PUBLIC</option>
+                                        <option value="PRIVETE">PRIVETE</option>
+                                        <option value="UNLISTED">UNLISTED</option>
                                     </select>
+                                
                                 </div>
+                            
                             </div>
 
                             <button class="btn btn-primary" onclick='playlist_save_video_add("{{ $video->video_tape_id }}")'>{{tr('create')}} </button>

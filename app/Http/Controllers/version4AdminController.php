@@ -351,7 +351,6 @@ class version4AdminController extends Controller
             DB::commit();
 
             return redirect()->route('admin.users.redeems')->with('flash_success' , $message);
-
                
         } catch (Exception $e) {
 

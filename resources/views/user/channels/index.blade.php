@@ -407,20 +407,22 @@
                                                         <!-- <img src="{{$video->video_image}}"> -->
                                                         <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video->video_image}}" class="slide-img1 placeholder" />
                                                     </a> 
+
                                                     @if($video->ppv_amount > 0) 
 
                                                         @if(!$video->ppv_status)
                                                             <div class="video_amount">
-
                                                                 {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
 
                                                             </div>
                                                         @endif 
 
                                                     @endif
+
                                                     <div class="video_duration">
                                                         {{$video->duration}}
                                                     </div>
+
                                                 </div>
                                                 <!--history-image-->
 
@@ -691,61 +693,69 @@
                                     <div class="content-head">
 
                                         <div>
-                                            <h4 style="color: #000;">{{tr('playlists')}}&nbsp;&nbsp;
+                                           
+                                            <h4 style="color: #000;">
+                                            {{tr('playlists')}}&nbsp;&nbsp;
                                             @if(Auth::check())
+                                                
 
                                             @endif
                                             </h4>
+                                        
                                         </div>
 
                                     </div>
 
-                                    @if(count($channel_playlists) > 0)
-
                                     <div class="recommend-list row">
 
-                                        @foreach($channel_playlists as $channel_playlist_details)
+                                        <button class="share-new global_playlist_id pull-right btn btn-info mb-15" style="color: #fff" id="{{ $channel->id }}" ><i class="material-icons">playlist_add</i>{{ tr('add_playlist') }}</button>
+                                        
+                                        @if(count($channel_playlists) > 0)
 
-                                        <div class="slide-box recom-box">
+                                            @foreach($channel_playlists as $channel_playlist_details)
 
-                                            <div class="slide-image">
+                                            <div class="slide-box recom-box">
 
-                                                <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">  
+                                                <div class="slide-image">
 
-                                                    <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$channel_playlist_details->picture}}" class="slide-img1 placeholder" />
-                                                </a> @if(Auth::check())
+                                                    <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">  
 
-                                                <div class="video_amount">
+                                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$channel_playlist_details->picture}}" class="slide-img1 placeholder" />
+                                                    </a> 
 
-                                                    <a href="{{route('user.playlists.delete', ['playlist_id' => $channel_playlist_details->playlist_id])}}" onclick="return confirm(&quot;{{ substr($channel_playlist_details->title, 0 , 15)}} - {{tr('user_playlist_delete_confirm') }}&quot;)" class="playlist-delete"><i class="fa fa-trash"></i></a>
+                                                    @if(Auth::check())
 
-                                                </div>
+                                                    <div class="video_amount">
 
-                                                @endif
-
-                                                <div class="video_duration">
-                                                    {{$channel_playlist_details->total_videos}} {{tr('videos')}}
-                                                </div>
-
-                                            </div>
-
-                                            <div class="video-details recom-details">
-
-                                                <div class="video-head">
-                                                    <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">{{$channel_playlist_details->title}}</a>
-                                                </div>
-
-                                                <span class="video_views">
-                                                    <div>
+                                                        <a href="{{route('user.playlists.delete', ['playlist_id' => $channel_playlist_details->playlist_id])}}" onclick="return confirm(&quot;{{ substr($channel_playlist_details->title, 0 , 15)}} - {{tr('user_playlist_delete_confirm') }}&quot;)" class="playlist-delete"><i class="fa fa-trash"></i></a>
 
                                                     </div>
-                                                    {{$channel_playlist_details->created_at}}
-                                                </span>
+
+                                                    @endif
+
+                                                    <div class="video_duration">
+                                                        {{$channel_playlist_details->total_videos}} {{tr('videos')}}
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="video-details recom-details">
+
+                                                    <div class="video-head">
+                                                        <a href="{{route('user.playlists.view', ['playlist_id' => $channel_playlist_details->playlist_id])}}">{{$channel_playlist_details->title}}</a>
+                                                    </div>
+
+                                                    <span class="video_views">
+                                                        <div>
+
+                                                        </div>
+                                                        {{$channel_playlist_details->created_at}}
+                                                    </span>
+
+                                                </div>
+                                                <!--end of video-details-->
 
                                             </div>
-                                            <!--end of video-details-->
-
-                                        </div>
 
                                         @endforeach 
 
@@ -753,13 +763,20 @@
 
                                             <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> 
 
+
                                         @endif
+
+                                        <div class="slide-box recom-box">
+
+                                        </div>
 
                                     </div>
 
                                 </div>
 
                             </div>
+                        
+                        </div>
 
                     </li>
 
@@ -949,6 +966,150 @@
     </div>
 
 </div>
+
+<!-- PLAYLIST POPUPSTART -->
+
+<div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$channel->id}}" role="dialog">
+   
+   <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+        
+            <!-- if user logged in let create, update playlist -->
+             
+            @if(Auth::check())
+             
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    <h4 class="modal-title">{{tr('save_to')}}</h4>
+
+                </div>
+
+              <!--   <div class="modal-body">
+
+                    @if(!empty($playlists))
+
+                    <div class="more-content" id="user-playlists-form">
+                                              
+                        @foreach($playlists as $playlist_details)  
+
+                            <div class="report_list">
+
+                               <label class="playlist-container">{{ $playlist_details->title}}
+                                  
+                                  <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
+                                                             
+                                  <span class="playlist-checkmark"></span>
+
+                               </label>
+
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                        @endforeach
+
+                        <div id="user_playlists"></div>
+                         
+                        <div class="clearfix"></div>
+
+                    </div>
+                    
+                    @else
+     
+                    <div id="user-playlists-form">
+     
+                        <div id="user_playlists"></div>
+                         
+                        <div class="clearfix"></div>
+
+                    </div>
+                    
+                    @endif  
+             
+                </div>
+ -->
+                <div class="modal-footer">
+                    
+                    <div class="more-content">
+                    
+                        <div onclick="$('#create_playlist_form').toggle()">
+
+                            <label><i class="fa fa-plus"></i> {{tr('create_playlist')}}</label>
+
+                        </div>
+                       
+                        <div class="" id="create_playlist_form" style="display: none">
+                        
+                            <div class="form-group">
+                                
+                                <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}">
+                                    
+                                    <label for="video" class="control-label">{{tr('videos')}}</label>
+
+                                    <div> 
+
+                                        <select id="video_tapes_id" name="video_tapes_id[]" class="form-control select2" data-placeholder="{{tr('select_video_tapes')}}" multiple style="width: 100% !important">
+                                        
+                                            @if(count($videos) > 0)
+
+                                                @foreach($videos as $video_tapes_details)
+                                                        
+                                                    <option value="{{$video_tapes_details->video_tape_id}}" > {{ $video_tapes_details->title }}</option>
+
+                                                @endforeach
+                                           
+                                            @endif
+    
+                                        </select>
+                                
+                                    </div>
+
+                                <div class="" style="display: none;">
+
+                                    <label for="playlist_privacy">Privacy</label>
+                                    <select id="playlist_privacy" name="playlist_privacy" class="form-control">
+                                       <option value="PUBLIC">PUBLIC</option>
+                                       <option value="PRIVETE">PRIVETE</option>
+                                       <option value="UNLISTED">UNLISTED</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick='playlist_save("{{ $channel->id }}")'>{{ tr('create') }} 
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+             <!-- if user not logged in ask for login -->
+
+            @else
+
+                <div class="menu4 top nav-space">
+                      
+                    <p>{{tr('signid_for_playlist')}}</p>
+
+                    <a href="{{route('user.login.form')}}" class="btn btn-sm btn-primary">{{tr('login')}}</a>
+
+                </div> 
+
+            @endif 
+
+        </div>
+        <!-- modal content ends -->
+
+   </div>
+
+</div>
+
+<!-- PLAYLIST POPUPEND -->
 
 @endsection 
 
@@ -1175,6 +1336,84 @@
         });
 
     }
+
+
+
+    $(document).on('ready', function() {
+
+      $("#copy-embed1").on( "click", function() {
+           $('#popup1').modal('hide'); 
+       });
+
+      $('.global_playlist_id').on('click', function(event){
+
+         event.preventDefault();
+
+         var channel_id = $(this).attr('id');
+
+         $('#global_playlist_id_'+channel_id).modal('show'); 
+
+      });
+
+   });
+
+    
+    function playlist_save(channel_id) {
+      
+        var title = $("#playlist_title" ).val();
+
+        var privacy = $("#playlist_privacy" ).val();
+
+        var video_tapes_id = $("#video_tapes_id" ).val();
+
+        if(title == '') { 
+
+            alert("Title for playlist required");
+
+        } else { 
+
+        // alert(channel_id);
+        $.ajax({
+            
+            // url : "{{route('user.playlist.save.video_add')}}",
+            url : "{{ route('user.playlists.save') }}",
+
+            data : {title : title , channel_id : channel_id, privacy : privacy, video_tapes_id : video_tapes_id },
+
+            type: "post",
+            
+            success : function(data) {
+              
+                if (data.success) {
+
+                    $('#playlist_title').removeAttr('value');  
+                   
+                    $('#video_tapes_id').removeAttr('value');  
+
+                    $('#create_playlist_form').hide();
+
+                    alert(data.message);
+
+                 //    var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></label>';
+
+                 //    $('#user_playlists').append(labal);
+
+                } else {
+                    
+                    alert(data.error_messages);
+                
+                }
+
+            },
+        
+            error : function(data) {
+            },
+
+        })
+
+      }
+    
+    }  
 </script>
 
 @endsection

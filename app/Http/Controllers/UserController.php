@@ -3440,73 +3440,50 @@ class UserController extends Controller {
 
         try {
 
-            DB::beginTransaction();
-
-            $validator = Validator::make($request->all(),[
-                'title' => 'required|max:255',
-                'playlist_id' => 'exists:playlists,id,user_id,'.$request->id,
-            ],
-            [
-                'exists' => Helper::get_error_message(175)
+            $request->request->add([
+                
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token,
+ 
             ]);
 
-            if($validator->fails()) {
+            $response = $this->UserAPI->playlists_save($request)->getData();
+           
+            if($response->success) {
 
-                $error_messages = implode(',',$validator->messages()->all());
+                $response->playlist_id = $response->data->playlist_id;
 
-                throw new Exception($error_messages, 101);
-                
-            }
+                $response->title = $response->data->title;
+                               
+                foreach ($request->video_tapes_id as $video_tape_id) {
 
-            $playlist_details = Playlist::where('id', $request->playlist_id)->first();
+                    $playlist_video_details = new PlaylistVideo;
 
-            $message = Helper::get_message(129);
+                    $playlist_video_details->playlist_id = $response->playlist_id;
 
-            if(!$playlist_details) {
+                    $playlist_video_details->video_tape_id = $video_tape_id;
 
-                $message = Helper::get_message(128);
-
-                $playlist_details = new Playlist;
-    
-                $playlist_details->status = APPROVED;
-
-                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PRIVATE;
-
-                $playlist_details->playlist_type = PLAYLIST_TYPE_USER;
-
-            }
-
-            $playlist_details->user_id = $request->id;
-
-            $playlist_details->title = $playlist_details->description = $request->title ?: "";
-
-            if($playlist_details->save()) {
-
-                DB::commit();
-
-                $playlist_details = $playlist_details->where('id', $playlist_details->id)->CommonResponse()->first();
-
-                $response_array = ['success' => true, 'message' => $message, 'data' => $playlist_details];
-
-                return response()->json($response_array, 200);
-
-            } else {
-
-                throw new Exception(Helper::get_error_message(179), 179);
+                    $playlist_video_details->status = DEFAULT_TRUE;
+                    
+                    $playlist_video_details->save();                    
+             
+                }
+            
+                return response()->json($response);   
 
             }
+
+            throw new Exception($response->error_messages, $response->error_code);
 
         } catch(Exception $e) {
 
-            DB::rollback();
+            $error = $e->getMessage();
 
-            $error_messages = $e->getMessage();
+            $error_code = $e->getCode();
 
-            $code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $code];
-
-            return response()->json($response_array);
+            $response = ['success' => false, 'error_messages' => $error, 'error_code' => $error_code];
+       
+            return response()->json($response);
 
         }
     
@@ -3604,7 +3581,7 @@ class UserController extends Controller {
      */
 
     public function playlists_video_status(Request $request) {
-
+        dd($request->all());
         try {
 
             DB::beginTransaction();

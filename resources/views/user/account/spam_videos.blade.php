@@ -1,4 +1,4 @@
-@extends('layouts.user')
+    @extends('layouts.user')
 
 @section('content')
 
@@ -53,8 +53,9 @@
                                                 {{$spamvideo->created_at}}
                                             </span>
                                         </div> 
+                                        
                                         <div class="cross-mark1">
-                                            <a onclick="return confirm(&quot;{{ substr($spamvideo->channel_name, 0 , 15)}}.. {{tr('user_spamvideo_delete_confirm') }}&quot;)"  href="{{route('user.remove.report_video',$spamvideo->video_tape_id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            <a onclick="return confirm(&quot;{{ substr($spamvideo->title, 0 , 15)}}.. {{tr('user_spamvideo_delete_confirm') }}&quot;)"  href="{{route('user.remove.report_video',$spamvideo->video_tape_id)}}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                         </div><!--end of cross-mark-->                       
                                     </div> <!--end of history-head--> 
 

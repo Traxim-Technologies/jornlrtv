@@ -68,6 +68,7 @@
                     <p class="lead">{{tr('invoice')}}</p>
 
                     <div class="table-responsive">
+                       
                         <table class="table">
                             <tr>
                                 <th style="width:50%">Subtotal:</th>
@@ -83,6 +84,7 @@
                                 <td>{{ formatted_amount($data->payout_amount) }}</td>
                             </tr>
                         </table>
+
                     </div>
                 
                 </div>
@@ -111,7 +113,7 @@
                             <input name = "currency_code" value = "USD" type = "hidden">
                             <input name = "lc" value = "GB" type = "hidden">
 
-                            <input name = "return" value = "{{route('admin.users.payout.response' , ['user_id' => $data->user_id , 'redeem_request_id' => $data->redeem_request_id , 'paid_amount' => $data->payout_amount, 'success' => true])}}" type = "hidden">
+                            <input name = "return" value = "{{ route('admin.users.payout.response' , ['user_id' => $data->user_id , 'redeem_request_id' => $data->redeem_request_id , 'paid_amount' => $data->payout_amount, 'success' => true]) }}" type = "hidden">
 
                             <input name = "cbt" value = "Return to My Site" type = "hidden">
 

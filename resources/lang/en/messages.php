@@ -1523,7 +1523,7 @@ return array(
 	'ios_payment_subscription_status' => 'Do you want Disable the payment subscription',
 	'ios_settings' => 'iOS Settings',
 
-	'user_video_upload_success' => 'Video uploaded successfully and ready for play',
+	'user_video_upload_success' => 'Video updated successfully and ready for play',
 	'user_video_upload_waiting_for_admin_approval' => 'The video is being reviewed by the admin. If approved it will be added to your channel',
 
 
@@ -2081,5 +2081,6 @@ return array(
 	'user_is_verified' => 'Verified',
 	'check_redeems' => 'CHECK REDEEMS',
 	'video_link' => 'Video Link',
+	'redeem_paypal_cancelled' => 'Redeem by PayPal cancelled',
 
 );
