@@ -3453,13 +3453,15 @@ class UserController extends Controller {
 
                 $response->playlist_id = $response->data->playlist_id;
 
+                $playlist_details = $response->data;
+
                 $response->title = $response->data->title;
                                
                 foreach ($request->video_tapes_id as $video_tape_id) {
 
                     $playlist_video_details = new PlaylistVideo;
 
-                    $playlist_video_details->playlist_id = $response->playlist_id;
+                    $playlist_video_details->playlist_id = $playlist_details->playlist_id;
 
                     $playlist_video_details->video_tape_id = $video_tape_id;
 
@@ -3468,7 +3470,20 @@ class UserController extends Controller {
                     $playlist_video_details->save();                    
              
                 }
-            
+               
+                $response->data->total_videos =PlaylistVideo::where('playlist_id',$playlist_details->playlist_id)->count();
+
+                $first_video_from_playlist= PlaylistVideo::where('playlist_videos.playlist_id', $playlist_details->playlist_id)
+                                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'playlist_videos.video_tape_id')
+                                            ->select('video_tapes.id as video_tape_id', 'video_tapes.default_image as picture')
+                                            ->first();
+
+                $response->data->picture = $first_video_from_playlist ? $first_video_from_playlist->picture : asset('images/playlist.png');
+
+                $new_playlist_content = view('user.channels.playlist_append')->with('channel_playlist_details', $response->data)->render();
+
+                $response->new_playlist_content = $new_playlist_content;
+
                 return response()->json($response);   
 
             }

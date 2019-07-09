@@ -7457,8 +7457,6 @@ class UserApiController extends Controller {
                 'exists' => Helper::get_error_message(175)
             ]);
 
-            // Log::info("channel playlist Request-api".print_r($request->all(), true));
-
             if($validator->fails()) {
 
                 $error_messages = implode(',',$validator->messages()->all());
@@ -7498,8 +7496,6 @@ class UserApiController extends Controller {
                 $playlist_details = $playlist_details->where('id', $playlist_details->id)->CommonResponse()->first();
 
                 $response_array = ['success' => true, 'message' => $message, 'data' => $playlist_details];
-
-                // Log::info("channel playlist created-api".print_r($playlist_details));
 
                 return response()->json($response_array, 200);
 
@@ -7541,10 +7537,9 @@ class UserApiController extends Controller {
      */
 
     public function playlists_video_status(Request $request) {
-        // dd( $request->all());
+
         try {
             
-            Log::info("playlists_video add 3");
 
             DB::beginTransaction();
 
@@ -7572,8 +7567,6 @@ class UserApiController extends Controller {
                     
                 }
                 
-                Log::info("playlists_video add 4");
-
                 // check the video added in spams (For Viewer)
 
                 if(!$request->channel_id && $request->id) {
@@ -7595,8 +7588,6 @@ class UserApiController extends Controller {
                                 ->where('user_id', $request->id)
                                 ->delete();
                 
-                Log::info("playlists_video add 4");
-
                 $total_playlists_update = 0;
 
                 foreach ($playlist_ids as $key => $playlist_id) {
@@ -7618,8 +7609,6 @@ class UserApiController extends Controller {
      
                         }
                         
-                        Log::info("playlists_video add 5");
-
                         $playlist_video_details->user_id = $request->id;
 
                         $playlist_video_details->playlist_id = $playlist_id;

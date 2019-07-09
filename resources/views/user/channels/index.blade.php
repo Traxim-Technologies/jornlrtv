@@ -757,6 +757,9 @@
 
                                             </div>
 
+                                            <div id="new_playlist">
+                                            </div>
+
                                         @endforeach 
 
                                         @else
@@ -1387,16 +1390,14 @@
                 if (data.success) {
 
                     $('#playlist_title').removeAttr('value');  
-                   
-                    $('#video_tapes_id').removeAttr('value');  
+                                    
+                    $('#video_tapes_id').val(null).trigger('change');
+                    
+                    $('#global_playlist_id_'+channel_id).modal('hide'); 
 
-                    $('#create_playlist_form').hide();
+                    $('#new_playlist').append(data.new_playlist_content);
 
                     alert(data.message);
-
-                 //    var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></label>';
-
-                 //    $('#user_playlists').append(labal);
 
                 } else {
                     
