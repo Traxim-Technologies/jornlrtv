@@ -46,7 +46,7 @@
                 
                 <div class="col-sm-3 border-right">
                     <div class="description-block">
-                        <h5 class="description-header"><a  target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_channel_subscribers_count }}</a></h5>
+                        <h5 class="description-header"><a target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id] ) }}">{{ $channel_details->get_channel_subscribers_count }}</a></h5>
                         <span class="description-text">{{ tr('subscribers') }}</span>
                     </div>
                     <!-- /.description-block -->
@@ -70,8 +70,8 @@
                     </div>
                     <!-- /.description-block -->
                 </div>
-                <!-- /.col -->
 
+                <!-- /.col -->
             </div>
             <!-- /.row -->
         </div>

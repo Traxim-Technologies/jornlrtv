@@ -694,13 +694,16 @@
 
                                         <div>
                                            
-                                            <h4 style="color: #000;">
+                                            <h4 style="color: #000; display: inline;">
                                             {{tr('playlists')}}&nbsp;&nbsp;
                                             @if(Auth::check())
                                                 
 
                                             @endif
                                             </h4>
+
+                                            <button class="share-new global_playlist_id pull-right btn btn-info" style="color: #fff" id="{{ $channel->id }}"><i class="material-icons">playlist_add</i>{{ tr('playlist') }}
+                                            </button>
                                         
                                         </div>
 
@@ -708,8 +711,6 @@
 
                                     <div class="recommend-list row">
 
-                                        <button class="share-new global_playlist_id pull-right btn btn-info mb-15" style="color: #fff" id="{{ $channel->id }}" ><i class="material-icons">playlist_add</i>{{ tr('add_playlist') }}</button>
-                                        
                                         @if(count($channel_playlists) > 0)
 
                                             @foreach($channel_playlists as $channel_playlist_details)
@@ -758,20 +759,20 @@
                                             </div>
 
                                             <div id="new_playlist">
-                                            </div>
 
-                                        @endforeach 
+                                            </div>
+                                           
+                                            @endforeach 
 
                                         @else
 
-                                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> 
+                                            <div id="new_playlist">
 
+                                            </div>
+
+                                            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin" id="no_playlist" > 
 
                                         @endif
-
-                                        <div class="slide-box recom-box">
-
-                                        </div>
 
                                     </div>
 
@@ -1049,13 +1050,13 @@
                         
                             <div class="form-group">
                                 
-                                <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}">
+                                <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}" required>
                                     
                                     <label for="video" class="control-label">{{tr('videos')}}</label>
 
                                     <div> 
 
-                                        <select id="video_tapes_id" name="video_tapes_id[]" class="form-control select2" data-placeholder="{{tr('select_video_tapes')}}" multiple style="width: 100% !important">
+                                        <select id="video_tapes_id" name="video_tapes_id[]" class="form-control select2" data-placeholder="{{tr('select_video_tapes')}}" multiple style="width: 100% !important" required>
                                         
                                             @if(count($videos) > 0)
 
@@ -1375,44 +1376,43 @@
 
         } else { 
 
-        // alert(channel_id);
-        $.ajax({
-            
-            // url : "{{route('user.playlist.save.video_add')}}",
-            url : "{{ route('user.playlists.save') }}",
-
-            data : {title : title , channel_id : channel_id, privacy : privacy, video_tapes_id : video_tapes_id },
-
-            type: "post",
-            
-            success : function(data) {
-              
-                if (data.success) {
-
-                    $('#playlist_title').removeAttr('value');  
-                                    
-                    $('#video_tapes_id').val(null).trigger('change');
-                    
-                    $('#global_playlist_id_'+channel_id).modal('hide'); 
-
-                    $('#new_playlist').append(data.new_playlist_content);
-
-                    alert(data.message);
-
-                } else {
-                    
-                    alert(data.error_messages);
+            $.ajax({
                 
-                }
+                // url : "{{route('user.playlist.save.video_add')}}",
+                url : "{{ route('user.playlists.save') }}",
 
-            },
-        
-            error : function(data) {
-            },
+                data : {title : title , channel_id : channel_id, privacy : privacy, video_tapes_id : video_tapes_id },
 
-        })
+                type: "post",
+                
+                success : function(data) {
+                  
+                    if (data.success) {
 
-      }
+                        $('#playlist_title').removeAttr('value');  
+                                        
+                        $('#video_tapes_id').val(null).trigger('change');
+                        
+                        $('#global_playlist_id_'+channel_id).modal('hide'); 
+
+                        $('#new_playlist').append(data.new_playlist_content);
+
+                        alert(data.message);
+
+                    } else {
+                        
+                        alert(data.error_messages);
+                    
+                    }
+
+                },
+            
+                error : function(data) {
+                },
+
+            })
+
+        }
     
     }  
 </script>

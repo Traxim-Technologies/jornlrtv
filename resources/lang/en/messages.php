@@ -2082,5 +2082,6 @@ return array(
 	'check_redeems' => 'CHECK REDEEMS',
 	'video_link' => 'Video Link',
 	'redeem_paypal_cancelled' => 'Redeem by PayPal cancelled',
+	'admin_video_tape_not_found' => 'Video Not Found',
 
 );

@@ -17,7 +17,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <label for="video" class="control-label">{{tr('videos')}}</label>
                 <div>                      
-                    <select id="video_tapes_id" name="video_tapes_id[]" class="form-control select2" data-placeholder="{{tr('select_video_tapes')}}" multiple style="width: 100% !important">
+                    <select id="video_tapes_id" name="video_tapes_id[]" class="form-control select2" data-placeholder="{{tr('select_video_tapes')}}" multiple style="width: 100% !important" required>
 
                         @foreach($video_tapes as $video_tapes_details)
                               <option value="{{$video_tapes_details->video_tapes_id}}" @if($video_tapes_details->is_selected == 1) selected  @endif> {{$video_tapes_details->video_tape_title}}</option>

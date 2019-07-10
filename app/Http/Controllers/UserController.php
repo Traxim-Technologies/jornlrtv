@@ -3596,7 +3596,7 @@ class UserController extends Controller {
      */
 
     public function playlists_video_status(Request $request) {
-        dd($request->all());
+
         try {
 
             DB::beginTransaction();

@@ -311,6 +311,9 @@ class NewAdminController extends Controller {
                     'user_id' => 'exists:users,id',
                     'name' => 'required|max:255',
                     'email' => $request->user_id ? 'required|email|max:255|unique:users,email,'.$request->user_id.',id' : 'required|email|max:255|unique:users,email,NULL,id',
+                    'email' => $request->user_id ? 
+                        'required|email|max:255'.$request->user_id.',id' : 'required|email|max:255|unique:users,email,NULL,id',
+
                     'mobile' => 'digits_between:6,13',
                     'password' => $request->user_id ? '' :'required|min:6|confirmed',
                     'dob' => 'required',
@@ -1263,6 +1266,7 @@ class NewAdminController extends Controller {
                         ->leftjoin('users', 'users.id', '=', 'channels.user_id')
                         ->withCount('getVideoTape')
                         ->withCount('getChannelSubscribers')
+                        ->withCount('getPlaylist')
                         ->where('channels.id', $request->channel_id)
                         ->first();
 
@@ -7287,7 +7291,7 @@ class NewAdminController extends Controller {
           
             if(!$video_tapes){
                 
-                throw new Exception(tr('admin_video_tape_not_found'), 101);
+                throw new Exception(tr('video_not_found'), 101);
             }
 
             $playlist_details = $request->playlist_id ? Playlist::find($request->playlist_id) : new Playlist;
@@ -7380,6 +7384,8 @@ class NewAdminController extends Controller {
         
         try {
 
+            $playlist_details = $request->playlist_id ? Playlist::find( $request->playlist_id) : new Playlist;
+
             $channel_details = Channel::find($request->channel_id);
 
             if(!$channel_details) {
@@ -7402,17 +7408,17 @@ class NewAdminController extends Controller {
 
                 // check already video_tape added 
 
-                $check_playlist_video_exists = PlaylistVideo::where('video_tape_id' , $video_tape_details->video_tapes_id)->where('status' , APPROVED)->count();
+                $check_playlist_video_exists = PlaylistVideo::where('video_tape_id' , $video_tape_details->video_tapes_id)->where('playlist_id',$request->playlist_id)->where('status' , APPROVED)->count();
 
                 $video_tape_details->is_selected = NO;
 
                 if($check_playlist_video_exists) {
+               
                     $video_tape_details->is_selected = YES;
+               
                 }
 
             }
-
-            $playlist_details = $request->playlist_id ? Playlist::find( $request->playlist_id) : new Playlist;
 
             return view('new_admin.channels.playlist_edit')
                         ->with('page' , 'channels')

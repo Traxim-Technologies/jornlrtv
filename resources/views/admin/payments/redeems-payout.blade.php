@@ -159,17 +159,14 @@
 
                     @else
                         <span>-</span>
-                    @endif
-
-                    
+                    @endif                   
 
                 </div>
+            
             </div>
             <!-- /.row -->
 
-        </section>
-
-        
+        </section>      
 
     </div>
 
