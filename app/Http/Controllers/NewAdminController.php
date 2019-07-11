@@ -7292,21 +7292,38 @@ class NewAdminController extends Controller {
             if(!$video_tapes){
                 
                 throw new Exception(tr('video_not_found'), 101);
+            } 
+
+            $channel_details = Channel::find($request->channel_id);
+          
+            if(!$channel_details){
+                
+                throw new Exception(tr('channel_not_found'), 101);
             }
 
-            $playlist_details = $request->playlist_id ? Playlist::find($request->playlist_id) : new Playlist;
+            if($request->playlist_id) {
+                
+                $playlist_details = Playlist::find($request->playlist_id);
+            
+            } else{
+                
+                $playlist_details = new Playlist;
+                
+                $playlist_details->status = APPROVED;
 
-            $playlist_details->channel_id = $request->channel_id;
+                $playlist_details->playlist_type = PLAYLIST_TYPE_CHANNEL;
+
+                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PUBLIC;
+
+                $playlist_details->channel_id = $request->channel_id;
+               
+                $playlist_details->user_id = $channel_details->user_id;
+
+            }
 
             $playlist_details->title = $request->title;
 
             $playlist_details->description = $request->description;
-
-            $playlist_details->status = APPROVED;
-
-            $playlist_details->playlist_type = PLAYLIST_TYPE_CHANNEL;
-
-            $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PUBLIC;
 
             if ($request->hasFile('picture')) {
 

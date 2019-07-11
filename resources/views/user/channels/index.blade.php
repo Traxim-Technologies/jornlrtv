@@ -1374,6 +1374,10 @@
 
             alert("Title for playlist required");
 
+        } if(video_tapes_id == null ) {
+
+            alert("Please Choose videos to create playlist");
+
         } else { 
 
             $.ajax({
@@ -1381,7 +1385,7 @@
                 // url : "{{route('user.playlist.save.video_add')}}",
                 url : "{{ route('user.playlists.save') }}",
 
-                data : {title : title , channel_id : channel_id, privacy : privacy, video_tapes_id : video_tapes_id },
+                data : { title : title , channel_id : channel_id, privacy : privacy, video_tapes_id : video_tapes_id },
 
                 type: "post",
                 
@@ -1402,12 +1406,13 @@
                     } else {
                         
                         alert(data.error_messages);
-                    
+
                     }
 
                 },
             
                 error : function(data) {
+              
                 },
 
             })
@@ -1415,6 +1420,7 @@
         }
     
     }  
+
 </script>
 
 @endsection

@@ -520,6 +520,8 @@ class UserController extends Controller {
                 'view_type' => \Auth::check() ? \Auth::user()->id == $channel->user_id ? VIEW_TYPE_OWNER : VIEW_TYPE_VIEWER : VIEW_TYPE_VIEWER 
             ]);
 
+            // dd($request->all());
+            
             if ($request->id != $channel->user_id || !Auth::check()) {
 
                 if ($channel->status == USER_CHANNEL_DECLINED || $channel->is_approved == ADMIN_CHANNEL_DECLINED) {
@@ -536,9 +538,9 @@ class UserController extends Controller {
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
             
             $channel_playlists = $this->UserAPI->playlists($request)->getData();
-                   
+            // dd($channel_playlists);
             $channel_playlists = $channel_playlists->data;
-           
+            
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
 
             $subscribe_status = false;
