@@ -21,7 +21,7 @@
 				<div class="slide-area1 recom-area">
                    
                     <div class="box-head recom-head">
-						<h3 class="no-margin text-left">{{tr('playlists')}} ({{count($playlists)}})</h3>
+						<h3 class="no-margin text-left">{{ tr('playlists') }} ({{ count($playlists) }})</h3>
                     </div>
 
                     @if(count($playlists) > 0)
@@ -34,7 +34,7 @@
 
                                     <div class="slide-image">
 
-                                        <a href="{{route('user.playlists.view', ['playlist_id' => $playlist_details->playlist_id])}}">
+                                        <a href="{{route('user.playlists.view', ['playlist_id' => $playlist_details->playlist_id, 'playlist_type' => $playlist_type])}}">
                                             
                                             <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$playlist_details->picture}}" class="slide-img1 placeholder" />
                                         </a>
@@ -46,23 +46,23 @@
                                         </div>
 
                                         <div class="video_duration">
-                                            {{$playlist_details->total_videos}} {{tr('videos')}}
+                                            {{ $playlist_details->total_videos }} {{ tr('videos') }}
                                         </div>
 
                                     </div><!--end of slide-image-->
 
                                     <div class="video-details recom-details">
                                         <div class="video-head">
-                                            <a href="{{route('user.playlists.view', ['playlist_id' => $playlist_details->playlist_id])}}">{{$playlist_details->title}}</a>
+                                            <a href="{{route('user.playlists.view', ['playlist_id' => $playlist_details->playlist_id])}}">{{ $playlist_details->title }}</a>
                                         </div>
                                        
-
                                         <span class="video_views">
                                             <div>
 
                                             </div>
-                                            {{$playlist_details->created_at}}
+                                            {{ common_date($playlist_details->created_at) }}
                                         </span> 
+                                  
                                     </div><!--end of video-details-->
                                 
                                 </div>

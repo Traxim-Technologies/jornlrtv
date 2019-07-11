@@ -200,6 +200,8 @@
                                    <label class="playlist-container">{{ $playlist_details->title}}
                                       
                                       <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
+
+                                      <input type="hidden" name="playlist_ids[]" id="playlist_ids"  value="@if($playlist_details->is_video_exists == DEFAULT_TRUE){{$playlist_details->playlist_id}}@endif">
                                                                  
                                       <span class="playlist-checkmark"></span>
 

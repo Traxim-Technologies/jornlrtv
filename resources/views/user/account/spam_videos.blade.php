@@ -50,7 +50,7 @@
                                                 <div><a href="{{route('user.channel',$spamvideo->channel_id)}}">{{$spamvideo->channel_name}}</a></div>
                                                 <i class="fa fa-eye"></i> {{$spamvideo->watch_count}} {{tr('views')}} 
                                                 <b>.</b> 
-                                                {{$spamvideo->created_at}}
+                                                {{ common_date($spamvideo->created_at) }}
                                             </span>
                                         </div> 
                                         

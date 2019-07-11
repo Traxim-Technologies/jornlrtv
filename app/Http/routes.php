@@ -853,9 +853,9 @@ Route::group(['as' => 'user.'], function(){
 
     // =============== v5.0 ==================
 
-    Route::any('/channel/playlists/', 'UserController@playlists')->name('playlists.index');
+    Route::any('/playlists/', 'UserController@playlists')->name('playlists.index');
 
-    Route::any('/channel/playlists/save', 'UserController@channel_playlists_save')->name('playlists.save');
+    Route::any('/playlists/save', 'UserController@playlists_save')->name('playlists.save');    
 
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
    
@@ -872,6 +872,8 @@ Route::group(['as' => 'user.'], function(){
     Route::post('/playlist_video_update', 'UserController@playlist_video_update')->name('playlist.video.update');
 
     Route::post('/playlist/save/video_add', 'UserController@playlist_save_video_add')->name('playlist.save.video_add');
+    
+    Route::any('/channel/playlists/save', 'UserController@channel_playlists_save')->name('channel.playlists.save');
 
 });
 

@@ -5011,6 +5011,7 @@ class UserApiController extends Controller {
         $u_id = $request->id;
 
         $channel = Channel::find($channel_id);
+        
 
         if ($channel) {
 
@@ -5041,8 +5042,6 @@ class UserApiController extends Controller {
                         ->where('channels.is_approved', 1)
                         ->where('categories.status', CATEGORY_APPROVE_STATUS);
 
-            
-            
         }
 
         if ($u_id) {
@@ -5080,6 +5079,7 @@ class UserApiController extends Controller {
             }
 
         }
+        // dd($items);
 
         return response()->json($items);
 

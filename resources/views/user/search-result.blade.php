@@ -101,7 +101,7 @@
                                                          <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
                                                         <div>
                                                             <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}}<b>.</b> 
-                                                            {{$video->created_at}}
+                                                            {{common_date($video->created_at) }}
                                                         </div>
                                                     </span> 
                                                 </div> 

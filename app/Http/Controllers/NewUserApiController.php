@@ -4445,15 +4445,15 @@ class NewUserApiController extends Controller
      * @param integer channel_id (Optional)
      *
      * @return JSON Response
+     *
      */
-
     public function playlists_save(Request $request) {
 
         try {
 
             DB::beginTransaction();
 
-            $validator = Validator::make($request->all(),[
+            $validator =Validator::make($request->all(),[
                 'title' => 'required|max:255',
                 'playlist_id' => 'exists:playlists,id,user_id,'.$request->id,
                 'channel_id' => 'exists:channels,id'
@@ -4482,9 +4482,13 @@ class NewUserApiController extends Controller
     
                 $playlist_details->status = APPROVED;
 
-                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PRIVATE;
+                $playlist_details->playlist_display_type = $request->playlist_display_type ?: PLAYLIST_DISPLAY_PRIVATE;
 
-                $playlist_details->playlist_type = PLAYLIST_TYPE_USER;
+                $playlist_details->playlist_type = $request->playlist_type ?: PLAYLIST_TYPE_USER;
+
+                // $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PRIVATE;
+
+                // $playlist_details->playlist_type = PLAYLIST_TYPE_USER;
 
             }
 
@@ -4550,6 +4554,7 @@ class NewUserApiController extends Controller
             $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
                                         ->where('user_id', $request->id)
                                         ->first();
+            
             // if($playlist_video_details) {
 
             //     $message = Helper::get_message(127); $code = 127;
@@ -4593,7 +4598,7 @@ class NewUserApiController extends Controller
                                 ->delete();
 
                 $total_playlists_update = 0;
-
+                
                 foreach ($playlist_ids as $key => $playlist_id) {
 
                     // Check the playlist id belongs to the logged user

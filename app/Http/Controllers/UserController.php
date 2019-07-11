@@ -83,9 +83,11 @@ class UserController extends Controller {
      *
      * @return void
      */
-    public function __construct(UserApiController $API)
+    public function __construct(UserApiController $API, NewUserApiController $NewAPI)
     {
         $this->UserAPI = $API;
+        
+        $this->NewUserAPI = $NewAPI;
         
         $this->middleware(['auth'], ['except' => [
                 'master_login',
@@ -3389,7 +3391,7 @@ class UserController extends Controller {
 
             ]);
 
-            $response = $this->UserAPI->playlists($request)->getData();
+            $response = $this->NewUserAPI->playlists($request)->getData();
 
             if($response->success == false) {
 
@@ -3403,7 +3405,7 @@ class UserController extends Controller {
 
             $playlists = $response->data;
 
-            return view('user.playlists.index')->with('playlists', $playlists);
+            return view('user.playlists.index')->with('playlists', $playlists)->with('playlist_type', PLAYLIST_TYPE_USER);
 
         } catch(Exception $e) {
 
@@ -3445,14 +3447,14 @@ class UserController extends Controller {
                 'id'=> Auth::user()->id,
                 'token'=> Auth::user()->token,
  
-            ]);
+            ]); 
 
             $request->request->add([
-                'playlist_type' => PLAYLIST_TYPE_CHANNEL ,
-                'playlist_display_type' => PLAYLIST_DISPLAY_PUBLIC
+                'playlist_type'=> $request->playlist_type ?: PLAYLIST_TYPE_USER,
+                'playlist_display_type'=> $request->playlist_display_type ?: PLAYLIST_DISPLAY_PRIVATE
             ]);
             
-            $response = $this->UserAPI->playlists_save($request)->getData();
+            $response = $this->NewUserAPI->playlists_save($request)->getData();
            
             if($response->success) {
 
@@ -3461,21 +3463,40 @@ class UserController extends Controller {
                 $playlist_details = $response->data;
 
                 $response->title = $response->data->title;
-                               
-                foreach ($request->video_tapes_id as $video_tape_id) {
 
-                    $playlist_video_details = new PlaylistVideo;
+                PlaylistVideo::where('playlist_id', $response->playlist_id)->whereNotIn('video_tape_id', $request->video_tape_id)
+                                ->where('user_id', $request->id)
+                                ->delete();
 
-                    $playlist_video_details->playlist_id = $playlist_details->playlist_id;
+                $videos_exist_in_playlist = PlaylistVideo::where('playlist_id', $response->playlist_id)->where('user_id', $request->id)->pluck('video_tape_id')->toArray();
+                
+                $new_videos_to_add_playlist = $request->video_tapes_id;
 
-                    $playlist_video_details->video_tape_id = $video_tape_id;
+                if($videos_exist_in_playlist) {
+
+                    $new_videos_to_add_playlist = array_diff($videos_exist_in_playlist, $request->video_tapes_id);
+
+                }
+
+                // foreach ($request->video_tapes_id as $video_tape_id) {
+                if(!$new_videos_to_add_playlist){
+                   
+                    foreach ($new_videos_to_add_playlist as $video_tape_id) {
+
+                        $playlist_video_details = new PlaylistVideo;
+
+                        $playlist_video_details->playlist_id = $playlist_details->playlist_id;
+
+                        $playlist_video_details->video_tape_id = $video_tape_id;
+                        
+                        $playlist_video_details->user_id = $playlist_details->user_id;
+
+                        $playlist_video_details->status = DEFAULT_TRUE;
+                        
+                        $playlist_video_details->save();                    
+                 
+                    }
                     
-                    $playlist_video_details->user_id = $playlist_details->user_id;
-
-                    $playlist_video_details->status = DEFAULT_TRUE;
-                    
-                    $playlist_video_details->save();                    
-             
                 }
                
                 $response->data->total_videos =PlaylistVideo::where('playlist_id',$playlist_details->playlist_id)->count();
@@ -3527,7 +3548,7 @@ class UserController extends Controller {
      *
      */
     public function playlists_view(Request $request) {
-        
+
         try {
 
             if (Auth::check()) {
@@ -3535,12 +3556,10 @@ class UserController extends Controller {
                 $request->request->add([ 
                     'id'=>Auth::user()->id,
                     'token'=> Auth::user()->token
-
                 ]);
-
             } 
 
-            $response = $this->UserAPI->playlists_view($request)->getData();
+            $response = $this->NewUserAPI->playlists_view($request)->getData();
          
             if($response->success == false) {
 
@@ -3566,10 +3585,40 @@ class UserController extends Controller {
             $playlist_details->user_picture = $user_details->picture;
           
             $video_tapes = $response->data->video_tapes;
+
+            $channel_videos = [];
+      
+            $playlist_video_ids = array_column($video_tapes , 'video_tape_id');
             
+            // if ($playlist_details->playlist_type == PLAYLIST_TYPE_CHANNEL) {
+                
+                // if($playlist_details->channel_id) { 
+
+                    $channel_videos = $this->UserAPI->channel_videos($playlist_details->channel_id, 0 , $request)->getData();
+                   
+                    if(!empty($channel_videos)) {
+                       
+                        foreach ($channel_videos as $value) {
+                            
+                            $value->exist_in_playlists = NO;                      
+
+                            if(in_array( $value->video_tape_id, $playlist_video_ids )) {
+                            
+                                $value->exist_in_playlists = YES;                      
+                            }
+                        }
+                    }
+
+                // }
+
+            // }
+                    // dd($playlist_details);
+
             return view('user.playlists.view')
                     ->with('playlist_details', $playlist_details)
-                    ->with('video_tapes', $video_tapes);
+                    ->with('video_tapes', $video_tapes)
+                    ->with('playlist_type', $request->playlist_type)
+                    ->with('videos', $channel_videos);
 
         } catch(Exception $e) {
 
@@ -3585,7 +3634,7 @@ class UserController extends Controller {
             return redirect()->to('/')->with('flash_error' , $error_messages);
         }
 
-    }
+    }    
 
     /**
      *
@@ -3601,7 +3650,6 @@ class UserController extends Controller {
      *
      * @return JSON Response
      */
-
     public function playlists_video_status(Request $request) {
 
         try {
@@ -3842,18 +3890,28 @@ class UserController extends Controller {
             'id' => Auth::user()->id,
             'token'=>Auth::user()->token
         ]);
-        
+       
         if($request->status == DEFAULT_TRUE)  {
 
-            $response = $this->UserAPI->playlists_video_status($request)->getData();
-            
-            // $response = $this->UserAPI->playlists_video_save($request)->getData();
-        
+            // $playlists = PlaylistVideo::where('user_id',$request->id)->where('video_tape_id', $request->video_tape_id)->get();           
+
+            // $playlist_ids = array_column($playlists->toArray(), 'playlist_id');
+
+            // dd($request->playlist_id);
+
+            // array_push($playlist_ids, $request->playlist_id);
+           
+            // array_push($request->playlist_ids, $request->playlist_id);
+
+            // dd($request->playlist_ids);
+
+            $response = $this->NewUserAPI->playlists_video_status($request)->getData();
+                  
         } 
 
         if($request->status == DEFAULT_FALSE) {
 
-            $response = $this->UserAPI->playlists_video_remove($request)->getData();
+            $response = $this->NewUserAPI->playlists_video_remove($request)->getData();
         
         }
       
@@ -3884,13 +3942,13 @@ class UserController extends Controller {
                 'token'=> Auth::user()->token
             ]);
             
-            $playlists_response = $this->UserAPI->playlists_save($request)->getData();
+            $playlists_response = $this->NeWUserAPI->playlists_save($request)->getData();
             
             $request->request->add([
                 'playlist_id'=> $playlists_response->data->playlist_id,
             ]);
-
-            $response = $this->UserAPI->playlists_video_status($request)->getData();
+            
+            $response = $this->NewUserAPI->playlists_video_status($request)->getData();
             
             if($response->success) {
 

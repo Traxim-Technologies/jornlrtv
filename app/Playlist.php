@@ -35,7 +35,8 @@ class Playlist extends Model
             'playlists.user_id as user_id',
             'playlists.title as title',
             'playlists.description as description',
-        	'playlists.status as status',
+            'playlists.status as status',
+        	'playlists.playlist_type as playlist_type',
         	'playlists.created_at',
         	'playlists.updated_at'
         );
@@ -60,8 +61,8 @@ class Playlist extends Model
                    $value->delete();    
 
                 }
-
             }
+
         });
     
     }

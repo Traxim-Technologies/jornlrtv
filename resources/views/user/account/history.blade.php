@@ -67,7 +67,7 @@
                                                         </div>
                                                         <i class="fa fa-eye"></i> {{$history->watch_count}} {{tr('views')}} 
                                                         <b>.</b> 
-                                                        {{$history->created_at}}
+                                                        {{ common_date($history->created_at) }}
                                                     </span>
                                                 </div> 
                                                 <div class="cross-mark1">

@@ -2083,5 +2083,6 @@ return array(
 	'video_link' => 'Video Link',
 	'redeem_paypal_cancelled' => 'Redeem by PayPal cancelled',
 	'admin_video_tape_not_found' => 'Video Not Found',
+	'playlist_add_video' => 'Add Video',
 
 );

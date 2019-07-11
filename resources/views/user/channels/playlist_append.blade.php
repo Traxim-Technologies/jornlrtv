@@ -34,7 +34,7 @@
                 <div>
 
                 </div>
-                {{$channel_playlist_details->created_at}}
+                {{ common_date($channel_playlist_details->created_at) }}
             </span>
 
         </div>
