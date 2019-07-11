@@ -111,8 +111,6 @@ class UserController extends Controller {
                 'channel_view',
                 'video_view',
                 'playlists_view'
-
-
         ]]);
 
         $this->middleware(['verifyUser'], ['except' => [
@@ -415,6 +413,7 @@ class UserController extends Controller {
     public function playlists_index(Request $request){
 
         if(Auth::check()) {
+            
             $request->request->add([ 
                 'id' => \Auth::user()->id,
                 'token' => \Auth::user()->token,
@@ -423,7 +422,8 @@ class UserController extends Controller {
             ]);
         }
 
-        $response = $this->UserAPI->playlists_index($request)->getData();
+        $response = $this->UserAPI->playlists($request)->getData();
+        // $response = $this->UserAPI->playlists_index($request)->getData();
 
         return view('user.playlist.list')->with('page', 'channels')
                 ->with('subPage', 'channel_list')
@@ -519,8 +519,6 @@ class UserController extends Controller {
                 'channel_id'=> $id,
                 'view_type' => \Auth::check() ? \Auth::user()->id == $channel->user_id ? VIEW_TYPE_OWNER : VIEW_TYPE_VIEWER : VIEW_TYPE_VIEWER 
             ]);
-
-            // dd($request->all());
             
             if ($request->id != $channel->user_id || !Auth::check()) {
 
@@ -538,7 +536,7 @@ class UserController extends Controller {
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
             
             $channel_playlists = $this->UserAPI->playlists($request)->getData();
-            // dd($channel_playlists);
+
             $channel_playlists = $channel_playlists->data;
             
             $payment_videos = $this->UserAPI->payment_videos($id, 0)->getData();
@@ -3426,19 +3424,19 @@ class UserController extends Controller {
 
     /**
      *
-     * Function name: playlists_save()
+     * Function name: channel_playlists_save()
      *
      * @uses get the playlists
      *
-     * @created vithya R
+     * @created Anjana H
      *
-     * @updated vithya R
+     * @updated Anjana H
      *
      * @param integer channel_id (Optional)
      *
      * @return JSON Response
      */
-    public function playlists_save(Request $request) {
+    public function channel_playlists_save(Request $request) {
 
         try {
 
@@ -3449,6 +3447,11 @@ class UserController extends Controller {
  
             ]);
 
+            $request->request->add([
+                'playlist_type' => PLAYLIST_TYPE_CHANNEL ,
+                'playlist_display_type' => PLAYLIST_DISPLAY_PUBLIC
+            ]);
+            
             $response = $this->UserAPI->playlists_save($request)->getData();
            
             if($response->success) {
@@ -3466,6 +3469,8 @@ class UserController extends Controller {
                     $playlist_video_details->playlist_id = $playlist_details->playlist_id;
 
                     $playlist_video_details->video_tape_id = $video_tape_id;
+                    
+                    $playlist_video_details->user_id = $playlist_details->user_id;
 
                     $playlist_video_details->status = DEFAULT_TRUE;
                     

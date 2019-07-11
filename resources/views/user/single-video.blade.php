@@ -1133,10 +1133,11 @@
       } else {
 
          $.ajax({
-              url : "{{route('user.playlist.save.video_add')}}",
-              data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
-              type: "post",
-              success : function(data) {
+               
+               url : "{{route('user.playlist.save.video_add')}}",
+               data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
+               type: "post",
+               success : function(data) {
                
                   if (data.success) {
 
@@ -1154,12 +1155,12 @@
                      
                      alert(data.error_messages);
                   }
+                  
                },
       
-              error : function(data) {
-              },
+               error : function(data) {
+               },
          })
-
       }
    }  
 

@@ -5912,10 +5912,11 @@ class NewAdminController extends Controller {
 
             if(!$user_details) {
 
-                throw new Exception( tr('admin_user_not_found'), 101);
+                throw new Exception(tr('admin_user_not_found'), 101);
             } 
             
             $base_query = Playlist::where('playlists.user_id', $request->user_id)
+                                ->where('playlists.playlist_type', PLAYLIST_TYPE_USER)
                                 ->where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
 
@@ -7227,6 +7228,7 @@ class NewAdminController extends Controller {
                 ->select('video_tapes.id as video_tapes_id', 
                     'video_tapes.channel_id as channel_id',
                     'video_tapes.title as video_tape_title')
+                ->where('is_approved',APPROVED)
                 ->orderBy('video_tapes.created_at' , 'desc')->get();
          
             if(!$video_tapes) {

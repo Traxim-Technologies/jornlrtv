@@ -600,7 +600,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('channels', 'UserController@channels')->name('channel.list');
     
-    // Route::get('playlists', 'UserController@playlists_index')->name('playlists.index');
+    Route::get('playlists', 'UserController@playlists_index')->name('playlists.index');
 
 
     Route::get('history', 'UserController@history')->name('history');
@@ -853,9 +853,9 @@ Route::group(['as' => 'user.'], function(){
 
     // =============== v5.0 ==================
 
-    Route::any('/playlists/', 'UserController@playlists')->name('playlists.index');
+    Route::any('/channel/playlists/', 'UserController@playlists')->name('playlists.index');
 
-    Route::any('/playlists/save', 'UserController@playlists_save')->name('playlists.save');
+    Route::any('/channel/playlists/save', 'UserController@channel_playlists_save')->name('playlists.save');
 
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
    

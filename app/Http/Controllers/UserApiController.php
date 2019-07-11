@@ -7477,9 +7477,9 @@ class UserApiController extends Controller {
     
                 $playlist_details->status = APPROVED;
 
-                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PRIVATE;
+                $playlist_details->playlist_display_type = $request->playlist_display_type ?: PLAYLIST_DISPLAY_PRIVATE;
 
-                $playlist_details->playlist_type = PLAYLIST_TYPE_USER;
+                $playlist_details->playlist_type = $request->playlist_type ?:  PLAYLIST_TYPE_USER;
 
             }
 

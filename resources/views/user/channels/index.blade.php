@@ -1061,8 +1061,12 @@
                                             @if(count($videos) > 0)
 
                                                 @foreach($videos as $video_tapes_details)
-                                                        
-                                                    <option value="{{$video_tapes_details->video_tape_id}}" > {{ $video_tapes_details->title }}</option>
+                                                    
+                                                    @if($video_tapes_details->is_approved == YES)    
+                                                    
+                                                        <option value="{{$video_tapes_details->video_tape_id}}" > {{ $video_tapes_details->title }}</option>
+                                                    
+                                                    @endif
 
                                                 @endforeach
                                            
