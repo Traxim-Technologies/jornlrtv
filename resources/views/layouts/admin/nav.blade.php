@@ -140,7 +140,7 @@
                 </ul>
             </li>
 
-            <li class="treeview" id="custom_live_videos" style="display: none;">
+            <li class="treeview" id="custom_live_videos">
                 <a href="{{route('admin.custom.live.index')}}">
                     <i class="fa fa-wifi"></i> <span>{{tr('custom_live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
