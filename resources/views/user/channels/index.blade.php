@@ -1023,51 +1023,6 @@
 
                     </div>
 
-                    <!--   <div class="modal-body">
-
-                            @if(!empty($playlists))
-
-                            <div class="more-content" id="user-playlists-form">
-
-                                @foreach($playlists as $playlist_details)  
-
-                                    <div class="report_list">
-
-                                       <label class="playlist-container">{{ $playlist_details->title}}
-
-                                          <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
-
-                                          <span class="playlist-checkmark"></span>
-
-                                       </label>
-
-                                    </div>
-
-                                    <div class="clearfix"></div>
-
-                                @endforeach
-
-                                <div id="user_playlists"></div>
-
-                                <div class="clearfix"></div>
-
-                            </div>
-
-                            @else
-
-                            <div id="user-playlists-form">
-
-                                <div id="user_playlists"></div>
-
-                                <div class="clearfix"></div>
-
-                            </div>
-
-                            @endif  
-
-                            </div>  
-                    -->
-
                     <div class="modal-footer">
 
                         <div class="more-content">
@@ -1405,6 +1360,8 @@
             var privacy = $("#playlist_privacy").val();
 
             var video_tapes_id = $("#video_tapes_id").val();
+           
+            var playlist_type = "<?php echo PLAYLIST_TYPE_CHANNEL ?>";
 
             if (title == '') {
 
@@ -1416,7 +1373,7 @@
                 alert("Please Choose videos to create playlist");
 
             } else {
-
+                // alert(title);
                 $.ajax({
 
                     // url : "{{route('user.playlist.save.video_add')}}",
@@ -1426,7 +1383,8 @@
                         title: title,
                         channel_id: channel_id,
                         privacy: privacy,
-                        video_tapes_id: video_tapes_id
+                        video_tapes_id: video_tapes_id,
+                        playlist_type: playlist_type
                     },
 
                     type: "post",

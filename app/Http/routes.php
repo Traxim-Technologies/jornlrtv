@@ -875,6 +875,8 @@ Route::group(['as' => 'user.'], function(){
     
     Route::any('/channel/playlists/save', 'UserController@channel_playlists_save')->name('channel.playlists.save');
 
+    Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
+
 });
 
 Route::group(['prefix' => 'userApi'], function() {

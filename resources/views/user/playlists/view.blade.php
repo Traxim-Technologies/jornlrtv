@@ -6,11 +6,11 @@
    
    <div class="row content-row">
 
-      @include('layouts.user.nav')
+        @include('layouts.user.nav')
          
-      <div class="history-content page-inner col-sm-9 col-md-10">
+        <div class="history-content page-inner col-sm-9 col-md-10">
         
-        @include('notification.notify')
+            @include('notification.notify')
 
             <div class="slide-area1 col-sm-4 col-md-4">
                 
@@ -49,16 +49,14 @@
 
                         @if($playlist_details->is_my_channel && $playlist_type == PLAYLIST_TYPE_CHANNEL) 
 
-                        <a class="share-new global_playlist_id pull-right" id="{{ $playlist_details->channel_id, PLAYLIST_TYPE_CHANNEL }}"><i class="fa fa-edit"></i><h4>{{ tr('edit') }}</h4></a>
+                        <a class="share-new global_playlist_id pull-right" id="{{ $playlist_details->channel_id, PLAYLIST_TYPE_CHANNEL }}" title="{{ tr('edit') }}"><i class="fa fa-edit"></i></a>
 
                         @endif
 
-                        @if($playlist_type == PLAYLIST_TYPE_USER ) 
+                        @if($playlist_type == PLAYLIST_TYPE_USER) 
 
-                            <!-- <a class="share-new global_playlist_id pull-right" id="{{ $playlist_details->playlist_id, PLAYLIST_TYPE_USER }}"><i class="fa fa-edit"></i><h4>{{ tr('edit') }}</h4></a> -->
+                            <a class="share-new global_playlist_id pull-right" id="{{$playlist_details->playlist_id, PLAYLIST_TYPE_USER}}" title="{{tr('edit')}}"><i class="fa fa-edit"></i><h4>{{ tr('edit') }}</h4></a>
                            
-                            <a class="share-new  pull-right" id="{{ $playlist_details->playlist_id, PLAYLIST_TYPE_USER }}"><h4>{{ tr('playlist_add_video') }}</h4></a>
-
                         @endif
 
                     </div>
@@ -134,25 +132,14 @@
                                             
                                             @if(Auth::check())
                                             
-                                                @if($playlist_details->user_id == Auth::user()->id)                                                 
+                                                @if($playlist_details->user_id == Auth::user()->id)                                               
                                                 <div class="cross-mark1">
                                                         
                                                     <a onclick="return confirm(&quot;{{ substr($video_tape_details->title, 0 , 15)}}.. {{tr('user_playlist_video_remove_confirm') }}&quot;)" href="{{route('user.playlists.video_remove' , ['video_tape_id' => $video_tape_details->video_tape_id, 'playlist_id' => $playlist_details->playlist_id])}}"><i class="fa fa-times" aria-hidden="true"></i></a>
 
                                                 </div>
+                                                
                                                 @endif
-
-                                                <!-- @if($playlist_details->is_my_channel && $playlist_type == PLAYLIST_TYPE_CHANNEL) 
-
-                                                <button class="share-new global_playlist_id pull-right btn btn-info" style="color: #fff" id="{{ $playlist_details->channel_id, PLAYLIST_TYPE_CHANNEL }}">{{ tr('edit') }}</button>
-
-                                                @endif
-
-                                                @if($playlist_type == PLAYLIST_TYPE_USER ) 
-
-                                                    <button class="share-new global_playlist_id pull-right btn btn-info" style="color: #fff" id="{{ $playlist_details->playlist_id, PLAYLIST_TYPE_USER }}">{{ tr('edit') }}</button>
-
-                                                @endif -->
 
                                             @endif
 
@@ -208,134 +195,137 @@
             
             </div>
     
-        <!-- <div class="new-history">
-              
-            <div class="content-head">
-            
-               <div>
-                  
-                  <center><h4 class="bold no-margin-top">
-                       {{tr('playlist_videos')}} - {{$playlist_details->title}}
-                  </h4></center>
-         
-               </div>              
-            
-            </div>
-       
-            <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
-    
-        </div> -->
+            <!-- PLAYLIST POPUPSTART -->
+            @if($playlist_type == PLAYLIST_TYPE_USER ) 
+            <div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$playlist_details->playlist_id }}" role="dialog"> @elseif ($playlist_details->is_my_channel && $playlist_type == PLAYLIST_TYPE_CHANNEL) 
+            <div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$playlist_details->channel_id}}" role="dialog"> @else 
+            <div class="modal fade global_playlist_id_modal">
+            @endif
+               
+                <div class="modal-dialog">
 
-        <!-- PLAYLIST POPUPSTART -->
-        @if($playlist_type == PLAYLIST_TYPE_USER ) 
-        <div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$playlist_details->playlist_id }}" role="dialog"> @endif
+                    <!-- Modal content-->
+                    <div class="modal-content">
 
-        @if($playlist_details->is_my_channel && $playlist_type == PLAYLIST_TYPE_CHANNEL) 
+                        <!-- if user logged in let create, update playlist -->
 
-        <div class="modal fade global_playlist_id_modal" id="global_playlist_id_{{$playlist_details->channel_id }}" role="dialog"> @endif
+                        @if(Auth::check())
 
-            <div class="modal-dialog">
+                            <div class="modal-header">
 
-                <!-- Modal content-->
-                <div class="modal-content">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                    <!-- if user logged in let create, update playlist -->
+                                <h4 class="modal-title">{{tr('edit_playlist')}}</h4>
 
-                    @if(Auth::check())
+                            </div>
 
-                        <div class="modal-header">
+                            <div class="modal-footer">
 
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="more-content">
 
-                            <h4 class="modal-title">{{tr('save_to')}}</h4>
+                                    <div onclick="$('#create_playlist_form').toggle()">
 
-                        </div>
+                                        <!-- <label><i class="fa fa-plus"></i> {{tr('edit_playlist')}}</label> -->
 
-                        <div class="modal-footer">
-
-                            <div class="more-content">
-
-                                <div onclick="$('#create_playlist_form').toggle()">
-
-                                    <label><i class="fa fa-plus"></i> {{tr('edit_playlist')}}</label>
-
-                                </div>
-
-                                <div class="" id="create_playlist_form" style="display: none">
-
-                                    <div class="form-group">
-
-                                        <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}" required value="{{ $playlist_details->title}}">
-
-                                        <label for="video" class="control-label">{{tr('videos')}}</label>
-
-                                        <div>
-
-                                            <select id="video_tapes_id" name="video_tapes_id[]" class="form-control select2" data-placeholder="{{tr('select_video_tapes')}}" multiple style="width: 100% !important" required>
-
-                                                @if(count($videos) > 0) 
-
-                                                    @foreach($videos as $video_tapes_details) 
-
-                                                        @if($video_tapes_details->is_approved == YES)
-
-                                                        <option value="{{ $video_tapes_details->video_tape_id}}" @if($video_tapes_details->exist_in_playlists) selected @endif> {{ $video_tapes_details->title }}</option>
-
-                                                        @endif 
-
-                                                    @endforeach 
-
-                                                @endif
-
-                                            </select>
-
-                                        </div>
-
-                                        <div class="" style="display: none;">
-
-                                            <label for="playlist_privacy">Privacy</label>
-                                           
-                                            <select id="playlist_privacy" name="playlist_privacy" class="form-control">
-                                                <option value="PUBLIC">PUBLIC</option>
-                                                <option value="PRIVETE">PRIVETE</option>
-                                                <option value="UNLISTED">UNLISTED</option>
-                                            </select>
-                                        
-                                        </div>
-                                    
                                     </div>
 
-                                    <button class="btn btn-primary" onclick='playlist_save({{$playlist_details->channel_id}} ,{{$playlist_details->playlist_id}})'>{{ tr('save')}}
-                                    </button>
+                                    <div class="" id="create_playlist_form">
+
+                                        <div class="form-group">
+
+                                            <input type="text" name="playlist_title" id="playlist_title" class="form-control" placeholder="{{tr('playlist_name_placeholder')}}" required value="{{$playlist_details->title}}">
+
+                                        </div>
+
+                                        @if(!$playlist_type == PLAYLIST_TYPE_USER) 
+
+                                        <div class="form-group">
+
+                                            <label for="video" class="control-label">{{tr('videos')}}</label>
+
+                                            <div>
+
+                                                <select id="video_tapes_id" name="video_tapes_id[]" class="form-control select2" data-placeholder="{{tr('select_video_tapes')}}" multiple style="width: 100% !important" required>
+
+                                                    @if(count($videos) > 0) 
+
+                                                        @foreach($videos as $video_tapes_details) 
+
+                                                            @if($video_tapes_details->is_approved == YES)
+
+                                                            <option value="{{ $video_tapes_details->video_tape_id}}" @if($video_tapes_details->exist_in_playlists) selected @endif> {{ $video_tapes_details->title }}</option>
+
+                                                            @endif 
+
+                                                        @endforeach 
+
+                                                    @endif
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="" style="display: none;">
+
+                                                <label for="playlist_privacy">Privacy</label>
+                                               
+                                                <select id="playlist_privacy" name="playlist_privacy" class="form-control">
+                                                    <option value="PUBLIC">PUBLIC</option>
+                                                    <option value="PRIVETE">PRIVETE</option>
+                                                    <option value="UNLISTED">UNLISTED</option>
+                                                </select>
+                                            
+                                            </div>
+                                        
+                                        </div>
+
+                                        @else
+                                        
+                                            <input type="hidden" id="video_tapes_id" name="video_tapes_id[]">
+                                        
+                                        @endif  
+
+                                        @if(!$playlist_type == PLAYLIST_TYPE_USER) 
+
+                                            <button class="btn btn-primary" onclick='playlist_save({{$playlist_details->channel_id}} ,{{$playlist_details->playlist_id}})'>{{ tr('save')}}
+                                            </button>
+
+                                        @else
+
+                                            <button class="btn btn-primary" onclick='user_playlist_save({{$playlist_details->playlist_id}})'>{{ tr('save')}}
+                                            </button>
+
+                                        @endif
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                        </div>
+                            <!-- if user not logged in ask for login -->
 
-                        <!-- if user not logged in ask for login -->
+                        @else
+                            
+                            <!-- 
+                            <div class="menu4 top nav-space">
 
-                    @else
+                                <p>{{tr('signid_for_playlist')}}</p>
 
-                        <div class="menu4 top nav-space">
+                                <a href="{{route('user.login.form')}}" class="btn btn-sm btn-primary">{{tr('login')}}</a>
 
-                            <p>{{tr('signid_for_playlist')}}</p>
+                            </div> -->
 
-                            <a href="{{route('user.login.form')}}" class="btn btn-sm btn-primary">{{tr('login')}}</a>
+                        @endif
 
-                        </div>
-
-                    @endif
+                    </div>
+                    <!-- modal content ends -->
 
                 </div>
-                <!-- modal content ends -->
 
             </div>
 
         </div>
-
-      </div>
 
    </div>
 
@@ -500,12 +490,65 @@
 
             var id = $(this).attr('id');
 
-            $('#global_playlist_id_' + id).modal('show');
+            $('#global_playlist_id_'+id).modal('show');
 
         });
 
     });
 
+    function user_playlist_save(playlist_id) {
+
+        var title = $("#playlist_title").val();
+
+        var privacy = $("#playlist_privacy").val();
+
+        var playlist_type = '{{$playlist_type}}';
+
+        var playlist_id = playlist_id;
+        
+        if(title == '') { alert("Title for playlist required"); }
+
+        $.ajax({
+
+            url: "{{route('user.channel.playlists.save')}}",
+
+            data: {
+                title: title,
+                privacy: privacy,
+                playlist_id: playlist_id,
+                playlist_type: playlist_type
+            },
+
+            type: "post",
+
+            success: function(data) {
+
+                if (data.success) {
+
+                    $('#playlist_title').removeAttr('value');
+
+                    $('#global_playlist_id_' + playlist_id).modal('hide');
+                   
+                    $('#no_playlist').hide();
+
+                    alert(data.message);
+
+                    location.reload();
+
+                } else {
+
+                    alert(data.error_messages);
+
+                }
+
+            },
+
+            error: function(data) {
+
+            },
+
+        })
+    }
 
     function playlist_save(channel_id, playlist_id) {
 
@@ -514,20 +557,14 @@
         var privacy = $("#playlist_privacy").val();
 
         var video_tapes_id = $("#video_tapes_id").val();
-       
+
         var playlist_type = '{{$playlist_type}}';
 
-        var playlist_id = playlist_id ;
-
-        alert(playlist_id);
+        var playlist_id = playlist_id;
         
-        if (title == '') {
+        if(title == '') { alert("Title for playlist required"); }
 
-            alert("Title for playlist required");
-
-        }
-
-        if (video_tapes_id == null) {
+        if(playlist_type == 'CHANNEL' && video_tapes_id == null) {
 
             alert("Please Choose videos to create playlist");
 
@@ -535,7 +572,7 @@
 
             $.ajax({
 
-                url: "{{ route('user.channel.playlists.save') }}",
+                url: "{{route('user.channel.playlists.save')}}",
 
                 data: {
                     title: title,

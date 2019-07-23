@@ -3439,23 +3439,23 @@ class UserController extends Controller {
      * @return JSON Response
      */
     public function channel_playlists_save(Request $request) {
-
+        
         try {
+            
+            DB::beginTransaction();
 
             $request->request->add([
-                
                 'id'=> Auth::user()->id,
-                'token'=> Auth::user()->token,
- 
+                'token'=> Auth::user()->token, 
             ]); 
-
+            
             $request->request->add([
                 'playlist_type'=> $request->playlist_type ?: PLAYLIST_TYPE_USER,
                 'playlist_display_type'=> $request->playlist_display_type ?: PLAYLIST_DISPLAY_PRIVATE
             ]);
-            
+
             $response = $this->NewUserAPI->playlists_save($request)->getData();
-           
+
             if($response->success) {
 
                 $response->playlist_id = $response->data->playlist_id;
@@ -3464,67 +3464,70 @@ class UserController extends Controller {
 
                 $response->title = $response->data->title;
 
-                PlaylistVideo::where('playlist_id', $response->playlist_id)->whereNotIn('video_tape_id', $request->video_tape_id)
-                                ->where('user_id', $request->id)
-                                ->delete();
+                $new_playlist_content = '';
 
-                $videos_exist_in_playlist = PlaylistVideo::where('playlist_id', $response->playlist_id)->where('user_id', $request->id)->pluck('video_tape_id')->toArray();
-                
-                $new_videos_to_add_playlist = $request->video_tapes_id;
+                if(!empty($request->video_tapes_id)) {
+                    // Remove unselected videos from playlists
 
-                if($videos_exist_in_playlist) {
+                    PlaylistVideo::where('playlist_id', $response->playlist_id)->whereNotIn('video_tape_id', $request->video_tapes_id)
+                                    ->where('user_id', $request->id)
+                                    ->delete();
 
-                    $new_videos_to_add_playlist = array_diff($videos_exist_in_playlist, $request->video_tapes_id);
+                    foreach ($request->video_tapes_id as $key => $video_tape_id) {
 
-                }
+                        // Check the video already added in playlist
 
-                // foreach ($request->video_tapes_id as $video_tape_id) {
-                if(!$new_videos_to_add_playlist){
-                   
-                    foreach ($new_videos_to_add_playlist as $video_tape_id) {
+                        $check_video = PlaylistVideo::where('video_tape_id', $video_tape_id)->where('playlist_id', $response->playlist_id)->count();
 
-                        $playlist_video_details = new PlaylistVideo;
+                        if(!$check_video) {
 
-                        $playlist_video_details->playlist_id = $playlist_details->playlist_id;
+                            $playlist_video_details = new PlaylistVideo;
 
-                        $playlist_video_details->video_tape_id = $video_tape_id;
-                        
-                        $playlist_video_details->user_id = $playlist_details->user_id;
+                            $playlist_video_details->playlist_id = $response->playlist_id;
 
-                        $playlist_video_details->status = DEFAULT_TRUE;
-                        
-                        $playlist_video_details->save();                    
-                 
+                            $playlist_video_details->video_tape_id = $video_tape_id;
+                            
+                            $playlist_video_details->user_id = $request->id;
+
+                            $playlist_video_details->status = DEFAULT_TRUE;
+                            
+                            $playlist_video_details->save();
+
+                        }
                     }
-                    
+
+                    $response->data->total_videos =PlaylistVideo::where('playlist_id',$playlist_details->playlist_id)->count();
+
+                    $first_video_from_playlist= PlaylistVideo::where('playlist_videos.playlist_id', $playlist_details->playlist_id)
+                                                ->leftJoin('video_tapes', 'video_tapes.id', '=', 'playlist_videos.video_tape_id')
+                                                ->select('video_tapes.id as video_tape_id', 'video_tapes.default_image as picture')
+                                                ->first();
+
+                    $response->data->picture = $first_video_from_playlist ? $first_video_from_playlist->picture : asset('images/playlist.png');
+
+                    $new_playlist_content = view('user.channels.playlist_append')->with('channel_playlist_details', $response->data)->render();
+
+                    $response->new_playlist_content = $new_playlist_content;
+
                 }
-               
-                $response->data->total_videos =PlaylistVideo::where('playlist_id',$playlist_details->playlist_id)->count();
 
-                $first_video_from_playlist= PlaylistVideo::where('playlist_videos.playlist_id', $playlist_details->playlist_id)
-                                            ->leftJoin('video_tapes', 'video_tapes.id', '=', 'playlist_videos.video_tape_id')
-                                            ->select('video_tapes.id as video_tape_id', 'video_tapes.default_image as picture')
-                                            ->first();
-
-                $response->data->picture = $first_video_from_playlist ? $first_video_from_playlist->picture : asset('images/playlist.png');
-
-                $new_playlist_content = view('user.channels.playlist_append')->with('channel_playlist_details', $response->data)->render();
-
-                $response->new_playlist_content = $new_playlist_content;
+                DB::commit();
 
                 return response()->json($response);   
 
             }
 
-            throw new Exception($response->error_messages, $response->error_code);
+            throw new Exception($response->error, $response->error_code);
 
         } catch(Exception $e) {
+            
+            DB::rollback();
 
             $error = $e->getMessage();
 
             $error_code = $e->getCode();
 
-            $response = ['success' => false, 'error_messages' => $error, 'error_code' => $error_code];
+            $response = ['success' => false, 'error' => $error, 'error_code' => $error_code];
        
             return response()->json($response);
 
@@ -3832,7 +3835,7 @@ class UserController extends Controller {
                 'id'=> Auth::user()->id,
                 'token'=> Auth::user()->token,
                 'playlist_id' => $request->playlist_id,
-                'video_tape_id' => $request->video_tape_id
+                'video_tape_id' => $request->video_tape_id ?: ''
             ]);
 
             $response = $this->UserAPI->playlists_delete($request)->getData();
@@ -3942,7 +3945,7 @@ class UserController extends Controller {
                 'token'=> Auth::user()->token
             ]);
             
-            $playlists_response = $this->NeWUserAPI->playlists_save($request)->getData();
+            $playlists_response = $this->NewUserAPI->playlists_save($request)->getData();
             
             $request->request->add([
                 'playlist_id'=> $playlists_response->data->playlist_id,
