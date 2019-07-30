@@ -235,7 +235,7 @@ class CommonRepository {
 
                 $channel_details->description = $request->has('description') ? $request->description : '';
 
-                $channel_details->user_id = $request->has('id') ? $request->id : '';
+                $channel_details->user_id = $request->has('id') ? $request->id : $request->user_id;
 
                 if($channel_details->youtube_channel_id == "" && $request->youtube_channel_id) {
 
