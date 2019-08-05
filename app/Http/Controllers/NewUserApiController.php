@@ -2961,11 +2961,13 @@ class NewUserApiController extends Controller
             
             }
 
+            $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
+
             $redeems_history = RedeemRequest::where('user_id' , $request->id)
                                     ->CommonResponse()
                                     ->orderBy('created_at', 'desc')
-                                    ->skip($this->skip)
-                                    ->skip($this->take)
+                                    ->skip($skip)
+                                    ->take($take)
                                     ->get();
 
             foreach ($redeems_history as $key => $details) {
