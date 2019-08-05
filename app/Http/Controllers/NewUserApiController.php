@@ -353,6 +353,8 @@ class NewUserApiController extends Controller
 
                     $data->push_status = (int) $user_details->push_status; // Don't remove int (used ios)
 
+                    $data->is_appstore_updated = Setting::get('ios_payment_subscription_status', 0);
+
                     $response_array = ['success' => true, 'data' => $data];
 
                 } else {
@@ -506,6 +508,8 @@ class NewUserApiController extends Controller
                 $data->email_notification_status = (int) $user_details->email_notification_status; // Don't remove int (used ios)
 
                 $data->push_status = (int) $user_details->push_status; // Don't remove int (used ios)
+
+                $data->is_appstore_updated = Setting::get('ios_payment_subscription_status', 0);
 
                 $response_array = ['success' => true, 'message' => CommonHelper::success_message(101) , 'data' => $data];
 
