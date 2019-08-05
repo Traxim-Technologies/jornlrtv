@@ -1502,7 +1502,7 @@ function formatted_amount($amount = 0.00, $currency = "") {
 
     $currency = $currency ?: Setting::get('currency', '$');
 
-    $formatted_amount = $currency."".$amount;
+    $formatted_amount = $currency."".$amount ?: 0.00;
 
     return $formatted_amount;
 }

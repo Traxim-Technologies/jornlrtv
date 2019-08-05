@@ -2960,6 +2960,8 @@ class NewUserApiController extends Controller
             $redeems_history = RedeemRequest::where('user_id' , $request->id)
                                     ->CommonResponse()
                                     ->orderBy('created_at', 'desc')
+                                    ->skip($this->skip)
+                                    ->skip($this->take)
                                     ->get();
 
             foreach ($redeems_history as $key => $details) {
