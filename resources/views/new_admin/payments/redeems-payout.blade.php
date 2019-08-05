@@ -68,24 +68,23 @@
                     <p class="lead">{{tr('invoice')}}</p>
 
                     <div class="table-responsive">
+                       
                         <table class="table">
                             <tr>
                                 <th style="width:50%">Subtotal:</th>
-                                <td>{{Setting::get('currency')}} {{$data->payout_amount}}</td>
+                                <td>{{ formatted_amount($data->payout_amount) }}</td>
                             </tr>
                             <tr>
                                 <th>Tax</th>
-                                <td>{{Setting::get('currency')}} 0.00</td>
+                                <td>{{ formatted_amount(0.00) }}</td>
                             </tr>
-                            <tr>
-                                <th>Shipping:</th>
-                                <td>{{Setting::get('currency')}} 0.00</td>
-                            </tr>
+                        
                             <tr>
                                 <th>{{tr('total')}}:</th>
-                                <td>{{Setting::get('currency')}} {{$data->payout_amount}}</td>
+                                <td>{{ formatted_amount($data->payout_amount) }}</td>
                             </tr>
                         </table>
+
                     </div>
                 
                 </div>
@@ -114,7 +113,7 @@
                             <input name = "currency_code" value = "USD" type = "hidden">
                             <input name = "lc" value = "GB" type = "hidden">
 
-                            <input name = "return" value = "{{route('admin.users.payout.response' , ['user_id' => $data->user_id , 'redeem_request_id' => $data->redeem_request_id , 'paid_amount' => $data->payout_amount, 'success' => true])}}" type = "hidden">
+                            <input name = "return" value = "{{ route('admin.users.payout.response' , ['user_id' => $data->user_id , 'redeem_request_id' => $data->redeem_request_id , 'paid_amount' => $data->payout_amount, 'success' => true]) }}" type = "hidden">
 
                             <input name = "cbt" value = "Return to My Site" type = "hidden">
 
@@ -145,7 +144,7 @@
 
                             <input type="hidden" name="paid_amount" value="{{$data->payout_amount}}">
 
-                            <input type="hidden" name="user_id" value="{{$data->user_id}}">
+                            <input type="hidden" name="user_id" value="{{ $data->user_id }}">
 
                             <?php $confirm_message = tr('redeem_pay_confirm'); ?>
 
@@ -153,21 +152,19 @@
                                 <i class="fa fa-credit-card"></i> 
                                 {{tr('direct_payment')}}
                             </button>
+                       
                         </form>
 
                     @else
                         <span>-</span>
                     @endif
 
-                    
-
                 </div>
+
             </div>
             <!-- /.row -->
 
         </section>
-
-        
 
     </div>
 

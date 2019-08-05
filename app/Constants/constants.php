@@ -68,6 +68,8 @@ if(!defined('APPROVED')) define('APPROVED', 1);
 if(!defined('DECLINED')) define('DECLINED', 0);
 
 
+if (!defined('USER_PENDING')) define('USER_PENDING',2);
+
 if (!defined('USER_APPROVED')) define('USER_APPROVED',1);
 
 if (!defined('USER_DECLINED')) define('USER_DECLINED',0);

@@ -1085,7 +1085,15 @@
    function playlist_video_update(video_tape_id, playlist_id,playlist_checkbox) {
       // id of clicked playlist   
       var playlist_checkbox_id = playlist_checkbox.id;
-    
+     
+      var playlist_ids = $("input[name='playlist_ids[]']").val();
+     
+      // var playlist_ids = document.getElementsByName("playlist_ids[]").value();
+      // alert(playlist_ids);
+      // alert(JSON.stringify(playlist_ids));
+     
+      // playlist_ids.push("playlist_id");
+
       var status;
 
       if($('#'+playlist_checkbox_id).prop("checked") == true) {
@@ -1100,7 +1108,7 @@
 
       $.ajax({
          url : "{{route('user.playlist.video.update')}}",
-         data : {video_tape_id : video_tape_id, playlist_id : playlist_id, status : status},
+         data : {video_tape_id : video_tape_id, playlist_id : playlist_id, status : status, playlist_ids : playlist_ids},
          type: "POST",
          success : function(data) {
             if (data.success) {
@@ -1133,10 +1141,11 @@
       } else {
 
          $.ajax({
-              url : "{{route('user.playlist.save.video_add')}}",
-              data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
-              type: "post",
-              success : function(data) {
+               
+               url : "{{route('user.playlist.save.video_add')}}",
+               data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
+               type: "post",
+               success : function(data) {
                
                   if (data.success) {
 
@@ -1154,12 +1163,12 @@
                      
                      alert(data.error_messages);
                   }
+                  
                },
       
-              error : function(data) {
-              },
+               error : function(data) {
+               },
          })
-
       }
    }  
 

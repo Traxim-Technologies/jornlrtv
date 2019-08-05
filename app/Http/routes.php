@@ -288,7 +288,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     // New Admin tags methods begins
 
-    Route::get('/tags', 'NewAdminController@tags_index')->name('tags');
+    Route::get('/tags', 'NewAdminController@tags_index')->name('tags.index');
 
     Route::post('/tags/save', 'NewAdminController@tags_save')->name('tags.save');
 
@@ -296,7 +296,9 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/tags/status', 'NewAdminController@tags_status_change')->name('tags.status');
 
-    Route::get('/tags/videos', 'NewAdminController@tags_videos')->name('tags.videos');
+    // Route::get('/tags/videos', 'NewAdminController@tags_videos')->name('tags.videos');
+    
+    Route::get('/tags/videos', 'NewAdminController@video_tapes_index')->name('tags.videos');
 
     // New Admin tags methods ends
 
@@ -598,7 +600,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('channels', 'UserController@channels')->name('channel.list');
     
-    // Route::get('playlists', 'UserController@playlists_index')->name('playlists.index');
+    Route::get('playlists', 'UserController@playlists_index')->name('playlists.index');
 
 
     Route::get('history', 'UserController@history')->name('history');
@@ -853,7 +855,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('/playlists/', 'UserController@playlists')->name('playlists.index');
 
-    Route::any('/playlists/save', 'UserController@playlists_save')->name('playlists.save');
+    Route::any('/playlists/save', 'UserController@playlists_save')->name('playlists.save');    
 
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
    
@@ -870,6 +872,10 @@ Route::group(['as' => 'user.'], function(){
     Route::post('/playlist_video_update', 'UserController@playlist_video_update')->name('playlist.video.update');
 
     Route::post('/playlist/save/video_add', 'UserController@playlist_save_video_add')->name('playlist.save.video_add');
+    
+    Route::any('/channel/playlists/save', 'UserController@channel_playlists_save')->name('channel.playlists.save');
+
+    Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
 
 });
 

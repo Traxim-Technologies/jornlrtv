@@ -132,7 +132,7 @@
                                                         <span class="video_views">
                                                             <div></div>
                                                             <!-- <i class="fa fa-eye"></i>  {{tr('views')}} <b>.</b>  -->
-                                                            {{$suggestion->created_at}} 
+                                                            {{ common_date($suggestion->created_at) }} 
                                                         </span> 
                                                         <br>
                                                                                

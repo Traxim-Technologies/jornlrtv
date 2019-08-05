@@ -47,9 +47,11 @@
 			                <ul class="admin-action btn btn-default pull-right" style="margin-right: 20px">
 			                 	
 								<li class="dropdown">
+					                
 					                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 					                  {{ tr('export') }} <span class="caret"></span>
 					                </a>
+					               
 					                <ul class="dropdown-menu">
 					                  	<li role="presentation">
 					                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.users.export' , ['format' => 'xlsx']) }}">
@@ -63,7 +65,9 @@
 					                  		</a>
 					                  	</li>
 					                </ul>
+							
 								</li>
+							
 							</ul>
 
 						@endif
@@ -95,6 +99,7 @@
 							</thead>
 
 							<tbody>
+								
 								@foreach($users as $i => $user_details)
 
 								    <tr>
@@ -130,7 +135,7 @@
 										</td>
 
 								      	<td>
-								      		<b>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? $user_details->userRedeem->remaining : 0 }}</b>
+								      		<b>{{ formatted_amount($user_details->userRedeem ? $user_details->userRedeem->remaining : 0) }}</b>
 								     	</td>
 
 								      	@if(Setting::get('email_verify_control') == USER_EMAIL_VERIFIED)

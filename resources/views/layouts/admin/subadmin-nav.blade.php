@@ -36,6 +36,8 @@
                 </ul>
             </li>
 
+            <li class="header text-uppercase sidebar-header">{{tr('videos_management')}}</li>
+
             <li class="treeview" id="channels">
                 <a href="{{route('admin.channels.index')}}">
                     <i class="fa fa-tv"></i> <span>{{tr('channels')}}</span> <i class="fa fa-angle-left pull-right"></i>
@@ -66,7 +68,7 @@
             </li>
 
             <li id="tags">
-                <a href="{{route('admin.tags')}}">
+                <a href="{{route('admin.tags.index')}}">
                     <i class="fa fa-tag"></i> <span>{{tr('tags')}}</span> 
                 </a>
             </li>
@@ -112,7 +114,7 @@
             </li>
 
 
-            <li class="treeview" id="custom_live_videos">
+            <li class="treeview" id="custom_live_videos" style="display: none;">
                 <a href="{{route('admin.custom.live.index')}}">
                     <i class="fa fa-wifi"></i> <span>{{tr('custom_live_videos')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -132,6 +134,8 @@
                     </li>
                 </ul>
             </li>  
+          
+            <li class="header text-uppercase sidebar-header">{{tr('revenue_management')}}</li>
 
             <li class="treeview" id="videos-ads-details">
 

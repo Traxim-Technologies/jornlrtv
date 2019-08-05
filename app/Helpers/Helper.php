@@ -1074,13 +1074,16 @@
 
         }
 
-        public static function delete_language_files($folder, $boolean, $filename) {
+        public static function delete_language_files($folder, $boolean, $filename = NULL) {
+
             if ($boolean) {
+
                 $path = base_path() . "/resources/lang/" .$folder;
-                \File::cleanDirectory($path);
-                \Storage::deleteDirectory( $path );
-                rmdir( $path );
+
+                \File::deleteDirectory( $path );
+
             } else {
+
                 \File::delete( base_path() . "/resources/lang/" . $folder ."/".$filename);
             }
             return true;

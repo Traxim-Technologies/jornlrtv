@@ -55,11 +55,11 @@
       						</a>
 			      		</strong><hr>
 
-			      		<strong>{{ tr('total')}} : {{ Setting::get('currency')}} {{ $payment_details->amount}}</strong><hr>
+			      		<strong>{{ tr('total')}} : {{ formatted_amount($payment_details->amount) }}</strong><hr>
 
-			      		<strong>{{ tr('admin_ppv_commission')}} : {{ Setting::get('currency')}} {{ $payment_details->admin_ppv_amount}}</strong><hr>
+			      		<strong>{{ tr('admin_ppv_commission')}} : {{ formatted_amount($payment_details->admin_ppv_amount) }}</strong><hr>
 
-			      		<strong>{{ tr('user_ppv_commission')}} : {{ Setting::get('currency')}} {{ $payment_details->user_ppv_amount}}</strong><hr>
+			      		<strong>{{ tr('user_ppv_commission')}} : {{ formatted_amount($payment_details->user_ppv_amount) }}</strong><hr>
 
 			      		<strong>{{ tr('reason')}} : {{ $payment_details->reason}}</strong><hr>
 
@@ -73,11 +73,11 @@
 
 			      		<strong>{{ tr('coupon_code')}} : {{ $payment_details->coupon_code}}</strong><hr>
 
-				      	<strong>{{ tr('coupon_amount')}} : {{ Setting::get('currency')}} {{ $payment_details->coupon_amount? $payment_details->coupon_amount : "0.00"}}</strong><hr>
+				      	<strong>{{ tr('coupon_amount')}} : {{ formatted_amount($payment_details->coupon_amount? $payment_details->coupon_amount : "0.00") }}</strong><hr>
 
-				      	<strong>{{ tr('plan_amount')}} : {{ Setting::get('currency')}} {{ $payment_details->ppv_amount ? $payment_details->ppv_amount : "0.00"}}</strong><hr>
+				      	<strong>{{ tr('plan_amount')}} : {{ formatted_amount($payment_details->ppv_amount ? $payment_details->ppv_amount : "0.00") }}</strong><hr>
 
-				      	<strong>{{ tr('final_amount')}} : {{ Setting::get('currency')}} {{ $payment_details->amount ? $payment_details->amount : "0.00" }}</strong><hr>
+				      	<strong>{{ tr('final_amount')}} : {{ formatted_amount($payment_details->amount ? $payment_details->amount : "0.00") }}</strong><hr>
 
 				      	<strong>{{ tr('is_coupon_applied')}} : 	
 				      	@if($payment_details->is_coupon_applied)

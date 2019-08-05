@@ -38,7 +38,7 @@
 
             <li class="treeview" id="sub-admins">
                 <a href="#">
-                    <i class="fa fa-user"></i> <span>{{tr('sub_admins')}}</span> <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fa fa-user-plus"></i> <span>{{tr('sub_admins')}}</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
 
                 <ul class="treeview-menu">
@@ -82,7 +82,7 @@
             </li>
 
             <li id="tags">
-                <a href="{{route('admin.tags')}}">
+                <a href="{{route('admin.tags.index')}}">
                     <i class="fa fa-tag"></i> <span>{{tr('tags')}}</span> 
                 </a>
             </li>
@@ -313,7 +313,7 @@
                 </ul>
             </li>
 
-            @if(Setting::get('admin_language_control') == FALSE)
+            @if(Setting::get('admin_language_control') == YES)
             <li id="languages">
                 <a href="{{route('admin.languages.index')}}">
                     <i class="fa fa-globe"></i> <span>{{tr('languages')}}</span>

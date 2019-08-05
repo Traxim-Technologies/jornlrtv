@@ -11,7 +11,7 @@
 
 @section('breadcrumb')
    	 
-    <li class="active"><i class="fa fa-user"></i> {{ tr('sub_admins') }}</li>
+    <li class="active"><i class="fa fa-user-plus"></i> {{ tr('sub_admins') }}</li>
 @endsection
 
 @section('content')

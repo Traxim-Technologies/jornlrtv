@@ -43,7 +43,9 @@
 	              		</div>
 
 	              		<h3 class="widget-user-username">{{$sub_admin_details->name}} </h3>
+
 	      				<h5 class="widget-user-desc">{{tr('sub_admin')}}</h5>
+      				
       				</div>
 
       				<div class="pull-right">

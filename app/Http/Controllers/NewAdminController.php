@@ -311,6 +311,9 @@ class NewAdminController extends Controller {
                     'user_id' => 'exists:users,id',
                     'name' => 'required|max:255',
                     'email' => $request->user_id ? 'required|email|max:255|unique:users,email,'.$request->user_id.',id' : 'required|email|max:255|unique:users,email,NULL,id',
+                    'email' => $request->user_id ? 
+                        'required|email|max:255'.$request->user_id.',id' : 'required|email|max:255|unique:users,email,NULL,id',
+
                     'mobile' => 'digits_between:6,13',
                     'password' => $request->user_id ? '' :'required|min:6|confirmed',
                     'dob' => 'required',
@@ -552,7 +555,7 @@ class NewAdminController extends Controller {
                         ->orderBy('user_ratings.created_at', 'desc')
                         ->paginate(12);
                 
-                $users_referral_details = UserReferrer::where('user_id', $request->user_id)                            
+                $users_referral_details = UserReferrer::where('user_id', $request->user_id)
                 ->withCount('getReferral')
                 ->first();
 
@@ -1263,6 +1266,7 @@ class NewAdminController extends Controller {
                         ->leftjoin('users', 'users.id', '=', 'channels.user_id')
                         ->withCount('getVideoTape')
                         ->withCount('getChannelSubscribers')
+                        ->withCount('getPlaylist')
                         ->where('channels.id', $request->channel_id)
                         ->first();
 
@@ -1476,15 +1480,27 @@ class NewAdminController extends Controller {
             
             $channel_subscriptions = ChannelSubscription::orderBy('created_at', 'desc')->get();
 
-            if ($request->channel_id) {
+            $channel_details = '';
+
+            if($request->channel_id) {
+
+                $channel_details = Channel::find($request->channel_id);
+
+                if(!$channel_details) {
+
+                    throw new Exception(tr('admin_channel_not_found'), 101);
+                }
 
                 $channel_subscriptions = ChannelSubscription::where('channel_id', $request->channel_id)->orderBy('created_at', 'desc')->get();
             }   
+            
+            // dd($channel_details); 
 
             return view('new_admin.channels.subscribers')
                         ->withPage('channels')
                         ->with('sub_page','channels-subscribers')
-                        ->with('channel_subscriptions' , $channel_subscriptions);
+                        ->with('channel_subscriptions' , $channel_subscriptions)
+                        ->with('channel_details' , $channel_details);
             
         } catch (Exception $e) {
             
@@ -1733,7 +1749,7 @@ class NewAdminController extends Controller {
 
             return view('new_admin.categories.view')
                         ->with('page', 'categories')
-                        ->with('sub_page', 'categories')
+                        ->with('sub_page', 'categories-view')
                         ->with('category_videos', $category_videos)
                         ->with('channel_lists', $channel_lists)
                         ->with('category_details', $category_details)
@@ -1982,16 +1998,38 @@ class NewAdminController extends Controller {
      * @return View page
      */
     public function tags_index(Request $request) {
+        
+        try {
 
-        $tag_details = $request->tag_id ? Tag::find($request->tag_id) : new Tag;
+            $tag_details = new Tag;
+            
+            if($request->tag_id) {
 
-        $tags = Tag::orderBy('created_at', 'desc')->get();
+                $tag_details = Tag::find($request->tag_id);
 
-        return view('new_admin.tags.index')
-                    ->with('page', 'tags')
-                    ->with('sub_page', '')
-                    ->with('tag_details', $tag_details)
-                    ->with('tags', $tags);
+                if (!$tag_details) {
+
+                    throw new Exception(tr('admin_tag_not_found'), 101);
+                
+                }
+            }
+
+            $tags = Tag::orderBy('created_at', 'desc')->get();
+
+            return view('new_admin.tags.index')
+                        ->with('page', 'tags')
+                        ->with('sub_page', '')
+                        ->with('tag_details', $tag_details)
+                        ->with('tags', $tags);
+
+        } catch (Exception $e) {
+            
+            DB::commit();
+
+            $error = $e->getMessage();
+
+            return redirect()->route('admin.tags.index')->with('flash_error',$error);
+        }
     }
     
     /**
@@ -2040,7 +2078,7 @@ class NewAdminController extends Controller {
 
                 $message =  $request->tag_id ? tr('admin_tag_update_success') : tr('admin_tag_create_success'); 
 
-                return redirect(route('admin.tags'))->with('flash_success',$message);
+                return redirect()->route('admin.tags.index')->with('flash_success',$message);
             } 
 
             throw new Exception(tr('admin_tag_save_error'), 101);            
@@ -2159,55 +2197,6 @@ class NewAdminController extends Controller {
             return back()->with('flash_error',$error);
         }
     
-    }
-
-
-    /**
-     * @method tags_videos
-     *
-     * @uses List of videos displayed based on tags
-     *
-     * @created 
-     *
-     * @updated 
-     *
-     * @param
-     * 
-     * @return response of videos details
-     *
-     */
-    public function tags_videos(Request $request) {
-
-        try {
-            
-            $tag_details = Tag::find($request->tag_id);
-
-            if (!$tag_details) {
-
-                throw new Exception(tr('admin_tag_not_found'), 101);
-            }
-
-            $videos = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
-                        ->videoResponse()
-                        ->leftjoin('video_tape_tags', 'video_tape_tags.video_tape_id', '=', 'video_tapes.id')
-                        ->where('video_tape_tags.tag_id', $request->tag_id)
-                        ->orderBy('video_tapes.created_at' , 'desc')
-                        ->groupBy('video_tape_tags.video_tape_id')
-                        ->get();
-
-            return view('new_admin.tags.videos')
-                        ->withPage('tags')
-                        ->with('sub_page','tags')
-                        ->with('videos' , $videos)
-                        ->with('tag_details', $tag_details);
-
-        } catch (Exception $e) {
-
-            $error = $e->getMessage();
-
-            return back()->with('flash_error',$error);
-        }
-   
     }
 
     /**
@@ -4181,7 +4170,6 @@ class NewAdminController extends Controller {
 
             $video_details = VideoTape::find($request->id);
             
-
             if(!$video_details) {
 
                 throw new Exception(tr('admin_banner_video_not_found'), 101);
@@ -5057,7 +5045,7 @@ class NewAdminController extends Controller {
      *
      * @updated Anjana H
      *
-     * @param integer $id - Optional ( Redeem request id)
+     * @param integer $id - optional ( Redeem request id)
      *
      * @return view page 
      */
@@ -5121,14 +5109,14 @@ class NewAdminController extends Controller {
         $total_subscribers = UserPayment::where('status' , '!=' , 0)->count();
         
         return view('new_admin.payments.revenues')
-                        ->withPage('payments')
-                        ->with('sub_page' , 'payments-dashboard')
-                        ->with('total' , $total)
-                        ->with('ppv_total' , $ppv_total)
-                        ->with('ppv_admin_amount' , $ppv_admin_amount)
-                        ->with('ppv_user_amount' , $ppv_user_amount)
-                        ->with('subscription_total' , $subscription_total)
-                        ->with('total_subscribers' , $total_subscribers);
+                    ->withPage('payments')
+                    ->with('sub_page' , 'payments-dashboard')
+                    ->with('total' , $total)
+                    ->with('ppv_total' , $ppv_total)
+                    ->with('ppv_admin_amount' , $ppv_admin_amount)
+                    ->with('ppv_user_amount' , $ppv_user_amount)
+                    ->with('subscription_total' , $subscription_total)
+                    ->with('total_subscribers' , $total_subscribers);
     
     }
 
@@ -5812,6 +5800,8 @@ class NewAdminController extends Controller {
 
                 $sub_admin_details->picture = asset('placeholder.png');
 
+                $sub_admin_details->status = DEFAULT_TRUE;
+
             }
 
             if($request->hasFile('picture')) {
@@ -5829,8 +5819,6 @@ class NewAdminController extends Controller {
             $sub_admin_details->token = Helper::generate_token();
 
             $sub_admin_details->token_expiry = Helper::generate_token_expiry();
-
-            $sub_admin_details->status = DEFAULT_TRUE;
 
             if($sub_admin_details->save()) {
 
@@ -5924,10 +5912,11 @@ class NewAdminController extends Controller {
 
             if(!$user_details) {
 
-                throw new Exception( tr('admin_user_not_found'), 101);
+                throw new Exception(tr('admin_user_not_found'), 101);
             } 
             
             $base_query = Playlist::where('playlists.user_id', $request->user_id)
+                                ->where('playlists.playlist_type', PLAYLIST_TYPE_USER)
                                 ->where('playlists.status', APPROVED)
                                 ->orderBy('playlists.updated_at', 'desc');
 
@@ -6122,6 +6111,8 @@ class NewAdminController extends Controller {
             $base_query = VideoTape::leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                         ->videoResponse()
                         ->orderBy('video_tapes.created_at' , 'desc');
+            
+            $tag_details = '';
 
             if($request->has('tag_id')) {
 
@@ -6148,7 +6139,8 @@ class NewAdminController extends Controller {
             return view('new_admin.video_tapes.index')
                         ->with('page', 'video_tapes')
                         ->with('sub_page', 'video_tapes-view')
-                        ->with('video_tapes' , $video_tapes); 
+                        ->with('video_tapes' , $video_tapes)
+                        ->with('tag_details' , $tag_details); 
 
         } catch (Exception $e) {
             
@@ -7236,6 +7228,7 @@ class NewAdminController extends Controller {
                 ->select('video_tapes.id as video_tapes_id', 
                     'video_tapes.channel_id as channel_id',
                     'video_tapes.title as video_tape_title')
+                ->where('is_approved',APPROVED)
                 ->orderBy('video_tapes.created_at' , 'desc')->get();
          
             if(!$video_tapes) {
@@ -7300,22 +7293,39 @@ class NewAdminController extends Controller {
           
             if(!$video_tapes){
                 
-                throw new Exception(tr('admin_video_tape_not_found'), 101);
+                throw new Exception(tr('video_not_found'), 101);
+            } 
+
+            $channel_details = Channel::find($request->channel_id);
+          
+            if(!$channel_details){
+                
+                throw new Exception(tr('channel_not_found'), 101);
             }
 
-            $playlist_details = $request->playlist_id ? Playlist::find($request->playlist_id) : new Playlist;
+            if($request->playlist_id) {
+                
+                $playlist_details = Playlist::find($request->playlist_id);
+            
+            } else{
+                
+                $playlist_details = new Playlist;
+                
+                $playlist_details->status = APPROVED;
 
-            $playlist_details->channel_id = $request->channel_id;
+                $playlist_details->playlist_type = PLAYLIST_TYPE_CHANNEL;
+
+                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PUBLIC;
+
+                $playlist_details->channel_id = $request->channel_id;
+               
+                $playlist_details->user_id = $channel_details->user_id;
+
+            }
 
             $playlist_details->title = $request->title;
 
             $playlist_details->description = $request->description;
-
-            $playlist_details->status = APPROVED;
-
-            $playlist_details->playlist_type = PLAYLIST_TYPE_CHANNEL;
-
-            $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PUBLIC;
 
             if ($request->hasFile('picture')) {
 
@@ -7393,6 +7403,8 @@ class NewAdminController extends Controller {
         
         try {
 
+            $playlist_details = $request->playlist_id ? Playlist::find( $request->playlist_id) : new Playlist;
+
             $channel_details = Channel::find($request->channel_id);
 
             if(!$channel_details) {
@@ -7415,17 +7427,17 @@ class NewAdminController extends Controller {
 
                 // check already video_tape added 
 
-                $check_playlist_video_exists = PlaylistVideo::where('video_tape_id' , $video_tape_details->video_tapes_id)->where('status' , APPROVED)->count();
+                $check_playlist_video_exists = PlaylistVideo::where('video_tape_id' , $video_tape_details->video_tapes_id)->where('playlist_id',$request->playlist_id)->where('status' , APPROVED)->count();
 
                 $video_tape_details->is_selected = NO;
 
                 if($check_playlist_video_exists) {
+               
                     $video_tape_details->is_selected = YES;
+               
                 }
 
             }
-
-            $playlist_details = $request->playlist_id ? Playlist::find( $request->playlist_id) : new Playlist;
 
             return view('new_admin.channels.playlist_edit')
                         ->with('page' , 'channels')

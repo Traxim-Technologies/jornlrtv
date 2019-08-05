@@ -101,7 +101,7 @@
 
 	                            <td><a target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id]) }}">{{ $channel_details->get_channel_subscribers_count }}</a></td>
 
-	                            <td>{{ Setting::get('currency') }} {{ getAmountBasedChannel($channel_details->id) }}</td>
+	                            <td>{{ formatted_amount(getAmountBasedChannel($channel_details->id)) }}</td>
 
 	                            <td>
 	                                @if($channel_details->is_approved)

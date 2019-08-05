@@ -19,106 +19,123 @@
 	@include('notification.notify')
 
 	<div class="row">
+    
         <div class="col-xs-12">
-          <div class="box box-primary">
-          	<div class="box-header label-primary">
-                <b style="font-size:18px;">"{{$category->name}}" {{tr('category')}} {{tr('channels')}}</b>
+    
+          	<div class="box box-primary">
+          	
+	          	<div class="box-header label-primary">
+	                <b style="font-size:18px;">"{{$category->name}}" {{tr('category')}} {{tr('channels')}}</b>
 
-                <a href="{{route('admin.channels.create')}}" class="btn btn-default pull-right">{{tr('add_channel')}}</a>
-            </div>
-            <div class="box-body">
+	                <a href="{{route('admin.channels.create')}}" class="btn btn-default pull-right">{{tr('add_channel')}}</a>
+	            </div>
+	            
+	            <div class="box-body">
 
-            	@if(count($channels) > 0)
+	            	@if(count($channels) > 0)
 
-	              	<table id="example1" class="table table-bordered table-striped">
+		              	<table id="example1" class="table table-bordered table-striped">
 
-						<thead>
-						    <tr>
-						      <th>{{tr('id')}}</th>
-						      <th>{{tr('channel')}}</th>
-						      <th>{{tr('user_name')}}</th>
-						      <th>{{tr('no_of_videos')}}</th>
-						      <th>{{tr('subscribers')}}</th>
-						      <th>{{tr('amount')}}</th>
-						      <th>{{tr('status')}}</th>
-						      <th>{{tr('action')}}</th>
-						    </tr>
-						</thead>
-
-						<tbody>
-							@foreach($channels as $i => $channel)
-
+							<thead>
 							    <tr>
-							      	<td>{{$i+1}}</td>
-							      	<td><a target="_blank" href="{{route('admin.channels.view', $channel->id)}}">{{$channel->name}}</a></td>
-							      	<td><a target="_blank" href="{{route('admin.users.view', $channel->user_id)}}">{{$channel->getUser ? $channel->getUser->name : ''}}</a></td>
-							      	<td><a target="_blank" href="{{route('admin.channels.videos', array('id'=> $channel->id))}}">{{$channel->get_video_tape_count}}</a></td>
-	                            	<td><a target="_blank" href="{{route('admin.channels.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></td>
+							      	<th>{{tr('id')}}</th>
+							      	<th>{{tr('channel')}}</th>
+							      	<th>{{tr('user_name')}}</th>
+							      	<th>{{tr('no_of_videos')}}</th>
+							      	<th>{{tr('subscribers')}}</th>
+							      	<th>{{tr('amount')}}</th>
+							      	<th>{{tr('status')}}</th>
+							      	<th>{{tr('action')}}</th>
+							    </tr>
+							</thead>
 
-	                            	<td>{{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}}</td>
+							<tbody>
+								
+								@foreach($channels as $i => $channel)
 
-								    <td>
+								    <tr>
+								      	<td>{{$i+1}}</td>
+								      
+								      	<td><a target="_blank" href="{{route('admin.channels.view', $channel->id)}}">{{$channel->name}}</a></td>
+								      
+								      	<td><a target="_blank" href="{{route('admin.users.view', $channel->user_id)}}">{{$channel->getUser ? $channel->getUser->name : ''}}</a></td>
+								      
+								      	<td><a target="_blank" href="{{route('admin.channels.videos', array('id'=> $channel->id))}}">{{$channel->get_video_tape_count}}</a></td>
+		                            
+		                            	<td><a target="_blank" href="{{route('admin.channels.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></td>
+
+		                            	<td> {{ formatted_amount(getAmountBasedChannel($channel->id)) }}</td>
+
+									    <td>
 								      		@if($channel->is_approved)
 								      			<span class="label label-success">{{tr('approved')}}</span>
 								       		@else
 								       			<span class="label label-warning">{{tr('pending')}}</span>
 								       		@endif
-								    </td>
-							     	<td>
-            							<ul class="admin-action btn btn-default">
-            								
-            								<li class="dropup">
-            								
-								                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-								                  {{tr('action')}} <span class="caret"></span>
-								                </a>
-								                <ul class="dropdown-menu">
-								                  	<li role="presentation">
-                                                        @if(Setting::get('admin_delete_control'))
-                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
-                                                        @else
-                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.channels.edit' , array('id' => $channel->id))}}">{{tr('edit')}}</a>
-                                                        @endif
-                                                    </li>
+									    </td>
 
-													
-                                                    
-													<li class="divider" role="presentation"></li>
+								     	<td>
+	            							<ul class="admin-action btn btn-default">
+	            								
+	            								<li class="dropup">
+	            								
+									                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+									                  {{tr('action')}} <span class="caret"></span>
+									                </a>
+									                <ul class="dropdown-menu">
+									                  	<li role="presentation">
+	                                                        @if(Setting::get('admin_delete_control'))
+	                                                            <a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('edit')}}</a>
+	                                                        @else
+	                                                            <a role="menuitem" tabindex="-1" href="{{route('admin.channels.edit' , array('id' => $channel->id))}}">{{tr('edit')}}</a>
+	                                                        @endif
+	                                                    </li>
 
-								                  	<li role="presentation">
+														<li class="divider" role="presentation"></li>
 
-									                  	@if(Setting::get('admin_delete_control'))
+									                  	<li role="presentation">
 
-										                  	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
+										                  	@if(Setting::get('admin_delete_control'))
 
-										                @else
+											                  	<a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{tr('delete')}}</a>
 
-								                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.channels.delete' , array('channel_id' => $channel->id))}}">{{tr('delete')}}</a>
-								                  		@endif
-								                  	</li>
+											                @else
 
-													<li class="divider" role="presentation"></li>
+									                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.channels.delete' , array('channel_id' => $channel->id))}}">{{tr('delete')}}</a>
+									                  		@endif
+									                  	</li>
 
-								                  	@if($channel->is_approved)
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
-								                  	@else
-								                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
-								                  	@endif
+														<li class="divider" role="presentation"></li>
 
-								                </ul>
-              								</li>
-            							</ul>
-							      </td>
-							    </tr>
-							@endforeach
-						</tbody>
-					</table>
-				@else
-					<h3 class="no-result">{{tr('no_result_found')}}</h3>
-				@endif
-            </div>
-          </div>
+									                  	@if($channel->is_approved)
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' =>0))}}">{{tr('decline')}}</a></li>
+									                  	@else
+									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.channel.approve' , array('id' => $channel->id , 'status' => 1))}}">{{tr('approve')}}</a></li>
+									                  	@endif
+
+									                </ul>
+	              								</li>
+	            							</ul>
+								        </td>
+								    
+								    </tr>
+						
+								@endforeach
+						
+							</tbody>
+						
+						</table>
+
+					@else
+						<h3 class="no-result">{{tr('no_result_found')}}</h3>
+					@endif
+					
+	            </div>
+          	
+          	</div>
+    
         </div>
+    
     </div>
 
 @endsection

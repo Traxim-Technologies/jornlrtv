@@ -93,7 +93,7 @@
                         <h4 class="pull-right" >{{ $subscription_details->plan }}</h4><hr>
 
                         <strong>{{ tr('amount') }}</strong>
-                        <h4 class="pull-right" >{{ Setting::get('currency') }} {{ $subscription_details->amount }}</h4><hr>
+                        <h4 class="pull-right">{{ formatted_amount($subscription_details->amount) }}</h4><hr>
 
                     </div>
 

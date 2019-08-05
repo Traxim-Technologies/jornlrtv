@@ -1206,7 +1206,7 @@ return array(
 	'successfully_logged_in' => 'successfully logged in.',
 	'successfully_logged_out' => 'successfully logged out.',
 	'successfully_sign_up' => 'successfully signed up.',
-	'mail_sent_successfully.' => 'Mail sent successfully.',
+	'mail_sent_successfully' => 'Mail sent successfully.',
 	'favourite_provider_delete' => 'Favourite provider deleted successfully.',
 	'payment_mode_changed' => 'Payment mode changed successfully.',
 	'service_accepted' => 'Service Accepted',
@@ -1523,7 +1523,7 @@ return array(
 	'ios_payment_subscription_status' => 'Do you want Disable the payment subscription',
 	'ios_settings' => 'iOS Settings',
 
-	'user_video_upload_success' => 'Video uploaded successfully and ready for play',
+	'user_video_upload_success' => 'Video updated successfully and ready for play',
 	'user_video_upload_waiting_for_admin_approval' => 'The video is being reviewed by the admin. If approved it will be added to your channel',
 
 
@@ -1626,6 +1626,7 @@ return array(
 	'admin_tag_delete_success' => 'Tag has been deleted successfully.',
 	'admin_tag_delete_error' => 'Sorry! Tag could not be deleted. Please try again',
 	'admin_taged_videos' => 'Tagged Videos',
+	'admin_tag_not_found' => 'Tag not found!',
 	// New Admin Coupons
 
 	'admin_coupon_not_found' => 'Coupon details not found.',
@@ -2079,5 +2080,9 @@ return array(
 
 	'user_is_verified' => 'Verified',
 	'check_redeems' => 'CHECK REDEEMS',
+	'video_link' => 'Video Link',
+	'redeem_paypal_cancelled' => 'Redeem by PayPal cancelled',
+	'admin_video_tape_not_found' => 'Video Not Found',
+	'playlist_add_video' => 'Add Video',
 
 );

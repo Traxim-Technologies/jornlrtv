@@ -2056,14 +2056,19 @@ class UserApiController extends Controller {
                     }
 
                 } else {
+                   
                     $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(148) ,'error_code' => 148];
                 }
 
             } else {
+               
                 $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(151) , 'error_code' => 151];
             }
+
         } else {
+            
             $response_array = ['success' => false , 'error_messages' => Helper::get_error_message(147) , 'error_code' => 147];
+        
         }
 
         return response()->json($response_array , 200);
@@ -5006,6 +5011,7 @@ class UserApiController extends Controller {
         $u_id = $request->id;
 
         $channel = Channel::find($channel_id);
+        
 
         if ($channel) {
 
@@ -5036,8 +5042,6 @@ class UserApiController extends Controller {
                         ->where('channels.is_approved', 1)
                         ->where('categories.status', CATEGORY_APPROVE_STATUS);
 
-            
-            
         }
 
         if ($u_id) {
@@ -5075,6 +5079,7 @@ class UserApiController extends Controller {
             }
 
         }
+        // dd($items);
 
         return response()->json($items);
 
@@ -7472,9 +7477,9 @@ class UserApiController extends Controller {
     
                 $playlist_details->status = APPROVED;
 
-                $playlist_details->playlist_display_type = PLAYLIST_DISPLAY_PRIVATE;
+                $playlist_details->playlist_display_type = $request->playlist_display_type ?: PLAYLIST_DISPLAY_PRIVATE;
 
-                $playlist_details->playlist_type = PLAYLIST_TYPE_USER;
+                $playlist_details->playlist_type = $request->playlist_type ?:  PLAYLIST_TYPE_USER;
 
             }
 
@@ -7532,8 +7537,9 @@ class UserApiController extends Controller {
      */
 
     public function playlists_video_status(Request $request) {
-       
+
         try {
+            
 
             DB::beginTransaction();
 
@@ -7560,7 +7566,7 @@ class UserApiController extends Controller {
                     throw new Exception($error_messages, 101);
                     
                 }
-
+                
                 // check the video added in spams (For Viewer)
 
                 if(!$request->channel_id && $request->id) {
@@ -7581,7 +7587,7 @@ class UserApiController extends Controller {
                 PlaylistVideo::whereNotIn('playlist_id', $playlist_ids)->where('video_tape_id', $request->video_tape_id)
                                 ->where('user_id', $request->id)
                                 ->delete();
-
+                
                 $total_playlists_update = 0;
 
                 foreach ($playlist_ids as $key => $playlist_id) {
@@ -7596,12 +7602,13 @@ class UserApiController extends Controller {
                                             ->where('user_id', $request->id)
                                             ->where('playlist_id', $playlist_id)
                                             ->first();
+
                         if(!$playlist_video_details) {
 
                             $playlist_video_details = new PlaylistVideo;
      
                         }
-
+                        
                         $playlist_video_details->user_id = $request->id;
 
                         $playlist_video_details->playlist_id = $playlist_id;

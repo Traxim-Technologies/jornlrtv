@@ -223,7 +223,7 @@
 		           	
 		            <span class="video_views">
 		                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-		                {{$video->created_at}}
+		                {{ common_date($video->created_at) }}
 		            </span>
 		        </div> 
 				<?php /*@if(Auth::check())
@@ -477,7 +477,7 @@
 		           	
 		            <span class="video_views">
 		                <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}} <b>.</b> 
-		                {{$channel->created_at}}
+		                {{ common_date($channel->created_at) }}
 		            </span>
 		        </div> 
 

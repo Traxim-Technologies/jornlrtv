@@ -116,7 +116,7 @@
 											{{$referral_details->username}}
 										</td>
 										<td>{{$referral_details->referral_code}}</td>
-										<td>{{$referral_details->created_at}}</td>
+										<td>{{ common_date($referral_details->created_at) }}</td>
 										<td>
 											<a href="{{route('user.referrals.view', ['user_id' => $referral_details->user_id, 'parent_user_id' => $referral_details->parent_user_id])}}" class="btn btn-info">
 												{{tr('more')}} <i class="fa fa-angle-right"></i><i class="fa fa-angle-right"></i>
