@@ -2166,10 +2166,10 @@ class UserApiController extends Controller {
 
         $model = RedeemRequest::where('user_id' , $request->id)
                 ->select('request_amount' , 
-                     DB::raw("'$currency' as currency"),
-                     DB::raw('DATE_FORMAT(created_at , "%e %b %y") as requested_date'),
+                     \DB::raw("'$currency' as currency"),
+                     \DB::raw('DATE_FORMAT(created_at , "%e %b %y") as requested_date'),
                      'paid_amount',
-                     DB::raw('DATE_FORMAT(updated_at , "%e %b %y") as paid_date'),
+                     \DB::raw('DATE_FORMAT(updated_at , "%e %b %y") as paid_date'),
                      'status',
                      'id as redeem_request_id'
                  )
