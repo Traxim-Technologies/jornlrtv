@@ -464,7 +464,7 @@ class PaymentRepository {
 
         $ppv_details = new PayPerView;
         
-        $ppv_details->payment_id  = $request->payment_id;
+        $ppv_details->payment_id  = $request->payment_id ?? 'payment_id';
 
         $ppv_details->user_id = $request->id;
 

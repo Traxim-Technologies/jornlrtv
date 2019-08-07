@@ -752,6 +752,8 @@ class NewUserApiController extends Controller
                 throw new Exception(CommonHelper::error_message(1002) , 1002);
             }
 
+            $user_details->dob = ($user_details->dob == 0000-00-00) ? '' : $user_details->dob;
+            
             $card_last_four_number = "";
 
             if($user_details->user_card_id) {
@@ -2394,7 +2396,7 @@ class NewUserApiController extends Controller
             // @todo wishlist videos common
 
             $video_tapes = VideoHelper::history_videos($request);
-
+            dd($video_tapes);
             return $this->sendResponse($message = "", $success_code = "", $video_tapes);
 
         } catch(Exception  $e) {
@@ -2580,7 +2582,6 @@ class NewUserApiController extends Controller
             $video_tapes = VideoHelper::mobile_home($request);
 
             return $this->sendResponse($message = "", $success_code = "", $video_tapes);
-
 
         } catch(Exception  $e) {
             
@@ -3201,7 +3202,7 @@ class NewUserApiController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED.',is_approved,'.ADMIN_VIDEO_APPROVED.',publish_status,'.VIDEO_PUBLISHED,
+                // 'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED.',is_approved,'.ADMIN_VIDEO_APPROVED.',publish_status,'.VIDEO_PUBLISHED,
                 'payment_id'=>'',
                 'coupon_code'=>'exists:coupons,coupon_code',
             ],
@@ -3218,7 +3219,7 @@ class NewUserApiController extends Controller
                 throw new Exception($error, 101);
 
             }
-
+            
             DB::beginTransaction();
 
             $video_tape_details = VideoTape::find($request->video_tape_id);
@@ -3786,7 +3787,7 @@ class NewUserApiController extends Controller
             
             }
 
-            $video_details = VideoTape::VerifiedVideo()->where('video_tapes.id', $request->video_tape_id)->first();
+            $video_details = VideoTape::where('video_tapes.id', $request->video_tape_id)->first();
 
             // check the video record
 
@@ -3805,7 +3806,6 @@ class NewUserApiController extends Controller
                 throw new Exception(CommonHelper::error_message(224), 224); 
                 
             }
-
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
 
             $data = $video_tape_details;
