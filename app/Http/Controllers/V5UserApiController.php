@@ -506,7 +506,7 @@ class V5UserApiController extends Controller
                                             ->get()->toArray();
 
             $video_tape_details->wishlist_count = get_wishlist_count($request->video_tape_id);
-            dd($video_tape_details);
+            
             $response_array = ['success' => true, 'data' => $video_tape_details];
     
             return response()->json($response_array, 200);

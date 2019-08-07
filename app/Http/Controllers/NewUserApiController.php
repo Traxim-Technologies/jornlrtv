@@ -2396,7 +2396,7 @@ class NewUserApiController extends Controller
             // @todo wishlist videos common
 
             $video_tapes = VideoHelper::history_videos($request);
-            dd($video_tapes);
+
             return $this->sendResponse($message = "", $success_code = "", $video_tapes);
 
         } catch(Exception  $e) {
@@ -3202,7 +3202,7 @@ class NewUserApiController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                // 'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED.',is_approved,'.ADMIN_VIDEO_APPROVED.',publish_status,'.VIDEO_PUBLISHED,
+                'video_tape_id'=>'required|exists:video_tapes,id,status,'.USER_VIDEO_APPROVED.',is_approved,'.ADMIN_VIDEO_APPROVED.',publish_status,'.VIDEO_PUBLISHED,
                 'payment_id'=>'',
                 'coupon_code'=>'exists:coupons,coupon_code',
             ],
@@ -3787,7 +3787,7 @@ class NewUserApiController extends Controller
             
             }
 
-            $video_details = VideoTape::where('video_tapes.id', $request->video_tape_id)->first();
+            $video_details = VideoTape::VerifiedVideo()->where('video_tapes.id', $request->video_tape_id)->first();
 
             // check the video record
 
