@@ -658,6 +658,7 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/subscribe_channel', 'UserController@subscribe_channel')->name('subscribe.channel');
 
     Route::get('/unsubscribe_channel', 'UserController@unsubscribe_channel')->name('unsubscribe.channel');
+    
 
     Route::get('/subscribers', 'UserController@channel_subscribers')->name('channel.subscribers');
 
@@ -865,6 +866,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::any('/playlists/video_remove', 'UserController@playlists_video_remove')->name('playlists.video_remove');
 
+    Route::any('/playlists/play_all', 'UserController@playlists_play_all')->name('playlists.play_all');
+
     Route::get('/referrals', 'UserController@referrals')->name('referrals');
 
     Route::get('/referrals/view', 'UserController@referrals_view')->name('referrals.view');
@@ -876,6 +879,10 @@ Route::group(['as' => 'user.'], function(){
     Route::any('/channel/playlists/save', 'UserController@channel_playlists_save')->name('channel.playlists.save');
 
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
+
+    // Used for Ajax function
+    Route::get('/subscribe', 'UserController@subscribe')->name('ajax_subscribe.channel');
+    Route::get('/wishlist_add', 'UserController@wishlist_add')->name('ajax_wishlist');
 
 });
 

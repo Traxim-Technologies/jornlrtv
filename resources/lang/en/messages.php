@@ -393,6 +393,7 @@ return array(
 	'added_wishlist' => 'Added wishlist',
 	'add_to_wishlist' => 'Add To Wishlist',
 	'add_to' => 'ADD TO',
+	'remove_from_wishlist' => 'Remove From Wishlist',
 
 	// Profile
 

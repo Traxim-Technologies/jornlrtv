@@ -34,6 +34,9 @@
 
                         <h3> {{$playlist_details->title }} </h3>
 
+                        <div class="pull-right btn btn-danger mb-15">
+                            <a href="{{route('user.playlists.play_all', ['playlist_id' => $playlist_details->playlist_id, 'playlist_type' => $playlist_type])}}" style="color: #fff">Play All</a>
+                        </div>
                         <p> {{tr('total_videos')}} : {{$playlist_details->total_videos }} </p>
 
                         <p> {{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>

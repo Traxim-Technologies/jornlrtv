@@ -3787,7 +3787,7 @@ class NewUserApiController extends Controller
             
             }
 
-            $video_details = VideoTape::VerifiedVideo()->where('video_tapes.id', $request->video_tape_id)->first();
+            $video_details = VideoTape::where('video_tapes.id', $request->video_tape_id)->first();
 
             // check the video record
 
