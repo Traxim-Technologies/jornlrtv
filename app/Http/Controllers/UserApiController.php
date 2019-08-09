@@ -8294,14 +8294,13 @@ class UserApiController extends Controller {
 
             $share_message = apitr('referral_code_share_message', Setting::get('site_name', 'STREAMTUBE'));
 
-            $share_message = str_replace(":referral_code", $user_referrer_details->referral_code, $share_message);
+            $share_message .= str_replace(":referral_code", $user_referrer_details->referral_code, $share_message);
 
-            $share_message = str_replace(":referral_commission", Setting::get('referral_commission', 10)."%",$share_message);
+            $share_message .= str_replace(":referral_commission", Setting::get('referral_commission', 10)."%",$share_message);
 
-            // $referrals_signup_url = route('user.referrals_signup', ['referral_code' => $user_referrer_details->referral_code]);
+            $referrals_signup_url = route('referrals_signup', ['referral_code' => $user_referrer_details->referral_code]);
 
-            $referrals_signup_url = url('/');
-
+            // $referrals_signup_url = route('user.login');
 
             $user_referrer_details->share_message = $share_message." ".$referrals_signup_url;
 
