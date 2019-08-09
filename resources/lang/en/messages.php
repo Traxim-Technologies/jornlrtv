@@ -2085,4 +2085,6 @@ return array(
 	'admin_video_tape_not_found' => 'Video Not Found',
 	'playlist_add_video' => 'Add Video',
 
+	'referral_code_applied' => 'Referral code applied.',
+
 );
