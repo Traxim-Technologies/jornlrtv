@@ -8297,7 +8297,7 @@ class UserApiController extends Controller {
 
             $share_message = str_replace('<%referral_code%>', $user_referrer_details->referral_code, $share_message);
 
-            $share_message = str_replace("<%referral_commission%>", Setting::get('referral_commission', 10)."%",$share_message);
+            $share_message = str_replace("<%referral_commission%>", formatted_amount(Setting::get('referral_commission', 10)),$share_message);
 
             $referrals_signup_url = route('referrals_signup', ['referral_code' => $user_referrer_details->referral_code]);
 
