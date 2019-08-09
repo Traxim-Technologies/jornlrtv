@@ -69,51 +69,6 @@
         left: -100vw;
       }
 
-      [for='toggle-heart'] {
-        color: #aab8c2;
-      }
-
-      [id='toggle-heart']:checked + label {
-        color: #e2264d;
-      }
-
-      [for='toggle-heart'] {
-        font-size: 2em;
-        cursor: pointer;
-      }
-
-      body {
-        
-        justify-content: center; /* horizontal alignment */
-        margin: 0;
-        height: 100vh; /* the viewport height */
-      }
-
-      /* vertical alignment, needs the height of 
-         the body to be equal to that of the 
-         viewport if we want it in the middle */
-      [for='toggle-heart'] { 
-        align-self: center; 
-      }
-
-      @keyframes heart { 0%, 17.5% { font-size: 0; } }
-
-      [id='toggle-heart']:checked + label {
-        will-change: font-size;
-        animation: heart 1s cubic-bezier(.17, .89, .32, 1.49);
-      }
-
-      [for='toggle-heart'] {
-        position: relative;
-
-        &:before, &:after {
-          position: absolute;
-          z-index: -1;
-          top: 50%; left: 50%;
-          border-radius: 50%;
-          content: '';
-        }
-      }
    </style>
 @endsection
 
@@ -150,9 +105,6 @@
                                  <div class="title row">
                                          
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 zero-padding">
-                                       <input id="toggle-heart" type="checkbox" />
-                                       <label for="toggle-heart">❤</label>
-
                                        <h3>{{$video->title}}</h3>
 
                                        <div class="views pull-left">
