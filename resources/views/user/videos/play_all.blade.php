@@ -64,6 +64,11 @@
          border-top: none;
       }
 
+      [id='toggle-heart'] {
+        position: absolute;
+        left: -100vw;
+      }
+
    </style>
 @endsection
 
@@ -86,292 +91,13 @@
                   <div class="col-sm-12 col-md-8 play-video">
                      
                      <div class="single-video-sec">
-                         @include('user.videos.streaming')
-                     </div>
-                     
-                     <div class="main-content">
-
-                        <div class="video-content">
-                             
-                           <div class="details">
-                                 
-                              <div class="video-title">
-                                    
-                                 <div class="title row">
-                                         
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 zero-padding">
-                                       <h3>{{$video->title}}</h3>
-
-                                       <div class="views pull-left">
-                                          {{number_format_short($video->watch_count)}} {{tr('views')}}
-                                       </div>
-                     
-                                       <div class="pull-right relative">
-                                          @if (Auth::check())
-                                          <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="material-icons">thumb_up</i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
-                                          <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
-                                          @else 
-                                          <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons">thumb_up</i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
-                                          <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
-                                          @endif
-
-                                          <a  class="share-new" data-toggle="modal" data-target="#popup1">
-                                             <i class="material-icons">share</i>&nbsp;{{tr('share')}}
-                                             <!--  <p class="hidden-xs">share</p> -->
-                                          </a>                                            
-                                          <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
-                                             <i class="material-icons">playlist_add</i>&nbsp;{{tr('save')}}
-                                          </a>
-            
-                                          <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
-                                             @if(Auth::check())
-                                             
-                                             <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
-                                             
-                                             @if(count($wishlist_status) == 1 && $wishlist_status)
-                                             
-                                             <input type="hidden" id="status" value="0" name="status">
-                                             
-                                             <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
-                                             
-                                             @if($flaggedVideo == '')
-                                                <div class="mylist">
-                                                <button  type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
-                                                <div class="added_to_wishlist" id="check_id">
-                                                <i class="fa fa-heart" style="color: #b31217"></i>
-                                                </div>
-                                                
-                                                <span class="wishlist_heart_remove">
-                                                <i class="fa fa-heart"></i>
-                                                </span>
-                                                </button> 
-                                                </div>
-                                             @endif
-                                             
-                                             @else
-                                             
-                                                <input type="hidden" id="status" value="1" name="status">
-                                                
-                                                <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
-
-                                                @if($flaggedVideo == '')
-                                                   <div class="mylist">
-                                                   <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
-                                                   <div class="add_to_wishlist" id="check_id">
-                                                   <i class="fa fa-heart"></i>
-                                                   </div>
-                                                   
-                                                   <span class="wishlist_heart">
-                                                   <i class="fa fa-heart"></i>
-                                                   </span>
-                                                   </button> 
-                                                   </div>
-                                                @endif
-
-                                             @endif
-                                             
-                                             @endif
-                                             
-                                          </form>
-
-                                       </div>
-                                       <!--  <h3>Channel Name</h3> -->
-                                       <div class="clearfix"></div>
-                                       <!-- <h4 class="video-desc">{{$video->description}}</h4> -->
-                                       <hr>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 top zero-padding ">
-                                       
-                                       <div class="row1">
-                                           
-                                          <div class="col-xs-12 col-md-7 col-sm-7 col-lg-7">
-                                           
-                                            <div class="username">
-                                                <a href="{{route('user.channel',$video->channel_id)}}">
-                                                    {{$video->channel_name}}
-                                                </a>
-                                            </div>
-
-                                            <h5 class="rating no-margin mt-5">
-                                                <span class="rating1"><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                            </h5>
-
-                                          </div>
-                                          
-                                          <div class="col-xs-12 col-md-5 col-sm-5 col-lg-5">
-                                                     
-                                             <div class="pull-right">
-                                            
-                                                @if(Auth::check())
-                                                    
-                                                   @if(Setting::get('is_spam') && Auth::user()->id != $video->channel_created_by)
-                                                   
-                                                      @if($flaggedVideo == '')
-
-                                                            <button  type="button" class="btn btn-danger report-button bottom-space" title="{{tr('report')}}" data-toggle="modal" data-target="#report-form">
-                                                                <i class="fa fa-flag"></i> 
-                                                            </button>
-                                                        
-                                                        @else 
-                                                            <a href="{{route('user.remove.report_video', $flaggedVideo->video_tape_id)}}" class="btn btn-info unmark bottom-space" title="{{tr('remove_report')}}">
-                                                                <i class="fa fa-flag"></i> 
-                                                            </a>
-                                                        
-                                                        @endif
-
-                                                     @endif
-
-                                                @endif
-                                             </div>
-                                             
-                                             <div class="pull-right">
-                                                
-                                                @if(Auth::check())
-                                                   
-                                                   @if($video->get_channel->user_id != Auth::user()->id)
-                                                        
-                                                      @if(!$subscribe_status)
-                                                         
-                                                         <a class="btn btn-sm bottom-space btn-info text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}}</a>
-                                                      
-                                                      @else 
-                                                         
-                                                         <a class="btn btn-sm bottom-space btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
-
-                                                      @endif
-
-                                                   @else
-                                                      
-                                                      <a class="btn btn-sm bottom-space btn-danger text-uppercase" href="{{route('user.channel.subscribers', array('channel_id'=>$video->channel_id))}}" style="background: rgb(229, 45, 39) !important"><i class="fa fa-users"></i>&nbsp; {{tr('subscribers')}} - {{$subscriberscnt}}</a>
-
-                                                   @endif
-                                                
-                                                @endif
-                                            
-                                            </div>
-
-                                          </div>
-
-                                       </div>
-
-                                       <div class="clearfix"></div>
-
-                                    </div>
-
-                                    <div class="clearfix"></div>
-
-                                    <div>
-
-                                       <h4 class="video-desc"><?= $video->description?></h4>
-                                   
-                                       <div class="tag-and-category">
-                                           
-                                           <div class="row m-0">
-                                             <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 p-0 mt-10">
-                                                <p class="category-name" style="float: none !important;font-size: 15px !important;">category</p>
-                                             </div>
-                                             <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 p-0 mt-10">
-                                                <a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank" class="category-name blue-link">{{$video->category_name}}</a>
-                                             </div>
-                                           </div>
-                                           
-                                           @if(count($tags) > 0)
-                                                <div class="row m-0">
-                                                   <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 p-0 mt-10">
-                                                      <p class="category-name" style="float: none !important;font-size: 15px !important;">{{tr('tags')}}</p>
-                                                   </div>
-                                                   <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 p-0 mt-10">
-                                                   <?php 
-                                                       $tags_list = [];
-                                                       
-                                                       foreach($tags as $i => $tag) {
-                                                       
-                                                         $tags_list[] = '<a href="'.route('user.tags.videos', array('id'=>$tag->tag_id)).'" target="_blank" class="category-name blue-link">'.$tag->tag_name.'</a>';
-                                                       
-                                                       }
-                                                       
-                                                   ?>
-                                                   <?= $tags_list ? implode(', ', $tags_list) : '' ?>
-                                                   </div>
-                                               </div>
-                                           
-                                           @endif
-                                       </div>
-                                   
-                                    </div>
-
-                                    <div class="clearfix"></div>
-
-                                    @if(Setting::get('is_spam'))
-
-                                       @if (!$flaggedVideo)
-                                          
-                                          <div class="more-content" style="display: none;" id="report_video_form">
-                                             <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
-                                                <b>{{tr('report_this_video')}}</b>
-                                                <br>
-                                               
-                                                @foreach($report_video as $report) 
-                                                <div class="report_list">
-                                                  <label class="radio1">
-                                                     <input id="radio1" type="radio" name="reason" checked="" value="{{$report->value}}" required>
-                                                     <span class="outer"><span class="inner"></span></span>{{$report->value}}
-                                                  </label>
-                                                </div>
-                                                <!-- <div class="clearfix"></div> -->
-                                                @endforeach
-
-                                                <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
-                                                <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
-                                                <div class="pull-right">
-                                                   <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                          
-                                             </form>
-                                           
-                                          </div>
-                                       
-                                       @endif
-
-                                    @endif
-
-                                 </div>
-
-                                 <div class="hr-class"><hr></div>
-
-                                 <div class="clearfix"></div>
-
-                              </div>
-
-                              <!--end of video-title-->                                                             
-                           </div>
-
-                           <!--end of details-->
-
-                           @include('user.videos._comments')
-
-                        </div>
-               
-                     </div>
-
+                        <div id="main-video-player"></div>
+                     </div> 
                      <!--end of main-content-->
 
                   </div>
                
-                  <!--end of col-sm-8 and play-video-->
-                  
-                  <div class="col-sm-12 col-md-4 side-video custom-side">
-
-                     @include('user.videos._suggestions')
-                      
-                  </div>
-
+                 
                   <!--end of col-sm-4-->
                </div>
             
@@ -419,19 +145,6 @@
 
 <script type="text/javascript">
 
-   // <!-- wishlist animation -->
-
-   $(document).ready(function() {
-          $(".heart").on('click touchstart', function(){
-              $(this).toggleClass('is_animating');
-          });
-   
-         $(".heart").on('animationend', function(){
-             $(this).toggleClass('is_animating');
-         });
-   });
-
-   // <!-- wishlist animation -->
 
    jwplayer.key="{{Setting::get('JWPLAYER_KEY')}}";
    
@@ -562,111 +275,7 @@
    
        });
    
-       $('#comment').keydown(function(event) {
-           if (event.keyCode == 13) {
-               $(this.form).submit()
-               return false;
-           }
-       }).focus(function(){
-           if(this.value == "Write your comment here..."){
-               this.value = "";
-           }
-       }).blur(function(){
-           if(this.value==""){
-               this.value = "";
-           }
-       });
-   
-       jQuery("form[name='comment_sent']").submit(function(e) {
-   
-           //prevent Default functionality
-           e.preventDefault();
-   
-   
-           //get the action-url of the form
-           var actionurl = e.currentTarget.action;
-   
-           var form_data = $.trim(jQuery("#comment").val());
-   
-           if(form_data) {
-   
-               $("#comment_btn").html("Sending...");
-   
-               $("#comment_btn").attr('disabled', true);
-   
-   
-               //do your own request an handle the results
-               jQuery.ajax({
-                   url: actionurl,
-                   type: 'post',
-                   dataType: 'json',
-                   data: jQuery("#comment_sent").serialize(),
-                   success: function(data) {
-   
-                       $("#comment_btn").html("Comment");
-   
-                       $("#comment_btn").attr('disabled', false);
-   
-                       if(data.success == true) {
-   
-                           @if(Auth::check())
-                               jQuery('#comment').val("");
-                               jQuery('#no_comment').hide();
-                               var comment_count = 0;
-                               var count = 0;
-                               comment_count = jQuery('#comment_count').text();
-                               var count = parseInt(comment_count) + 1;
-                               jQuery('#comment_count').text(count);
-                               jQuery('#video_comment_count').text(count);
-   
-                               // var stars = 0;
-   
-                               var first_star = data.comment.rating >= 1 ? "color:#ff0000" : "";
-   
-                               var second_star = data.comment.rating >= 2 ? "color:#ff0000" : "";
-   
-                               var third_star = data.comment.rating >= 3 ? "color:#ff0000" : "";
-   
-                               var fourth_star = data.comment.rating >= 4 ? "color:#ff0000" : "";
-   
-                               var fifth_star = data.comment.rating >= 5 ? "color:#ff0000" : "";
-   
-                               var stars = '<span class="stars">'+
-                               '<a><i style="'+first_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
-                               '<a><i style="'+second_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
-                               '<a><i style="'+third_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
-                               '<a><i style="'+fourth_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a>'+
-                               '<a><i style="'+fifth_star+'" class="fa fa-star-o comment-stars" aria-hidden="true"></i></a></span>';   
-   
-                               /**
-                               <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="'+data.comment.rating+'"></p>
-                               **/
-   
-                               if (data.comment.rating > 1) {
-   
-                               $('.comment_rating').rating('clear');
-   
-                               window.location.reload();
-   
-                               }
-   
-                               jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a><h5 style="float:left">{{Auth::user()->name}}</h5></a><a><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
-                           @endif
-                       } else {
-                           // console.log('Wrong...!');
-                       }
-                   }
-               });
-           } else {
-   
-               alert("Please fill the comment field");
-   
-               return false;
-   
-           }
-   
-       });
-   
+       
        var playerInstance = jwplayer("main-video-player");  
    
    
@@ -712,10 +321,26 @@
    
        var OnPlayStatus = 0;
    
+
+      var playlist = [{
+         "file":"{{$video->video}}",
+         "image":"play1",
+         "title": "Surfing Ocean Wave"
+         },{
+         "file": "{{$video->video}}",
+         "image": "play2",
+         "title": "Surfers at Sunrise"
+         },{
+         "file": "{{$video->video}}",
+         "image":"play3",
+         "title": "Road Cycling Outdoors"
+         }];
+
+
        playerInstance.setup({
    
-           sources: path,
-           image: "{{$video->default_image}}",
+           sources: playlist,
+           visualplaylist: true,
            width: "100%",
            aspectratio: "16:9",
            primary: "flash",
@@ -822,7 +447,7 @@
                },
    
                onComplete : function(event) {
-   
+                  
                    console.log("onComplete Fn");
 
                    between_ad_status = 0;
@@ -835,10 +460,10 @@
                            data: {'video_tape_id' : "{{$video->video_tape_id}}"},
                            success: function(data) {
                                if(data.success == true) {
-   
+                                    window.location.reload(true);
                                    if (data.navigateback) {
    
-                                       window.location.reload(true);
+                                       
    
                                    }
    
@@ -939,7 +564,8 @@
            // }
    
        });
-   
+       playerInstance.load(playlist);
+
        playerInstance.on('setupError', function() {
    
            jQuery("#main-video-player").css("display", "none");
@@ -1062,71 +688,7 @@
    
    });
    
-   function copyTextToClipboard() {
    
-      $("#embed_link_url").select();
-   
-      try {
-   
-         var successful = document.execCommand( 'copy' );
-   
-         var msg = successful ? 'successful' : 'unsuccessful';
-   
-         // console.log('Copying text command was ' + msg);
-   
-         addToast();
-         // alert('Copied Embedded Link');
-      } catch (err) {
-           // console.log('Oops, unable to copy');
-      }
-   }
-   
-   // To add/remove video from playlist
-   function playlist_video_update(video_tape_id, playlist_id,playlist_checkbox) {
-      // id of clicked playlist   
-      var playlist_checkbox_id = playlist_checkbox.id;
-     
-      var playlist_ids = $("input[name='playlist_ids[]']").val();
-     
-      // var playlist_ids = document.getElementsByName("playlist_ids[]").value();
-      // alert(playlist_ids);
-      // alert(JSON.stringify(playlist_ids));
-     
-      // playlist_ids.push("playlist_id");
-
-      var status;
-
-      if($('#'+playlist_checkbox_id).prop("checked") == true) {
-
-         var status = 1;
-      } 
- 
-      else if($('#'+playlist_checkbox_id).prop("checked") == false) {
-
-         var status = 0;
-      }
-
-      $.ajax({
-         url : "{{route('user.playlist.video.update')}}",
-         data : {video_tape_id : video_tape_id, playlist_id : playlist_id, status : status, playlist_ids : playlist_ids},
-         type: "POST",
-         success : function(data) {
-            if (data.success) {
-               
-               alert(data.message);
-            } else {
-
-               console.log(data.error_messages);
-            }
-
-         },
-
-         error : function(data) {
-   
-         },
-
-      })
-   } 
 
    function playlist_save_video_add(video_tape_id) {
       
@@ -1171,57 +733,6 @@
          })
       }
    }  
-
-   function likeVideo(video_id) {
-   
-       $.ajax({
-           url : "{{route('user.video.like')}}",
-           data : {video_tape_id : video_id},
-           type: "post",
-           success : function(data) {
-               if (data.success) {
-   
-                   $("#like_count").html(data.like_count);
-   
-                   $("#dislike_count").html(data.dislike_count);
-   
-               } else {
-   
-                   // console.log(data.error_messages);
-   
-               }
-           },
-   
-           error : function(data) {
-           },
-       })
-   }
-   
-   function dislikeVideo(video_id) {
-   
-       $.ajax({
-           url : "{{route('user.video.disLike')}}",
-           type: "post",
-           data : {video_tape_id : video_id},
-           success : function(data) {
-               if(data.success) {
-   
-                   $("#like_count").html(data.like_count);
-   
-                   $("#dislike_count").html(data.dislike_count);
-   
-               } else {
-   
-                   // console.log(data.error_messages);
-   
-               }
-           },
-   
-           error : function(data) {
-           },
-       })
-   }
-   
    function addToast() {
        $.Toast("Embedded Link", "Link Copied Successfully.", "success", {
            has_icon:false,
@@ -1233,24 +744,6 @@
            has_progress:true,
            rtl:false,
        });
-   }
-
-   function user_subscribe_channel(user_id, channel_id) {
-      
-      $.ajax({
-         type : "post",
-         url : "{{ route('user.subscribe.channel')}}",
-         data : {user_id:user_id, channel_id:channel_id},
-         success : function(data) {
-
-           alert(data);
-
-         },
-            error : function(data) {
-
-         }
-
-      });
    }
 
 </script>

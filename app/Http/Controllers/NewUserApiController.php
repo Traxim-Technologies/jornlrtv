@@ -2337,7 +2337,7 @@ class NewUserApiController extends Controller
 
                         DB::commit();
 
-                        return $this->sendResponse($message = CommonHelper::success_message(201), $code = 201, $data = []);
+                        return $this->sendResponse($message = CommonHelper::success_message(201), $code = 201, $data = [], $added_wishlist);
 
                     } else {
 
@@ -2358,7 +2358,7 @@ class NewUserApiController extends Controller
                     $wishlist_details->save();
 
                     DB::commit();
-
+                    
                     $data = ['wishlist_id' => $wishlist_details->id];
                
                     return $this->sendResponse(CommonHelper::success_message(200), 200, $data = ['wishlist_id' => $wishlist_details->id, 'wishlist_status' => $wishlist_details->status]);
@@ -3611,7 +3611,9 @@ class NewUserApiController extends Controller
                 
             DB::commit();
 
-            $data = ['channel_id' => $request->channel_id, 'is_user_subscribed_the_channel' => $is_user_subscribed_the_channel];
+            $subscriberscnt = subscriberscnt($request->channel_id);
+
+            $data = ['channel_id' => $request->channel_id, 'is_user_subscribed_the_channel' => $is_user_subscribed_the_channel,'subscription_count' => $subscriberscnt];
 
             return $this->sendResponse($message, $code, $data);
 

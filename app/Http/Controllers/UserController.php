@@ -1176,75 +1176,51 @@ class UserController extends Controller {
     } 
 
     /**
-     * Function Name : wishlist_add()
+     * @method wishlist_add() 
      *
-     * @uses Add Delete Wishlist Ajax request
-     * 
+     * @uses Add / Remove  Wishlist
+     *
      * @created Bhawya
      *
-     * @updated 
+     * @updated Bhawya
      *
-     * @param intger $request - Video tape id
+     * @param
      *
-     * @return response of success/failure message
-     */
+     * @return json repsonse
+     */ 
     public function wishlist_add(Request $request) {
 
-        $request->request->add([ 
-            'id' => \Auth::user()->id,
-            'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token
-        ]);
+        try {
 
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'video_tape_id' => 'required|integer|exists:video_tapes,id',
-            ),
-            array(
-                'exists' => 'The :attribute doesn\'t exists please provide correct video id'
-            )
-        );
+            $request->request->add([ 
+                'clear_all_status' => NO
+            ]);
 
-        if ($validator->fails()) {
+            $response = $this->NewUserAPI->wishlist_operations($request)->getData();
+            
+            if($response->success == false) {
 
-            $error = implode(',', $validator->messages()->all());
+                throw new Exception($response->error_messages, $response->error_code);
+            }
 
-            throw new Exception($error, 101);
-        } 
+            return response()->json($response);
 
-        $wishlist_details = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
-        
-        if(!$wishlist_details) {
+        } catch(Exception $e) {
 
-            $wishlist_details = new Wishlist();
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
 
-            $wishlist_details->user_id = $request->id;
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
 
-            $wishlist_details->video_tape_id = $request->video_tape_id;
+            if($request->is_json) {
 
-            $wishlist_details->status = DEFAULT_TRUE;
+                return response()->json($response_array);
+            }
 
-            if($wishlist_details->save()) {
-               
-                DB::commit();
-
-                return response()->json(['success'=>true,'message'=>tr('user_wishlist_success'),'status'=>'added'], 200);
-
-            } else {
-
-                throw new Exception(tr('user_wishlist_save_error'), 101);
-
-            } 
-
-        } else {
-
-            $wishlist_details->delete();
-
-            return response()->json(['success'=>false,'message'=>tr('user_wishlist_delete_success'),'status'=>'deleted'], 200);
+            return redirect()->to('/')->with('flash_error' , $error_messages);
 
         }
-    } 
+
+    }
 
     /**
      * Function Name : add_comment()
@@ -2031,66 +2007,48 @@ class UserController extends Controller {
 
     }
 
+    /**
+     * @method subscribe() 
+     *
+     * @uses used to update the subscribe status
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param
+     *
+     * @return json repsonse
+     */ 
     public function subscribe(Request $request) {
-        
-        $validator = Validator::make( $request->all(), array(
-            'user_id'     => 'required|exists:users,id',
-            'channel_id'     => 'required|exists:channels,id',
-        ));
 
-        
-        if ($validator->fails()) {
+        try {
 
-            $error_messages = implode(',', $validator->messages()->all());
-
-            // return back()->with('flash_error', $error_messages);
-
-        } 
-
-        $model = ChannelSubscription::where('user_id', $request->user_id)->where('channel_id',$request->channel_id)->first();
-
-
-        if (!$model) {
-
-            $model = new ChannelSubscription;
-
-            $model->user_id = $request->user_id;
-
-            $model->channel_id = $request->channel_id;
-
-            $model->status = DEFAULT_TRUE;
-
-            $model->save();
-
-            $channel_details = Channel::find($request->channel_id);
-
-            $notification_data['from_user_id'] = $request->user_id; 
-
-            $notification_data['to_user_id'] = $channel_details->user_id;
-
-            $notification_data['notification_type'] = BELL_NOTIFICATION_NEW_SUBSCRIBER;
-
-            $notification_data['channel_id'] = $channel_details->id;
-
-            dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
-
-            $subscriberscnt = subscriberscnt($request->channel_id);
-
-            return response()->json(['success'=>false, 'subscription_count' =>$subscriberscnt,'message'=>tr('channel_subscribed'),'status'=>'un_subscribe'], 200);
+            $response = $this->NewUserAPI->channels_unsubscribe_subscribe($request)->getData();
             
-        } else {
+            if($response->success == false) {
 
-            $model->delete();
+                throw new Exception($response->error_messages, $response->error_code);
+            }
 
-            $subscriberscnt = subscriberscnt($request->channel_id);
+            return response()->json($response->data);
 
-            return response()->json(['success'=>true,'subscription_count' =>$subscriberscnt,'message'=>tr('channel_unsubscribed'),'status'=>'subscribe'], 200);
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            if($request->is_json) {
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
 
         }
-   
-    }
 
-
+    } 
 
     public function likeVideo(Request $request)  {
         $request->request->add([

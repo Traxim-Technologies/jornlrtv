@@ -69,6 +69,7 @@
         left: -100vw;
       }
 
+
    </style>
 @endsection
 
@@ -113,8 +114,8 @@
                      
                                        <div class="pull-right relative">
                                           @if (Auth::check())
-                                          <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i id="like" class="material-icons" @if($like_status > 0) style="color:blue" @endif>thumb_up</i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
-                                          <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i id="dislike" class="material-icons ali-midd-20"  @if($dislike_status > 0) style="color:red" @endif>thumb_down</i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
+                                          <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i id="like" class="material-icons like @if($like_status > 0)like_color @endif">thumb_up</i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
+                                          <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i id="dislike" class="material-icons ali-midd-20 dislike  @if($dislike_status > 0) dislike_color @endif">thumb_down</i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
                                           @else 
                                           <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons">thumb_up</i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
                                           <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
@@ -130,7 +131,7 @@
                                           
                                           @if(Auth::check())
 
-                                             <a class="thumb-class" onclick="wishlist({{$video->video_tape_id}})"><i id="icon_color" class="fa fa-heart" @if(count($wishlist_status) == 1 && $wishlist_status) style="color: #b31217" @endif></i>&nbsp;</a>
+                                             <a class="thumb-class" onclick="wishlist({{Auth::user()->id}},{{$video->video_tape_id}})"><i id="icon_color" class="fa fa-heart icon_color @if(count($wishlist_status) == 1 && $wishlist_status) wishlist-add @endif"></i>&nbsp;</a>
 
                                           @endif
                                           <!-- <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
@@ -245,7 +246,7 @@
                                                 @if(Auth::check())
                                                    
                                                    @if($video->get_channel->user_id != Auth::user()->id)
-                                                      <a id="subscription" class="btn btn-sm bottom-space btn-info text-uppercase" onclick="subscribe({{Auth::user()->id}},{{$video->channel_id}})" @if($subscribe_status) style="background: rgb(229, 45, 39)" @endif><span id="subscription_text">
+                                                      <a id="subscription" class="btn btn-sm bottom-space btn-info text-uppercase subscription @if($subscribe_status) subscription_button @endif" onclick="subscribe({{Auth::user()->id}},{{$video->channel_id}})"><span id="subscription_text">
                                                       @if($subscribe_status) {{tr('un_subscribe')}} @else {{tr('subscribe')}} @endif &nbsp; </span><span id="subscriberscnt">{{$subscriberscnt}}</span></a>
                                                       
                                                       <!-- @if(!$subscribe_status)
@@ -1189,21 +1190,19 @@
     
       $.ajax({
            url : "{{route('user.ajax_subscribe.channel')}}",
-           data : {user_id : user_id, channel_id : channel_id},
+           data : {id : user_id, channel_id : channel_id},
            type: "get",
 
            success: function(data) {
-            
-               if(data.success && data.status == 'subscribe') {
-
-                  $("#subscription").css({"background": ""});
-                  $("#subscription_text").html('Subscribe&nbsp;');
+               
+               if(data.is_user_subscribed_the_channel) {
+                  $(".subscription").addClass("subscription_button");
+                  $("#subscription_text").html('Un Subscribe&nbsp;');
                   $("#subscriberscnt").html(data.subscription_count);
                   
                } else {
-
-                  $("#subscription").css({"background": "rgb(229, 45, 39)"});
-                  $("#subscription_text").html('Un Subscribe&nbsp;');
+                  $(".subscription").removeClass("subscription_button");
+                  $("#subscription_text").html('Subscribe&nbsp;');
                   $("#subscriberscnt").html(data.subscription_count);
 
                }
@@ -1214,22 +1213,22 @@
        })
    }
 
-   function wishlist(video_tape_id) {
+   function wishlist(user_id,video_tape_id) {
     
       $.ajax({
            url : "{{route('user.ajax_wishlist')}}",
-           data : {video_tape_id : video_tape_id},
+           data : {id : user_id,video_tape_id : video_tape_id},
            type: "get",
 
            success: function(data) {
-               console.log(data);
-               if(data.success && data.status == 'added') {
+
+               if(data.data && data.data.wishlist_status) {
                  
-                 $("#icon_color").css({"color": "#b31217"});
+                 $(".icon_color").addClass("wishlist-add");
                   
                } else {
-                 
-                  $("#icon_color").css({"color": "#999"});
+                  
+                  $(".icon_color").removeClass("wishlist-add");
 
                }
            },
@@ -1240,8 +1239,7 @@
    }
 
    function likeVideo(video_id) {
-      $("#dislike").css({"color": "#999"});
-
+      $(".dislike").removeClass("dislike_color");
       $.ajax({
            url : "{{route('user.video.like')}}",
            data : {video_tape_id : video_id},
@@ -1249,11 +1247,12 @@
            success : function(data) {
                
                if(data.success && data.like_status) {
-                  $("#like").css({"color": "#999"});
+               
+                  $(".like").removeClass("like_color");
                   
                } else {
 
-                  $("#like").css({"color": "blue"});
+                  $(".like").addClass("like_color"); 
 
                }
 
@@ -1276,7 +1275,7 @@
    }
    
    function dislikeVideo(video_id) {
-      $("#like").css({"color": "#999"});
+      $(".like").removeClass("like_color");
        $.ajax({
            url : "{{route('user.video.disLike')}}",
            type: "post",
@@ -1284,11 +1283,11 @@
            success : function(data) {
                if(data.success && data.dislike_status) {
 
-                  $("#dislike").css({"color": "#999"});
+                  $(".dislike").removeClass("dislike_color");
 
                } else {
 
-                  $("#dislike").css({"color": "red"});
+                  $(".dislike").addClass("dislike_color"); 
 
                }
 
