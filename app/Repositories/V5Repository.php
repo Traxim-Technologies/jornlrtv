@@ -175,7 +175,6 @@ class V5Repository {
 
             } else {
                 $base_query = $base_query->ShortVideoResponse($other_select_columns);
-
             }
 
  		} else {
@@ -184,7 +183,7 @@ class V5Repository {
  		}
  		
  		$video_tapes = $base_query->get();
-
+        
         foreach ($video_tapes as $key => $video_tape_details) {
 
 

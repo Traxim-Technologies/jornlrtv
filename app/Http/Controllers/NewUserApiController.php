@@ -4740,7 +4740,7 @@ class NewUserApiController extends Controller
                                 ->toArray();
 
             $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
-
+           
             $playlist_details->picture = asset('images/playlist.png');
 
             $playlist_details->share_link = url('/');

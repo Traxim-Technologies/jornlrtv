@@ -1176,7 +1176,7 @@ class UserController extends Controller {
     } 
 
     /**
-     * @method wishlist_add() 
+     * @method wishlist_operations() 
      *
      * @uses Add / Remove  Wishlist
      *
@@ -1188,30 +1188,21 @@ class UserController extends Controller {
      *
      * @return json repsonse
      */ 
-    public function wishlist_add(Request $request) {
+    public function wishlist_operations(Request $request) {
 
         try {
 
-            $request->request->add([ 
-                'clear_all_status' => NO
-            ]);
+            $request->request->add([ 'clear_all_status' => NO]);
 
             $response = $this->NewUserAPI->wishlist_operations($request)->getData();
-            
-            if($response->success == false) {
-
-                throw new Exception($response->error_messages, $response->error_code);
-            }
 
             return response()->json($response);
 
         } catch(Exception $e) {
 
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
             if($request->is_json) {
+
+                $response_array = ['success' => false, 'error_messages' => $e->getMessage(), 'error_code' => $e->getCode()];
 
                 return response()->json($response_array);
             }
@@ -2008,7 +1999,7 @@ class UserController extends Controller {
     }
 
     /**
-     * @method subscribe() 
+     * @method channels_unsubscribe_subscribe() 
      *
      * @uses used to update the subscribe status
      *
@@ -2020,26 +2011,19 @@ class UserController extends Controller {
      *
      * @return json repsonse
      */ 
-    public function subscribe(Request $request) {
+    public function channels_unsubscribe_subscribe(Request $request) {
 
         try {
 
             $response = $this->NewUserAPI->channels_unsubscribe_subscribe($request)->getData();
-            
-            if($response->success == false) {
-
-                throw new Exception($response->error_messages, $response->error_code);
-            }
 
             return response()->json($response->data);
 
         } catch(Exception $e) {
 
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
-
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
             if($request->is_json) {
+
+                $response_array = ['success' => false, 'error_messages' => $e->getMessage(), 'error_code' => $e->getCode()];
 
                 return response()->json($response_array);
             }
@@ -3747,146 +3731,128 @@ class UserController extends Controller {
      */
     public function playlists_play_all(Request $request) {
 
-        try {
-            
-            if (Auth::check()) {
+        $request->request->add([ 
+            'video_tape_id' => $request->id,
+        ]);
 
-                $request->request->add([ 
-                    'id'=>Auth::user()->id,
-                    'token'=> Auth::user()->token,
-                    'age_limit'=>Auth::user()->age_limit,
-                    'view_type' => VIEW_TYPE_OWNER,
-                ]);
+        if (Auth::check()) {
 
-            } else {
-                 $request->request->add([ 
-                    'id'=> '',
-                    'view_type' => VIEW_TYPE_VIEWER,
-                ]);
-            }
-
-            $response = $this->NewUserAPI->playlists_view($request)->getData();
-         
-            if($response->success == false) {
-
-                throw new Exception($response->error_messages, $response->error_code);
-            }
-
-            if($request->is_json) {
-
-                return response()->json($response, 200);
-            }
-
-          
-            $video_tapes = $response->data->video_tapes;
-            
             $request->request->add([ 
-                'video_tape_id' => $video_tapes[0]->video_tape_id,
+                'id'=>Auth::user()->id,
+                'age_limit'=>Auth::user()->age_limit,
+                'view_type' => VIEW_TYPE_OWNER
             ]);
 
+        } else {
 
-            $data = $this->UserAPI->video_detail($request)->getData();
+             $request->request->add([ 
+                'id'=> '',
+                'view_type' => VIEW_TYPE_VIEWER,
+            ]);
+        }
+        
+        $index = $request->index ?? 0;
+        $playlist = $this->NewUserAPI->playlists_view($request)->getData();
+        
+        $video_tapes = $playlist->data->video_tapes;
+        
+        $request->request->add([ 
+            'video_tape_id' => $video_tapes[$index]->video_tape_id,
+        ]);
 
-            // video url
-            if (isset($data->url)) {
+        $data = $this->UserAPI->video_detail($request)->getData();
 
-                return redirect($data->url);
-            }
+        // video url
+        if (isset($data->url)) {
 
-            if ($data->success) {
+            return redirect($data->url);
+        }
 
-                // @todo minimize the code
-                // get user playlists
-                $data->response_array->playlists = $this->UserAPI->playlists($request)->getData();
+        if ($data->success) {
 
-                $playlists = array();
+            // @todo minimize the code
+            // get user playlists
+            $data->response_array->playlists = $this->UserAPI->playlists($request)->getData();
+
+            $playlists = array();
+           
+            $response = $data->response_array;
+            
+            if ($data->response_array->playlists->success) {
+                  
+                // check video already exists in user playlits
+                $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
+
+                $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
+                    ->where('video_tape_id', $request->video_tape_id)
+                    ->where('user_id', Auth::user()->id)
+                    ->get();
+
+                $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
+                
+                // to set video exists in playlist    
+                $i = 0;
                
-                $response = $data->response_array;
+                foreach ($data->response_array->playlists->data as $value) {
+                                  
+                    if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
 
-                if ($data->response_array->playlists->success) {
-                      
-                    // check video already exists in user playlits
-                    $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
-
-                    $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
-                        ->where('video_tape_id', $request->video_tape_id)
-                        ->where('user_id', Auth::user()->id)
-                        ->get();
-
-                    $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
+                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
                     
-                    // to set video exists in playlist    
-                    $i = 0;
-                   
-                    foreach ($data->response_array->playlists->data as $value) {
-                                      
-                        if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
-
-                            $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
+                    } else  { 
                         
-                        } else  { 
-                            
-                            $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
-                        }
-
-                        $i++;
+                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
                     }
 
-                    $playlists = $response->playlists->data;
+                    $i++;
                 }
-                
-                // Video is autoplaying ,so we are incrementing the watch count 
 
-                if ($request->id != $response->video->channel_created_by) {
-
-                    $this->watch_count($request);
-
-                }
-                
-                return view('user.videos.play_all')
-                            ->with('page' , '')
-                            ->with('subPage' , '')
-                            ->with('video' , $response->video)
-                            ->with('comments' , $response->comments)
-                            ->with('suggestions',$response->suggestions)
-                            ->with('wishlist_status' , $response->wishlist_status)
-                            ->with('history_status' , $response->history_status)
-                            ->with('main_video' , $response->main_video)
-                            ->with('url' , $response->main_video)
-                            ->with('channels' , $response->channels)
-                            ->with('report_video', $response->report_video)
-                            ->with('videoPath', $response->videoPath)
-                            ->with('video_pixels', $response->video_pixels)
-                            ->with('videoStreamUrl', $response->videoStreamUrl)
-                            ->with('hls_video' , $response->hls_video)
-                            ->with('flaggedVideo', $response->flaggedVideo)
-                            ->with('ads', $response->ads)
-                            ->with('subscribe_status', $response->subscribe_status)
-                            ->with('like_count',$response->like_count)
-                            ->with('dislike_count',$response->dislike_count)
-                            ->with('subscriberscnt', $response->subscriberscnt)
-                            ->with('comment_rating_status', $response->comment_rating_status)
-                            ->with('embed_link', $response->embed_link)
-                            ->with('tags', $response->tags)
-                            ->with('playlists', $playlists)
-                            ->with('video_tapes', $video_tapes)
-                            ->with('playlist_type', $request->playlist_type);
-           
+                $playlists = $response->playlists->data;
             }
+            
+            // Video is autoplaying ,so we are incrementing the watch count 
 
-        } catch(Exception $e) {
+            if ($request->id != $response->video->channel_created_by) {
 
-            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+                $this->watch_count($request);
 
-            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
-
-            if($request->is_json) {
-
-                return response()->json($response_array);
             }
+            // dd($playlist->data->video_tapes);
+            return view('user.videos.play_all')
+                        ->with('page' , '')
+                        ->with('subPage' , '')
+                        ->with('video' , $response->video)
+                        ->with('comments' , $response->comments)
+                        ->with('suggestions',$response->suggestions)
+                        ->with('wishlist_status' , $response->wishlist_status)
+                        ->with('history_status' , $response->history_status)
+                        ->with('main_video' , $response->main_video)
+                        ->with('url' , $response->main_video)
+                        ->with('channels' , $response->channels)
+                        ->with('report_video', $response->report_video)
+                        ->with('videoPath', $response->videoPath)
+                        ->with('video_pixels', $response->video_pixels)
+                        ->with('videoStreamUrl', $response->videoStreamUrl)
+                        ->with('hls_video' , $response->hls_video)
+                        ->with('flaggedVideo', $response->flaggedVideo)
+                        ->with('ads', $response->ads)
+                        ->with('subscribe_status', $response->subscribe_status)
+                        ->with('like_count',$response->like_count)
+                        ->with('dislike_count',$response->dislike_count)
+                        ->with('like_status',$response->like_status)
+                        ->with('dislike_status',$response->dislike_status)
+                        ->with('subscriberscnt', $response->subscriberscnt)
+                        ->with('comment_rating_status', $response->comment_rating_status)
+                        ->with('embed_link', $response->embed_link)
+                        ->with('tags', $response->tags)
+                        ->with('playlists', $playlist->data->video_tapes)
+                        ->with('index', $index);
+       
+        } 
+       
+        $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
 
-            return redirect()->to('/')->with('flash_error' , $error_messages);
-        }
+        return redirect()->back()->with('flash_error', $error_message);
 
     }    
 

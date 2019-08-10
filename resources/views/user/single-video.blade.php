@@ -1186,6 +1186,10 @@
       }
    }  
 
+   /**
+     * Subscribe and Unsubscribe the video based 
+     * User and channel Id.
+     */
    function subscribe(user_id,channel_id) {
     
       $.ajax({
@@ -1213,6 +1217,10 @@
        })
    }
 
+   /**
+     * Add and remove the video from wishlist
+     * Based on User ID and Video ID
+     */
    function wishlist(user_id,video_tape_id) {
     
       $.ajax({
@@ -1238,6 +1246,9 @@
        })
    }
 
+   /**
+     * Videos Like and count based on the Likes
+     */
    function likeVideo(video_id) {
       $(".dislike").removeClass("dislike_color");
       $.ajax({
@@ -1274,6 +1285,9 @@
        })
    }
    
+   /**
+     * Video Dislikes and Count
+     */
    function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");
        $.ajax({

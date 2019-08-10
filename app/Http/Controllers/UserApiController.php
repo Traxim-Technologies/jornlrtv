@@ -5235,6 +5235,7 @@ class UserApiController extends Controller {
                     // ->where('channels.is_approved', 1)
                     // ->where('channels.status', 1)
                     ->first();
+        
         if ($video) {
 
             if ($request->id != $video->channel_created_by) {

@@ -100,6 +100,7 @@ class VideoTape extends Model
             ->select(
                 'video_tapes.id as video_tape_id' ,
                 'video_tapes.title',
+                'video_tapes.video',
                 'video_tapes.description',
                 'video_tapes.default_image as video_image',
                 'video_tapes.watch_count',

@@ -881,8 +881,8 @@ Route::group(['as' => 'user.'], function(){
     Route::any('/playlists/delete', 'UserController@playlists_delete')->name('playlists.delete');
 
     // Used for Ajax function
-    Route::get('/subscribe', 'UserController@subscribe')->name('ajax_subscribe.channel');
-    Route::get('/wishlist_add', 'UserController@wishlist_add')->name('ajax_wishlist');
+    Route::get('/channels_unsubscribe_subscribe', 'UserController@channels_unsubscribe_subscribe')->name('ajax_subscribe.channel');
+    Route::get('/wishlist_operations', 'UserController@wishlist_operations')->name('ajax_wishlist');
 
 });
 
