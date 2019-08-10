@@ -2337,7 +2337,7 @@ class NewUserApiController extends Controller
 
                         DB::commit();
 
-                        return $this->sendResponse($message = CommonHelper::success_message(201), $code = 201, $data = [], $added_wishlist);
+                        return $this->sendResponse($message = CommonHelper::success_message(201), $code = 201, $data = []);
 
                     } else {
 
