@@ -1958,7 +1958,7 @@ class UserController extends Controller {
 
             $error_messages = implode(',', $validator->messages()->all());
 
-            // return back()->with('flash_error', $error_messages);
+            return back()->with('flash_error', $error_messages);
 
         } else {
 
@@ -1991,8 +1991,8 @@ class UserController extends Controller {
                 return back()->with('flash_success', tr('channel_subscribed'));
                 
             } else {
-                return response()->json(['success'=>false, 'message'=>tr('already_channel_subscribed')], 200);
-                // return back()->with('flash_error', tr('already_channel_subscribed'));
+                
+                return back()->with('flash_error', tr('already_channel_subscribed'));
 
             }
         }
