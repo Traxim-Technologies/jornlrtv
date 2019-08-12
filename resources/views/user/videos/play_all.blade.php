@@ -1368,5 +1368,184 @@
        });
    }
 
+   var stopPageScroll = false;
+
+   var searchDataLength = "{{count($play_all->video_tapes)}}";
+
+   function getPlaylistsList() {
+
+     if (searchDataLength > 0) {
+
+         playlists_videos(searchDataLength);
+
+     }
+
+   }
+
+   function playlists_videos(cnt) {
+
+        $.ajax({
+
+            type: "post",
+            async: false,
+            url: "{{route('user.playlists.play_all')}}",
+            data: {
+                skip: cnt,
+                playlist_id: "{{$play_all->playlist_id}}",
+                playlist_type: "{{$play_all->playlist_type}}",
+                play_next: "{{$play_next}}",
+                is_json: 1
+            },
+            
+            beforeSend: function() {
+
+                $("#playlist_video_content_loader").fadeIn();
+            },
+
+            success: function(response) {
+               
+                $.each(response.video_tapes, function(key,playList) { 
+
+                     var redirect_url = "{{route('user.playlists.play_all' , ['playlist_id'=>$play_all->playlist_id,'playlist_type'=>$play_all->playlist_type])}}";
+                     
+                     var urlString = redirect_url.replace(/&amp;/g, '&');
+
+                    var channel_redirect_url = "/channel/"+playList.channel_id;
+
+                    var messageTemplate = '';
+
+                    messageTemplate = '<li class="sugg-list row">';
+
+                    messageTemplate += '<div class="main-video">';
+
+                    messageTemplate += '<div class="video-image">';
+
+                    messageTemplate += '<div class="video-image-outer">';
+
+                    messageTemplate += '<a href="'+urlString+'">';
+
+                    messageTemplate += '<img src="'+playList.video_image+'" data-src="'+playList.video_image+'" class="slide-img1 placeholder" />';
+
+                    messageTemplate += '</a>';
+
+                    messageTemplate += '</div>';
+
+                    if(playList.ppv_amount > 0) {
+                        
+                        if(playList.should_display_ppv) {
+
+                            messageTemplate += '<div class="video_amount">';
+                            
+                            messageTemplate += 'PAY -'+playList.currency+' '+playList.ppv_amount;
+
+                            messageTemplate += '</div>';
+
+                        }
+                    }
+
+                    messageTemplate += '<div class="video_duration">'+playList.duration+'</div>';
+
+                    messageTemplate += '</div>';
+
+                    messageTemplate += '<div class="sugg-head">';
+
+                    messageTemplate += '<div class="suggn-title">';
+
+                    messageTemplate += '<h5><a href="'+urlString+'">'+playList.title+'</a></h5>';
+
+                    messageTemplate += '</div>';
+
+                    messageTemplate += '<span class="video_views">';
+
+                    messageTemplate += '<div><a href="'+channel_redirect_url+'">'+playList.channel_name+'</a></div>';
+
+                    messageTemplate += '<i class="fa fa-eye"></i> '+playList.watch_count+' Views <b>.</b>'+ playList.created+'</span>';
+
+                    messageTemplate += '</div>';
+
+                    messageTemplate += '<br>';
+
+                    messageTemplate += '<span class="stars">';
+
+                    messageTemplate += '<a><i ';
+
+                    if(playList.ratings >= 1) {
+                        messageTemplate +='style="color:#ff0000"';
+                    }
+
+                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
+
+                    messageTemplate += '<a><i ';
+
+                    if(playList.ratings >= 2) {
+                        messageTemplate +='style="color:#ff0000"';
+                    }
+
+                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
+
+                    messageTemplate += '<a><i ';
+
+                    if(playList.ratings >= 3) {
+                        messageTemplate +='style="color:#ff0000"';
+                    }
+
+                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
+
+                    messageTemplate += '<a><i ';
+
+                    if(playList.ratings >= 4) {
+                        messageTemplate +='style="color:#ff0000"';
+                    }
+
+                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
+
+                    messageTemplate += '<a><i ';
+
+                    if(playList.ratings >= 5) {
+                        messageTemplate +='style="color:#ff0000"';
+                    }
+
+                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
+
+                    messageTemplate += '</div>';
+                   
+
+                    messageTemplate += '</div>';
+
+                    messageTemplate += '</div>';
+
+                    messageTemplate += '</li>';
+                    
+                    $('#playlists_videos').append(messageTemplate);
+
+                });
+
+                if (response.video_tapes.length == 0) {
+
+                    stopPageScroll = true;
+
+                } else {
+
+                    stopPageScroll = false;
+
+                    searchDataLength = parseInt(searchDataLength) + response.video_tapes.length;
+
+                }
+
+            },
+
+            complete: function() {
+
+                $("#playlist_video_content_loader").fadeOut();
+
+            },
+
+            error: function(data) {
+
+            },
+
+        });
+
+    }
 </script>
 @endsection

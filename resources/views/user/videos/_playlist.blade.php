@@ -69,6 +69,27 @@
                 </li>
                 <!--end of sugg-list-->
             @endforeach
+
+            <span id="playlists_videos"></span>
+
+            <div class="clearfix"></div>
+
+            <div class="row" style="margin-top: 20px">
+
+                <div id="playlist_video_content_loader" style="display: none;">
+
+                    <h1 class="text-center"><i class="fa fa-spinner fa-spin" style="color:#ff0000"></i></h1>
+
+                </div>
+
+                <div class="clearfix"></div>
+
+                <button class="pull-right btn btn-info mb-15" onclick="getPlaylistsList()" style="color: #fff">{{tr('view_more')}}</button>
+
+                <div class="clearfix"></div>
+
+           </div>
+
         @endif
     </ul>
 </div>

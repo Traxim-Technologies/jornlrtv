@@ -3731,10 +3731,7 @@ class UserController extends Controller {
      */
     public function playlists_play_all(Request $request) {
 
-        $request->request->add([ 
-            'video_tape_id' => $request->id,
-        ]);
-
+        
         if (Auth::check()) {
 
             $request->request->add([ 
@@ -3755,6 +3752,11 @@ class UserController extends Controller {
         // Load all the videos based on playlist_id and playlist_type
         $play_all = $this->NewUserAPI->playlists_view($request)->getData();
         
+        if($request->is_json) {
+
+            return response()->json($play_all->data, 200);
+        }
+
         $video_tapes = $play_all->data->video_tapes;
         
         // total videos count is greater than the play_next count reset the value to zero.

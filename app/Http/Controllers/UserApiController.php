@@ -7382,7 +7382,7 @@ class UserApiController extends Controller {
             $take = $this->take ?: TAKE_COUNT;
 
             $playlists = $base_query->CommonResponse()->skip($skip)->take($take)->get();
-
+            
             foreach ($playlists as $key => $playlist_details) {
 
                 $first_video_from_playlist = PlaylistVideo::where('playlist_videos.playlist_id', $playlist_details->playlist_id)
