@@ -1259,7 +1259,14 @@
    }
 
    /**
-     * Videos Like and count based on the Likes
+     * @function dislikeVideo() 
+     *
+     * @uses Videos disLike and count based on the disLikes
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
      */
    function likeVideo(video_id) {
       $(".dislike").removeClass("dislike_color");
@@ -1298,7 +1305,14 @@
    }
    
    /**
-     * Video Dislikes and Count
+     * @function likeVideo() 
+     *
+     * @uses Videos Like and count based on the Likes
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
      */
    function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");

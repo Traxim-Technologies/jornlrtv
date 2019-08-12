@@ -3782,7 +3782,7 @@ class UserController extends Controller {
 
             return redirect($data->url);
         }
-
+        
         if ($data->success) {
 
             $response = $data->response_array;

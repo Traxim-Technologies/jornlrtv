@@ -856,7 +856,7 @@
    
                                    }
 
-                                    var url = "{{route('user.playlists.play_all' , ['playlist_id'=>$play_all->playlist_id,'playlist_type'=>'USER','play_next' => $play_next])}}";
+                                    var url = "{{route('user.playlists.play_all' , ['playlist_id'=>$play_all->playlist_id,'playlist_type'=>$play_all->playlist_type,'play_next' => $play_next])}}";
 
                                     var urlString = url.replace(/&amp;/g, '&');
                  
@@ -1265,7 +1265,14 @@
    }
 
    /**
-     * Videos Like and count based on the Likes
+     * @function likeVideo() 
+     *
+     * @uses Videos Like and count based on the Likes
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
      */
    function likeVideo(video_id) {
       $(".dislike").removeClass("dislike_color");
@@ -1303,10 +1310,17 @@
        })
    }
    
-   /**
-     * Video Dislikes and Count
-     */
-   function dislikeVideo(video_id) {
+    /**
+     * @function dislikeVideo() 
+     *
+     * @uses Videos disLike and count based on the disLikes
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */   
+     function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");
        $.ajax({
            url : "{{route('user.video.disLike')}}",
