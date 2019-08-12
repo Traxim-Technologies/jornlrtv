@@ -3740,26 +3740,41 @@ class UserController extends Controller {
             $request->request->add([ 
                 'id'=>Auth::user()->id,
                 'age_limit'=>Auth::user()->age_limit,
-                'view_type' => VIEW_TYPE_OWNER
             ]);
 
         } else {
 
-             $request->request->add([ 
+            $request->request->add([ 
                 'id'=> '',
-                'view_type' => VIEW_TYPE_VIEWER,
             ]);
         }
         
-        $index = $request->index ?? 0;
-        $playlist = $this->NewUserAPI->playlists_view($request)->getData();
+        // For default assign the play_next index as 0
+        $play_next = $request->play_next ?? 0;
         
-        $video_tapes = $playlist->data->video_tapes;
+        // Load all the videos based on playlist_id and playlist_type
+        $play_all = $this->NewUserAPI->playlists_view($request)->getData();
         
+        $video_tapes = $play_all->data->video_tapes;
+        
+        // total videos count is greater than the play_next count reset the value to zero.
+        $value = 0;
+        if((count($video_tapes)) == $request->play_next)
+        { 
+            $value = 1;
+            $play_next = 0;
+        }
+        
+        // Load the video based on play_next index.
         $request->request->add([ 
-            'video_tape_id' => $video_tapes[$index]->video_tape_id,
+            'video_tape_id' => $video_tapes[$play_next]->video_tape_id,
         ]);
 
+        // Increment the play_next count - For playing the next video continuouly.
+        if($value == 0) {
+            $play_next++;
+        }
+        
         $data = $this->UserAPI->video_detail($request)->getData();
 
         // video url
@@ -3770,54 +3785,15 @@ class UserController extends Controller {
 
         if ($data->success) {
 
-            // @todo minimize the code
-            // get user playlists
-            $data->response_array->playlists = $this->UserAPI->playlists($request)->getData();
-
-            $playlists = array();
-           
             $response = $data->response_array;
             
-            if ($data->response_array->playlists->success) {
-                  
-                // check video already exists in user playlits
-                $playlist_ids = array_column($data->response_array->playlists->data, 'playlist_id');
-
-                $is_video_exists_in_playlist = PlaylistVideo::whereIn('playlist_id', $playlist_ids)
-                    ->where('video_tape_id', $request->video_tape_id)
-                    ->where('user_id', Auth::user()->id)
-                    ->get();
-
-                $playlist_ids_video_exists = array_column($is_video_exists_in_playlist->toArray(), 'playlist_id');
-                
-                // to set video exists in playlist    
-                $i = 0;
-               
-                foreach ($data->response_array->playlists->data as $value) {
-                                  
-                    if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
-
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
-                    
-                    } else  { 
-                        
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
-                    }
-
-                    $i++;
-                }
-
-                $playlists = $response->playlists->data;
-            }
-            
             // Video is autoplaying ,so we are incrementing the watch count 
-
             if ($request->id != $response->video->channel_created_by) {
 
                 $this->watch_count($request);
 
             }
-            // dd($playlist->data->video_tapes);
+
             return view('user.videos.play_all')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -3845,8 +3821,8 @@ class UserController extends Controller {
                         ->with('comment_rating_status', $response->comment_rating_status)
                         ->with('embed_link', $response->embed_link)
                         ->with('tags', $response->tags)
-                        ->with('playlists', $playlist->data->video_tapes)
-                        ->with('index', $index);
+                        ->with('play_all', $play_all->data)
+                        ->with('play_next', $play_next);
        
         } 
        

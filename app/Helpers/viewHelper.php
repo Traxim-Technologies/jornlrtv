@@ -1165,7 +1165,7 @@ function watchFullVideo($user_id, $user_type, $video) {
 }
 
 function displayVideoDetails($data,$userId) {
-
+    
     $user = User::find($userId);
 
     if (Setting::get('is_payper_view')) {

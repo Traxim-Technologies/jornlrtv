@@ -131,7 +131,7 @@
                                           
                                           @if(Auth::check())
 
-                                             <a class="thumb-class" onclick="wishlist({{Auth::user()->id}},{{$video->video_tape_id}})"><i id="icon_color" class="fa fa-heart icon_color @if(count($wishlist_status) == 1 && $wishlist_status) wishlist-add @endif"></i>&nbsp;</a>
+                                             <a class="thumb-class" onclick="wishlist_operations({{Auth::user()->id}},{{$video->video_tape_id}})"><i id="icon_color" class="fa fa-heart icon_color @if(count($wishlist_status) == 1 && $wishlist_status) wishlist-add @endif"></i>&nbsp;</a>
 
                                           @endif
                                           <!-- <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
@@ -246,7 +246,7 @@
                                                 @if(Auth::check())
                                                    
                                                    @if($video->get_channel->user_id != Auth::user()->id)
-                                                      <a id="subscription" class="btn btn-sm bottom-space btn-info text-uppercase subscription @if($subscribe_status) subscription_button @endif" onclick="subscribe({{Auth::user()->id}},{{$video->channel_id}})"><span id="subscription_text">
+                                                      <a id="subscription" class="btn btn-sm bottom-space btn-info text-uppercase subscription @if($subscribe_status) subscription_button @endif" onclick="channels_unsubscribe_subscribe({{Auth::user()->id}},{{$video->channel_id}})"><span id="subscription_text">
                                                       @if($subscribe_status) {{tr('un_subscribe')}} @else {{tr('subscribe')}} @endif &nbsp; </span><span id="subscriberscnt">{{$subscriberscnt}}</span></a>
                                                       
                                                       <!-- @if(!$subscribe_status)
@@ -382,73 +382,7 @@
                   
                   <div class="col-sm-12 col-md-4 side-video custom-side">
 
-                     <div class="up-next pt-0">
-
-                      <h4 class="sugg-head1">{{tr('playlists')}}</h4>
-
-                      <ul class="video-sugg">
-
-                          @if(count($playlists) > 0)
-
-                              @foreach($playlists as $playlist)
-
-                                  <li class="sugg-list row">
-                                      
-                                      <div class="main-video">
-                                          
-                                          <div class="video-image">
-                                              
-                                              <div class="video-image-outer">
-                                                  <a href="">
-                                                      <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$playlist->video_image}}" class="placeholder" />
-                                                  </a>
-                                              </div>  
-                                              
-                                              @if($playlist->ppv_amount > 0)
-                                                  @if(!$playlist->ppv_status)
-                                                      <div class="video_amount">
-                                                          {{tr('pay')}} - {{Setting::get('currency')}}{{$playlist->ppv_amount}}
-                                                      </div>
-                                                  @endif
-                                              @endif
-
-                                              <div class="video_duration">
-                                                  {{$playlist->duration}}
-                                              </div>
-                                          
-                                          </div>
-                                          
-                                          <!--video-image-->
-
-                                          <div class="sugg-head">
-                                              <div class="suggn-title">
-                                                  <h5><a href="">{{$playlist->title}}</a></h5>
-                                              </div>
-                                              <!--end of sugg-title-->
-
-                                              <span class="video_views">
-                                                  <div>
-                                                      <a href="{{route('user.channel',$playlist->channel_id)}}">{{$playlist->channel_name}}</a>
-                                                  </div>
-                                                  <i class="fa fa-eye"></i> {{$playlist->watch_count}} {{tr('views')}} <b>.</b> 
-                                                  
-                                              </span>
-
-                                              <br>                        
-                                          
-                                          </div>
-                                          <!--end of sugg-head-->
-
-                                      </div>
-                                        <!--end of main-video-->
-                                    
-                                    </li>
-                                    <!--end of sugg-list-->
-                                @endforeach
-                            @endif
-                        </ul>
-                    </div>
-                    <!--end of up-next-->
+                     @include('user.videos._playlist')
                       
                   </div>
 
@@ -483,7 +417,7 @@
 
 <!-- MODALS SECTION -->
 
-
+@include('user.videos._modals')
 
 <!-- MODALS SECTION -->
 
@@ -749,14 +683,7 @@
    
        var playerInstance = jwplayer("main-video-player");  
    
-       var playlist = [];
-
-        @foreach($playlists as $playlist)
    
-          playlist.push({file : "{{$playlist->video}}", image : "{{$playlist->video_image}}", title : "{{$playlist->title}}"});
-   
-        @endforeach
-
        var path = [];
    
        @if($videoStreamUrl) 
@@ -913,9 +840,7 @@
                    console.log("onComplete Fn");
 
                    between_ad_status = 0;
-
-                  var url = "{{route('user.playlists.play_all' , ['playlist_id'=>'22','playlist_type'=>'USER','index' =>'0'])}}"
-                  window.location.assign(url);
+   
                    @if(Auth::check())
    
                        jQuery.ajax({
@@ -930,6 +855,12 @@
                                        window.location.reload(true);
    
                                    }
+
+                                    var url = "{{route('user.playlists.play_all' , ['playlist_id'=>$play_all->playlist_id,'playlist_type'=>'USER','play_next' => $play_next])}}";
+
+                                    var urlString = url.replace(/&amp;/g, '&');
+                 
+                                    window.location.assign(urlString);
    
                                } else {
                                       
@@ -985,7 +916,6 @@
    
        });
    
-      // playerInstance.load(playlist);
        // For Pre Ad , Every first frame the ad will execute
    
        playerInstance.on('firstFrame', function() {
@@ -1164,7 +1094,7 @@
    
          // console.log('Copying text command was ' + msg);
    
-         // addToast();
+         addToast();
          // alert('Copied Embedded Link');
       } catch (err) {
            // console.log('Oops, unable to copy');
@@ -1262,10 +1192,20 @@
       }
    }  
 
-   function subscribe(user_id,channel_id) {
+   /**
+     * @function channels_unsubscribe_subscribe() 
+     *
+     * @uses used to update the subscribe status
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */ 
+   function channels_unsubscribe_subscribe(user_id,channel_id) {
     
       $.ajax({
-           url : "{{route('user.ajax_subscribe.channel')}}",
+           url : "{{route('user.channels_unsubscribe_subscribe_ajax.channel')}}",
            data : {id : user_id, channel_id : channel_id},
            type: "get",
 
@@ -1289,10 +1229,20 @@
        })
    }
 
-   function wishlist(user_id,video_tape_id) {
+   /**
+     * @function wishlist_operations() 
+     *
+     * @uses Add / Remove  Wishlist
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */
+   function wishlist_operations(user_id,video_tape_id) {
     
       $.ajax({
-           url : "{{route('user.ajax_wishlist')}}",
+           url : "{{route('user.wishlist_operations_ajax')}}",
            data : {id : user_id,video_tape_id : video_tape_id},
            type: "get",
 
@@ -1314,6 +1264,9 @@
        })
    }
 
+   /**
+     * Videos Like and count based on the Likes
+     */
    function likeVideo(video_id) {
       $(".dislike").removeClass("dislike_color");
       $.ajax({
@@ -1350,6 +1303,9 @@
        })
    }
    
+   /**
+     * Video Dislikes and Count
+     */
    function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");
        $.ajax({

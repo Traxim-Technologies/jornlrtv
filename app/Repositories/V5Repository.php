@@ -151,7 +151,7 @@ class V5Repository {
 	 */
 
  	public static function video_list_response($video_tape_ids, $user_id, $orderby = 'video_tapes.updated_at', $other_select_columns = "", $is_random_order = "", $is_owner = NO) {
-
+        
         $user_details = User::find($user_id);
 
  		$base_query = VideoTape::whereIn('video_tapes.id' , $video_tape_ids);

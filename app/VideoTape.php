@@ -122,7 +122,8 @@ class VideoTape extends Model
                 'publish_time',
                 'video_tapes.video_type',
                 \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created'),
-                \DB::raw('DATE_FORMAT(video_tapes.updated_at , "%e %b %y") as updated')
+                \DB::raw('DATE_FORMAT(video_tapes.updated_at , "%e %b %y") as updated'),
+                \DB::raw('(CASE WHEN (user_ratings = 0) THEN ratings ELSE user_ratings END) as ratings')
             
             );
     
@@ -144,6 +145,7 @@ class VideoTape extends Model
             ->select(
                 'video_tapes.id as video_tape_id' ,
                 'video_tapes.title',
+                'video_tapes.video',
                 'video_tapes.description',
                 'video_tapes.default_image as video_image',
                 'video_tapes.watch_count',
@@ -163,7 +165,8 @@ class VideoTape extends Model
                 'video_publish_type',
                 'publish_status',
                 \DB::raw('DATE_FORMAT(video_tapes.created_at , "%e %b %y") as created'),
-                \DB::raw('DATE_FORMAT(video_tapes.updated_at , "%e %b %y") as updated')
+                \DB::raw('DATE_FORMAT(video_tapes.updated_at , "%e %b %y") as updated'),
+                \DB::raw('(CASE WHEN (user_ratings = 0) THEN ratings ELSE user_ratings END) as ratings')
             
             );
     

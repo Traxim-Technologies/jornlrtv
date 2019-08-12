@@ -5224,7 +5224,7 @@ class UserApiController extends Controller {
      * @return based on video displayed all the details'
      */
     public function video_detail(Request $request) {
-
+        
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')

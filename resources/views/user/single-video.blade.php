@@ -131,7 +131,7 @@
                                           
                                           @if(Auth::check())
 
-                                             <a class="thumb-class" onclick="wishlist({{Auth::user()->id}},{{$video->video_tape_id}})"><i id="icon_color" class="fa fa-heart icon_color @if(count($wishlist_status) == 1 && $wishlist_status) wishlist-add @endif"></i>&nbsp;</a>
+                                             <a class="thumb-class" onclick="wishlist_operations({{Auth::user()->id}},{{$video->video_tape_id}})"><i id="icon_color" class="fa fa-heart icon_color @if(count($wishlist_status) == 1 && $wishlist_status) wishlist-add @endif"></i>&nbsp;</a>
 
                                           @endif
                                           <!-- <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
@@ -246,7 +246,7 @@
                                                 @if(Auth::check())
                                                    
                                                    @if($video->get_channel->user_id != Auth::user()->id)
-                                                      <a id="subscription" class="btn btn-sm bottom-space btn-info text-uppercase subscription @if($subscribe_status) subscription_button @endif" onclick="subscribe({{Auth::user()->id}},{{$video->channel_id}})"><span id="subscription_text">
+                                                      <a id="subscription" class="btn btn-sm bottom-space btn-info text-uppercase subscription @if($subscribe_status) subscription_button @endif" onclick="channels_unsubscribe_subscribe_ajax({{Auth::user()->id}},{{$video->channel_id}})"><span id="subscription_text">
                                                       @if($subscribe_status) {{tr('un_subscribe')}} @else {{tr('subscribe')}} @endif &nbsp; </span><span id="subscriberscnt">{{$subscriberscnt}}</span></a>
                                                       
                                                       <!-- @if(!$subscribe_status)
@@ -1187,13 +1187,19 @@
    }  
 
    /**
-     * Subscribe and Unsubscribe the video based 
-     * User and channel Id.
-     */
-   function subscribe(user_id,channel_id) {
+     * @function channels_unsubscribe_subscribe() 
+     *
+     * @uses used to update the subscribe status
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */ 
+   function channels_unsubscribe_subscribe(user_id,channel_id) {
     
       $.ajax({
-           url : "{{route('user.ajax_subscribe.channel')}}",
+           url : "{{route('user.channels_unsubscribe_subscribe_ajax.channel')}}",
            data : {id : user_id, channel_id : channel_id},
            type: "get",
 
@@ -1218,13 +1224,19 @@
    }
 
    /**
-     * Add and remove the video from wishlist
-     * Based on User ID and Video ID
+     * @function wishlist_operations() 
+     *
+     * @uses Add / Remove  Wishlist
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
      */
-   function wishlist(user_id,video_tape_id) {
+   function wishlist_operations(user_id,video_tape_id) {
     
       $.ajax({
-           url : "{{route('user.ajax_wishlist')}}",
+           url : "{{route('user.wishlist_operations_ajax')}}",
            data : {id : user_id,video_tape_id : video_tape_id},
            type: "get",
 
