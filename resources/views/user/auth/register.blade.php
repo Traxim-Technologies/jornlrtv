@@ -129,6 +129,12 @@
                     @endif
 
                     <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
+
+                    @if(app('request')->input('referral'))
+
+                    <p class="text-success">#{{app('request')->input('referral')}} Referral code applied.</p>
+
+                    @endif
                     
                     <div class="form-group">
                         <label for="name">{{tr('name')}}</label>
