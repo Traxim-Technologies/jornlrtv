@@ -382,7 +382,38 @@
                   
                   <div class="col-sm-12 col-md-4 side-video custom-side">
 
-                     @include('user.videos._playlist')
+                     <div class="up-next pt-0">
+
+                        <h4 class="sugg-head1">{{tr('playlists')}}</h4>
+
+                        <ul class="video-sugg">
+                        
+                          @if(count($play_all->video_tapes) > 0)
+
+                              @include('user.videos._playlist')
+
+                              <span id="playlists_videos"></span>
+
+                              <div class="clearfix"></div>
+
+                              <div class="row" style="margin-top: 20px">
+
+                              <div id="playlist_video_content_loader" style="display: none;">
+
+                              <h1 class="text-center"><i class="fa fa-spinner fa-spin" style="color:#ff0000"></i></h1>
+
+                                  </div>
+
+                                  <div class="clearfix"></div>
+
+                                  <button class="pull-right btn btn-info mb-15" onclick="getPlaylistsList()" style="color: #fff">{{tr('view_more')}}</button>
+
+                                  <div class="clearfix"></div>
+
+                             </div>
+                          @endif
+                        </ul>
+                     </div>
                       
                   </div>
 
@@ -1368,6 +1399,7 @@
        });
    }
 
+
    var stopPageScroll = false;
 
    var searchDataLength = "{{count($play_all->video_tapes)}}";
@@ -1404,123 +1436,9 @@
 
             success: function(response) {
                
-                $.each(response.video_tapes, function(key,playList) { 
+               $('#playlists_videos').append(response.view);
 
-                     var redirect_url = "{{route('user.playlists.play_all' , ['playlist_id'=>$play_all->playlist_id,'playlist_type'=>$play_all->playlist_type])}}";
-                     
-                     var urlString = redirect_url.replace(/&amp;/g, '&');
-
-                    var channel_redirect_url = "/channel/"+playList.channel_id;
-
-                    var messageTemplate = '';
-
-                    messageTemplate = '<li class="sugg-list row">';
-
-                    messageTemplate += '<div class="main-video">';
-
-                    messageTemplate += '<div class="video-image">';
-
-                    messageTemplate += '<div class="video-image-outer">';
-
-                    messageTemplate += '<a href="'+urlString+'">';
-
-                    messageTemplate += '<img src="'+playList.video_image+'" data-src="'+playList.video_image+'" class="slide-img1 placeholder" />';
-
-                    messageTemplate += '</a>';
-
-                    messageTemplate += '</div>';
-
-                    if(playList.ppv_amount > 0) {
-                        
-                        if(playList.should_display_ppv) {
-
-                            messageTemplate += '<div class="video_amount">';
-                            
-                            messageTemplate += 'PAY -'+playList.currency+' '+playList.ppv_amount;
-
-                            messageTemplate += '</div>';
-
-                        }
-                    }
-
-                    messageTemplate += '<div class="video_duration">'+playList.duration+'</div>';
-
-                    messageTemplate += '</div>';
-
-                    messageTemplate += '<div class="sugg-head">';
-
-                    messageTemplate += '<div class="suggn-title">';
-
-                    messageTemplate += '<h5><a href="'+urlString+'">'+playList.title+'</a></h5>';
-
-                    messageTemplate += '</div>';
-
-                    messageTemplate += '<span class="video_views">';
-
-                    messageTemplate += '<div><a href="'+channel_redirect_url+'">'+playList.channel_name+'</a></div>';
-
-                    messageTemplate += '<i class="fa fa-eye"></i> '+playList.watch_count+' Views <b>.</b>'+ playList.created+'</span>';
-
-                    messageTemplate += '</div>';
-
-                    messageTemplate += '<br>';
-
-                    messageTemplate += '<span class="stars">';
-
-                    messageTemplate += '<a><i ';
-
-                    if(playList.ratings >= 1) {
-                        messageTemplate +='style="color:#ff0000"';
-                    }
-
-                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
-
-                    messageTemplate += '<a><i ';
-
-                    if(playList.ratings >= 2) {
-                        messageTemplate +='style="color:#ff0000"';
-                    }
-
-                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
-
-                    messageTemplate += '<a><i ';
-
-                    if(playList.ratings >= 3) {
-                        messageTemplate +='style="color:#ff0000"';
-                    }
-
-                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
-
-                    messageTemplate += '<a><i ';
-
-                    if(playList.ratings >= 4) {
-                        messageTemplate +='style="color:#ff0000"';
-                    }
-
-                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
-
-                    messageTemplate += '<a><i ';
-
-                    if(playList.ratings >= 5) {
-                        messageTemplate +='style="color:#ff0000"';
-                    }
-
-                    messageTemplate += 'class="fa fa-star" aria-hidden="true"></i></a>';
-
-                    messageTemplate += '</div>';
-                   
-
-                    messageTemplate += '</div>';
-
-                    messageTemplate += '</div>';
-
-                    messageTemplate += '</li>';
-                    
-                    $('#playlists_videos').append(messageTemplate);
-
-                });
-
-                if (response.video_tapes.length == 0) {
+                if (response.count == 0) {
 
                     stopPageScroll = true;
 
@@ -1528,14 +1446,14 @@
 
                     stopPageScroll = false;
 
-                    searchDataLength = parseInt(searchDataLength) + response.video_tapes.length;
+                    searchDataLength = parseInt(searchDataLength) + response.count;
 
                 }
 
             },
 
             complete: function() {
-
+               console.log('complete');
                 $("#playlist_video_content_loader").fadeOut();
 
             },

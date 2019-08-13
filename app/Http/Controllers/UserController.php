@@ -3055,7 +3055,7 @@ class UserController extends Controller {
     * @return response of json
     */
     public function categories_view($id, Request $request) {
-
+        
         $request->request->add([ 
             'category_id'=>$id,
             'id' => \Auth::check() ? \Auth::user()->id : '',
@@ -3752,9 +3752,13 @@ class UserController extends Controller {
         // Load all the videos based on playlist_id and playlist_type
         $play_all = $this->NewUserAPI->playlists_view($request)->getData();
         
-        if($request->is_json) {
+        if($request->is_json && $play_all->success) {
 
-            return response()->json($play_all->data, 200);
+            $view = \View::make('user.videos._playlist')
+                    ->with('play_all',$play_all->data)
+                    ->render();
+           
+            return response()->json(['success'=>true, 'view'=>$view, 'count' =>count($play_all->data)]);
         }
 
         $video_tapes = $play_all->data->video_tapes;

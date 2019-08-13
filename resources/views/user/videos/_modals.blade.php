@@ -184,10 +184,8 @@
                     <h4 class="modal-title">{{tr('save_to')}}</h4>
 
                 </div>
-
+                @if(!empty($playlists))
                 <div class="modal-body">
-
-                    @if(!empty($playlists))
 
                     <div class="more-content" id="user-playlists-form">
                                               
@@ -213,25 +211,21 @@
 
                             @endforeach
 
-                        <div id="user_playlists"></div>
-                         
-                        <div class="clearfix"></div>
-
                     </div>
-                    
-                    @else
-     
-                    <div id="user-playlists-form">
-     
-                        <div id="user_playlists"></div>
-                         
-                        <div class="clearfix"></div>
+                </div>   
+                @else
+        
+                <div id="user-playlists-form">
+ 
+                    <div id="user_playlists"></div>
+                     
+                    <div class="clearfix"></div>
 
-                    </div>
-                    
-                    @endif  
-             
                 </div>
+                
+                @endif  
+             
+                
 
                 <div class="modal-footer">
                     

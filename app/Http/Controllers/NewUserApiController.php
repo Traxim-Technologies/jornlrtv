@@ -66,7 +66,7 @@ class NewUserApiController extends Controller
         $this->skip = $request->skip ?: 0;
 
         $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);
-
+        
         $this->currency = Setting::get('currency', '$');
     }
 
@@ -4738,7 +4738,7 @@ class NewUserApiController extends Controller
                                 ->take($take)
                                 ->pluck('playlist_videos.video_tape_id')
                                 ->toArray();
-
+            
             $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
            
             $playlist_details->picture = asset('images/playlist.png');

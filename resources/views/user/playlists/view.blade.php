@@ -378,6 +378,7 @@
 
                 $.each(response.data.video_tapes, function(key,videoTapeDetails) { 
 
+                    console.log(videoTapeDetails);
                     // console.log(JSON.stringify(videoTapeDetails));
 
                     var redirect_url = "/video/"+videoTapeDetails.video_tape_id;
@@ -394,7 +395,7 @@
 
                     messageTemplate += '<a href="'+redirect_url+'">';
 
-                    messageTemplate += '<img src="'+videoTapeDetails.default_image+'" data-src="'+videoTapeDetails.default_image+'" class="slide-img1 placeholder" />';
+                    messageTemplate += '<img src="'+videoTapeDetails.default_image+'" data-src="'+videoTapeDetails.video_image+'" class="slide-img1 placeholder" />';
 
                     messageTemplate += '</a>';
 
