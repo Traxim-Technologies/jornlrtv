@@ -6693,7 +6693,7 @@ class UserApiController extends Controller {
 
             if ($request->device_type == DEVICE_ANDROID || $request->device_type == DEVICE_IOS) {
 
-                $channels = $query->skip($request->skip)->take(1)->get();
+                $channels = $query->skip($request->skip)->take(Setting::get('admin_take_count', 12))->get();
 
             } else {
 
