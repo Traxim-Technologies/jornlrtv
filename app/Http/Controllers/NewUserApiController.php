@@ -64,7 +64,7 @@ class NewUserApiController extends Controller
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
 
         $this->skip = $request->skip ?: 0;
-
+        
         $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);
         
         $this->currency = Setting::get('currency', '$');

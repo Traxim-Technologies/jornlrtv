@@ -3644,11 +3644,6 @@ class UserController extends Controller {
                 throw new Exception($response->error_messages, $response->error_code);
             }
 
-            if($request->is_json) {
-
-                return response()->json($response, 200);
-            }
-
             $playlist_details = $response->data;
 
             $user_details = User::find($playlist_details->user_id);
@@ -3661,7 +3656,17 @@ class UserController extends Controller {
             $playlist_details->user_name = $user_details->name;
            
             $playlist_details->user_picture = $user_details->picture;
-          
+            
+            if($request->is_json) {
+
+                $view = \View::make('user.playlists.playlists')
+                    ->with('video_tapes',$response->data->video_tapes)
+                    ->with('playlist_details',$playlist_details)
+                    ->render();
+           
+                return response()->json(['success'=>true, 'view'=>$view, 'count' =>count($response->data->video_tapes)]);
+            }
+
             $video_tapes = $response->data->video_tapes;
 
             $channel_videos = [];
