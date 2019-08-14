@@ -737,12 +737,13 @@
            "controlbar.idlehide" : false,
            controlBarMode:'floating',
            "controls": {
-           "enableFullscreen": false,
-           "enablePlay": false,
-           "enablePause": false,
-           "enableMute": true,
-           "enableVolume": true
+              "enableFullscreen": true,
+              "enablePlay": true,
+              "enablePause": true,
+              "enableMute": true,
+              "enableVolume": true
            },
+           autoplay : true,
            autostart : true,
            "sharing": {
             "sites": ["facebook","twitter"]
