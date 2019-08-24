@@ -2088,4 +2088,8 @@ return array(
 
 	'referral_code_applied' => 'Referral code applied.',
 
+	'referral_title' => 'Spread the word and earn rewards',
+
+	'referral_benefit' => 'When someone signs up with your unique referral link, you will get ',
+
 );

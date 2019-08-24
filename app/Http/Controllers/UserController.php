@@ -1835,8 +1835,32 @@ class UserController extends Controller {
      */
 
     public function redeems(Request $request) {
-        
-        return view('user.redeems.index');
+
+        $redeem_details = Auth::user()->userRedeem;
+
+        if(!$redeem_details) {
+
+            $redeem_details = new Redeem;
+
+            $redeem_details->user_id = Auth::user()->id;
+
+            $redeem_details->status = APPROVED;
+
+            $redeem_details->remaining = $redeem_details->paid = $redeem_details->total = 0.00;
+
+            $redeem_details->save();
+
+        }
+
+        $min_status = Setting::get('minimum_redeem') < $redeem_details->remaining;
+
+        $redeem_details->send_redeem_btn_status = $redeem_details && $min_status;
+
+        $redeem_requests = Auth::user()->userRedeemRequests()->orderBy('created_at', 'desc')->get();
+
+        return view('user.redeems.index')
+                    ->with('redeem_details', $redeem_details)
+                    ->with('redeem_requests', $redeem_requests);
 
     }
 

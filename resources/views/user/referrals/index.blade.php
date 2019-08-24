@@ -26,15 +26,20 @@
 
 			<div class="col-md-8">
 
-				<h2 class="no-margin">Spread the word and earn rewards</h2>
+				<h2 class="no-margin">{{tr('referral_title')}}</h2>
 
-				<p class="text-gray referrals-text">When someone signs up with your unique referral link, you will get below benifits</p>
+				<p class="text-gray referrals-text">
+					{{tr('referral_benefit')}}
+					<span class="text-success">
+						<b>{{formatted_amount(Setting::get('referral_commission'))}}</b>
+					</span>
+				</p>
 
-				<li class="referrals-text">Subscription commission</li>
+				<!-- <li class="referrals-text">Subscription commission</li>
 
 				<li class="referrals-text">PPV commission</li>
 
-				<li class="referrals-text">Referral commission</li>
+				<li class="referrals-text">Referral commission</li> -->
 
 				<h4 class="shareUrl-headerText">Click to Copy Invite Link</h4>
 	        	

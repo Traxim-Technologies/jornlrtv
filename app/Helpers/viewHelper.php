@@ -1533,7 +1533,7 @@ function type_of_subscription($status) {
     return isset($list_status[$status]) ? $list_status[$status] : "NONE" ;
 }
 
-function common_date($date , $timezone = "America/New_York" , $format = "d M Y h:i A") {
+function common_date($date , $timezone = "America/New_York" , $format = "d M Y") {
 
     if($date == "0000-00-00 00:00:00") {
         
