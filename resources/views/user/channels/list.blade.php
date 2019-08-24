@@ -54,8 +54,6 @@
 
 					                    	<a class="st_video_upload_btn " href="{{route('user.subscriptions')}}"><i class="fa fa-list"></i>&nbsp;{{tr('subscriptions')}}</a>
 
-					                    	
-
 					                    	</div>
 
 					                    @endif
@@ -134,7 +132,6 @@
 				                                    </div> <!--end of history-head--> 
 
 				                                    <div class="description hidden-xs">
-				                                        <?= $channel->description?>
 				                                    </div><!--end of description--> 
 
 				                                   	                                                  
