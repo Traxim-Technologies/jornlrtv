@@ -26,15 +26,23 @@
                 <div class="social-btn">
 
                     @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
+                        
                         <div class="social-fb">
+                            
                             <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                
                                 <input type="hidden" value="facebook" name="provider" id="provider">
+
+                                <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
+
                                 <a href="#">
                                     <button type="submit">
                                         <i class="fa fa-facebook"></i>{{tr('login_via_fb')}}
                                     </button>
                                 </a>
+                        
                             </form>
+                        
                         </div>
                     
                     @endif
@@ -42,14 +50,21 @@
                     @if(config('services.twitter.client_id') && config('services.twitter.client_secret'))
 
                         <div class="social-twitter">
+                          
                             <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                
                                 <input type="hidden" value="twitter" name="provider" id="provider">
+
+                                <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
+
                                 <a href="#">
                                     <button type="submit">
                                         <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
                                     </button>
                                 </a>
+                            
                             </form>
+                        
                         </div>
 
                     @endif
@@ -59,6 +74,7 @@
                         <div class="social-google">
                             <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
                                 <input type="hidden" value="google" name="provider" id="provider">
+                                
                                 <a href="#">
                                     <button type="submit">
                                         <i class="fa fa-google-plus"></i>{{tr('login_via_google')}}
@@ -112,6 +128,14 @@
                         </div>
                     @endif
 
+                    <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
+
+                    @if(app('request')->input('referral'))
+
+                    <p class="text-success">#{{app('request')->input('referral')}} Referral code applied.</p>
+
+                    @endif
+                    
                     <div class="form-group">
                         <label for="name">{{tr('name')}}</label>
                         <input type="text" required name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}" title="{{tr('username_notes')}}" value="{{old('name')}}">

@@ -139,65 +139,11 @@
 
                 @include('notification.notify')
 
-                @if($wishlists)
+                <!-- wishlist start -->
 
-                @if(count($wishlists->items) > 0)
+                @include('user.home._wishlist')
 
-                    <div class="slide-area">
-                        <div class="box-head">
-                            <h3>{{tr('wishlist')}}</h3>
-                        </div>
-
-                        <div class="box">
-
-                            @foreach($wishlists->items as $wishlist)
-
-                            <div class="slide-box">
-                                <div class="slide-image">
-                                    <a href="{{$wishlist->url}}">
-                                        <!-- <img src="{{$wishlist->video_image}}" /> -->
-                                        <!-- <div style="background-image: url({{$wishlist->video_image}});" class="slide-img1"></div> -->
-
-                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$wishlist->video_image}}"class="slide-img1 placeholder" />
-                                    </a>
-
-                                    @if($wishlist->ppv_amount > 0)
-                                        @if(!$wishlist->ppv_status)
-                                            <div class="video_amount">
-
-                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$wishlist->ppv_amount}}
-
-                                            </div>
-                                        @endif
-                                    @endif
-                                    <div class="video_mobile_views">
-                                        {{$wishlist->watch_count}} {{tr('views')}}
-                                    </div>
-                                    <div class="video_duration">
-                                        {{$wishlist->duration}}
-                                    </div>
-                                </div><!--end of slide-image-->
-
-                                <div class="video-details">
-                                    <div class="video-head">
-                                        <a href="{{$wishlist->url}}">{{$wishlist->title}}</a>
-                                    </div>
-                                    <span class="video_views">
-                                        <div><a href="{{route('user.channel',$wishlist->channel_id)}}">{{$wishlist->channel_name}}</a></div>
-                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$wishlist->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$wishlist->created_at}}</div>
-                                    </span>
-                                </div><!--end of video-details-->
-                            </div><!--end of slide-box-->
-                            @endforeach
-                   
-                              
-                        </div><!--end of box--> 
-                    </div><!--end of slide-area-->
-
-                @endif
-
-                @endif
+                <!-- wishlist end -->
 
 
                 @if(count($recent_videos->items) > 0)
@@ -205,6 +151,7 @@
                 <hr>
                 
                     <div class="slide-area">
+                       
                         <div class="box-head">
                             <h3>{{tr('recent_videos')}}</h3>
                         </div>
@@ -244,7 +191,7 @@
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$recent_video->channel_id)}}">{{$recent_video->channel_name}}</a></div>
                                         <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$recent_video->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$recent_video->created_at}}</div>
+                                        {{common_date($recent_video->created_at) }}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -252,11 +199,11 @@
                    
                               
                         </div><!--end of box--> 
-                    </div><!--end of slide-area-->
+                   
+                    </div>
+                    <!--end of slide-area-->
 
                 @endif
-
-
 
                 @if(count($trendings->items) > 0)
 
@@ -303,7 +250,7 @@
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$trending->channel_id)}}">{{$trending->channel_name}}</a></div>
                                         <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$trending->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$trending->created_at}}</div>
+                                        {{$trending->publish_time}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -360,7 +307,7 @@
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$suggestion->channel_id)}}">{{$suggestion->channel_name}}</a></div>
                                         <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$suggestion->created_at}}</div>
+                                        {{ $suggestion->publish_time}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->
@@ -416,8 +363,8 @@
                                     </div>
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$watch_list->channel_id)}}">{{$watch_list->channel_name}}</a></div>
-                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$watch_list->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$watch_list->created_at}}</div>
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{ $watch_list->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$watch_list->publish_time}}</div>
                                     </span> 
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->

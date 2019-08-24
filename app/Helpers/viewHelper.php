@@ -52,7 +52,33 @@ use App\Playlist;
 
 use App\PlaylistVideo;
 
+use App\UserReferrer;
+
 function tr($key , $otherkey = "") {
+
+    if(Auth::guard('admin')->check()) {
+        // $locale = config('app.locale');
+        $locale = Setting::get('default_lang' , 'en');
+        
+    } else {
+        
+        if (!\Session::has('locale')) {
+
+            // $locale = \Session::put('locale', config('app.locale'));
+            $locale = Setting::get('default_lang' , 'en');
+
+        }else {
+
+            $locale = \Session::get('locale');
+
+        }
+
+    }
+    
+    return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), $locale);
+}
+
+function apitr($key , $otherkey = "") {
 
     if (!\Session::has('locale'))
 
@@ -60,7 +86,7 @@ function tr($key , $otherkey = "") {
 
     // return \Lang::choice('messages.'.$key, 0, Array(), \Session::get('locale'));
 
-    return \Lang::choice('messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
+    return \Lang::choice('api-messages.'.$key, 0, Array('otherkey' => $otherkey), \Session::get('locale'));
 }
 
 function envfile($key) {
@@ -171,7 +197,10 @@ function total_revenue() {
 
     $video_payments = VideoTape::sum('admin_ppv_amount');
 
-    return $video_payments + $user_payments;
+    $user_referral_payments = UserReferrer::sum('total_referrals_earnings');
+
+    return $video_payments + $user_payments + $user_referral_payments;
+
 }
 
 function check_s3_configure() {
@@ -597,7 +626,8 @@ function getFlagVideos($id) {
         ->leftJoin('video_tapes' , 'flags.video_tape_id' , '=' , 'video_tapes.id')
         ->where('video_tapes.is_approved' , 1)
         ->where('video_tapes.status' , 1)
-        ->pluck('video_tape_id')->toArray();
+        ->pluck('video_tape_id')
+        ->toArray();
     // Return array of id's
     return $model;
 }
@@ -615,6 +645,7 @@ function loadChannels() {
     $age = 0;
 
     if(Auth::check()) {
+
         $age = \Auth::user()->age_limit;
 
         $age = $age ? ($age >= Setting::get('age_limit') ? 1 : 0) : 0;
@@ -633,7 +664,7 @@ function loadChannels() {
                 ->havingRaw('COUNT(video_tapes.id) > 0')
                 ->groupBy('video_tapes.channel_id')
                 ->get();
-    
+   
     return $model;
 }
 
@@ -858,9 +889,9 @@ function get_history_count($id) {
 
 }
 
-function get_wishlist_count($id) {
+function get_wishlist_count($video_tape_id) {
     
-    $data = Wishlist::where('wishlists.user_id' , $id)
+    $data = Wishlist::where('wishlists.user_id' , $video_tape_id)
                 ->leftJoin('video_tapes' ,'wishlists.video_tape_id' , '=' , 'video_tapes.id')
                 ->where('video_tapes.is_approved' , DEFAULT_TRUE)
                 ->where('video_tapes.status' , DEFAULT_TRUE)
@@ -1219,8 +1250,7 @@ function watchFullVideo($user_id, $user_type, $video) {
 
 function displayVideoDetails($data,$userId) {
 
-
-
+    
     $user = User::find($userId);
 
     if (Setting::get('is_payper_view')) {
@@ -1296,11 +1326,7 @@ function displayVideoDetails($data,$userId) {
 
     } 
 
-    $wishlist_status = 0;
-
-    $history_status = 0;
-
-    $like_status = 0;
+    $wishlist_status = $history_status = $like_status = 0;
 
     if ($user) {
 
@@ -1355,7 +1381,7 @@ function displayVideoDetails($data,$userId) {
         'status'=>$data->status,
         'is_approved'=>$data->is_approved,
         'pay_per_view_status'=>$pay_per_view_status->success,
-        'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont shwo subscribe+ppv_ page 1- Means show ppv subscribe page
+        'is_ppv_subscribe_page'=>$is_ppv_status, // 0 - Dont show subscribe+ppv_ page 1- Means show ppv subscribe page
         'currency'=>Setting::get('currency'),
         // 'publish_time'=>date('F Y', strtotime($data->publish_time)),
         'publish_time'=>$data->created_at->diffForHumans(),
@@ -1371,6 +1397,7 @@ function displayVideoDetails($data,$userId) {
         'category_unique_id'=>$category_unique_id,
         'category_name'=>$data->category_name,
         'tags'=>$tags,
+        'is_my_channel' => $userId == $data->channel_created_by ? YES : NO
         // 'playlists' => $playlists
     ];
 
@@ -1583,4 +1610,69 @@ function userChannelId() {
 
         return route('user.subscriptions');
     }
+}
+
+function formatted_amount($amount = 0.00, $currency = "") {
+
+    $currency = $currency ?: Setting::get('currency', '$');
+
+    $formatted_amount = $currency."".$amount ?: 0.00;
+
+    return $formatted_amount;
+}
+
+function generate_payment_id($user_id = 0, $other_id = 0, $amount = 0) {
+
+    $payment_id = $user_id."-".$other_id."-".strtoupper(uniqid()).$amount;
+
+    return $payment_id;
+}
+
+function type_of_user($status) {
+
+    $list_status = [
+            NORMAL_USER => tr('normal_users'),
+            PAID_USER => tr('paid_users'),
+            BOTH_USERS => tr('both_users')
+        ];
+    return isset($list_status[$status]) ? $list_status[$status] : "NONE" ;
+}
+
+function type_of_subscription($status) {
+
+    $list_status = [
+            ONE_TIME_PAYMENT => tr('one_time_payment'),
+            RECURRING_PAYMENT => tr('recurring_payment')
+        ];
+    return isset($list_status[$status]) ? $list_status[$status] : "NONE" ;
+}
+
+function common_date($date , $timezone = "America/New_York" , $format = "d M Y") {
+
+    if($date == "0000-00-00 00:00:00") {
+        
+        return $date;
+    }
+
+    if($timezone) {
+
+        $date = convertTimeToUSERzone($date , $timezone , $format);
+
+    }
+
+    return date($format , strtotime($date));
+
+}
+
+function video_type_text($video_type) {
+
+    $video_types = [
+        VIDEO_TYPE_UPLOAD => apitr('VIDEO_TYPE_UPLOAD'),
+        VIDEO_TYPE_LIVE => apitr('VIDEO_TYPE_LIVE'),
+        VIDEO_TYPE_YOUTUBE => apitr('VIDEO_TYPE_YOUTUBE'),
+        VIDEO_TYPE_OTHERS => apitr('VIDEO_TYPE_OTHERS')
+    ];
+
+    return isset($video_types[$video_type]) ? $video_types[$video_type] : "NONE";
+
 }

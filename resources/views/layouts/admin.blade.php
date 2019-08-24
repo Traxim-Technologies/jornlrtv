@@ -36,17 +36,22 @@
 
     <link rel="stylesheet" href="{{ asset('admin-css/dist/css/custom.css')}}">
     
-    <link rel="stylesheet" href="{{asset('admin-css/plugins/datepicker/datepicker3.css')}}">
+    <link rel="stylesheet" href="{{ asset('admin-css/plugins/datepicker/datepicker3.css')}}">
 
     @yield('styles')
 
     <style>
-        /*.skin-blue .main-header .navbar {
+       
+        /*
+
+        .skin-blue .main-header .navbar {
             background: linear-gradient(to bottom right, rgb(86, 202, 193), #0e5c73);
         }
+        
         .skin-blue .main-header .logo {
             background: linear-gradient(to bottom right, rgb(86, 202, 193), #0e5c73);
         }
+
         .skin-blue .main-sidebar{
             background: linear-gradient(to bottom right, rgb(42, 49, 53), #39a1bf);
         }*/

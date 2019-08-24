@@ -62,7 +62,7 @@
           	<div class="box box-primary">
 
 	          	<div class="box-header label-primary">
-	                <b>{{ tr('categories') }}</b>
+	                <b>{{ tr('tags') }}</b>
 	            </div>
 	            
 	            <div class="box-body">
@@ -73,6 +73,7 @@
 						    <tr>
 						      	<th>{{ tr('id') }}</th>
 						      	<th>{{ tr('name') }}</th>
+						      	<th>{{ tr('videos') }}</th>
 						      	<th>{{ tr('status') }}</th>
 						      	<th>{{ tr('action') }}</th>
 						    </tr>
@@ -86,6 +87,8 @@
 							      	<td>{{ $i+1 }}</td>
 
 							      	<td class="text-capitalize">{{ $tag_details->name }}</td>
+
+							      	<td class="text-capitalize"><a href="{{ route('admin.tags.videos', ['tag_id' => $tag_details->id]) }}" class="btn btn-xs btn-success" title="{{tr('admin_taged_videos')}}"> {{ $tag_details->videoTapeTags->count() ?? '' }}</a> </td>
 							      
 							      	<td class="text-center">
 						      			@if($tag_details->status)
@@ -97,7 +100,7 @@
 
 						      		<td class="text-center">
 						      		
-					      				<a href="{{ route('admin.tags', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-primary" title="{{tr('edit')}}">	<i class="fa fa-edit"></i>
+					      				<a href="{{ route('admin.tags.index', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-primary" title="{{tr('edit')}}">	<i class="fa fa-edit"></i>
 				              			</a>
 
 						      			<a href="{{ route('admin.tags.delete', ['tag_id' => $tag_details->id]) }}" class="btn  btn-xs btn-danger" title="{{tr('delete')}}" onclick="return confirm(&quot;{{ tr('admin_tag_delete_confirmation', $tag_details->name) }}&quot;)" ><i class="fa fa-trash"></i></a>	

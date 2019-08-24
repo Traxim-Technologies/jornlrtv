@@ -17,6 +17,7 @@
                 <div><h4 class="settings">{{tr('settings')}}</h4></div>
 
                 <div class="row">
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<div class="settings-card carg-lg">
                 			<div class="text-center">
@@ -26,8 +27,38 @@
                 				<a href="{{route('user.profile')}}" class="settings-link">{{tr('view_profile')}}</a>
                 			</div>
                 		</div>
+
+                		<a href="{{route('user.history')}}">
+	                		<div class="settings-card">
+	                			<div class="display-inline">
+	                				<div class="settings-left">
+	                					<img src="{{asset('images/history1.png')}}" class="settings-icon">
+	                				</div>
+	                				<div class="settings-right">
+	                					<h4 class="settings-head">{{tr('history')}}</h4>
+	                					<!-- <p class="settings-subhead">15 videos</p> -->
+	                				</div>
+	                			</div>
+	                		</div>
+                		</a>                	
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
+
+                		<a href="{{route('user.referrals')}}">
+	                		<div class="settings-card">
+	                			<div class="display-inline">
+	                				<div class="settings-left">
+	                					<img src="{{asset('images/referrals.png')}}" class="settings-icon">
+	                				</div>
+	                				<div class="settings-right">
+	                					<h4 class="settings-head">Referrals</h4>
+	                					<?php /*<p class="settings-subhead">{{$subscriptions}} {{tr('plans')}}</p> */?>
+	                				</div>
+	                			</div>
+	                		</div>
+                		</a>
+                		
                 		<a href="{{route('user.subscriptions')}}">
 	                		<div class="settings-card">
 	                			<div class="display-inline">
@@ -55,6 +86,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.wishlist')}}">
 	                		<div class="settings-card">
@@ -83,6 +115,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.channels.subscribed')}}">
 	                		<div class="settings-card">
@@ -98,21 +131,7 @@
 	                		</div>
                 		</a>
                 	</div>
-                	<div class="col-sm-6 col-md-4 col-lg-4">
-                		<a href="{{route('user.history')}}">
-	                		<div class="settings-card">
-	                			<div class="display-inline">
-	                				<div class="settings-left">
-	                					<img src="{{asset('images/history1.png')}}" class="settings-icon">
-	                				</div>
-	                				<div class="settings-right">
-	                					<h4 class="settings-head">{{tr('history')}}</h4>
-	                					<!-- <p class="settings-subhead">15 videos</p> -->
-	                				</div>
-	                			</div>
-	                		</div>
-                		</a>
-                	</div>
+                
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.ppv.history')}}">
 	                		<div class="settings-card">
@@ -128,6 +147,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.card.card_details')}}">
 	                		<div class="settings-card">
@@ -143,6 +163,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.redeems')}}">
 	                		<div class="settings-card">
@@ -158,6 +179,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.change.password')}}">
 	                		<div class="settings-card">
@@ -187,6 +209,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 	<div class="col-sm-6 col-md-4 col-lg-4">
                 		<a href="{{route('user.logout')}}" onclick="return confirm('{{tr("logout_confirmation")}}')">
 	                		<div class="settings-card">
@@ -201,6 +224,7 @@
 	                		</div>
                 		</a>
                 	</div>
+
                 </div>
 
             </div>

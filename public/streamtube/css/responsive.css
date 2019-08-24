@@ -294,6 +294,7 @@
 }
 .hidden-mobile{
 	display: none;
+	font-size: 12px !important;
 }
 .video_mobile_views{
 	display: block;

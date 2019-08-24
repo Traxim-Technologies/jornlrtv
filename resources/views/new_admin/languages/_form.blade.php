@@ -3,16 +3,15 @@
 	<div class="box-body">
 
 		<input type="hidden" name="language_id" value="{{ $language_details->id }}">
-
-	    <div class="form-group">
+	    <div class="col-sm-6 form-group">
 	        <label for="folder_name">{{ tr('short_name') }}</label>
 	        <input type="text" class="form-control" name="folder_name" id="folder_name" placeholder="{{ tr('example_language') }}" required maxlength="4" value="{{ old('folder_name') ?: $language_details->folder_name }}">
 	    </div>
 
-	    <div class="form-group">
+	    <div class="col-sm-6  form-group">
 	        <label for="language">{{ tr('language') }}</label>
 	        <div>
-	            <input type="text" class="form-control" name="language" id="language" placeholder="{{ tr('example_language2') }}" required maxlength="4" value="{{ old('language') ?: $language_details->language }}">
+	            <input type="text" class="form-control" name="language" id="language" placeholder="{{ tr('example_language2') }}" required value="{{ old('language') ?: $language_details->language }}">
 	        </div>
 	    </div>
 
@@ -35,7 +34,7 @@
 		</div> <div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="messages_file">{{ tr('messages_file') }}</label>
-	        <input type="file" id="messages_file" name="messages_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="messages_file" name="messages_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                
@@ -51,7 +50,7 @@
  		<div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="pagination_file">{{ tr('pagination_file') }}</label>
-	        <input type="file" id="pagination_file" name="pagination_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="pagination_file" name="pagination_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                
@@ -68,7 +67,7 @@
  		<div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="passwords_file">{{ tr('passwords_file') }}</label>
-	        <input type="file" id="passwords_file" name="passwords_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="passwords_file" name="passwords_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>
@@ -85,7 +84,7 @@
 	    <div class="col-sm-6">
 	    <div class="form-group">
 	        <label for="validation_file">{{ tr('validation_file') }}</label>
-	        <input type="file" id="validation_file" name="validation_file" placeholder="{{ tr('picture') }}">
+	        <input type="file" id="validation_file" name="validation_file" placeholder="{{ tr('picture') }}" accept=".php">
 	         <br>
 	        <ul class="ace-thumbnails clearfix" style="list-style-type: none;">
 	            <li>	                

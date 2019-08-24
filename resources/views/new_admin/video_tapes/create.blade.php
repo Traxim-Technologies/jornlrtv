@@ -405,7 +405,7 @@
 
                                     <label for="other_video" class="">{{tr('video')}} * </label>
 
-                                    <input type="url" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}">
+                                    <input type="url" class="form-control" id="other_video" name="other_video" placeholder="{{ tr('video_link') }}">
 
                                 </div>
 

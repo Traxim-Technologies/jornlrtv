@@ -21,7 +21,7 @@
                     <input type="hidden" name="sub_admin_id" value="{{ $sub_admin_details->id }}">
 
                     <div class="form-group">
-                        <label for="username" class="col-sm-2 control-label">* {{ tr('username') }}</label>
+                        <label for="username" class="col-sm-2 control-label">* {{ tr('name') }}</label>
 
                         <div class="col-sm-10">
                             <input type="text" required name="name" title="{{ tr('only_alphanumeric') }}" class="form-control" id="username" placeholder="{{ tr('name') }}" value="{{ old('name') ?: $sub_admin_details->name }}">

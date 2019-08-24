@@ -79,12 +79,16 @@
 							 
 							    <tr>
 							      	<td>{{$i+1}}</td>
+							      	
 							      	<td><a target="_blank" href="{{route('admin.channels.view', $channel->id)}}">{{$channel->name}}</a></td>
+							      
 							      	<td><a target="_blank" href="{{route('admin.users.view', $channel->user_id)}}">{{$channel->getUser ? $channel->getUser->name : ''}}</a></td>
+							      	
 							      	<td><a target="_blank" href="{{route('admin.channels.videos', array('id'=> $channel->id))}}">{{$channel->get_video_tape_count}}</a></td>
+	                            	
 	                            	<td><a target="_blank" href="{{route('admin.channels.subscribers', array('id'=> $channel->id))}}">{{$channel->get_channel_subscribers_count}}</a></td>
 
-	                            	<td>{{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}}</td>
+	                            	<td>{{ formatted_amount(getAmountBasedChannel($channel->id))}}</td>
 
 								    <td>
 								      		@if($channel->is_approved)
@@ -108,9 +112,7 @@
                                                         @else
                                                             <a role="menuitem" tabindex="-1" href="{{route('admin.channels.edit' , array('id' => $channel->id))}}">{{tr('edit')}}</a>
                                                         @endif
-                                                    </li>
-
-													
+                                                    </li>		
                                                     
 													<li class="divider" role="presentation"></li>
 

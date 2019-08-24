@@ -93,14 +93,14 @@
                         <h4 class="pull-right" >{{ $subscription_details->plan }}</h4><hr>
 
                         <strong>{{ tr('amount') }}</strong>
-                        <h4 class="pull-right" >{{ Setting::get('currency') }} {{ $subscription_details->amount }}</h4><hr>
+                        <h4 class="pull-right">{{ formatted_amount($subscription_details->amount) }}</h4><hr>
 
                     </div>
 
                     <div class="col-sm-12">
                     <hr>
                         <strong>{{ tr('description') }}</strong>
-                        <p><?= $subscription_details->description ?></p>
+                        <p><?php echo $subscription_details->description ?></p>
                     </div>
 
         	</div>

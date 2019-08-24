@@ -8,7 +8,30 @@ use App\Helpers\Helper;
 
 class Channel extends Model
 {
-    //
+    /**
+     * Scope a query to only include active users.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+
+    public function scopeBaseResponse($query) {
+
+        return $query->leftJoin('users', 'channels.user_id', '=', 'users.id')
+                    ->select('channels.id as channel_id', 
+                        'channels.user_id as user_id', 
+                        'channels.name as channel_name', 
+                        'channels.description as channel_description', 
+                        'channels.picture as channel_image', 
+                        'channels.cover as channel_cover', 
+                        'users.name as channel_owner_name',
+                        'users.picture as channel_owner_picture',
+                        'channels.is_approved as is_admin_approved', 
+                        'channels.status as channel_status', 
+                        'channels.created_at', 
+                        'channels.updated_at'
+                    );
+
+    }
 
     public function videoTape() {
         return $this->hasMany('App\VideoTape')->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')->videoResponse();
@@ -43,6 +66,10 @@ class Channel extends Model
 
     public function getChannelSubscribers() {
         return $this->hasMany('App\ChannelSubscription');
+    }
+
+    public function getPlaylist() {
+        return $this->hasMany('App\Playlist');
     }
 
     /**
@@ -108,9 +135,19 @@ class Channel extends Model
 
             }
 
-             if (count($model->getChannelSubscribers) > 0) {
+            if (count($model->getChannelSubscribers) > 0) {
 
                 foreach ($model->getChannelSubscribers as $key => $value) {
+
+                   $value->delete();    
+
+                }
+
+            }
+
+            if (count($model->getPlaylist) > 0) {
+
+                foreach ($model->getPlaylist as $key => $value) {
 
                    $value->delete();    
 

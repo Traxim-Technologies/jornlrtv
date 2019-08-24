@@ -54,10 +54,12 @@ class Kernel extends HttpKernel
         'guestmoderator' => \App\Http\Middleware\RedirectIfAuthenticatedModerator::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'UserApiVal' => \App\Http\Middleware\UserApiValidation::class,
+        'NewUserApiVal' => \App\Http\Middleware\NewUserApiValidation::class,
         'PaypalCheck' => \App\Http\Middleware\PaypalCheckMiddleware::class,
         'verifyUser' => \App\Http\Middleware\CheckUserVerification::class,
         'AdminMiddleware' => \App\Http\Middleware\AdminMiddleware::class,
         'SubAdminMiddleware' => \App\Http\Middleware\SubAdminMiddleware::class,
+        'ChannelOwner' => \App\Http\Middleware\ChannelOwner::class,
         
     ];
 }

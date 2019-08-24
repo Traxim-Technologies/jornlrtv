@@ -35,7 +35,7 @@
                                      <div class="history-image">
 
                                         <a href="{{route('user.single', $video_tape_details->video_tape_id)}}">
-                                            <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video_tape_details->default_image}}" class="slide-img1 placeholder" />
+                                            <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video_tape_details->video_image}}" class="slide-img1 placeholder" />
                                         </a>
 
                                         @if($video_tape_details->ppv_amount > 0)
