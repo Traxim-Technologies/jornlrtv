@@ -18,7 +18,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 top">
                                 <div class="spacing1">
-                                    <h2 class="static-head">@if($model) {{$model->title}} @else {{tr('model')}} @endif</h2>
+                                    <h2 class="static-head">@if($model) {{$model->heading}} @else {{tr('model')}} @endif</h2>
                                     
                                     <div>
                                         @if($model) <?php echo $model->description; ?> @else {{tr('model')}} @endif

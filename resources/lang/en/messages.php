@@ -393,6 +393,7 @@ return array(
 	'added_wishlist' => 'Added wishlist',
 	'add_to_wishlist' => 'Add To Wishlist',
 	'add_to' => 'ADD TO',
+	'remove_from_wishlist' => 'Remove From Wishlist',
 
 	// Profile
 
@@ -551,7 +552,10 @@ return array(
 
 	'delete_wishlist' => 'Delete Wishlist',
 	'wishlist_removed' => 'successfully removed from wishlist',
-	
+	'no_wishlist_found' => 'No Wishlist Found',
+	'no_spam_reports_found' => 'No Spam Reports Found',
+	'no_user_ratings_found' => 'No User Ratings Found',
+
 
 	//Admin moderators
 
@@ -1203,7 +1207,7 @@ return array(
 	'successfully_logged_in' => 'successfully logged in.',
 	'successfully_logged_out' => 'successfully logged out.',
 	'successfully_sign_up' => 'successfully signed up.',
-	'mail_sent_successfully.' => 'Mail sent successfully.',
+	'mail_sent_successfully' => 'Mail sent successfully.',
 	'favourite_provider_delete' => 'Favourite provider deleted successfully.',
 	'payment_mode_changed' => 'Payment mode changed successfully.',
 	'service_accepted' => 'Service Accepted',
@@ -1520,7 +1524,7 @@ return array(
 	'ios_payment_subscription_status' => 'Do you want Disable the payment subscription',
 	'ios_settings' => 'iOS Settings',
 
-	'user_video_upload_success' => 'Video uploaded successfully and ready for play',
+	'user_video_upload_success' => 'Video updated successfully and ready for play',
 	'user_video_upload_waiting_for_admin_approval' => 'The video is being reviewed by the admin. If approved it will be added to your channel',
 
 
@@ -1623,6 +1627,7 @@ return array(
 	'admin_tag_delete_success' => 'Tag has been deleted successfully.',
 	'admin_tag_delete_error' => 'Sorry! Tag could not be deleted. Please try again',
 	'admin_taged_videos' => 'Tagged Videos',
+	'admin_tag_not_found' => 'Tag not found!',
 	// New Admin Coupons
 
 	'admin_coupon_not_found' => 'Coupon details not found.',
@@ -1675,6 +1680,12 @@ return array(
 
 	'enter_type' => 'Choose the Page type',
 	'page_delete_confirmation' => ':otherkey - Do you want delete this page.',
+
+	'admin_page_decline_confirmation' => 'Do you want decline this Page',
+	'admin_page_approve_confirmation' => 'Do you want approve this Page',
+
+	'admin_page_approve_success'=>'Page has been approved successfully',
+	'admin_page_decline_success'=>'Page has been declined successfully',
 
 	// New Admin banner_ad
 
@@ -1820,7 +1831,6 @@ return array(
 	'admin_password_mismatch' =>  'Pasword is mismatched',
 	'admin_password_save_error' =>  'Pasword is mismatched',
 
-
 	// user API 
 
 	'user_wishlist_save_error' => 'Sorry!, Video details could not be saved. Please try again.',
@@ -1894,7 +1904,7 @@ return array(
 
 	'user_wishlist_delete_confirm' => 'Do you want to remove this video from wishlist?',
 	
-	'user_spamvideo_delete_confirm' => 'Do you want to remove this video from sapmlist?',
+	'user_spamvideo_delete_confirm' => 'Do you want to remove this video from Spam list?',
 	
 	'user_channel_delete_confirm' => 'Do you want to delete this channel?',
 	
@@ -1954,5 +1964,132 @@ return array(
 	'no_language_found' => 'No language found',
 	'cancel_reason_required' => "The reason for cancellation is required.",
 	'ffmpeg_warning_notes'=>'FFMPEG not yet installed, kindly configure for  compression else compression will not happen',
+
+	// playlist
+
+	'add_playlist' => 'Add Playlist',
+	'edit_playlist' => 'Edit Playlist',
+	'delete_playlist' => 'Delete Playlist',
+	'playlists'  => 'Playlists',
+	'playlist'  => 'Playlist',
+	'view_playlists'  => 'View Playlists',
+	'playlist_videos'  => 'Playlist Videos',
+
+	'admin_channel_playlist_delete_confirmation'=>"Do you want to delete this(:otherkey) playlist?",
+
+	'admin_channel_playlist_video_delete_confirmation'=>"Do you want to delete this(:otherkey) video from playlist?",
+
+	'admin_channel_playlist_create_success' => "Playlist created successfully!",
+
+	'admin_channel_playlist_update_success' => "Playlist created successfully!",
+	
+	'admin_channel_playlist_not_found'=>"Playlist not found!",
+
+	'admin_channel_playlist_video_not_found'=>"Playlist video not found!",
+
+	'admin_channel_playlist_delete_success'=>"Playlist deleted Successfully!",
+
+	'admin_channel_playlist_video_delete_success'=>"Video removed from playlist Successfully!",
+
+	'admin_channel_playlist_delete_error'=>"Playlist could not be deleted. Please try again!",
+	
+	'admin_channel_playlist_video_delete_error'=>"Video could not be removed. Please try again!",
+
+	'admin_channel_playlist_decline_notes' => 'Do you want to decline this(:otherkey) playlist? Once declined, related records will be declined.',
+	
+	'admin_channel_playlist_declined_success' => 'Playlist has been declined successfully.',
+	
+	'admin_channel_playlist_approved_success' => 'Playlist has been approved successfully.',
+
+	'add' => 'Add',
+
+	'add_playlist' => 'Add Playlist',
+	'edit_playlist' => 'Edit Playlist',
+	'delete_playlist' => 'Delete Playlist',
+	'select_video_tapes' => 'Select videos',
+
+	'referral_code_invalid' => 'Referral code is invalid',
+	'referral_code_valid' => 'Referral code is valid',
+
+	'user_action_not_enough_data' => 'The action is denied.',
+
+	'user_video_tapes_ppv_added' => 'The PPV update successfully',
+	'user_video_tapes_ppv_removed' => 'The PPV removed',
+	'user_video_tapes_ppv_status_failed' => 'The PPV status update failed',
+
+	'user_video_tapes_approved' => 'The video is approved',
+	'user_video_tapes_declined' => 'The video is declined',
+	'user_video_tapes_status_update_failed' => 'The video status update failed',
+
+	'user_video_tapes_delete_success' => 'The video deleted',
+	'user_video_tapes_delete_error' => 'The video failed',
+	
+	'playlist_short_notes' => 'Recent activities on Playlist.',
+
+	'referral_details' => 'Referral Details',
+	'referral_code' => 'Referral Code',
+	'referral_earnings' => 'Total Referral Revenue',
+	'referral_count' => 'Referred Count',
+	'referral_commission' => 'Referral Commission',
+
+	'admin_user_refered_accounts_not_found' => 'Sorry! User\'s Referred user details not found',
+
+	'referrals' => 'REFERRALS',
+	'total_referrals' => 'Total Referrals',
+	'total_referrals_earnings' => 'Total Earnings',
+
+	'more' => 'More',
+
+	'back' => 'Back',
+	'referral_code_invalid' => 'referral code invalid',
+
+	'add_card_is_not_enabled' => 'Add card is disabled due to some configuration problems',
+
+	'PUBLISH_NOW' => 'Now',
+	'PUBLISH_LATER' => 'Later',
+
+	'VIDEO_TYPE_UPLOAD' => 'File Upload',
+	'VIDEO_TYPE_LIVE' => 'Live TV',
+	'VIDEO_TYPE_YOUTUBE' => 'YouTube',
+	'VIDEO_TYPE_OTHERS' => 'Others',
+
+	/* - - - - - - - - used for header for each section - http://prntscr.com/maiccj - - - - - - - - - - */
+	
+	'header_banner' => 'Banner Videos',
+
+	'header_wishlist' => 'My List',
+
+	'header_new_releases' => 'New Releases',
+
+	'header_trending' => 'Trending Now',
+
+	'header_recommended' => 'Recommended',
+
+
+	/* - - - - - - - - used for header for each section  - - - - - - - - - - */
+
+	'last_updated' => 'Last updated on',
+	'video_in_spam_list' => 'The video in spams list.Please unspam the video',
+	'create_playlist' => 'Create New Playlist',
+	'signid_for_playlist' => 'Sign in to add this video to a playlist',
+
+	'save' => 'Save',
+	'create' => 'Create',
+	'playlist_name_placeholder' => 'Enter playlist name',
+
+	'plan_text' => 'Plan',
+
+	'user_is_verified' => 'Verified',
+	'check_redeems' => 'CHECK REDEEMS',
+	'video_link' => 'Video Link',
+	'redeem_paypal_cancelled' => 'Redeem by PayPal cancelled',
+	'admin_video_tape_not_found' => 'Video Not Found',
+	'playlist_add_video' => 'Add Video',
+
+	'referral_code_applied' => 'Referral code applied.',
+
+	'referral_title' => 'Spread the word and earn rewards',
+
+	'referral_benefit' => 'When someone signs up with your unique referral link, you will get ',
 
 );

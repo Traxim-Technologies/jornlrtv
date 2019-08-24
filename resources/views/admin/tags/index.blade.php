@@ -101,7 +101,7 @@
 
 						      	<td class="text-center">
 						      		
-					      				<a href="{{route('admin.tags' ,['id'=>$data->id])}}" class="btn  btn-xs btn-primary" title="Edit">
+					      				<a href="{{route('admin.tags.index' ,['id'=>$data->id])}}" class="btn  btn-xs btn-primary" title="Edit">
 				              				<i class="fa fa-edit"></i>
 				              			</a>
 

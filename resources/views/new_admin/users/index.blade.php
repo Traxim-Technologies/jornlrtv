@@ -47,9 +47,11 @@
 			                <ul class="admin-action btn btn-default pull-right" style="margin-right: 20px">
 			                 	
 								<li class="dropdown">
+					                
 					                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 					                  {{ tr('export') }} <span class="caret"></span>
 					                </a>
+					               
 					                <ul class="dropdown-menu">
 					                  	<li role="presentation">
 					                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.users.export' , ['format' => 'xlsx']) }}">
@@ -63,7 +65,9 @@
 					                  		</a>
 					                  	</li>
 					                </ul>
+							
 								</li>
+							
 							</ul>
 
 						@endif
@@ -82,12 +86,12 @@
 							      <th>{{ tr('id') }}</th>
 							      <th>{{ tr('username') }}</th>
 							      <th>{{ tr('email') }}</th>
-							      <th>{{ tr('no_of_channels') }}</th>
-							      <th>{{ tr('no_of_videos') }}</th>
-							      <th>{{ tr('validity_days') }}</th>
+							      <th>{{ tr('channels') }}</th>
+							      <th>{{ tr('videos') }}</th>
+							      <th>{{ tr('plan_text') }}</th>
 							      <th>{{ tr('redeems') }}</th>
 							      @if(Setting::get('email_verify_control') == YES)
-							      <th>{{ tr('email_verification') }}</th>
+							      <th>{{ tr('user_is_verified') }}</th>
 							      @endif
 							      <th>{{ tr('status') }}</th>
 							      <th>{{ tr('action') }}</th>
@@ -95,6 +99,7 @@
 							</thead>
 
 							<tbody>
+								
 								@foreach($users as $i => $user_details)
 
 								    <tr>
@@ -130,7 +135,7 @@
 										</td>
 
 								      	<td>
-								      		<b>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? $user_details->userRedeem->remaining : 0 }}</b>
+								      		<b>{{ formatted_amount($user_details->userRedeem ? $user_details->userRedeem->remaining : 0) }}</b>
 								     	</td>
 
 								      	@if(Setting::get('email_verify_control') == USER_EMAIL_VERIFIED)
@@ -158,7 +163,7 @@
 
 	            							<ul class="admin-action btn btn-default">
 
-	            								<li class="@if($i < 2) dropdown @else dropup @endif">									               
+	            								<li class="dropdown">									               
 									                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 									                  {{ tr('action') }} <span class="caret"></span>
 									                </a>
@@ -192,18 +197,37 @@
 									                  	 	@endif
 
 									                  	@endif
+
 									                  	<li class="divider" role="presentation"></li>
 
 									                  	@if($user_details->status == USER_APPROVED )
 									                  		
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.status', ['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_decline_confirmation', $user_details->name) }}&quot;)">{{ tr('decline') }}</a></li>
+									                  		<li role="presentation">
+
+									                  			<a role="menuitem" tabindex="-1" href="{{ route('admin.users.status', ['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_decline_confirmation', $user_details->name) }}&quot;)">
+									                  				<span class="text-danger">{{ tr('decline') }}</span>
+									                  			</a>
+									                  		</li>
 									                  	
 									                  	@else
 									                  	
-									                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation', $user_details->name) }}&quot;)" >{{ tr('approve') }}</a></li>
+									                  		<li role="presentation"><a role="menuitem"  tabindex="-1" href="{{ route('admin.users.status',['user_id' => $user_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_user_approve_confirmation', $user_details->name) }}&quot;)" >
+									                  			<span class="text-success">{{ tr('approve') }}</span></a></li>
 									                  	@endif
 
-									                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.users.playlist.index' , ['user_id' => $user_details->id] ) }}">{{ tr('playlist') }}</a></li>	
+									                  	<li class="divider" role="presentation"></li>
+
+									                  	<li role="presentation">
+									                  		<a role="menuitem" tabindex="-1" href="{{route('admin.users.subscriptions.plans' ,['user_id' => $user_details->id])}}">
+									                  			{{ tr('plans') }}
+									                  		</a>
+									                  	</li>
+
+									                  	<li role="presentation">
+									                  		<a role="menuitem" tabindex="-1" href="{{ route('admin.users.playlist.index' , ['user_id' => $user_details->id] ) }}">
+									                  			{{ tr('playlists') }}
+									                  		</a>
+									                  	</li>	
 									                  	
 									                </ul>
 

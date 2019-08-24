@@ -85,7 +85,7 @@ hr {
                 <!-- /.col -->
                 <div class="col-sm-4">
                   <div class="description-block">
-                    <h5 class="description-header">{{Setting::get('currency')}}{{number_format_short($video->admin_amount + $video->user_amount+$video->amount)}}</h5>
+                    <h5 class="description-header">{{ formatted_amount(number_format_short($video->admin_amount + $video->user_amount+$video->amount) ) }}</h5>
                     <span class="description-text">{{tr('revenue')}}</span>
                   </div>
                   <!-- /.description-block -->
@@ -176,12 +176,15 @@ hr {
               <h4 class="">{{tr('ppv_revenue')}}</h4>
             </div>
             <div class="box-footer no-padding">
-              <ul class="nav nav-stacked">
-                <li><a href="#">{{tr('total')}} <span class="pull-right">{{Setting::get('currency')}} {{$video->admin_amount + $video->user_amount}}</span></a></li>
-                <li><a href="#">{{tr('admin_amount')}} <span class="pull-right">{{Setting::get('currency')}} {{$video->admin_ppv_amount}}</span></a></li>
-                <li><a href="#">{{tr('user_amount')}} <span class="pull-right">{{Setting::get('currency')}} {{$video->user_ppv_amount}}</span></a></li>
+                <ul class="nav nav-stacked">
+            
+                    <li><a href="#">{{tr('total')}} <span class="pull-right">{{ formatted_amount($video->admin_amount + $video->user_amount) }}</span></a></li>
                 
-              </ul>
+                    <li><a href="#">{{tr('admin_amount')}} <span class="pull-right">{{ formatted_amount($video->admin_ppv_amount) }}</span></a></li>
+                
+                    <li><a href="#">{{tr('user_amount')}} <span class="pull-right">{{ formatted_amount($video->user_ppv_amount) }}</span></a></li>
+                    
+                </ul>
             </div>
           </div>
           <!-- /.widget-user -->

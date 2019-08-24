@@ -42,5 +42,6 @@ class DatabaseSeeder extends Seeder
         $this->call(V3Seeder::class);
         $this->call(V31Seeder::class);
         $this->call(V4Seeder::class);
+        $this->call(V5Seeder::class);
     }
 }

@@ -46,9 +46,9 @@
 					<hr>
 					<strong>{{tr('amount')}}</strong>
 						@if($view_coupon->amount_type == 0)
-						<span class="label label-primary pull-right">{{$view_coupon->amount}} % </span>
+						<span class="label label-primary pull-right">{{ formatted_amount($view_coupon->amount) }} % </span>
 						@else
-						<span class="label label-primary pull-right">{{Setting::get('currency')}}{{$view_coupon->amount}}</span>
+						<span class="label label-primary pull-right">{{ formatted_amount($view_coupon->amount) }}</span>
 						@endif
 					<hr>
 					<strong>{{tr('expiry_date')}}</strong>

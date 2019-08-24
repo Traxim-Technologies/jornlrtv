@@ -24,8 +24,6 @@
 @section('scripts')
 
 <script src="{{asset('admin-css/plugins/datepicker/bootstrap-datepicker.js')}}"></script> 
-
-
 <script src="{{asset('assets/js/jstz.min.js')}}"></script>
 
 <script>

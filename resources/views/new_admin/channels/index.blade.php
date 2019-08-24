@@ -46,7 +46,7 @@
 
                         <ul class="dropdown-menu">
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="{{ route('admin.channels.export' , ['format' => 'xls']) }}">
+                                <a role="menuitem" tabindex="-1" href="{{ route('admin.channels.export' , ['format' => 'xlsx']) }}">
                                     <span class="text-red"><b>{{ tr('excel_sheet') }}</b></span>
                                 </a>
                             </li>
@@ -101,7 +101,7 @@
 
 	                            <td><a target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id]) }}">{{ $channel_details->get_channel_subscribers_count }}</a></td>
 
-	                            <td>{{ Setting::get('currency') }} {{ getAmountBasedChannel($channel_details->id) }}</td>
+	                            <td>{{ formatted_amount(getAmountBasedChannel($channel_details->id)) }}</td>
 
 	                            <td>
 	                                @if($channel_details->is_approved)
@@ -146,6 +146,8 @@
     	                                            	<a role="menuitem" tabindex="-1" href="{{ route('admin.channels.status' , ['channel_id' => $channel_details->id] ) }}" onclick="return confirm(&quot;{{ tr('admin_channel_approve_notes', $channel_details->name) }}&quot;)"> {{ tr('approve') }}</a>
     	                                            @endif
                                                 </li>
+
+                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.channels.playlists.index' , ['channel_id' => $channel_details->id] ) }}">{{ tr('playlist') }}</a></li>
 
 	                                        </ul>
 

@@ -20,11 +20,13 @@
 
                 <div class="box-header label-primary">
                     
-                     <h2 class="box-title" style="color: white"><b>{{tr('pages')}}</b>s</h2>
+                     <h2 class="box-title" style="color: white"><b>{{tr('pages')}}</b></h2>
                     <a href="{{route('admin.pages.create')}}" style="float:right" class="btn btn-default">{{tr('add_page')}}</a>
                 </div>
 
                 <div class="box-body table-responsive">
+
+                    @if(count($pages) > 0)
 
                     <table id="datatable-withoutpagination" class="table table-bordered table-striped">
 
@@ -33,6 +35,7 @@
                               <th>{{tr('id')}}</th>
                               <th>{{tr('title')}}</th>
                               <th>{{tr('page_type')}}</th>
+                              <th>{{tr('status')}}</th>
                               <th>{{tr('action')}}</th>
                             </tr>
                         </thead>
@@ -47,6 +50,17 @@
                                    
                                     <td>{{$page_details->type}}</td>
                                     
+                                    <td>
+                                        @if($page_details->status)
+
+                                            <span class="label label-success">{{ tr('approved') }}</span>
+
+                                        @else
+
+                                            <span class="label label-warning">{{ tr('pending') }}</span>
+
+                                        @endif
+                                    </td>
                                     <td>
 
                                         <div class="dropdown">
@@ -75,6 +89,15 @@
                                                     <li><a onclick="return confirm(&quot;{{tr('page_delete_confirmation' , $page_details->title)}}&quot;);" href="{{ route('admin.pages.delete',['page_id' => $page_details->id] ) }}"><b>{{tr('delete')}}</b></a></li>
                                                 @endif
 
+                                                <li role="presentation" class="divider"></li>
+
+                                                @if($page_details->status == YES )
+                                                    <li role="presentation"><a role="menuitem" onclick="return confirm(&quot;{{ $page_details->name }} - {{ tr('admin_page_decline_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.pages.status' , ['page_id' => $page_details->id]) }}"> {{ tr('decline') }}</a></li>
+                                                 @else 
+                                                    <li role="presentation"><a role="menuitem" onclick="return confirm(&quot;{{ $page_details->name }} - {{ tr('admin_page_approve_confirmation') }}&quot;);" tabindex="-1" href="{{ route('admin.pages.status' , ['page_id'=>$page_details->id]) }}"> 
+                                                    {{ tr('approve') }} </a></li>
+                                                @endif
+
                                             </ul>
 
                                         </div>
@@ -89,8 +112,17 @@
                     
                     </table>
 
-                    @if(count($pages) > 0) <div align="right" id="paglink"><?php echo $pages->links(); ?></div> @endif
+                    @if(count($pages) > 0) 
 
+                    <div align="right" id="paglink"><?php echo $pages->links(); ?></div>
+
+                    @endif
+
+                    @else
+
+                    <h3 class="no-result">{{ tr('no_result_found') }}</h3> 
+
+                    @endif
                 </div>
 
             </div>

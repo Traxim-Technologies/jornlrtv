@@ -74,7 +74,7 @@
 								      	</td>								      	
 
 								      	<td>
-								      		<b>{{ Setting::get('currency') }} {{ $video_details->admin_ppv_amount }}</b>
+								      		<b>{{ formatted_amount($video_details->admin_ppv_amount) }}</b>
 								      	</td>
 
 								      	@if(Setting::get('is_payper_view') == DEFAULT_TRUE)

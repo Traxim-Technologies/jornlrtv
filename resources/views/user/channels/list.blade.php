@@ -54,8 +54,6 @@
 
 					                    	<a class="st_video_upload_btn " href="{{route('user.subscriptions')}}"><i class="fa fa-list"></i>&nbsp;{{tr('subscriptions')}}</a>
 
-					                    	
-
 					                    	</div>
 
 					                    @endif
@@ -94,7 +92,7 @@
 				                                            
 				                                            <span class="video_views">
 				                                            	 <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}} <b>.</b> 
-						                                        {{$channel->created_at}}
+						                                        {{ common_date($channel->created_at) }}
 						                                    </span>
 				                                        </div> 
 				                                        @if(Auth::check())
@@ -134,7 +132,6 @@
 				                                    </div> <!--end of history-head--> 
 
 				                                    <div class="description hidden-xs">
-				                                        <?= $channel->description?>
 				                                    </div><!--end of description--> 
 
 				                                   	                                                  

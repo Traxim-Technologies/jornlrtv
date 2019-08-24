@@ -24,6 +24,38 @@ class User extends Authenticatable
     ];
 
     /**
+     * Scope a query to only include active users.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCommonResponse($query) {
+
+        return $query->select(
+            'users.id as user_id',
+            'users.name',
+            'users.email as email',
+            'users.picture as picture',
+            'users.description as description',
+            'users.mobile as mobile',
+            'users.dob as dob',
+            'users.token as token',
+            'users.token_expiry as token_expiry',
+            'users.social_unique_id as social_unique_id',
+            'users.login_by as login_by',
+            'users.payment_mode',
+            'users.card_id as user_card_id',
+            'users.status as user_status',
+            // 'users.email_notification_status',
+            // 'users.push_notification_status',
+            'users.is_verified',
+            'users.user_type',
+            'users.created_at',
+            'users.updated_at'
+            );
+    
+    }
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -63,7 +95,31 @@ class User extends Authenticatable
     public function userFlag()
     {
         return $this->hasMany('App\Flag', 'user_id', 'id');
+    }  
+
+    /**
+     * Get the referrar user record associated with the user.
+     */
+    public function userReferrar()
+    {
+        return $this->has('App\userReferrar', 'user_id', 'id');
     }
+
+    /**
+     * Get the referral user record associated with the user.
+     */
+    public function userReferral()
+    {
+        return $this->hasMany('App\Referral', 'user_id', 'id');
+    } 
+
+    /**
+     * Get the referral parent user record associated with the user.
+     */
+    public function userReferralParent()
+    {
+        return $this->hasMany('App\Referral', 'parent_user_id', 'id');
+    } 
 
     /**
      * Get the flag record associated with the user.

@@ -104,7 +104,7 @@ class BellNotificationJob extends Job implements ShouldQueue
 
             $bell_notification->channel_id = $this->data->channel_id;
 
-            $bell_notification->video_tape_id = isset($this->data->video_tape_id) ?: 0;
+            $bell_notification->video_tape_id = isset($this->data->video_tape_id) ? $this->data->video_tape_id : 0;
 
             $bell_notification->status = BELL_NOTIFICATION_STATUS_UNREAD;
 
