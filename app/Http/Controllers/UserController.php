@@ -527,8 +527,7 @@ class UserController extends Controller {
                 if ($channel->status == USER_CHANNEL_DECLINED || $channel->is_approved == ADMIN_CHANNEL_DECLINED) {
 
                     return redirect()->to('/')->with('flash_error', tr('channel_declined'));
-                }
- 
+                } 
             }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
@@ -3615,7 +3614,6 @@ class UserController extends Controller {
                 // }
 
             // }
-                    // dd($playlist_details);
 
             return view('user.playlists.view')
                     ->with('playlist_details', $playlist_details)

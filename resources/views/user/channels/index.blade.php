@@ -302,24 +302,43 @@
                                                     @endif
                                                     </div> -->
                                                    
-                                                    <div class="lohp-medium-shelves-container col-md-12">                                                   
-                                                        <div class="row">
+                                                    <div class="lohp-medium-shelves-container col-md-12">                      
+                                                    <div class="row">
                                                         
-                                                            @if(count($trending_videos) > 0) 
+                                                        @if(count($trending_videos) > 0) 
 
-                                                                @foreach($trending_videos as $index => $trending_video)
+                                                            @foreach($trending_videos as $index => $trending_video)
 
-                                                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 channel-view">
+                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 channel-view">
+                                                                <div class="slide-box recom-box big-box-slide mt-0 mb-15">
+                                                                                                                                        
+                                                                    <div class="slide-image">
+                                                                        <a href="{{$trending_video->url}}">
+                                                                        </a> 
 
-                                                                        <div class="slide-box recom-box big-box-slide mt-0 mb-15">
-                                                                            
-                                                                            <div class="slide-image">
-                                                                                <a href="{{$trending_video->url}}">
+                                                                    @if($trending_video->ppv_amount > 0)
+
+
+                                                                    @endif
+                                                                                                                                            
+                                                                        <div class="video_duration">
+                                                                                      </div>
+
+                                                                        </div>
+
+                                                                        <div class="video-details">
+
+                                                                                        </div>
+
+                                                                        <span class="video_views">
+                                                                                    
+                                                                                    <div class="video-head">
+
+
+
                                                                                     <!-- <img src="{{$trending_video->video_image}}"> -->
                                                                                     <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$trending_video->video_image}}" class="slide-img1 placeholder" />
-                                                                                </a> 
-
-                                                                                @if($trending_video->ppv_amount > 0) 
+ 
 
                                                                                     @if(!$trending_video->ppv_status)
                                                                                     
@@ -329,24 +348,13 @@
                                                                                     
                                                                                     @endif 
 
-                                                                                @endif
-                                                                                
-                                                                                <div class="video_duration">
                                                                                     {{$trending_video->duration}}
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                            <div class="video-details">
-                                                                                
-                                                                                <div class="video-head">
+  
                                                                                     <a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
-                                                                                </div>
 
-                                                                                <span class="video_views">
                                                                                     <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
                                                                                      {{ common_date($trending_video->created_at) }}
-                                                                                </span>
+                                                                            </span>
                                                                            
                                                                             </div>
 
@@ -616,25 +624,24 @@
                                                                                             </form>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <!-- ========modal ends======= -->
+                                            </div>
+                                            <!-- ========modal ends======= -->
 
-                                                                            </div>
+                                            </div>
 
-                                                                            @else
+                                        @else
 
-                                                                            <button class="btn btn-warning btn-small">{{tr('video_compressing')}}</button>
+                                            <button class="btn btn-warning btn-small">{{tr('video_compressing')}}</button>
 
+                                            <!--end of cross-mark-->
+                                        </div>
 
-                                                                            <!--end of cross-mark-->
-                                                                        </div>
+                                    @endif 
 
-                                                                    @endif 
+                                @endif 
 
-                                                                @endif 
-
-                                                            @endif
-                                                            <!--end of history-head-->
+                            @endif
+                            <!--end of history-head-->
 
                                                             <?php /*<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank">{{$video->category_name}}</a></div> */?>
 
@@ -1373,12 +1380,10 @@
                 alert("Please Choose videos to create playlist");
 
             } else {
-                // alert(title);
+
                 $.ajax({
 
-                    // url : "{{route('user.playlist.save.video_add')}}",
-                    url: "{{ route('user.channel.playlists.save') }}",
-
+                    url: "{{route('user.channel.playlists.save')}}",
                     data: {
                         title: title,
                         channel_id: channel_id,
@@ -1388,7 +1393,6 @@
                     },
 
                     type: "post",
-
                     success: function(data) {
 
                         if (data.success) {
@@ -1412,13 +1416,10 @@
                         }
 
                     },
-
                     error: function(data) {
 
                     },
-
-                })
-
+                });
             }
 
         }
