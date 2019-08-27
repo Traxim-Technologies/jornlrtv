@@ -10,41 +10,53 @@
             </div>
           
             <div class="modal-body">
+                
                 @if(Setting::get('is_spam'))
-                    @if (!$flaggedVideo)
+                   
+                    @if(!$flaggedVideo)
+                
                         <div class="more-content" id="report_video_form">
+                
                             <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
                               
                                 @foreach($report_video as $report)  
+                                   
                                     <div class="report_list">
                                         <label class="radio1">
-                                            <input id="radio1" type="radio" name="reason" checked="" value="{{$report->value}}" required>
+                                            <input id="radio1" type="radio" name="reason" value="{{$report->value}}" required>
                                             
                                             <span class="outer"><span class="inner"></span></span>{{$report->value}}
                                         </label>
                                     </div>
-                                   <div class="clearfix"></div>
+                                    <div class="clearfix"></div>
                               
                                 @endforeach
 
                                 <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
 
                                 <p class="help-block"><small>{{tr('single_video_content')}}</small></p>
+                                
                                 <div class="pull-right">
                                     <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
                                 </div>
                                 
                                 <div class="clearfix"></div>
+                
                             </form>
                        
                         </div>
+                
                     @endif
+                
                 @endif
+           
             </div>
+        
         </div>
-       <!-- modal content ends -->
+        <!-- modal content ends -->
     
     </div>
+
 </div>
 
 <!-- Login Modal -->
@@ -197,15 +209,19 @@
 
                                 <div class="report_list">
 
-                                   <label class="playlist-container">{{ $playlist_details->title}}
+                                    <label class="playlist-container">{{ $playlist_details->title}}
                                       
-                                      <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == DEFAULT_TRUE) checked @endif>
+                                    <input type="checkbox" onclick="playlist_video_update({{$video->video_tape_id}} , {{ $playlist_details->playlist_id }} , this)" id="playlist_{{ $playlist_details->playlist_id }}" @if($playlist_details->is_video_exists == YES) checked @endif>
+                                    
+                                    @if($playlist_details->is_video_exists == YES)
+                                    
+                                    <input type="hidden" name="playlist_ids[]" value="{{$playlist_details->playlist_id}}">
 
-                                      <input type="hidden" name="playlist_ids[]" id="playlist_ids"  value="@if($playlist_details->is_video_exists == DEFAULT_TRUE){{$playlist_details->playlist_id}}@endif">
+                                    @endif
                                                                  
-                                      <span class="playlist-checkmark"></span>
+                                    <span class="playlist-checkmark"></span>
 
-                                   </label>
+                                    </label>
 
                                 </div>
 
@@ -224,7 +240,7 @@
                     <div id="user-playlists-form">
      
                         <div id="user_playlists"></div>
-                         
+                            <span id="no_playlist_text">{{tr('no_playlists')}}</span>
                         <div class="clearfix"></div>
 
                     </div>
@@ -243,7 +259,7 @@
 
                         </div>
                        
-                        <div class="" id="create_playlist_form" style="display: none">
+                        <div id="create_playlist_form" style="display: none">
                         
                             <div class="form-group">
                                 
@@ -263,7 +279,7 @@
                             
                             </div>
 
-                            <button class="btn btn-primary" onclick='playlist_save_video_add("{{ $video->video_tape_id }}")'>{{tr('create')}} </button>
+                            <button class="btn btn-primary" onclick='playlist_save_video_add("{{ $video->video_tape_id }}")'>{{tr('create')}}</button>
 
                         </div>
 
