@@ -4493,3 +4493,23 @@ input:checked + .slider{
     font-weight: normal;
     letter-spacing: 0.5px;
 }
+
+.wishlist-add{
+	color:#b31217;
+}
+
+.subscription_button{
+	background: rgb(229, 45, 39);
+}
+
+.subscription_button:hover{
+	background-color: rgb(229, 45, 39);
+}
+
+.like_color {
+	color: blue;
+}
+
+.dislike_color {
+	color:red;
+}

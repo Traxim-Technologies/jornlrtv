@@ -64,6 +64,12 @@
          border-top: none;
       }
 
+      [id='toggle-heart'] {
+        position: absolute;
+        left: -100vw;
+      }
+
+
    </style>
 @endsection
 
@@ -108,8 +114,8 @@
                      
                                        <div class="pull-right relative">
                                           @if (Auth::check())
-                                          <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i class="material-icons">thumb_up</i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
-                                          <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
+                                          <a class="thumb-class" onclick="likeVideo({{$video->video_tape_id}})"><i id="like" class="material-icons like @if($like_status > 0)like_color @endif">thumb_up</i>&nbsp;<span id="like_count">{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
+                                          <a class="thumb-class" onclick="dislikeVideo({{$video->video_tape_id}})"><i id="dislike" class="material-icons ali-midd-20 dislike  @if($dislike_status > 0) dislike_color @endif">thumb_down</i>&nbsp;<span id="dislike_count">{{number_format_short($dislike_count)}}</span></a>
                                           @else 
                                           <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons">thumb_up</i>&nbsp;<span>{{number_format_short($like_count)}}</span></a>&nbsp;&nbsp;&nbsp;
                                           <a class="thumb-class" data-toggle="modal" data-target="#login_error"><i class="material-icons ali-midd-20">thumb_down</i>&nbsp;<span>{{number_format_short($dislike_count)}}</span></a>
@@ -120,59 +126,65 @@
                                              <!--  <p class="hidden-xs">share</p> -->
                                           </a>                                            
                                           <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
-                                             <i class="material-icons">playlist_add</i>&nbsp;{{tr('save')}}
+                                             <i class="material-icons">playlist_add</i>&nbsp;{{tr('save')}}&nbsp;&nbsp;
                                           </a>
-            
-                                          <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
+                                          
+                                          @if(Auth::check())
+
+                                             <a class="thumb-class" onclick="wishlist_operations({{Auth::user()->id}},{{$video->video_tape_id}})"><i id="icon_color" class="fa fa-heart icon_color @if(count($wishlist_status) == 1 && $wishlist_status) wishlist-add @endif"></i>&nbsp;</a>
+
+                                          @endif
+                                          <!-- <form name="add_to_wishlist" method="post" id="add_to_wishlist" action="{{route('user.add.wishlist')}}" class="add-wishlist">
                                              @if(Auth::check())
                                              
-                                             <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
-                                             
-                                             @if(count($wishlist_status) == 1 && $wishlist_status)
-                                             
-                                             <input type="hidden" id="status" value="0" name="status">
-                                             
-                                             <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
-                                             
-                                             @if($flaggedVideo == '')
-                                                <div class="mylist">
-                                                <button  type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
-                                                <div class="added_to_wishlist" id="check_id">
-                                                <i class="fa fa-heart" style="color: #b31217"></i>
-                                                </div>
+                                                <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
                                                 
-                                                <span class="wishlist_heart_remove">
-                                                <i class="fa fa-heart"></i>
-                                                </span>
-                                                </button> 
-                                                </div>
-                                             @endif
-                                             
-                                             @else
-                                             
-                                                <input type="hidden" id="status" value="1" name="status">
+                                                @if(count($wishlist_status) == 1 && $wishlist_status)
                                                 
-                                                <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
-
+                                                <input type="hidden" id="status" value="0" name="status">
+                                                
+                                                <input type="hidden" id="wishlist_id" value="{{$wishlist_status->id}}" name="wishlist_id">
+                                                
                                                 @if($flaggedVideo == '')
                                                    <div class="mylist">
-                                                   <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
-                                                   <div class="add_to_wishlist" id="check_id">
-                                                   <i class="fa fa-heart"></i>
+                                                   <button  type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('added_wishlist')}}">
+                                                   <div class="added_to_wishlist" id="check_id">
+                                                   <i class="fa fa-heart" style="color: #b31217"></i>
                                                    </div>
                                                    
-                                                   <span class="wishlist_heart">
+                                                   <span class="wishlist_heart_remove">
                                                    <i class="fa fa-heart"></i>
                                                    </span>
                                                    </button> 
                                                    </div>
                                                 @endif
+                                                
+                                                @else
+                                                
+                                                   <input type="hidden" id="status" value="1" name="status">
+                                                   
+                                                   <input type="hidden" id="wishlist_id" value="" name="wishlist_id">
 
-                                             @endif
+                                                   @if($flaggedVideo == '')
+                                                      <div class="mylist">
+                                                      <button type="submit" id="added_wishlist" data-toggle="tooltip" title="{{tr('add_to_wishlist')}}">
+                                                      <div class="add_to_wishlist" id="check_id">
+                                                      <i class="fa fa-heart"></i>
+                                                      </div>
+                                                      
+                                                      <span class="wishlist_heart">
+                                                      <i class="fa fa-heart"></i>
+                                                      </span>
+                                                      </button> 
+                                                      </div>
+                                                   @endif
+
+                                                @endif
                                              
                                              @endif
                                              
-                                          </form>
+                                          </form> -->
+                                       
 
                                        </div>
                                        <!--  <h3>Channel Name</h3> -->
@@ -236,16 +248,18 @@
                                                 @if(Auth::check())
                                                    
                                                    @if($video->get_channel->user_id != Auth::user()->id)
-                                                        
-                                                      @if(!$subscribe_status)
+                                                      <a id="subscription" class="btn btn-sm bottom-space btn-info text-uppercase subscription @if($subscribe_status) subscription_button @endif" onclick="channels_unsubscribe_subscribe_ajax({{Auth::user()->id}},{{$video->channel_id}})"><span id="subscription_text">
+                                                      @if($subscribe_status) {{tr('un_subscribe')}} @else {{tr('subscribe')}} @endif &nbsp; </span><span id="subscriberscnt">{{$subscriberscnt}}</span></a>
+                                                      
+                                                      <!-- @if(!$subscribe_status)
                                                          
-                                                         <a class="btn btn-sm bottom-space btn-info text-uppercase" href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$video->channel_id))}}">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+                                                         <a class="btn btn-sm bottom-space btn-info text-uppercase" onclick="subscribe({{Auth::user()->id}},{{$video->channel_id}})">{{tr('subscribe')}} &nbsp; {{$subscriberscnt}}</a>
                                                       
                                                       @else 
                                                          
-                                                         <a class="btn btn-sm bottom-space btn-danger text-uppercase" href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$subscribe_status))}}" onclick="return confirm('Are you sure want to Unsubscribe from the channel?')" style="background: rgb(229, 45, 39) !important">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
+                                                         <a class="btn btn-sm bottom-space btn-danger text-uppercase" onclick="un_subscribe({{$subscribe_status}})" style="background: rgb(229, 45, 39) !important">{{tr('un_subscribe')}} &nbsp; {{$subscriberscnt}}</a>
 
-                                                      @endif
+                                                      @endif -->
 
                                                    @else
                                                       
@@ -732,12 +746,13 @@
            "controlbar.idlehide" : false,
            controlBarMode:'floating',
            "controls": {
-           "enableFullscreen": false,
-           "enablePlay": false,
-           "enablePause": false,
-           "enableMute": true,
-           "enableVolume": true
+              "enableFullscreen": true,
+              "enablePlay": true,
+              "enablePause": true,
+              "enableMute": true,
+              "enableVolume": true
            },
+           autoplay : true,
            autostart : true,
            "sharing": {
             "sites": ["facebook","twitter"]
@@ -1189,18 +1204,111 @@
       }
    }  
 
-   function likeVideo(video_id) {
+   /**
+     * @function channels_unsubscribe_subscribe() 
+     *
+     * @uses used to update the subscribe status
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */ 
+   function channels_unsubscribe_subscribe(user_id,channel_id) {
+    
+      $.ajax({
+           url : "{{route('user.channels_unsubscribe_subscribe_ajax.channel')}}",
+           data : {id : user_id, channel_id : channel_id},
+           type: "get",
+
+           success: function(data) {
+               
+               if(data.is_user_subscribed_the_channel) {
+                  $(".subscription").addClass("subscription_button");
+                  $("#subscription_text").html('Un Subscribe&nbsp;');
+                  $("#subscriberscnt").html(data.subscription_count);
+                  
+               } else {
+                  $(".subscription").removeClass("subscription_button");
+                  $("#subscription_text").html('Subscribe&nbsp;');
+                  $("#subscriberscnt").html(data.subscription_count);
+
+               }
+           },
    
-       $.ajax({
+           error : function(data) {
+           },
+       })
+   }
+
+   /**
+     * @function wishlist_operations() 
+     *
+     * @uses Add / Remove  Wishlist
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */
+   function wishlist_operations(user_id,video_tape_id) {
+    
+      $.ajax({
+           url : "{{route('user.wishlist_operations_ajax')}}",
+           data : {id : user_id,video_tape_id : video_tape_id},
+           type: "get",
+
+           success: function(data) {
+
+               if(data.data && data.data.wishlist_status) {
+                 
+                 $(".icon_color").addClass("wishlist-add");
+                  
+               } else {
+                  
+                  $(".icon_color").removeClass("wishlist-add");
+
+               }
+           },
+   
+           error : function(data) {
+           },
+       })
+   }
+
+   /**
+     * @function dislikeVideo() 
+     *
+     * @uses Videos disLike and count based on the disLikes
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */
+   function likeVideo(video_id) {
+      $(".dislike").removeClass("dislike_color");
+      $.ajax({
            url : "{{route('user.video.like')}}",
            data : {video_tape_id : video_id},
            type: "post",
            success : function(data) {
+               
+               if(data.success && data.like_status) {
+               
+                  $(".like").removeClass("like_color");
+                  
+               } else {
+
+                  $(".like").addClass("like_color"); 
+
+               }
+
                if (data.success) {
    
-                   $("#like_count").html(data.like_count);
+                  $("#like_count").html(data.like_count);
    
-                   $("#dislike_count").html(data.dislike_count);
+                  $("#dislike_count").html(data.dislike_count);
    
                } else {
    
@@ -1214,9 +1322,20 @@
       });
    }
    
+   /**
+     * @function likeVideo() 
+     *
+     * @uses Videos Like and count based on the Likes
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     */
    function dislikeVideo(video_id) {
-   
+      $(".like").removeClass("like_color");
        $.ajax({
+<<<<<<< HEAD
         url : "{{route('user.video.disLike')}}",
         type: "post",
         data : {video_tape_id : video_id},
@@ -1237,6 +1356,38 @@
         error : function(data) {
         },
       });
+=======
+           url : "{{route('user.video.disLike')}}",
+           type: "post",
+           data : {video_tape_id : video_id},
+           success : function(data) {
+               if(data.success && data.dislike_status) {
+
+                  $(".dislike").removeClass("dislike_color");
+
+               } else {
+
+                  $(".dislike").addClass("dislike_color"); 
+
+               }
+
+               if(data.success) {
+   
+                   $("#like_count").html(data.like_count);
+         
+                   $("#dislike_count").html(data.dislike_count);
+
+               } else {
+   
+                   // console.log(data.error_messages);
+   
+               }
+           },
+   
+           error : function(data) {
+           },
+       })
+>>>>>>> c8a5ce8e36b779da0470f54e44416388c9505461
    }
    
    function addToast() {
@@ -1250,24 +1401,6 @@
            has_progress:true,
            rtl:false,
        });
-   }
-
-   function user_subscribe_channel(user_id, channel_id) {
-      
-      $.ajax({
-         type : "post",
-         url : "{{ route('user.subscribe.channel')}}",
-         data : {user_id:user_id, channel_id:channel_id},
-         success : function(data) {
-
-           alert(data);
-
-         },
-            error : function(data) {
-
-         }
-
-      });
    }
 
 </script>

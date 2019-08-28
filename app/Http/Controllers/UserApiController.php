@@ -494,7 +494,7 @@ class UserApiController extends Controller {
 
             $wishlist_details = Wishlist::where('user_id' , $request->id)->where('video_tape_id' , $request->video_tape_id)->first();
             
-            if( count($wishlist_details) > 0 ) {
+            if(count($wishlist_details) > 0 ) {
 
                 throw new Exception(Helper::get_error_message(505), 505);    
             } 
@@ -2324,26 +2324,40 @@ class UserApiController extends Controller {
             $response_array = array('success' => false, 'error' => Helper::get_error_message(101), 
                     'error_code' => 101, 'error_messages'=>$error_messages);
 
+            return response()->json($response_array);
+
+        } 
+
+        $model = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('user_id',$request->id)->first();
+
+        $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+            ->where('like_status', DEFAULT_TRUE)
+            ->count();
+
+        $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+            ->where('dislike_status', DEFAULT_TRUE)
+            ->count();
+
+        if (!$model) {
+
+            $model = new LikeDislikeVideo;
+
+            $model->video_tape_id = $request->video_tape_id;
+
+            $model->user_id = $request->id;
+
+            $model->like_status = DEFAULT_TRUE;
+
+            $model->dislike_status = DEFAULT_FALSE;
+
+            $model->save();
+
+            $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count),'like_status'=>false];
+
         } else {
 
-            $model = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
-                    ->where('user_id',$request->id)->first();
-
-            $like_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
-                ->where('like_status', DEFAULT_TRUE)
-                ->count();
-
-            $dislike_count = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
-                ->where('dislike_status', DEFAULT_TRUE)
-                ->count();
-
-            if (!$model) {
-
-                $model = new LikeDislikeVideo;
-
-                $model->video_tape_id = $request->video_tape_id;
-
-                $model->user_id = $request->id;
+            if($model->dislike_status) {
 
                 $model->like_status = DEFAULT_TRUE;
 
@@ -2351,28 +2365,14 @@ class UserApiController extends Controller {
 
                 $model->save();
 
-                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count)];
+                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count-1),'like_status'=>false];
+
 
             } else {
 
-                if($model->dislike_status) {
+                $model->delete();
 
-                    $model->like_status = DEFAULT_TRUE;
-
-                    $model->dislike_status = DEFAULT_FALSE;
-
-                    $model->save();
-
-                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count+1), 'dislike_count'=>number_format_short($dislike_count-1)];
-
-
-                } else {
-
-                    $model->delete();
-
-                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count)];
-
-                }
+                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count),'like_status'=>true];
 
             }
 
@@ -2428,7 +2428,7 @@ class UserApiController extends Controller {
 
                 $model->save();
 
-                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count+1)];
+                $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count+1),'dislike_status'=>false];
 
             } else {
 
@@ -2440,13 +2440,13 @@ class UserApiController extends Controller {
 
                     $model->save();
 
-                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count+1)];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count-1), 'dislike_count'=>number_format_short($dislike_count+1),'dislike_status'=>false];
 
                 } else {
 
                     $model->delete();
 
-                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count-1)];
+                    $response_array = ['success'=>true, 'like_count'=>number_format_short($like_count), 'dislike_count'=>number_format_short($dislike_count-1),'dislike_status'=>true];
 
                 }
 
@@ -5224,7 +5224,7 @@ class UserApiController extends Controller {
      * @return based on video displayed all the details'
      */
     public function video_detail(Request $request) {
-
+        
         $video = VideoTape::where('video_tapes.id' , $request->video_tape_id)
                     ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                     ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id')
@@ -5235,6 +5235,7 @@ class UserApiController extends Controller {
                     // ->where('channels.is_approved', 1)
                     // ->where('channels.status', 1)
                     ->first();
+        
         if ($video) {
 
             if ($request->id != $video->channel_created_by) {
@@ -5480,6 +5481,16 @@ class UserApiController extends Controller {
                 ->where('dislike_status', DEFAULT_TRUE)
                 ->count();
 
+            $like_status = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('user_id', $request->id)
+                ->where('like_status', DEFAULT_TRUE)
+                ->count();
+
+            $dislike_status = LikeDislikeVideo::where('video_tape_id', $request->video_tape_id)
+                ->where('user_id', $request->id)
+                ->where('dislike_status', DEFAULT_TRUE)
+                ->count();
+
             $subscriberscnt = subscriberscnt($video->channel_id);
 
             $embed_link  = "<iframe width='560' height='315' src='".route('embed_video', array('u_id'=>$video->unique_id))."' frameborder='0' allowfullscreen></iframe>";
@@ -5504,6 +5515,7 @@ class UserApiController extends Controller {
                 'report_video'=>$report_video, 'flaggedVideo'=>$flaggedVideo , 'videoPath'=>$videoPath,
                 'video_pixels'=>$video_pixels, 'videoStreamUrl'=>$videoStreamUrl, 'hls_video'=>$hls_video,
                 'like_count'=>$like_count,'dislike_count'=>$dislike_count,
+                'like_status'=>$like_status,'dislike_status'=>$dislike_status,
                 'ads'=>$ads, 'subscribe_status'=>$subscribe_status,
                 'subscriberscnt'=>$subscriberscnt,'comment_rating_status'=>$comment_rating_status,
                 'embed_link' => $embed_link,
@@ -7370,7 +7382,7 @@ class UserApiController extends Controller {
             $take = $this->take ?: TAKE_COUNT;
 
             $playlists = $base_query->CommonResponse()->skip($skip)->take($take)->get();
-
+            
             foreach ($playlists as $key => $playlist_details) {
 
                 $first_video_from_playlist = PlaylistVideo::where('playlist_videos.playlist_id', $playlist_details->playlist_id)
@@ -8294,14 +8306,14 @@ class UserApiController extends Controller {
 
             $share_message = apitr('referral_code_share_message', Setting::get('site_name', 'STREAMTUBE'));
 
-            $share_message = str_replace(":referral_code", $user_referrer_details->referral_code, $share_message);
 
-            $share_message = str_replace(":referral_commission", Setting::get('referral_commission', 10)."%",$share_message);
+            $share_message = str_replace('<%referral_code%>', $user_referrer_details->referral_code, $share_message);
 
-            // $referrals_signup_url = route('user.referrals_signup', ['referral_code' => $user_referrer_details->referral_code]);
+            $share_message = str_replace("<%referral_commission%>", formatted_amount(Setting::get('referral_commission', 10)),$share_message);
 
-            $referrals_signup_url = url('/');
+            $referrals_signup_url = route('referrals_signup', ['referral_code' => $user_referrer_details->referral_code]);
 
+            // $referrals_signup_url = route('user.login');
 
             $user_referrer_details->share_message = $share_message." ".$referrals_signup_url;
 

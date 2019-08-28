@@ -64,9 +64,9 @@ class NewUserApiController extends Controller
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
 
         $this->skip = $request->skip ?: 0;
-
+        
         $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);
-
+        
         $this->currency = Setting::get('currency', '$');
     }
 
@@ -752,6 +752,8 @@ class NewUserApiController extends Controller
                 throw new Exception(CommonHelper::error_message(1002) , 1002);
             }
 
+            $user_details->dob = ($user_details->dob == 0000-00-00) ? '' : $user_details->dob;
+            
             $card_last_four_number = "";
 
             if($user_details->user_card_id) {
@@ -2356,7 +2358,7 @@ class NewUserApiController extends Controller
                     $wishlist_details->save();
 
                     DB::commit();
-
+                    
                     $data = ['wishlist_id' => $wishlist_details->id];
                
                     return $this->sendResponse(CommonHelper::success_message(200), 200, $data = ['wishlist_id' => $wishlist_details->id, 'wishlist_status' => $wishlist_details->status]);
@@ -2580,7 +2582,6 @@ class NewUserApiController extends Controller
             $video_tapes = VideoHelper::mobile_home($request);
 
             return $this->sendResponse($message = "", $success_code = "", $video_tapes);
-
 
         } catch(Exception  $e) {
             
@@ -3218,7 +3219,7 @@ class NewUserApiController extends Controller
                 throw new Exception($error, 101);
 
             }
-
+            
             DB::beginTransaction();
 
             $video_tape_details = VideoTape::find($request->video_tape_id);
@@ -3610,7 +3611,9 @@ class NewUserApiController extends Controller
                 
             DB::commit();
 
-            $data = ['channel_id' => $request->channel_id, 'is_user_subscribed_the_channel' => $is_user_subscribed_the_channel];
+            $subscriberscnt = subscriberscnt($request->channel_id);
+
+            $data = ['channel_id' => $request->channel_id, 'is_user_subscribed_the_channel' => $is_user_subscribed_the_channel,'subscription_count' => $subscriberscnt];
 
             return $this->sendResponse($message, $code, $data);
 
@@ -3805,7 +3808,6 @@ class NewUserApiController extends Controller
                 throw new Exception(CommonHelper::error_message(224), 224); 
                 
             }
-
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
 
             $data = $video_tape_details;
@@ -4724,9 +4726,9 @@ class NewUserApiController extends Controller
                                 ->take($take)
                                 ->pluck('playlist_videos.video_tape_id')
                                 ->toArray();
-
+            
             $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id);
-
+           
             $playlist_details->picture = asset('images/playlist.png');
 
             $playlist_details->share_link = url('/');

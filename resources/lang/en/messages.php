@@ -393,6 +393,7 @@ return array(
 	'added_wishlist' => 'Added wishlist',
 	'add_to_wishlist' => 'Add To Wishlist',
 	'add_to' => 'ADD TO',
+	'remove_from_wishlist' => 'Remove From Wishlist',
 
 	// Profile
 
@@ -2086,5 +2087,11 @@ return array(
 	'admin_video_tape_not_found' => 'Video Not Found',
 	'playlist_add_video' => 'Add Video',
 	'no_playlists' => 'No Playlists',
+
+	'referral_code_applied' => 'Referral code applied.',
+
+	'referral_title' => 'Spread the word and earn rewards',
+
+	'referral_benefit' => 'When someone signs up with your unique referral link, you will get ',
 
 );

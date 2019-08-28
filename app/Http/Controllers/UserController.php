@@ -620,7 +620,7 @@ class UserController extends Controller {
             $playlists = array();
            
             $response = $data->response_array;
-
+            
             if ($data->response_array->playlists->success) {
                   
                 // check video already exists in user playlits
@@ -675,6 +675,8 @@ class UserController extends Controller {
                         ->with('subscribe_status', $response->subscribe_status)
                         ->with('like_count',$response->like_count)
                         ->with('dislike_count',$response->dislike_count)
+                        ->with('like_status',$response->like_status)
+                        ->with('dislike_status',$response->dislike_status)
                         ->with('subscriberscnt', $response->subscriberscnt)
                         ->with('comment_rating_status', $response->comment_rating_status)
                         ->with('embed_link', $response->embed_link)
@@ -688,6 +690,8 @@ class UserController extends Controller {
         return redirect()->back()->with('flash_error', $error_message);
         
     }
+
+    
 
     /**
      * Function Name : playlist_single_video()
@@ -1152,7 +1156,7 @@ class UserController extends Controller {
         ]);
 
         $response = $this->UserAPI->wishlist_delete($request)->getData();
-
+        
         if($response->success) {
 
             return back()->with('flash_success', $response->message);
@@ -1162,6 +1166,44 @@ class UserController extends Controller {
             return back()->with('flash_error',  $response->message);
         }
     } 
+
+    /**
+     * @method wishlist_operations() 
+     *
+     * @uses Add / Remove  Wishlist
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param
+     *
+     * @return json repsonse
+     */ 
+    public function wishlist_operations(Request $request) {
+
+        try {
+
+            $request->request->add([ 'clear_all_status' => NO]);
+
+            $response = $this->NewUserAPI->wishlist_operations($request)->getData();
+
+            return response()->json($response);
+
+        } catch(Exception $e) {
+
+            if($request->is_json) {
+
+                $response_array = ['success' => false, 'error_messages' => $e->getMessage(), 'error_code' => $e->getCode()];
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    }
 
     /**
      * Function Name : add_comment()
@@ -1784,8 +1826,32 @@ class UserController extends Controller {
      */
 
     public function redeems(Request $request) {
-        
-        return view('user.redeems.index');
+
+        $redeem_details = Auth::user()->userRedeem;
+
+        if(!$redeem_details) {
+
+            $redeem_details = new Redeem;
+
+            $redeem_details->user_id = Auth::user()->id;
+
+            $redeem_details->status = APPROVED;
+
+            $redeem_details->remaining = $redeem_details->paid = $redeem_details->total = 0.00;
+
+            $redeem_details->save();
+
+        }
+
+        $min_status = Setting::get('minimum_redeem') < $redeem_details->remaining;
+
+        $redeem_details->send_redeem_btn_status = $redeem_details && $min_status;
+
+        $redeem_requests = Auth::user()->userRedeemRequests()->orderBy('created_at', 'desc')->get();
+
+        return view('user.redeems.index')
+                    ->with('redeem_details', $redeem_details)
+                    ->with('redeem_requests', $redeem_requests);
 
     }
 
@@ -1863,13 +1929,13 @@ class UserController extends Controller {
     }
 
     public function subscribe_channel(Request $request) {
-
+        
         $validator = Validator::make( $request->all(), array(
-                'user_id'     => 'required|exists:users,id',
-                'channel_id'     => 'required|exists:channels,id',
-                ));
+            'user_id'     => 'required|exists:users,id',
+            'channel_id'     => 'required|exists:channels,id',
+        ));
 
-
+        
         if ($validator->fails()) {
 
             $error_messages = implode(',', $validator->messages()->all());
@@ -1905,9 +1971,9 @@ class UserController extends Controller {
                 dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
 
                 return back()->with('flash_success', tr('channel_subscribed'));
-
+                
             } else {
-
+                
                 return back()->with('flash_error', tr('already_channel_subscribed'));
 
             }
@@ -1928,27 +1994,60 @@ class UserController extends Controller {
 
             return back()->with('flash_error', $error_messages);
 
+        } 
+
+        $model = ChannelSubscription::find($request->subscribe_id);
+
+        if ($model) {
+
+            $model->delete();
+
+            
+            return back()->with('flash_success', tr('channel_unsubscribed'));
+
         } else {
+            
+            return back()->with('flash_error', tr('not_found'));
 
-            $model = ChannelSubscription::find($request->subscribe_id);
-
-            if ($model) {
-
-                $model->delete();
-
-                return back()->with('flash_success', tr('channel_unsubscribed'));
-
-            } else {
-
-                return back()->with('flash_error', tr('not_found'));
-
-            }
         }
 
     }
 
+    /**
+     * @method channels_unsubscribe_subscribe() 
+     *
+     * @uses used to update the subscribe status
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param
+     *
+     * @return json repsonse
+     */ 
+    public function channels_unsubscribe_subscribe(Request $request) {
 
+        try {
 
+            $response = $this->NewUserAPI->channels_unsubscribe_subscribe($request)->getData();
+
+            return response()->json($response->data);
+
+        } catch(Exception $e) {
+
+            if($request->is_json) {
+
+                $response_array = ['success' => false, 'error_messages' => $e->getMessage(), 'error_code' => $e->getCode()];
+
+                return response()->json($response_array);
+            }
+
+            return redirect()->to('/')->with('flash_error' , $error_messages);
+
+        }
+
+    } 
 
     public function likeVideo(Request $request)  {
         $request->request->add([
@@ -2971,7 +3070,7 @@ class UserController extends Controller {
     * @return response of json
     */
     public function categories_view($id, Request $request) {
-
+        
         $request->request->add([ 
             'category_id'=>$id,
             'id' => \Auth::check() ? \Auth::user()->id : '',
@@ -3560,11 +3659,6 @@ class UserController extends Controller {
                 throw new Exception($response->error_messages, $response->error_code);
             }
 
-            if($request->is_json) {
-
-                return response()->json($response, 200);
-            }
-
             $playlist_details = $response->data;
 
             $user_details = User::find($playlist_details->user_id);
@@ -3577,7 +3671,17 @@ class UserController extends Controller {
             $playlist_details->user_name = $user_details->name;
            
             $playlist_details->user_picture = $user_details->picture;
-          
+            
+            if($request->is_json) {
+
+                $view = \View::make('user.playlists.playlists')
+                    ->with('video_tapes',$response->data->video_tapes)
+                    ->with('playlist_details',$playlist_details)
+                    ->render();
+           
+                return response()->json(['success'=>true, 'view'=>$view, 'count' =>count($response->data->video_tapes)]);
+            }
+
             $video_tapes = $response->data->video_tapes;
 
             $channel_videos = [];
@@ -3626,6 +3730,130 @@ class UserController extends Controller {
 
             return redirect()->to('/')->with('flash_error' , $error_messages);
         }
+
+    }    
+
+    /**
+     *
+     * Function name: playlists_view()
+     *
+     * @uses get the playlists
+     *
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param integer 
+     *
+     * @return 
+     *
+     */
+    public function playlists_play_all(Request $request) {
+
+        
+        if (Auth::check()) {
+
+            $request->request->add([ 
+                'id'=>Auth::user()->id,
+                'age_limit'=>Auth::user()->age_limit,
+            ]);
+
+        } else {
+
+            $request->request->add([ 
+                'id'=> '',
+            ]);
+        }
+        
+        // For default assign the play_next index as 0
+        $play_next = $request->play_next ?? 0;
+        
+        // Load all the videos based on playlist_id and playlist_type
+        $play_all = $this->NewUserAPI->playlists_view($request)->getData();
+        
+        if($request->is_json && $play_all->success) {
+
+            $view = \View::make('user.videos._playlist')
+                    ->with('play_all',$play_all->data)
+                    ->render();
+           
+            return response()->json(['success'=>true, 'view'=>$view, 'count' =>count($play_all->data)]);
+        }
+
+        $video_tapes = $play_all->data->video_tapes;
+        
+        // total videos count is greater than the play_next count reset the value to zero.
+        $value = 0;
+        if((count($video_tapes)) == $request->play_next)
+        { 
+            $value = 1;
+            $play_next = 0;
+        }
+        
+        // Load the video based on play_next index.
+        $request->request->add([ 
+            'video_tape_id' => $video_tapes[$play_next]->video_tape_id,
+        ]);
+
+        // Increment the play_next count - For playing the next video continuouly.
+        if($value == 0) {
+            $play_next++;
+        }
+        
+        $data = $this->UserAPI->video_detail($request)->getData();
+
+        // video url
+        if (isset($data->url)) {
+
+            return redirect($data->url);
+        }
+        
+        if ($data->success) {
+
+            $response = $data->response_array;
+            
+            // Video is autoplaying ,so we are incrementing the watch count 
+            if ($request->id != $response->video->channel_created_by) {
+
+                $this->watch_count($request);
+
+            }
+
+            return view('user.videos.play_all')
+                        ->with('page' , '')
+                        ->with('subPage' , '')
+                        ->with('video' , $response->video)
+                        ->with('comments' , $response->comments)
+                        ->with('suggestions',$response->suggestions)
+                        ->with('wishlist_status' , $response->wishlist_status)
+                        ->with('history_status' , $response->history_status)
+                        ->with('main_video' , $response->main_video)
+                        ->with('url' , $response->main_video)
+                        ->with('channels' , $response->channels)
+                        ->with('report_video', $response->report_video)
+                        ->with('videoPath', $response->videoPath)
+                        ->with('video_pixels', $response->video_pixels)
+                        ->with('videoStreamUrl', $response->videoStreamUrl)
+                        ->with('hls_video' , $response->hls_video)
+                        ->with('flaggedVideo', $response->flaggedVideo)
+                        ->with('ads', $response->ads)
+                        ->with('subscribe_status', $response->subscribe_status)
+                        ->with('like_count',$response->like_count)
+                        ->with('dislike_count',$response->dislike_count)
+                        ->with('like_status',$response->like_status)
+                        ->with('dislike_status',$response->dislike_status)
+                        ->with('subscriberscnt', $response->subscriberscnt)
+                        ->with('comment_rating_status', $response->comment_rating_status)
+                        ->with('embed_link', $response->embed_link)
+                        ->with('tags', $response->tags)
+                        ->with('play_all', $play_all->data)
+                        ->with('play_next', $play_next);
+       
+        } 
+       
+        $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
+
+        return redirect()->back()->with('flash_error', $error_message);
 
     }    
 

@@ -466,8 +466,8 @@ class VideoHelper {
 
             $user_history_ids = $base_query->skip($skip)->take($take)->lists('video_tape_id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($user_history_ids, $orderBy = "created_at", $other_select_columns = 'video_tapes.description');
-
+            $video_tapes = V5Repo::video_list_response($user_history_ids, $request->id,$orderBy = "created_at", $other_select_columns = 'video_tapes.description');
+            
             return $video_tapes;
 
         }  catch( Exception $e) {
@@ -523,7 +523,7 @@ class VideoHelper {
 
             $video_tape_ids = $base_query->skip($skip)->take($take)->lists('video_id')->toArray();
 
-            $video_tapes = V5Repo::video_list_response($video_tape_ids, $orderBy = "created_at", $other_select_columns = 'video_tapes.description');
+            $video_tapes = V5Repo::video_list_response($video_tape_ids, $request->id,$orderBy = "created_at", $other_select_columns = 'video_tapes.description');
 
             return $video_tapes;
 

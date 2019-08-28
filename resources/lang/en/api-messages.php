@@ -82,7 +82,7 @@ return array(
 	'wishlist_delete_error' => 'The wishlist remove error',
 	'wishlist_add_success' => 'The video added to wishlist',
 	'wishlist_delete_success' => 'The wishlist video removed',
-	'wishlist_clear_success' => 'wishlist List songs has been cleared successfully',
+	'wishlist_clear_success' => 'Wishlist songs has been cleared successfully',
 
 	// Subscriptions
 
@@ -137,7 +137,7 @@ return array(
 	'redeem_minimum_limit_failed' => 'Earn the minimum limit and try again.!',
 	'redeem_request_status_mismatch' => 'Redeem request status mismatched',
 
-	'redeem_request_cancelled_success' => 'Th request cancelled and credited the redeems to your wallet.',
+	'redeem_request_cancelled_success' => 'The request cancelled and credited the redeems to your wallet.',
 	'redeem_request_send_success' => 'Your Redeem Request Sent to Admin.',
 
 	// Spam videos
@@ -189,7 +189,7 @@ return array(
 	'VIDEO_TYPE_YOUTUBE' => 'YouTube',
 	'VIDEO_TYPE_OTHERS' => 'Others',
 	
-	'referral_code_share_message' => 'Join me on :otherkey! You\'ll get :referral_commission off when you sign up using my code: :referral_code. Signup now: ',
+	'referral_code_share_message' => 'Join me on :otherkey! You\'ll get <%referral_commission%> off when you sign up using my code: <%referral_code%>. Signup now: ',
 
 
 );

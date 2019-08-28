@@ -1,6 +1,5 @@
 @extends( 'layouts.user' )
 
-
 @section( 'styles' )
 
 <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/custom-style.css')}}"> 
@@ -26,47 +25,42 @@
 						<div class="new-history">
 				                
 			                <div class="content-head">
-			                    <div class="pull-left"><h4 class="bold" style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;
-			  
+			                    
+			                    <div class="pull-left"><h4 class="bold" style="color: #000;">{{tr('channels')}}&nbsp;&nbsp;			  
 			                    </h4></div>      
 
 			                    @if(Auth::check())    	
 
 				                    @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
 
-				                    @if(Auth::user()->user_type)
+					                    @if(Auth::user()->user_type)
 
-				                    @if((count($response->channels) == 0) || Setting::get('multi_channel_status'))  
+						                    @if((count($response->channels) == 0) || Setting::get('multi_channel_status'))  
 
-				                    <div class="pull-right" style="margin-bottom: 10px;">
+							                    <div class="pull-right" style="margin-bottom: 10px;">
 
-				                    	<a class="st_video_upload_btn " href="{{route('user.create_channel')}}"><i class="fa fa-tv"></i>&nbsp;&nbsp;{{tr('create_channel')}}</a>
+							                    	<a class="st_video_upload_btn " href="{{route('user.create_channel')}}"><i class="fa fa-tv"></i>&nbsp;&nbsp;{{tr('create_channel')}}</a>
 
-				                    	
+							                    </div>
 
-				                    </div>
+						                   	@endif
 
-				                   	@endif
+					                   	@else
 
-				                   	@else
+					                   		<div class="pull-right" style="margin-bottom: 10px;">
 
-				                   		<div class="pull-right" style="margin-bottom: 10px;">
+					                    		<a class="st_video_upload_btn " href="{{route('user.subscriptions')}}"><i class="fa fa-list"></i>&nbsp;{{tr('subscriptions')}}</a>			                    	
+					                    	</div>
 
-				                    	<a class="st_video_upload_btn " href="{{route('user.subscriptions')}}"><i class="fa fa-list"></i>&nbsp;{{tr('subscriptions')}}</a>
-
-				                    	
-
-				                    	</div>
-
-				                    @endif
+					                    @endif
 
 				                    @endif
 
 			                    @endif
 
 			                    <div class="clearfix"></div>    
+			               
 			                </div><!--end of content-head-->
-
 
 			                @if(count($response->channels) > 0)
 
@@ -74,12 +68,14 @@
 
 			                        @foreach($response->channels as $i => $channel)
 
-
 			                        <li class="sub-list row">
+			                           
 			                            <div class="main-history">
+			                           
 			                                 <div class="history-image">
+			                           
 			                                    <a href="{{route('user.channel',$channel->channel_id)}}">
-			                                    	<!-- <img src="{{$channel->picture}}"> -->
+			                                    	
 			                                    	<img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$channel->picture}}" class="slide-img1 placeholder" />
 			                                    </a>
 			                                    <div class="video_duration">
@@ -88,8 +84,11 @@
 			                                </div><!--history-image-->
 
 			                                <div class="history-title">
+			                                    
 			                                    <div class="history-head row">
+			                                    
 			                                        <div class="cross-title">
+			                                            
 			                                            <h5 class="payment_class mb-3" style="padding: 0px;"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
 			                                            
 			                                            <span class="video_views">
@@ -97,52 +96,48 @@
 					                                        {{ common_date($channel->created_at) }}
 					                                    </span>
 			                                        </div> 
+			                                        
 			                                        @if(Auth::check())
 
 			                                        	@if($channel->user_id != Auth::user()->id)
 
-														<div class="pull-right upload_a">
+															<div class="pull-right upload_a">
 
-				                                            @if (!$channel->subscribe_status)
+					                                            @if (!$channel->subscribe_status)
 
-															<a class="st_video_upload_btn subscribe_btn " href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->channel_id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
+																	<a class="st_video_upload_btn subscribe_btn " href="{{route('user.subscribe.channel', array('user_id'=>Auth::user()->id, 'channel_id'=>$channel->channel_id))}}" style="color: #fff !important"><i class="fa fa-envelope"></i>&nbsp;{{tr('subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
 
+																@else 
 
-															@else 
-
-																<a class="st_video_upload_btn " href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm(&quot;{{ $channel->title }} -  {{tr('user_channel_unsubscribe_confirm') }}&quot;)" ><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
-
-
-
-															@endif
-				                                        </div>
+																	<a class="st_video_upload_btn " href="{{route('user.unsubscribe.channel', array('subscribe_id'=>$channel->subscribe_status))}}" onclick="return confirm(&quot;{{ $channel->title }} -  {{tr('user_channel_unsubscribe_confirm') }}&quot;)" ><i class="fa fa-times"></i>&nbsp;{{tr('un_subscribe')}} &nbsp; {{$channel->no_of_subscribers}}</a>
+																@endif
+					                                        </div>
 
 				                                        @else
-				                                        <div class="pull-right upload_a">
-															@if($channel->no_of_subscribers > 0)
+					                                        <div class="pull-right upload_a">
+																@if($channel->no_of_subscribers > 0)
+																<a class="st_video_upload_btn subscribe_btn " href="{{route('user.channel.subscribers', array('channel_id'=>$channel->channel_id))}}" style="color: #fff !important;text-decoration: none"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$channel->no_of_subscribers}} 
+																</a>
+							                                    <div class="description hidden-xs">
+							                                    </div><!--end of description--> 
 
-															<a class="st_video_upload_btn subscribe_btn " href="{{route('user.channel.subscribers', array('channel_id'=>$channel->channel_id))}}" style="color: #fff !important;text-decoration: none"><i class="fa fa-users"></i>&nbsp;{{tr('subscribers')}} &nbsp; {{$channel->no_of_subscribers}} </a>
-
-															@endif
-														</div>
+																@endif
+															</div>
 														@endif
-			                                        
 			                                        
 			                                        @endif
 
-			                                        <!--end of cross-mark-->                       
 			                                    </div> <!--end of history-head--> 
 
 			                                    <div class="description hidden-xs">
 			                                        <?= $channel->description?>
-			                                    </div><!--end of description--> 
-
-			                                   	                                                  
+			                                    </div><!--end of description-->                  
 			                                </div><!--end of history-title--> 
 			                                
 			                            </div><!--end of main-history-->
 
 			                            <div class="clearfix"></div>
+			                        
 			                        </li>    
 
 			                        @endforeach
@@ -157,7 +152,7 @@
 				                	<p><small><b>{{tr('notes_for_channel')}}</b></small></p>
 				                @endif
 				            @endif
-			                   <!-- <p style="color: #000">{{tr('no_channel_found')}}</p> -->
+
 			                   <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
 
 			                @endif
@@ -171,6 +166,7 @@
 			                        </div>
 			                    </div>
 			                    @endif
+
 			                @endif
 				                
 				        </div>
@@ -180,9 +176,11 @@
 				</div>
 
 			<div class="sidebar-back"></div> 
+
 		</div>
 
 	</div>
+
 </div>
 
 @endsection
