@@ -137,6 +137,7 @@ class ApplicationController extends Controller {
 
         $videos = VideoTape::where('publish_time' ,'<=' ,$date)
                         ->where('publish_status' , 0)->get();
+
         foreach ($videos as $key => $video) {
             Log::info('Change the status');
             $video->publish_status = 1;
@@ -330,7 +331,7 @@ class ApplicationController extends Controller {
 
     public function search_all(Request $request) {
 
-         if (Auth::check()) {
+        if (Auth::check()) {
             $request->request->add([ 
                     'id' => \Auth::user()->id,
                     'token' => \Auth::user()->token,

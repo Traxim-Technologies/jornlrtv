@@ -1761,13 +1761,9 @@ class UserController extends Controller {
                         Helper::delete_picture($exp, "/uploads/videos/");
 
                     }
-
                 }
-
-                
-
             }
-
+            
             $video->delete();
         }
 

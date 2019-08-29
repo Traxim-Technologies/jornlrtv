@@ -283,7 +283,6 @@ class NewUserApiController extends Controller
 
             }   
 
-
             if($user_details->save()) {
 
                 // Send welcome email to the new user:

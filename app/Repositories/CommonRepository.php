@@ -348,6 +348,7 @@ class CommonRepository {
                         'other_video'=> $required ? 'required|url' : 'url',
                         'other_image' => $required ? 'required| mimes:jpeg,jpg,bmp,png' : 'mimes:jpeg,jpg,bmp,png',
                     ));
+                   
                     if($OtherVideovalidator->fails()) {
 
                         $error_messages = implode(',', $OtherVideovalidator->messages()->all());
@@ -369,6 +370,7 @@ class CommonRepository {
                     $uploadVideovalidator = Validator::make( $request->all(), array(
                         'video'=>$request->id ? 'mimes:mp4' : 'required|mimes:mp4',
                     ));
+                    
                     if($uploadVideovalidator->fails()) {
 
                         $error_messages = implode(',', $uploadVideovalidator->messages()->all());
@@ -454,7 +456,6 @@ class CommonRepository {
                     }
                     
                 }
-
 
                 if($request->hasFile('subtitle')) {
 
@@ -543,7 +544,6 @@ class CommonRepository {
 
                     if($request->hasFile('other_image')) {
 
-
                         if ($model->id) {
 
                             Helper::delete_picture($model->default_image, "/uploads/images/");
@@ -607,7 +607,6 @@ class CommonRepository {
                             ->customVideoFrames(1 / ($seconds/$frames))
                             ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
                             ->ready();
-
 
                         if ($request->video->getClientSize()) {
 
@@ -685,7 +684,6 @@ class CommonRepository {
                         }
 
                     }
-
 
                     if ($new_category) {
 
