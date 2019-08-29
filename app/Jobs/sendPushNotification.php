@@ -126,6 +126,7 @@ class sendPushNotification extends Job implements ShouldQueue {
             }
 
         } else {
+          
             Log::info('Push notifictaion is not enabled. Please contact admin');
         }
            

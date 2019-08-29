@@ -42,7 +42,7 @@ class Channel extends Model
      */
     public function getUser()
     {
-        return $this->hasOne('App\User', 'id', 'user_id');
+        return $this->hasOne('App\User', 'id', 'user_id')->where('status', APPROVED);
     }
     
     /**
@@ -116,17 +116,12 @@ class Channel extends Model
 
                         if (count($explode) > 0) {
 
-
                             foreach ($explode as $key => $exp) {
-
 
                                 Helper::delete_picture($exp, "/uploads/videos/");
 
                             }
-
                         }
-                
-
                     }
 
                    $value->delete();    

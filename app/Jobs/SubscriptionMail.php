@@ -48,35 +48,43 @@ class SubscriptionMail extends Job implements ShouldQueue
     {
         Log::info("Inside Queue Videos : ". 'Success');
         
-        $subscribers = ChannelSubscription::where('channel_id', $this->channel_id)->get();
+        /** Check emai notification status **/
+        if(Setting::get('email_notification') == YES) {
 
-        foreach ($subscribers as $key => $subscriber) {
-            
-            if($subscriber->getUser) {
+            $subscribers = ChannelSubscription::where('channel_id', $this->channel_id)->get();
 
-                $user = $subscriber->getUser;
-
-                $subject = tr('uploaded_new_video');
-
-                $email_data['subscriber'] = $subscriber;
-
-                $email_data['video_id'] = $this->video_id;
-
-                $email_data['channel'] = $subscriber->getChannel;
-
-                $email_data['user'] = $subscriber->getChannel ? $subscriber->getChannel->getUser : '';
-
-                $email_data['subscribed_user'] = $user;
-
-                $page = "emails.subscription_mail";
+            foreach ($subscribers as $key => $subscriber) {
                 
-                $email = $user->email;
+                if($subscriber->getUser) {
 
-                if ($user) {
+                    $user = $subscriber->getUser;
 
-                    Helper::send_email($page,$subject,$email,$email_data);
+                    $subject = tr('uploaded_new_video');
+
+                    $email_data['subscriber'] = $subscriber;
+
+                    $email_data['video_id'] = $this->video_id;
+
+                    $email_data['channel'] = $subscriber->getChannel;
+
+                    $email_data['user'] = $subscriber->getChannel ? $subscriber->getChannel->getUser : '';
+
+                    $email_data['subscribed_user'] = $user;
+
+                    $page = "emails.subscription_mail";
+                    
+                    $email = $user->email;
+
+                    if ($user) {
+
+                        Helper::send_email($page,$subject,$email,$email_data);
+                    }
                 }
             }
+
+        } else {
+
+            Log::info("email_notification OFF");
         }
     }
 }
