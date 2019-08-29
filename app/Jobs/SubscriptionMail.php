@@ -7,7 +7,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-
 use App\ChannelSubscription;
 
 use File;
@@ -55,7 +54,7 @@ class SubscriptionMail extends Job implements ShouldQueue
 
             foreach ($subscribers as $key => $subscriber) {
                 
-                if($subscriber->getUser) {
+                if($subscriber->getUser->where('status',APPROVED)) {
 
                     $user = $subscriber->getUser;
 

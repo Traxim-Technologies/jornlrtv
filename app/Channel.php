@@ -42,7 +42,7 @@ class Channel extends Model
      */
     public function getUser()
     {
-        return $this->hasOne('App\User', 'id', 'user_id')->where('status', APPROVED);
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
     
     /**
