@@ -162,7 +162,7 @@ class ApplicationController extends Controller {
         $compare_date = date('Y-m-d H:i:s', strtotime('-2 day', strtotime($current_date)));
 
 
-        $payments = UserPayment::select(DB::raw('max(user_payments.id) as payment_id'))->where('expiry_date' , '<=', $compare_date)
+        $payments = UserPayment::select(DB::raw('max(user_payments.id) as payment_id'))->where('user_payments.expiry_date' , '<=', $compare_date)
             ->leftJoin('users' , 'user_payments.user_id' , '=' , 'users.id')
             ->where('user_payments.status',1)
             ->where('user_type' ,1)
@@ -232,7 +232,6 @@ class ApplicationController extends Controller {
                 $payment = UserPayment::find($payment->payment_id);
 
                 if($payment) {
-
 
                     if (strtotime($payment->expiry_date) <= strtotime($current_time)) {
 

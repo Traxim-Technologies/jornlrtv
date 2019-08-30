@@ -1202,7 +1202,9 @@ class PaypalController extends Controller {
 
                 // Commission Spilit 
 
-                $admin_commission = Setting::get('admin_commission')/100;
+                $admin_commission = Setting::get('admin_commission');
+
+                $admin_commission = $admin_commission ? $admin_commission/100 : 0;
 
                 $admin_amount = $total * $admin_commission;
 
