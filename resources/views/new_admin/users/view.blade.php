@@ -145,7 +145,26 @@
 		              </a>
 		            </li>
 
+		            <li class="list-group-item">
+
+		            	<b>{{ tr('created') }}</b> 
+			            <div class="pull-right">
+			              	{{$user_details->created_at}}
+		              	</div>
+		            	
+		            </li>
+
+		            <li class="list-group-item">
+
+		            	<b>{{ tr('updated') }}</b> 
+			            <div class="pull-right">
+			              	{{$user_details->updated_at}}
+		              	</div>
+		            	
+		            </li>
+
 		          </ul>
+
 		          <center>
 
 		          	@if(Setting::get('admin_delete_control') == YES )
@@ -274,21 +293,46 @@
 			            	</tr>
 			            	
 		            	</table>
+						
+						@if(count($users_referral_details) > 0 )
+
+		            	<h4 class="h4-header"><b>{{ tr('referral_details') }}</b></h4>
+						
+						<table class="table table-striped">
+			            	<tr>
+			            		<th>{{ tr('referral_code') }}</th>
+			            		<td> {{ $users_referral_details->referral_code }}</td>
+			            	</tr>	
+
+			            	<tr>
+			            		<th>{{ tr('referral_earnings') }}</th>
+			            		<td>{{ formatted_amount($users_referral_details->total_referrals_earnings) }}</td>
+			            	</tr>
+			            	<tr>
+			            		<th>{{ tr('referral_count') }}</th>
+			            		<td>
+			            			<a href="{{ route('admin.users.referral.index',['user_id' => $users_referral_details->user_id, 'user_referrer_id' => $users_referral_details->id ])}}">{{ $users_referral_details->total_referrals }} </a>
+			            		</td>
+			            	</tr>
+
+			            </table>
+			            
+		            	@endif
 
 		            	<h4 class="h4-header"><b>{{ tr('redeems') }}</b></h4>
 	                	
 	                	<table class="table table-striped">
 			            	<tr>
 			            		<th>{{ tr('total_earning') }}</th>
-			            		<td>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? number_format_short($user_details->userRedeem->total) : "0.00" }}</td>
+			            		<td>{{ formatted_amount($user_details->userRedeem ? number_format_short($user_details->userRedeem->total) : "0.00") }}</td>
 			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('wallet_balance') }}</th>
-			            		<td>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? number_format_short($user_details->userRedeem->remaining) : "0.00" }}</td>
+			            		<td>{{ formatted_amount($user_details->userRedeem ? number_format_short($user_details->userRedeem->remaining) : "0.00") }}</td>
 			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('paid_amount') }}</th>
-			            		<td>{{ Setting::get('currency') }} {{ $user_details->userRedeem ? number_format_short($user_details->userRedeem->paid) : "0.00" }}</td>
+			            		<td>{{ formatted_amount($user_details->userRedeem ? number_format_short($user_details->userRedeem->paid) : "0.00") }}</td>
 			            	</tr>
 			            	<tr>
 				            	<td>
@@ -316,7 +360,7 @@
 
 			          		@foreach($channels as $channel_details)
 
-				            <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+				            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
 					          <!-- Widget: user widget style 1 -->
 					          	<div class="box box-widget widget-user">
 						            <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -369,11 +413,13 @@
 				        @else
 
 				        	<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-				        		<p class="text-center">{{ tr('no_channels_found') }}</p>
+				        		<h4 class="text-center">{{ tr('no_channels_found') }}</h4>
 				        	</div>
 
 				        @endif
-				     </div>
+
+				     	</div>
+
 		          	</div> 
 		          	<!-- /.tab-pane -->
 
@@ -384,6 +430,8 @@
 			                <cite><a href="{{ route('admin.users.wishlist',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('to_view_more') }}</a>
 			                </cite></small>
 			            </blockquote>
+		          		
+		          		@if(count($wishlists) > 0)
 
 		           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
 							
@@ -403,7 +451,7 @@
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 
-								      	<td><a href="{{route('admin.video_tapes.view' , ['id' => $wishlist_details->video_tape_id] )}}"> {{ $wishlist_details->title }}</a></td>
+								      	<td><a href="{{route('admin.video_tapes.view' , ['video_tape_id' => $wishlist_details->video_tape_id] )}}"> {{ $wishlist_details->title }}</a></td>
 
 								      	<td>{{ $wishlist_details->created_at->diffForHumans() }}</td>
 
@@ -417,7 +465,11 @@
 							</tbody>
 
 						</table>
+ 						
+ 						@else
+							<h4 class="text-center">{{ tr('no_wishlist_found') }}</h4>
 
+				        @endif
 		          	</div>
 
 		          	<div class="tab-pane" id="history_list">
@@ -428,6 +480,8 @@
 			                <a target="_blank" href="{{ route('admin.users.history',['user_id' => $user_details->id]) }}">{{ tr('to_view_more') }}</a>
 			                </cite></small>
 			            </blockquote>
+		          		
+		          		@if(count($histories) > 0)
 
 		           		<table id="datatable-withoutpagination1" class="table table-bordered table-striped">
 							<thead>
@@ -464,6 +518,11 @@
 
 						</table>
 
+ 						@else
+							<h4 class="text-center">{{ tr('no_history_found') }}</h4>
+
+				        @endif
+
 		          	</div>
 
 		          	<div class="tab-pane" id="spam_reports_list">
@@ -473,6 +532,8 @@
 			                <cite><a href="{{ route('admin.spam-videos.per-user-reports',['user_id' => $user_details->id]) }}" target="_blank">{{ tr('to_view_more') }}</a>
 			                </cite></small>
 			            </blockquote>
+		          		
+		          		@if(count($spam_reports) > 0)
 
 		           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
 
@@ -512,6 +573,11 @@
 							</tbody>
 
 						</table>
+						
+						@else
+							<h4 class="text-center">{{ tr('no_spam_reports_found') }}</h4>
+
+				        @endif
 
 		          	</div>
 
@@ -522,6 +588,8 @@
 			                <cite><a href="{{ route('admin.reviews', array('user_id'=>$user_details->id)) }}" target="_blank">{{ tr('to_view_more') }}</a>
 			                </cite></small>
 			            </blockquote>
+		          		
+		          		@if(count($user_ratings) > 0)
 
 		           		<table id="datatable-withoutpagination" class="table table-bordered table-striped">
 							
@@ -562,7 +630,12 @@
 							</tbody>
 
 						</table>
+						
+						@else
+							<h4 class="text-center">{{ tr('no_user_ratings_found') }}</h4>
 
+				        @endif
+				        
 		            </div>
 
 		          <!-- /.tab-pane -->

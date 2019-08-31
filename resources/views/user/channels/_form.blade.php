@@ -1,5 +1,6 @@
 
 <div class="y-content">
+
     <div class="row content-row">
 
         @include('layouts.user.nav')
@@ -11,8 +12,11 @@
             <form action="{{route('user.save_channel')}}" method="post" enctype="multipart/form-data">
 
 			<div class="branded-page-v2-top-row">
+
 				<div class="branded-page-v2-header channel-header yt-card">
-					<div id="gh-banner">
+
+					<div id="gh-banner" style="margin: 0px 10px !important">
+
 						<div id="c4-header-bg-container" class="c4-visible-on-hover-container  has-custom-banner">
 							<div class="hd-banner">
 								<div class="hd-banner-image">
@@ -43,8 +47,11 @@
 						</div>
 					</div>
 				</div>
+			
 			</div>
+
 			<div class="slide-area recom-area abt-sec des-crt">
+
 				<div class="abt-sec-head description-create">
 
 					<input type="file" style="display: none;" name="picture" id="picture" onchange="loadFile(this, 'picture_preview');" @if(!$model->id) required @endif  accept="image/png, image/jpeg">

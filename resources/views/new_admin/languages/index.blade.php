@@ -51,7 +51,7 @@
                         <tbody>
                            
                             @foreach($languages as $i => $language_details)
-                                <tr>
+                                <tr @if($language_details->folder_name == Setting::get('default_lang')) style="background-color: #0ef90e33;"  @endif >
                                     <td>{{$i+1}}</td>
                                    
                                     <td>{{$language_details->language}}</td>
@@ -127,10 +127,15 @@
                                                         <li>
                                                             <a href="{{route('admin.languages.edit', ['language_id' => $language_details->id ] ) }}"><b><i class="fa fa-edit"></i>&nbsp;{{tr('edit')}}</b></a>
                                                         </li> 
+                                                        
+                                                        @if($language_details->folder_name != Setting::get('default_lang'))
 
-                                                        <li>
-                                                            <a onclick="return confirm(&quot;{{ tr('admin_language_delete_confirmation' , $language_details->language) }}&quot;);" href="{{route('admin.languages.delete', ['language_id' => $language_details->id ] ) }}"><b><i class="fa fa-trash"></i>&nbsp;{{tr('delete')}}</b></a>
-                                                        </li> 
+                                                            <li>
+                                                                <a onclick="return confirm(&quot;{{ tr('admin_language_delete_confirmation' , $language_details->language) }}&quot;);" href="{{route('admin.languages.delete', ['language_id' => $language_details->id ] ) }}"><b><i class="fa fa-trash"></i>&nbsp;{{tr('delete')}}</b></a>
+                                                            </li> 
+
+                                                        @endif            
+                                                    
                                                     @endif            
 
                                                 @endif    
@@ -139,14 +144,21 @@
 
                                                     @if(count($languages) > 1)
 
-                                                    <a href="{{route('admin.languages.status', ['language_id' => $language_details->id ] )}}"><b>
-                                                    @if($language_details->status == APPROVED )
-                                                        <i class="fa fa-close"></i>&nbsp;{{tr('inactivate')}}
-                                                    @else
-                                                        <i class="fa fa-check"></i>&nbsp;{{tr('activate')}}
-                                                    @endif
-                                                    </b>
-                                                    </a>
+                                                        @if($language_details->folder_name != Setting::get('default_lang'))
+
+                                                            <a href="{{ route('admin.languages.status', ['language_id' => $language_details->id ] ) }}"><b>
+                                                           
+                                                            @if($language_details->status == APPROVED )
+                                                                <i class="fa fa-close"></i>&nbsp;{{ tr('inactivate') }}
+                                                            @else
+                                                                <i class="fa fa-check"></i>&nbsp;{{ tr('activate') }}
+                                                            @endif
+
+                                                        @endif
+                                                      
+                                                        </b>
+
+                                                        </a>
 
                                                     @else
 
@@ -157,6 +169,7 @@
 
                                                 
                                                 @if($language_details->folder_name != Setting::get('default_lang'))
+                                           
                                                 <li>
                                                     <a href="{{route('admin.languages.set_default', ['language_file' => $language_details->folder_name] )}}"><b>
                                                         <i class="fa fa-globe"></i>&nbsp;{{tr('set_default_language')}}

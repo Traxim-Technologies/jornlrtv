@@ -81,7 +81,9 @@
                     <span>{{tr('playlists')}}</span>
                 </a>
             </li>
+    
         @endif
+    
     </ul>
                 
     @if(count($channels = loadChannels()) > 0)

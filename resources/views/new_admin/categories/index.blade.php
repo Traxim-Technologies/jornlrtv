@@ -105,6 +105,10 @@
 
 					              			</a>
 				              			@endif
+
+				              			<a href="{{route('admin.categories.videos', ['category_id'=> $category_details->id] )}}" title="{{ tr('videos') }}" class="btn btn-sm btn-success" >
+											<i class="fa fa-video-camera"></i>
+				              			</a>
 			              			
 							      	</td>
 							      	

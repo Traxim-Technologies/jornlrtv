@@ -21,69 +21,6 @@
 
 							@include('notification.notify')
 
-							<?php /*
-							<div class="row">
-
-								@if(count($subscriptions) > 0)
-
-									@foreach($subscriptions as $s => $subscription)
-									
-										<div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-
-											<div class="thumbnail">
-
-												<img alt="{{$subscription->title}}" src="{{$subscription->picture ?  $subscription->picture : asset('images/landing-9.png')}}" class="subscription-image" />
-												<div class="caption">
-
-													<h3>
-														{{$subscription->title}}
-													</h3>
-
-													<div class="subscription-desc">
-														<?php echo $subscription->description; ?>
-													</div>
-
-														<span class="btn btn-danger pull-left" style="cursor: auto";>{{ Setting::get('currency')}} {{$subscription->amount}} / {{$subscription->plan}} M</span>
-
-															comment part starts @ ranjitha
-
-															@if(Setting::get('payment_type') == 'paypal')
-
-															<a href="{{route('user.paypal' , $subscription->id)}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
-
-															@else
-
-																<a href="{{route('user.card.stripe_payment' , ['subscription_id' => $subscription->id])}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
-
-															@endif  
-
-															<button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#paypal">{{tr('choose_plan')}}</button>
-
-															comment part ends @ ranjitha
-
-															<a href="{{route('user.subscription.invoice' , ['s_id' => $subscription->id, 'u_id'=>Auth::user()->id])}}" class="btn btn-success pull-right">{{tr('choose_plan')}}</a>
-													</p>
-													<br>
-													<br>
-
-												</div>
-											
-											</div>
-										
-										</div>
-
-									@endforeach
-
-								@else
-
-									 <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
-
-								@endif
-								
-							</div>
-
-							*/?>
-
 							<!-- new ui -->
 							<div class="row">
 								@if(count($subscriptions) > 0)

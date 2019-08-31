@@ -42,7 +42,9 @@
         "files": [
             "app/Helpers/viewHelper.php",
             "app/Helpers/tracker.php",
-            "app/Constants/constants.php"
+            "app/Constants/constants.php",
+            "app/Constants/user-constants.php",
+            "app/Constants/filepaths.php"
         ]
     },
     "autoload-dev": {

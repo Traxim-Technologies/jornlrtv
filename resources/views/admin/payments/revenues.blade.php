@@ -44,8 +44,8 @@
 			<div class="small-box bg-orange">
 
 				<div class="inner">
-					<h3>{{Setting::get('currency')}} {{$ppv_admin_amount}}</h3>
-					<p>{{tr('ppv_payments')}}</p>
+					<h3>{{ formatted_amount($ppv_admin_amount) }}</h3>
+					<p> {{tr('ppv_payments')}}</p>
 				</div>
 
 				<div class="icon">
@@ -127,7 +127,7 @@
 
 				<span class="progress-text">{{tr('admin_ppv_commission')}}</span>
 
-				<span class="progress-number"><b>{{Setting::get('currency')}} {{$ppv_admin_amount}}</b>/ {{Setting::get('currency')}} {{$ppv_total}}</span>
+				<span class="progress-number"><b> {{ formatted_amount($ppv_admin_amount) }}</b>/ {{ formatted_amount($ppv_total) }}</span>
 
 				<div class="progress sm">
 					<div class="progress-bar progress-bar-aqua" style="width: {{get_commission_percentage($ppv_total , $ppv_admin_amount)}}%"></div>
@@ -140,7 +140,7 @@
 
 				<span class="progress-text">{{tr('user_ppv_commission')}}</span>
 
-				<span class="progress-number"><b>{{Setting::get('currency')}} {{$ppv_user_amount}}</b>/ {{Setting::get('currency')}} {{$ppv_total}}</span>
+				<span class="progress-number"><b> {{ formatted_amount($ppv_user_amount) }}</b>/  {{ formatted_amount($ppv_total) }}</span>
 
 				<div class="progress sm">
 					<div class="progress-bar progress-bar-red" style="width: {{get_commission_percentage($ppv_total , $ppv_user_amount)}}%"></div>

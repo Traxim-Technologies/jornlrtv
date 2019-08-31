@@ -19,7 +19,7 @@
 
 			@include('notification.notify')
 
-			<div class="box box-info">
+			<div class="box">
 				
 				<div class="box-header label-primary">
 					<b style="font-size: 18px;">{{ tr('coupons') }}</b>
@@ -61,9 +61,9 @@
 
 								<td>
 									@if($coupon_details->amount_type == PERCENTAGE)
-									{{ $coupon_details->amount }} %
+									{{ formatted_amount($coupon_details->amount) }} %
 									@else
-									{{ Setting::get('currency') }} {{ $coupon_details->amount }} 
+									{{ formatted_amount($coupon_details->amount) }} 
 									@endif
 								</td>
 

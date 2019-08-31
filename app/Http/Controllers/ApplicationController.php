@@ -91,8 +91,6 @@ class ApplicationController extends Controller {
 
         $about = Page::where('type', 'about')->first();
 
-        // dd($about);
-
         return view('static.about-us')->with('about' , $about)
                         ->with('page' , 'about')
                         ->with('subPage' , '');
@@ -103,7 +101,6 @@ class ApplicationController extends Controller {
 
         $page = Page::where('type', 'privacy')->first();;
 
-        // dd($page);
         return view('static.privacy')->with('data' , $page)
                         ->with('page' , 'conact_page')
                         ->with('subPage' , '');
@@ -1147,4 +1144,91 @@ class ApplicationController extends Controller {
    
     }
 
+    /**
+     * @method static_pages_api()
+     *
+     * @uses used to get the pages
+     *
+     * @created Vidhya R 
+     *
+     * @edited Vidhya R
+     *
+     * @param - 
+     *
+     * @return JSON Response
+     */
+
+    public function static_pages_api(Request $request) {
+
+        if($request->page_type) {
+
+            $static_page = Page::where('type' , $request->page_type)
+                                ->where('status' , APPROVED)
+                                ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
+                                ->first();
+
+            $response_array = ['success' => true , 'data' => $static_page];
+
+        } else {
+
+            $static_pages = Page::where('status' , APPROVED)->orderBy('id' , 'asc')
+                                ->select('id as page_id' , 'title' , 'description','type as page_type', 'status' , 'created_at' , 'updated_at')
+                                ->orderBy('title', 'asc')
+                                ->get();
+
+            $response_array = ['success' => true , 'data' => $static_pages ? $static_pages->toArray(): []];
+
+        }
+
+        return response()->json($response_array , 200);
+
+    }
+
+    /**
+     * @method api_revamp_upgrade()
+     *
+     * @uses 
+     *
+     * @created
+     *
+     * @updated
+     *
+     * 
+     */
+
+    public function api_revamp_upgrade(Request $request) {
+
+        $users = User::get();
+
+        $subscribed_users = 0;
+
+        foreach ($users as $key => $user_details) {
+
+            // Is current subscription update
+
+            $user_payment = UserPayment::where('user_id', $user_details->id)
+                                ->where('status', PAID_STATUS)
+                                ->orderBy('user_payments.updated_at', 'desc')
+                                ->first();
+
+            if($user_payment) {
+
+                $user_payment->is_current = DEFAULT_TRUE;
+
+                $user_payment->save();
+
+                $subscribed_users += 1;
+            }
+        
+        }
+
+        $data['subscribed_users'] = $subscribed_users;
+
+        $data['total_users'] = count($users);
+
+        $response_array = ['success' => true, 'data' => $data];
+
+        return response()->json($response_array, 200);
+
+    }
 }

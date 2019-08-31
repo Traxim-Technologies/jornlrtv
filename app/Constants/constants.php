@@ -1,5 +1,10 @@
 <?php
 
+if(!defined('SAMPLE_ID')) define('SAMPLE_ID', 1);
+
+if(!defined('TAKE_COUNT')) define('TAKE_COUNT', 6);
+
+
 if(!defined('DEFAULT_TRUE')) define('DEFAULT_TRUE', 1);
 
 if(!defined('DEFAULT_FALSE')) define('DEFAULT_FALSE', 0);
@@ -62,6 +67,8 @@ if(!defined('APPROVED')) define('APPROVED', 1);
 
 if(!defined('DECLINED')) define('DECLINED', 0);
 
+
+if (!defined('USER_PENDING')) define('USER_PENDING',2);
 
 if (!defined('USER_APPROVED')) define('USER_APPROVED',1);
 
@@ -244,19 +251,18 @@ if(!defined('ADMIN_VIDEO_DECLINED_STATUS')) define('ADMIN_VIDEO_DECLINED_STATUS'
 
 // Channel status
 
-if(!defined('ADMIN_CHANNEL_APPROVED_STATUS')) define('ADMIN_CHANNEL_APPROVED_STATUS', 1);
-if(!defined('ADMIN_CHANNEL_DECLINED_STATUS')) define('ADMIN_CHANNEL_DECLINED_STATUS', 0);
+if(!defined('ADMIN_CHANNEL_APPROVED')) define('ADMIN_CHANNEL_APPROVED', 1);
+if(!defined('ADMIN_CHANNEL_DECLINED')) define('ADMIN_CHANNEL_DECLINED', 0);
 
+if(!defined('USER_CHANNEL_APPROVED')) define('USER_CHANNEL_APPROVED', 1);
+if(!defined('USER_CHANNEL_DECLINED')) define('USER_CHANNEL_DECLINED', 0);
 
 // User status
 
 if(!defined('USER_VIDEO_APPROVED_STATUS')) define('USER_VIDEO_APPROVED_STATUS', 1);
 if(!defined('USER_VIDEO_DECLINED_STATUS')) define('USER_VIDEO_DECLINED_STATUS', 0);
 
-// Channel status
 
-if(!defined('USER_CHANNEL_APPROVED_STATUS')) define('USER_CHANNEL_APPROVED_STATUS', 1);
-if(!defined('USER_CHANNEL_DECLINED_STATUS')) define('USER_CHANNEL_DECLINED_STATUS', 0);
 
 
 if(!defined('MY_CHANNEL')) define('MY_CHANNEL', 1);
@@ -347,7 +353,6 @@ if (!defined('VIDEO_STREAMING_STOPPED')) define('VIDEO_STREAMING_STOPPED' , 1);
 if (!defined('VIDEO_STREAMING_ONGOING')) define('VIDEO_STREAMING_ONGOING' , 0);
 
 
-
 // BROWSERS
 
 if (!defined('WEB_SAFARI')) define('WEB_SAFARI', 'Safari');
@@ -372,6 +377,7 @@ if (!defined('IOS_BROWSER')) define('IOS_BROWSER', 'ios');
 
 
 // ON OFF STATUS
+
 
 if(!defined('PLAYLIST_TYPE_USER')) define('PLAYLIST_TYPE_USER', "USER");
 
@@ -399,5 +405,56 @@ if (!defined('DECLINED')) define('DECLINED',0);
 
 if (!defined('WISHLIST_DELETE_ALL')) define('WISHLIST_DELETE_ALL', 1);
 
+// These constants are used identify the home page api types http://prntscr.com/mahza1
+
+if(!defined('API_PAGE_TYPE_HOME')) define('API_PAGE_TYPE_HOME', 'HOME');
+
+if(!defined('API_PAGE_TYPE_SERIES')) define('API_PAGE_TYPE_SERIES', "SERIES");
+
+if(!defined('API_PAGE_TYPE_FLIMS')) define('API_PAGE_TYPE_FLIMS', "FLIMS");
+
+if(!defined('API_PAGE_TYPE_KIDS')) define('API_PAGE_TYPE_KIDS', "KIDS");
+
+if(!defined('API_PAGE_TYPE_CATEGORY')) define('API_PAGE_TYPE_CATEGORY', "CATEGORY");
+
+if(!defined('API_PAGE_TYPE_SUB_CATEGORY')) define('API_PAGE_TYPE_SUB_CATEGORY', "SUB_CATEGORY");
+
+if(!defined('API_PAGE_TYPE_GENRE')) define('API_PAGE_TYPE_GENRE', "GENRE");
+
+
+
+if(!defined('URL_TYPE_WISHLIST')) define('URL_TYPE_WISHLIST', 'URL_TYPE_WISHLIST');
+
+if(!defined('URL_TYPE_NEW_RELEASE')) define('URL_TYPE_NEW_RELEASE', 'URL_TYPE_NEW_RELEASE');
+
+if(!defined('URL_TYPE_TRENDING')) define('URL_TYPE_TRENDING', 'URL_TYPE_TRENDING');
+
+if(!defined('URL_TYPE_SUGGESTION')) define('URL_TYPE_SUGGESTION', 'URL_TYPE_SUGGESTION');
+
+if(!defined('URL_TYPE_ORIGINAL')) define('URL_TYPE_ORIGINAL', 'URL_TYPE_ORIGINAL');
+
+if(!defined('URL_TYPE_CATEGORY')) define('URL_TYPE_CATEGORY', 'URL_TYPE_CATEGORY');
+
+if(!defined('URL_TYPE_SUB_CATEGORY')) define('URL_TYPE_SUB_CATEGORY', 'URL_TYPE_SUB_CATEGORY');
+
+if(!defined('URL_TYPE_GENRE')) define('URL_TYPE_GENRE', 'URL_TYPE_GENRE');
+
+if(!defined('URL_TYPE_CAST_CREW')) define('URL_TYPE_CAST_CREW', 'URL_TYPE_CAST_CREW');
+
+
+if(!defined('CHANNEL_SUBSCRIBED')) define('CHANNEL_SUBSCRIBED', 1);
+
+if(!defined('CHANNEL_UNSUBSCRIBED')) define('CHANNEL_UNSUBSCRIBED', 0);
+
+if(!defined('CHANNEL_OWNER')) define('CHANNEL_OWNER', 2);
+
+if(!defined('VIEW_TYPE_OWNER')) define('VIEW_TYPE_OWNER', 'owner');
+
+if(!defined('VIEW_TYPE_VIEWER')) define('VIEW_TYPE_VIEWER', 'viewer');
+
+
+if(!defined('PAY_WATCH_VIDEO')) define('PAY_WATCH_VIDEO', 1);
+
+if(!defined('FREE_VIDEO')) define('FREE_VIDEO', 0);
 
 

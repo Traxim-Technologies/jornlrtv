@@ -73,19 +73,19 @@
                         <table class="table">
                             <tr>
                                 <th style="width:50%">Subtotal:</th>
-                                <td>{{Setting::get('currency')}} {{$data->payout_amount}}</td>
+                                <td>{{ formatted_amount( $data->payout_amount ) }}</td>
                             </tr>
                             <tr>
                                 <th>Tax</th>
-                                <td>{{Setting::get('currency')}} 0.00</td>
+                                <td>{{ formatted_amount(0.00) }} </td>
                             </tr>
                             <tr>
                                 <th>Shipping:</th>
-                                <td>{{Setting::get('currency')}} 0.00</td>
+                                <td>{{ formatted_amount(0.00) }}</td>
                             </tr>
                             <tr>
                                 <th>{{tr('total')}}:</th>
-                                <td>{{Setting::get('currency')}} {{$data->payout_amount}}</td>
+                                <td>{{ formatted_amount( $data->payout_amount) }}</td>
                             </tr>
                         </table>
                     </div>
@@ -159,17 +159,14 @@
 
                     @else
                         <span>-</span>
-                    @endif
-
-                    
+                    @endif                   
 
                 </div>
+            
             </div>
             <!-- /.row -->
 
-        </section>
-
-        
+        </section>      
 
     </div>
 

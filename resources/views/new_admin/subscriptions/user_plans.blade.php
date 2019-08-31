@@ -2,14 +2,24 @@
 
 @section('title', tr('subscriptions'))
 
-@section('content-header', tr('subscriptions'))
+@section('content-header')
+
+{{tr('subscriptions')}}
+
+<a href="{{route('admin.users.view', ['user_id' => $user_details->id])}}">
+
+	- {{$user_details->name}}
+	
+</a>
+
+@endsection
 
 @section('breadcrumb')
      
-    <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i>{{ tr('users') }}</a></li>
-    @if($user_id)
-    	<li><a href="{{ route('admin.users.view',['user_id' => $user_id] ) }}"><i class="fa fa-users"></i>{{ tr('view_user') }}</a></li>
-    @endif
+    <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-user"></i>{{ tr('users') }}</a></li>
+    
+    <li><a href="{{ route('admin.users.view',['user_id' => $user_details->id] ) }}"><i class="fa fa-user"></i>{{ tr('view_user') }}</a></li>
+
     <li class="active"><i class="fa fa-key"></i> {{ tr('subscriptions') }}</li>
 @endsection
 
@@ -74,11 +84,12 @@
 								    <tr>
 								      	<td>{{ $i+1 }}</td>
 
-								      	<td>{{ $payment_details->title }}</td>
+								      	<td><a href="{{ route('admin.subscriptions.view' , ['subscription_id' => $payment_details->subscription_id] ) }}" > {{ $payment_details->title }}</a> 
+								      	</td>
 								      	
 								      	<td>{{ $payment_details->payment_id }}</td>
 								      	
-								      	<td>{{ Setting::get('currency') }} {{ $payment_details->amount }}</td>
+								      	<td>{{ formatted_amount($payment_details->amount) }}</td>
 								      	
 								      	<td>{{ date('d M Y',strtotime($payment_details->expiry_date)) }}</td>
 								      	
@@ -187,9 +198,9 @@
 									<br>
 
 									<p>
-										<span class="btn btn-danger pull-left" style="cursor: default;">{{  Setting::get('currency') }} {{ $subscription_detail->amount }} / {{ $subscription_detail->plan }} M</span>
+										<span class="btn btn-danger pull-left" style="cursor: default;">{{ formatted_amount($subscription_detail->amount) }} / {{ $subscription_detail->plan }} M</span>
 
-										<a href="{{ route('admin.users.subscription.save' , ['subscription_id' => $subscription_detail->id, 'user_id' => $user_id]) }}" class="btn btn-success pull-right" onclick="return confirm(&quot;{{ tr('admin_user_subscription_confirm', $subscription_detail->title) }}&quot;)">{{ tr('choose') }}</a>
+										<a href="{{ route('admin.users.subscription.save' , ['subscription_id' => $subscription_detail->id, 'user_id' => $user_details->id]) }}" class="btn btn-success pull-right" onclick="return confirm(&quot;{{ tr('admin_user_subscription_confirm', $subscription_detail->title) }}&quot;)">{{ tr('choose') }}</a>
 									</p>
 
 									<br>

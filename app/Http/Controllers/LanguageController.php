@@ -17,6 +17,7 @@ use App\Settings;
 use Exception;
 
 use DB;
+
 class LanguageController extends Controller
 {    
     /**
@@ -173,39 +174,14 @@ class LanguageController extends Controller
                 if($setting_details) {
 
                     $setting_details->value = 'en';
-
+                    
                     if($setting_details->save()) {
                         
                         DB::commit();
                         
                         $dir = base_path('resources/lang/'.$folder_name);
-
-                        if (file_exists($dir.'/auth.php')) {
-
-                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'auth.php');                            
-                        }
-
-                        if (file_exists($dir.'/messages.php')) {
-
-                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'messages.php');
-                        }
-
-                        if (file_exists($dir.'/passwords.php')) {
-
-                            Helper::delete_language_files($folder_name, DEFAULT_FALSE , 'passwords.php');
-                        }
-
-                        if (file_exists($dir.'/validation.php')) {
-
-                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'validation.php');
-                        }
-
-                        if (file_exists($dir.'/pagination.php')) {
-
-                            Helper::delete_language_files($folder_name, DEFAULT_FALSE, 'pagination.php');
-                        }
-
-                        rmdir($dir); 
+                        
+                        Helper::delete_language_files($folder_name, DEFAULT_TRUE, '');
 
                         return back()->with('flash_success', tr('admin_language_delete_success'));                   
                     } 
@@ -341,7 +317,7 @@ class LanguageController extends Controller
                 fwrite($fp, "<?php return array( 'locale' => '".$request->language_file."', 'fallback_locale' => '".$request->language_file."');?>");
                 
                 fclose($fp);
-
+                                
                 \Log::info("Key : ".config('app.locale'));
 
                 return back()->with('flash_success' , tr('set_default_language_success'))->with('flash_language', true);

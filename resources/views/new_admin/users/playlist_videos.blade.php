@@ -9,8 +9,11 @@
 @endsection
 
 @section('breadcrumb')
-     
+
+    <li><a href="{{ route('admin.users.index') }}"><i class="fa fa-user"></i> {{ tr('users') }}</a></li>
+
     <li class="active"><i class="fa fa-user"></i> {{ tr('playlist') }}</li>
+
 @endsection
 
 @section('content')
@@ -62,7 +65,7 @@
 								      	</td>
 
 								      	<td>
-								      		<a href="{{ route('admin.videos.view' ,  ['admin_video_id' => $playlists_video_details->id] ) }}">
+								      		<a href="{{ route('admin.video_tapes.view' ,  ['admin_video_id' => $playlists_video_details->id] ) }}">
 								      		{{ $playlists_video_details->video_tape_title }}
 								      		</a>
 									    </td>

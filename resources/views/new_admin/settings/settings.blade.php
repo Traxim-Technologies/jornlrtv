@@ -502,6 +502,13 @@ hr {
                                     <label for="user_ppv_commission">{{ tr('user_ppv_commission') }}</label>
                                     <input type="text" class="form-control" name="" disabled value="{{ Setting::get('user_ppv_commission')   }}" id="user_ppv_commission" placeholder="{{ tr('user_ppv_commission') }}">
                                 </div>
+                            </div> 
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="referral_commission">{{ tr('referral_commission') }}</label>
+                                    <input type="number" class="form-control" name="referral_commission" value="{{ Setting::get('referral_commission') }}" id="referral_commission" placeholder="{{ tr('referral_commission') }}"  min="0">
+                                </div>
                             </div>
                             <div class="clearfix"></div>
 
@@ -993,7 +1000,7 @@ hr {
 
                                         <br>
 
-                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked @endif id="multi_channel_status" style="vertical-align: middle;"> {{ tr('enable_channel_status') }}
+                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked value="1" @else value="0" @endif id="multi_channel_status" style="vertical-align: middle;"> {{ tr('enable_channel_status') }}
                                         
                                     </div>   
                                 </div>
