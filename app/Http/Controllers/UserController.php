@@ -80,6 +80,8 @@ use App\Referral;
 
 use App\UserReferrer;
 
+use App\Redeem;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -456,7 +458,8 @@ class UserController extends Controller {
     public function live_videos(Request $request) {
 
         $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
-                    ->where('status', 0);
+                    ->where('status', 0)
+                    ->orderBy('video_tapes.created_at' , 'desc');
 
         if (Auth::check()) {
 
@@ -665,7 +668,9 @@ class UserController extends Controller {
 
                             // Commission Spilit 
 
-                            $admin_commission = Setting::get('admin_commission')/100;
+                            $admin_commission = Setting::get('admin_commission');
+
+                            $admin_commission = $admin_commission ? $admin_commission/100 : 0;
 
                             $admin_amount = $amount * $admin_commission;
 

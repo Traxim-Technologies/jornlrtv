@@ -1660,6 +1660,7 @@ return array(
 	'watch_video_success' => 'You can watch the video',
 	'pay_and_watch_video' => 'Pay and watch the video..!',
 	'coupon_code_not_exists' => 'The Coupon Code doesn’t exists',
+	'livevideo_not_exists' => 'Live Video doesn’t exists',
 	'subscription_not_exists' => 'The Subscription doesn’t exists',
 	'coupon_not_found' => 'Coupon not found, please try again later',
 	'coupon_inactive_status' => 'Coupon is inactive status',
