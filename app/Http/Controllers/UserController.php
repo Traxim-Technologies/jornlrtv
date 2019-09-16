@@ -458,8 +458,8 @@ class UserController extends Controller {
     public function live_videos(Request $request) {
 
         $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
-                    ->where('status', 0)
-                    ->orderBy('video_tapes.created_at' , 'desc');
+                    ->where('status', DEFAULT_FALSE)
+                    ->orderBy('created_at' , 'desc');
 
         if (Auth::check()) {
 
@@ -468,8 +468,8 @@ class UserController extends Controller {
         }
 
         $videos = $query->paginate(15);
-
-        return view('user.videos.live_videos_list')
+ 
+       return view('user.videos.live_videos_list')
                 ->with('videos', $videos)
                 ->with('page', 'live_videos')
                 ->with('subPage', 'live_videos');
