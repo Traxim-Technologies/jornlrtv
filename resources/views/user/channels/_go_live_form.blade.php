@@ -1,4 +1,4 @@
-@if(Auth::user()->user_type == 1)
+@if(Auth::check() ? Auth::user()->user_type == 1 : 0)
 
     @if(Setting::get('broadcast_by_user') == 1 || (Auth::check() ? Auth::user()->is_master_user == 1 : 0))
 

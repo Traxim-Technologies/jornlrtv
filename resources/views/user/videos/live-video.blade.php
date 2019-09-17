@@ -32,9 +32,7 @@ video {
 
 @endsection
 
-
 @section('content')
-
 
 <div class="y-content">
 
@@ -53,27 +51,25 @@ video {
 					<div class="col-lg-8" ng-controller="streamCtrl">
 
 					<div style="display: none">
+                        
                         <input type="text" id="room-id" size=20 value="{{$data->virtual_id}}">
-
 
                         <button id="join-room">Join Room</button>
                         <button id="open-or-join-room">Auto Open Or Join Room</button>
 
                       </div>
 
+                      	<div style="display: none">
+                            <video id="videoInput" autoplay></video>
 
-                      <div style="display: none">
-                               <video id="videoInput" autoplay></video>
-
-
-                                <textarea id="rtpSdp">v=0
-                                  o=- 0 0 IN IP4 {{Setting::get('wowza_ip_address')}}
-                                  s=Kurento
-                                  c=IN IP4 {{Setting::get('wowza_ip_address')}}
-                                  t=0 0
-                                  m=video {{$data->port_no}} RTP/AVP 100
-                                  a=rtpmap:100 H264/90000
-                                </textarea>
+                            <textarea id="rtpSdp">v=0
+                              o=- 0 0 IN IP4 {{Setting::get('wowza_ip_address')}}
+                              s=Kurento
+                              c=IN IP4 {{Setting::get('wowza_ip_address')}}
+                              t=0 0
+                              m=video {{$data->port_no}} RTP/AVP 100
+                              a=rtpmap:100 H264/90000
+                            </textarea>
                         </div>
 						
 
@@ -82,10 +78,7 @@ video {
 
 							<img src="{{asset('images/preview_img.jpg')}}" width="100%" id="default_image">
 							
-
 							<div class="loader_img" id="loader_btn" style="display: none;"><img src="{{asset('images/loader.svg')}}"/></div>
-
-
 
 						</div>
 
@@ -104,13 +97,13 @@ video {
 						<div class="pull-left">						
 
 							<button class="btn btn-sm btn-info text-uppercase">
-								 @if(round($data->amount) > 0) 
+								@if(round($data->amount) > 0) 
 
                                     {{tr('paid')}} - ${{$data->amount}} 
 
                                 @else 
 
-                                {{tr('free')}} 
+                                	{{tr('free')}} 
 
                                 @endif
 							</button>

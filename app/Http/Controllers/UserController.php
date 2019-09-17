@@ -191,6 +191,7 @@ class UserController extends Controller {
            return redirect(route('user.live_video.start_broadcasting', array('id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id)))->with('flash_success', tr('video_going_to_broadcast'));
 
             // return redirect(route('user.android.video', array('u_id'=>$response->data->unique_id,'c_id'=>$response->data->channel_id, 'id'=>\Auth::user()->id)));
+           
         } else {
 
             return back()->with('flash_error', $response->error_messages);
@@ -204,7 +205,6 @@ class UserController extends Controller {
 
 
         if ($request->id) {
-
 
             $model = LiveVideo::where('unique_id', $request->id)
                         ->where('status', '!=', DEFAULT_TRUE)
@@ -229,51 +229,46 @@ class UserController extends Controller {
 
                     if ($model->user_id != $userModel->id) {
 
+                        // Load Viewers model
 
+                        $viewer = Viewer::where('video_id', $model->id)->where('user_id',Auth::user()->id)->first();
 
-                             // Load Viewers model
+                        $new_user = 0;
 
-                                $viewer = Viewer::where('video_id', $model->id)->where('user_id',Auth::user()->id)->first();
+                        if(!$viewer) {
 
-                                $new_user = 0;
+                            $new_user = 1;
 
-                                if(!$viewer) {
+                            $viewer = new Viewer;
 
-                                    $new_user = 1;
+                            $viewer->video_id = $model->id;
 
-                                    $viewer = new Viewer;
+                            $viewer->user_id = Auth::user()->id;
+                        }
 
-                                    $viewer->video_id = $model->id;
+                        $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
 
-                                    $viewer->user_id = Auth::user()->id;
-                                }
+                        $viewer->save();
 
-                                $viewer->count = ($viewer->count) ? $viewer->count + 1 : 1;
+                        if ($new_user) {
 
-                                $viewer->save();
+                            if ($model) {
 
-                                if ($new_user) {
+                                Log::info("test");
 
-                                    if ($model) {
+                                $model->viewer_cnt += 1;
 
-                                        Log::info("test");
+                                $model->save();
+                                
+                            }
 
-                                        $model->viewer_cnt += 1;
+                        }
 
-                                        $model->save();
-                                        
-                                    }
+                        // video payment 
 
-                                }
-
-                            // video payment 
-
-                            $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
-                                ->where('live_video_viewer_id', Auth::user()->id)
-                                ->where('status',DEFAULT_TRUE)->first();
-
-
-
+                        $videoPayment = LiveVideoPayment::where('live_video_id', $model->id)
+                            ->where('live_video_viewer_id', Auth::user()->id)
+                            ->where('status',DEFAULT_TRUE)->first();
                         
                     }
 
@@ -315,7 +310,6 @@ class UserController extends Controller {
 
                 }
 
-
                 $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
                     ->where('status', 0)->whereNotIn('id', [$model->id]);
 
@@ -326,7 +320,6 @@ class UserController extends Controller {
                 }
 
                 $videos = $query->paginate(15);
-
 
 
                 $is_streamer = $model->user_id == $request->id ? DEFAULT_TRUE : DEFAULT_FALSE;
@@ -378,11 +371,9 @@ class UserController extends Controller {
                     ->with('subPage', 'broadcast')
                     ->with('data', $model)->with('appSettings', $appSettings)->with('comments',$comments)->with('videos', $videos);
 
-
             } else {
 
                 return redirect(route('user.channel', ['id'=>$request->c_id]))->with('flash_error', tr('no_live_video_found'));
-
             }
 
         } else {
@@ -458,8 +449,8 @@ class UserController extends Controller {
     public function live_videos(Request $request) {
 
         $query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
-                    ->where('status', 0)
-                    ->orderBy('video_tapes.created_at' , 'desc');
+                    ->where('status', DEFAULT_FALSE)
+                    ->orderBy('created_at' , 'desc');
 
         if (Auth::check()) {
 
@@ -468,8 +459,8 @@ class UserController extends Controller {
         }
 
         $videos = $query->paginate(15);
-
-        return view('user.videos.live_videos_list')
+ 
+       return view('user.videos.live_videos_list')
                 ->with('videos', $videos)
                 ->with('page', 'live_videos')
                 ->with('subPage', 'live_videos');
