@@ -6521,7 +6521,7 @@ class NewAdminController extends Controller {
         // Check the video present or not
         if ($video) {
 
-            $video->status = DEFAULT_TRUE;
+            $video->publish_status = DEFAULT_TRUE;
 
             $video->publish_time = date('Y-m-d H:i:s');
 
