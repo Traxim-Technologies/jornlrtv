@@ -433,7 +433,7 @@ class CommonRepository {
                 $model->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
 
                 $model->publish_time = $request->has('publish_time') 
-                            ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : '';
+                            ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : date('Y-m-d H:i:s');
                 
 
                 $model->status = DEFAULT_FALSE;
@@ -444,7 +444,7 @@ class CommonRepository {
 
                 if($model->publish_time) {
 
-                    if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
+                    if(strtotime($model->publish_time) <= strtotime(date('Y-m-d H:i:s'))) {
 
                         $model->publish_status = DEFAULT_TRUE;
 
