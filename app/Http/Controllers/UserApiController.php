@@ -3012,13 +3012,15 @@ class UserApiController extends Controller {
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
-                    $cards->cvv = $request->cvv;
+                    // $cards->cvv = $request->cvv;
 
-                    $cards->card_name = $request->card_holder_name;
+                    // $cards->card_name = $request->card_holder_name;
 
-                    $cards->month = $request->month;
+                    $cards->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
 
-                    $cards->year = $request->year;
+                    // $cards->month = $request->month;
+
+                    // $cards->year = $request->year;
 
                     // Check is any default is available
                     $check_card = Card::where('user_id', $userModel->id)->first();

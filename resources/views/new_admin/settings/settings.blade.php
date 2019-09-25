@@ -870,11 +870,15 @@ hr {
 
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="multi_channel_status">{{ tr('multi_channel_status') }}</label>
-
-                                        <br>
-
-                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked value="1" @else value="0" @endif id="multi_channel_status" style="vertical-align: middle;"> {{ tr('enable_channel_status') }}
+                                        <label for="multi_channel_status">{{ tr('multi_channel_status') }}</label><br>
+                                        <label>
+                                          <input required type="radio" name="multi_channel_status" value="1" class="flat-red" @if(Setting::get('multi_channel_status') == 1) checked @endif>
+                                          {{tr('yes')}}
+                                        </label>
+                                        <label>
+                                            <input required type="radio" name="multi_channel_status" class="flat-red"  value="0" @if(Setting::get('multi_channel_status') == 0) checked @endif>
+                                            {{tr('no')}}
+                                        </label><br><br>
                                         
                                     </div>   
                                 </div>

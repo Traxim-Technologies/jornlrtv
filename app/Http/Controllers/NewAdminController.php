@@ -5344,20 +5344,40 @@ class NewAdminController extends Controller {
                     $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
 
                     $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
-               
+
+                } else if($key == "admin_ppv_commission") {
+
+                    $value = $request->admin_ppv_commission < 100 ? $request->admin_ppv_commission : 100;
+
+                    $user_ppv_commission = $request->admin_ppv_commission < 100 ? 100 - $request->admin_ppv_commission : 0;
+
+                    $user_ppv_commission_details = Settings::where('key' , 'user_ppv_commission')->first();
+
+                    if(count($user_ppv_commission_details) > 0) {
+
+                        $user_ppv_commission_details->value = $user_ppv_commission;
+
+
+                        $user_ppv_commission_details->save();
+                    }
+
+                    $result = Settings::where('key' ,'=', $key)->update(['value' => $value]);
+
                 } else {
                     
                     $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
-
-                    if( $result == TRUE ) {
-                     
-                        DB::commit();
-                   
-                    } else {
-
-                        throw new Exception(tr('admin_settings_save_error'), 101);
-                    }   
+  
                 }  
+
+                if( $result == TRUE ) {
+                     
+                    DB::commit();
+               
+                } else {
+
+                    throw new Exception(tr('admin_settings_save_error'), 101);
+                } 
+                
             }
 
             return back()->with('flash_success', tr('admin_settings_key_save_success'));
