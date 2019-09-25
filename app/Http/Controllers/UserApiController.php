@@ -4735,6 +4735,7 @@ class UserApiController extends Controller {
      */
     public function payment_card_add(Request $request) {
 
+        Log::info(print_r($request->all(), true));
         $validator = Validator::make($request->all(), 
             array(
                 'card_token'=> 'required',
@@ -4792,7 +4793,7 @@ class UserApiController extends Controller {
 
                     $cards->cvv = $request->cvv;
 
-                    $cards->card_name = $request->card_holder_name;
+                    $cards->card_name = $request->card_holder_name ? $request->card_holder_name : "";
 
                     $cards->month = $request->month;
 

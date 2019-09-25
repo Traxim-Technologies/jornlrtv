@@ -1420,10 +1420,10 @@ history.html responsive
 		font-size: 13px !important;
 	}
 	.history-title{
-		width: 68% !important;
+		width: 100% !important;
 	}
 	.history-image{
-		width: 30% !important;
+		width: 80% !important;
 	}
 }
 @media screen and (max-width: 350px){
