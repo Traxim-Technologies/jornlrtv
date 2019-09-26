@@ -215,7 +215,7 @@
                             Log::info("isValid - STRAT");
 
                             # Instantiate the client.
-
+                            
                             $email_address = new Mailgun(Setting::get('MAILGUN_PUBLIC_KEY'));
 
                             $validateAddress = $email;
