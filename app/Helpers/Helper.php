@@ -816,8 +816,6 @@
 
             $path = '/uploads/videos/';
 
-            // dd($picture);
-
             // Convert bytes into MB
             $bytes = convertMegaBytes($picture->getClientSize());
 
