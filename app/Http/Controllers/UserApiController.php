@@ -2936,6 +2936,8 @@ class UserApiController extends Controller {
             )
         );
 
+        dd($request->all());
+
         if ($validator->fails()) {
             
             $error_messages = implode(',',$validator->messages()->all());
