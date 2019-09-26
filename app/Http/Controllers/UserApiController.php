@@ -2936,8 +2936,6 @@ class UserApiController extends Controller {
             )
         );
 
-        dd($request->all());
-
         if ($validator->fails()) {
             
             $error_messages = implode(',',$validator->messages()->all());
@@ -2947,6 +2945,8 @@ class UserApiController extends Controller {
         } else {
 
             $user = User::where('email' , $email)->first();
+            
+            dd($user->toArray());
 
             if($user) {
 
