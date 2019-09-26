@@ -2945,7 +2945,7 @@ class UserApiController extends Controller {
         } else {
 
             $user = User::where('email' , $email)->first();
-            
+
             if($user) {
 
                 if ($user->login_by == 'manual') {
@@ -2960,7 +2960,7 @@ class UserApiController extends Controller {
                     $email_data['password'] = $new_password;
                     $page = "emails.forgot-password";
                     $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
-
+                    dd('$email_send' . $email_send);
                     $response_array['success'] = true;
                     $response_array['message'] = Helper::get_message(106);
                     $user->save();
@@ -2974,6 +2974,8 @@ class UserApiController extends Controller {
             }
 
         }
+
+        dd($response_array);
 
         $response = response()->json($response_array, 200);
 
