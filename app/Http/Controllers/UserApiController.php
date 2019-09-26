@@ -2946,8 +2946,6 @@ class UserApiController extends Controller {
 
             $user = User::where('email' , $email)->first();
             
-            dd($user->toArray());
-
             if($user) {
 
                 if ($user->login_by == 'manual') {

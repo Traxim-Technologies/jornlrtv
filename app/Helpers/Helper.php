@@ -268,9 +268,11 @@
 
                     return Helper::get_error_message(123);
                 }
-
+                dd('email_notification on');
             } else {
                 Log::info("email_notification OFF");
+                dd('email_notification off');
+
             }
         }
 
