@@ -2974,8 +2974,6 @@ class UserApiController extends Controller {
 
         }
 
-        dd($response_array);
-
         $response = response()->json($response_array, 200);
 
         return $response;
