@@ -1108,7 +1108,7 @@ class UserController extends Controller {
 
                 $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')
                             ->where('banner_ads.status', DEFAULT_TRUE)
-                            ->orderBy('banner_ads.created_at' , 'desc')
+                            ->orderBy('banner_ads.position' , 'asc')
                             ->get();
 
             }
