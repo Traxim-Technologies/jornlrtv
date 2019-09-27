@@ -215,7 +215,7 @@
                             Log::info("isValid - STRAT");
 
                             # Instantiate the client.
-
+                            
                             $email_address = new Mailgun(Setting::get('MAILGUN_PUBLIC_KEY'));
 
                             $validateAddress = $email;
@@ -815,8 +815,6 @@
             $local_url = $file_name . ".mp4";
 
             $path = '/uploads/videos/';
-
-            // dd($picture);
 
             // Convert bytes into MB
             $bytes = convertMegaBytes($picture->getClientSize());

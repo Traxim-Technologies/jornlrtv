@@ -1108,7 +1108,7 @@ class UserController extends Controller {
 
                 $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')
                             ->where('banner_ads.status', DEFAULT_TRUE)
-                            ->orderBy('banner_ads.created_at' , 'desc')
+                            ->orderBy('banner_ads.position' , 'asc')
                             ->get();
 
             }
@@ -3022,18 +3022,12 @@ class UserController extends Controller {
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
-                $cards->cvv = $request->cvv;
-
                 $cards->card_name = $request->card_name;
 
-                $cards->month = $request->month;
-
-                $cards->year = $request->year;
-
                 if($check_card)
-                    $cards->is_default = 0;
+                    $cards->is_default = DECLINED;
                 else
-                    $cards->is_default = 1;
+                    $cards->is_default = APPROVED;
                 
                 $cards->save();
 
