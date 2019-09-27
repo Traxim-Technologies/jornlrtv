@@ -3022,18 +3022,12 @@ class UserController extends Controller {
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
-                $cards->cvv = $request->cvv;
-
                 $cards->card_name = $request->card_name;
 
-                $cards->month = $request->month;
-
-                $cards->year = $request->year;
-
                 if($check_card)
-                    $cards->is_default = 0;
+                    $cards->is_default = DECLINED;
                 else
-                    $cards->is_default = 1;
+                    $cards->is_default = APPROVED;
                 
                 $cards->save();
 
