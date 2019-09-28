@@ -192,8 +192,8 @@
 
         public static function send_email($page,$subject,$email,$email_data) {
 
-            \Log::info(envfile('MAIL_USERNAME')); \Log::info(envfile('MAIL_PASSWORD'));
-
+            \Log::info(config('mail.username')); \Log::info(config('mail.password'));
+            \Log::info(Setting::get('email_notification'));
             if(Setting::get('email_notification') == YES) {
 
                 if(config('mail.username') && config('mail.password')) {
