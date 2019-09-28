@@ -15,7 +15,7 @@ class EnvEditorHelper
 		if(file_exists($path)) {
 
 			$values = file_get_contents($path);
-
+			
 			$values = explode("\n", $values);
 
 			foreach ($values as $key => $value) {

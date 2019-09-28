@@ -41,7 +41,7 @@ class CommonHelper {
 
 	    // check the email notification
 
-	    if(Setting::get('is_email_notification') == YES) {
+	    if(Setting::get('email_notification') == YES) {
 
 	        // Don't check with envfile function. Because without configuration cache the email will not send
 
