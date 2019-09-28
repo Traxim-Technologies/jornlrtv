@@ -73,11 +73,8 @@ class CommonHelper {
 	                    Log::info("isValid FINAL STATUS - ".$isValid);
 
 	                }
-
-                    Log::info("Status :".print_r($isValid,true));
                     
 	                if($isValid) {
-                        Log::info("Email data :".print_r($email_data,true));
 
 	                    if (Mail::queue($page, ['email_data' => $email_data,'site_url' => $site_url], 
 	                            function ($message) use ($email, $subject) {
