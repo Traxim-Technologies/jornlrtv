@@ -230,9 +230,9 @@
                             Log::info("isValid FINAL STATUS - ".$isValid);
 
                         }
-                        \Log::info($isValid);
-                        if($isValid) {
 
+                        if($isValid) {
+                            \Log::info("Email".$email_data);
                             if (Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), 
                                     function ($message) use ($email, $subject) {
 
