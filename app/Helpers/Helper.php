@@ -192,8 +192,8 @@
 
         public static function send_email($page,$subject,$email,$email_data) {
 
-            \Log::info(config('mail.username')); \Log::info(config('mail.password'));
-            \Log::info(Setting::get('email_notification'));
+            \Log::info(envfile('MAIL_USERNAME')); \Log::info(envfile('MAIL_PASSWORD'));
+            
             if(Setting::get('email_notification') == YES) {
 
                 if(config('mail.username') && config('mail.password')) {
@@ -232,7 +232,7 @@
                         }
 
                         if($isValid) {
-                            
+
                             if (Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), 
                                     function ($message) use ($email, $subject) {
 
