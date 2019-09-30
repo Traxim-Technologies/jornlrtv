@@ -2959,7 +2959,6 @@ class UserApiController extends Controller {
                     $email_data['user']  = $user;
                     $email_data['password'] = $new_password;
                     $page = "emails.forgot-password";
-                    dd($email_data);
                     $email_send = Helper::send_email($page,$subject,$user->email,$email_data);
                     $response_array['success'] = true;
                     $response_array['message'] = Helper::get_message(106);
