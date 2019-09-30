@@ -555,7 +555,7 @@ class NewUserApiController extends Controller
 
             // Check email configuration and email notification enabled by admin
 
-            if(Setting::get('is_email_notification') != YES || envfile('MAIL_USERNAME') == "" || envfile('MAIL_PASSWORD') == "" ) {
+            if(Setting::get('email_notification') != YES || envfile('MAIL_USERNAME') == "" || envfile('MAIL_PASSWORD') == "" ) {
 
                 throw new Exception(CommonHelper::error_message(106), 106);
                 

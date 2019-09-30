@@ -3470,7 +3470,7 @@ class UserController extends Controller {
 
         if($request->payment_type == 1) {
 
-            return redirect(route('user.paypal' , $request->s_id, 'coupon_code', $request->coupon_code));
+            return redirect(route('user.paypal' ,['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
 
         } else {
 

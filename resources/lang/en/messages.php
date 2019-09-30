@@ -1675,9 +1675,9 @@ return array(
 	'about_category' => 'About Category',
 	'no_of_subscribers' => 'No of Subscribers',
 	'view_category' => 'View Category',
-	'custom_live_videos' => 'Live Videos',
-	'custom_live_video' => 'Live Video',
-	'create_custom_live_video' => 'Create Live Video',
+	'custom_live_videos' => 'Custom Live Videos',
+	'custom_live_video' => 'Custom Live Video',
+	'create_custom_live_video' => 'Custom Create Live Video',
 	'edit_custom_live_video' => 'Edit Live Video',
 	'view_custom_live_video' => 'View Live Video',
 	'video_url' => 'Video Url',
@@ -2359,5 +2359,7 @@ return array(
 	'referral_title' => 'Spread the word and earn rewards',
 
 	'referral_benefit' => 'When someone signs up with your unique referral link, you will get ',
+
+	'default_card_not_available' => 'Default Card Not Available.',
 
 );

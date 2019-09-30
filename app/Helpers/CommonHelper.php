@@ -41,7 +41,7 @@ class CommonHelper {
 
 	    // check the email notification
 
-	    if(Setting::get('is_email_notification') == YES) {
+	    if(Setting::get('email_notification') == YES) {
 
 	        // Don't check with envfile function. Because without configuration cache the email will not send
 
@@ -73,7 +73,7 @@ class CommonHelper {
 	                    Log::info("isValid FINAL STATUS - ".$isValid);
 
 	                }
-
+                    
 	                if($isValid) {
 
 	                    if (Mail::queue($page, ['email_data' => $email_data,'site_url' => $site_url], 

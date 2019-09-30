@@ -85,7 +85,7 @@ class PaypalController extends Controller {
      *
      */
     public function pay(Request $request) {
-
+        
         $subscription = Subscription::find($request->id);
 
         $u_id = Auth::check() ? Auth::user()->id : '';
