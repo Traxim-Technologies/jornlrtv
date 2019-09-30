@@ -103,7 +103,7 @@
         @endif
 
     @endif
-    
+
     <span class="search-cls pull-right" id="search-btn"><i class="fa fa-search top5"></i></span>
     
     <div class="clearfix"></div>
