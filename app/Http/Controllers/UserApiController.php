@@ -100,6 +100,10 @@ class UserApiController extends Controller {
     protected $skip, $take;
 
     public function __construct(Request $request) {
+        
+        Log::info(url()->current());   
+
+        Log::info("Request Data".print_r($request->all(), true));
 
         $this->skip = $request->skip ?: 0;
 
