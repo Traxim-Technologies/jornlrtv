@@ -32,8 +32,6 @@ use App\VideoTapeTag;
 
 use App\Subscription;
 
-use App\Repositories\PushNotificationRepository as PushRepo;
-
 class CommonRepository {
 
 
@@ -853,7 +851,7 @@ class CommonRepository {
                         // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
 
 
-                        if(Setting::get('push_notification')) {
+                        if(check_push_notification_configuration() && Setting::get('push_notification') == YES ) {
 
                             $subscribers = ChannelSubscription::where('channel_id', $model->channel_id)->get();
 
@@ -868,7 +866,7 @@ class CommonRepository {
 
                                         $push_data = ['type' => PUSH_REDIRECT_SINGLE_VIDEO, 'video_id' => $model->id];
 
-                                        PushRepo::push_notification($user_details->device_token, $title, $content, $push_data, $user_details->device_type, $is_user = YES);
+                                        dispatch(new sendPushNotification($user_details->device_token, $title, $content, $push_data, $user_details->device_type));
                                     }
 
                                 }

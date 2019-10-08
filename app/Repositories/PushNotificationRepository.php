@@ -32,7 +32,7 @@ class PushNotificationRepository {
  	 * @return 
  	 */
 
-	public static function push_notification($register_ids , $title , $message , $push_data = [], $device_type = DEVICE_ANDROID, $is_user = NO) {
+	public static function push_notification($register_ids , $title , $message , $push_data = [], $device_type = DEVICE_ANDROID) {
 
 		if(Setting::get('push_notification') == NO) {
 
@@ -41,7 +41,7 @@ class PushNotificationRepository {
 	  		return false;
 		}
 
-		if(!check_push_notification_configuration($is_user)) {
+		if(!check_push_notification_configuration()) {
 
 			Log::info("Push Notification configuration failed");
 
@@ -50,13 +50,14 @@ class PushNotificationRepository {
   		}
 
   		\Log::info("Device Type : ".$device_type);
+
 		if($device_type == DEVICE_ANDROID) {
 
-  			self::push_notification_andriod($register_ids, $title, $message, $push_data, $is_user);
+  			self::push_notification_andriod($register_ids, $title, $message, $push_data);
 
   		} else {
 
-  			self::push_notification_andriod($register_ids, $title, $message, $push_data, $is_user);
+  			self::push_notification_ios($register_ids, $title, $message, $push_data);
 
   		} 	
  	}
@@ -75,7 +76,7 @@ class PushNotificationRepository {
  	 * @return 
  	 */
 
- 	public static function push_notification_andriod($register_ids , $title , $message , $push_data = [], $is_user = YES) {
+ 	public static function push_notification_andriod($register_ids , $title , $message , $push_data = []) {
 
  		try {
  		
@@ -87,19 +88,9 @@ class PushNotificationRepository {
 
 	 		}
 
-	 		if($is_user == NO) {
-
-				config(['fcm.http.server_key' => Setting::get('provider_fcm_server_key')]);
+	 		config(['fcm.http.server_key' => Setting::get('user_fcm_server_key')]);
 				
-				config(['fcm.http.sender_id' => Setting::get('provider_fcm_sender_id')]);
-
-			} else {
-
-				config(['fcm.http.server_key' => Setting::get('user_fcm_server_key')]);
-				
-				config(['fcm.http.sender_id' => Setting::get('user_fcm_sender_id')]);
-
-			}
+			config(['fcm.http.sender_id' => Setting::get('user_fcm_sender_id')]);
 
 			Log::info("Push Success");
 
@@ -171,7 +162,7 @@ class PushNotificationRepository {
  	 * @return 
  	 */
 
- 	public static function push_notification_ios($register_ids , $title , $message , $push_data = [], $is_user) {
+ 	public static function push_notification_ios($register_ids , $title , $message , $push_data = []) {
 
  		// Check the register ids
  		
@@ -181,21 +172,11 @@ class PushNotificationRepository {
 
  		}
 
- 		if($is_user == NO) {
-
-			config(['fcm.http.server_key' => Setting::get('provider_fcm_server_key')]);
-			
-			config(['fcm.http.sender_id' => Setting::get('provider_fcm_sender_id')]);
-
-		} else {
-
-			config(['fcm.http.server_key' => Setting::get('user_fcm_server_key')]);
-			
-			config(['fcm.http.sender_id' => Setting::get('user_fcm_sender_id')]);
-
-		}
-
 		Log::info("Push Success");
+
+		config(['fcm.http.server_key' => Setting::get('user_fcm_server_key')]);
+				
+		config(['fcm.http.sender_id' => Setting::get('user_fcm_sender_id')]);
 
  		$optionBuilder = new OptionsBuilder();
 

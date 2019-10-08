@@ -1577,15 +1577,11 @@ function video_type_text($video_type) {
  * @return boolean $push_notification_status
  */
 
-function check_push_notification_configuration($is_user) {
+function check_push_notification_configuration() {
 
-    $push_notification_status = false;
-
-    if($is_user == YES) {
-
-        $push_notification_status = Setting::get('user_fcm_sender_id') && Setting::get('user_fcm_server_key');
-
+    if(Setting::get('user_fcm_sender_id') && Setting::get('user_fcm_server_key')) {
+        return YES;
     }
 
-    return $push_notification_status;
+    return NO;
 }

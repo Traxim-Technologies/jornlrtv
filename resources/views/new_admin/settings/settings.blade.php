@@ -153,6 +153,10 @@ hr {
 
                 <a href="#" class="list-group-item text-left">{{ tr('mobile_settings') }}</a>
 
+                <a href="#" class="list-group-item text-left">
+                    {{ tr('notification_settings') }}
+                </a>
+
                 <a href="#" class="list-group-item text-left">{{ tr('company_site_settings') }}</a>
 
                 <a href="#" class="list-group-item text-left">{{ tr('seo_settings')  }}</a>
@@ -709,6 +713,58 @@ hr {
 
                         <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
 
+                    </div>
+
+                </form>
+
+            </div>
+
+            <!-- Notification Settings  -->
+
+            <div class="streamview-tab-content">
+               
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
+                    
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <h3 class="settings-sub-header text-uppercase"><b>{{ tr('notification_settings') }}</b></h3>
+
+                                <hr>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="user_fcm_sender_id">{{ tr('user_fcm_sender_id') }}</label>
+
+                                    <input type="text" class="form-control" name="user_fcm_sender_id" id="user_fcm_sender_id"
+                                    value="{{ Setting::get('user_fcm_sender_id') }}" placeholder="{{ tr('user_fcm_sender_id') }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user_fcm_server_key">{{ tr('user_fcm_server_key') }}</label>
+
+                                    <input type="text" class="form-control" name="user_fcm_server_key" value="{{ Setting::get('user_fcm_server_key')   }}" id="user_fcm_server_key" placeholder="{{ tr('user_fcm_server_key') }}">
+
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            
+                        </div>
+                    
+                    </div>
+                    
+                    <div class="box-footer">
+                        
+                        <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
+
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
                     </div>
 
                 </form>

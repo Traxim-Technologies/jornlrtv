@@ -1308,6 +1308,7 @@ return array(
 	'ppv_payment_not_found' => 'PayPerView Payment Details Not Found',
 	'mobile_settings' => 'Mobile Settings',
 	'company_site_settings' => 'Company Site Url\'s',
+	'notification_settings' => 'Notification Settings',
 
 	'device_type' => 'Device Type',
 	'register_type' => 'Register Type',
@@ -2091,5 +2092,8 @@ return array(
 	'referral_title' => 'Spread the word and earn rewards',
 
 	'referral_benefit' => 'When someone signs up with your unique referral link, you will get ',
+
+	'user_fcm_sender_id' => 'User FCM Sender ID',
+	'user_fcm_server_key' => 'User FCM Server Key',
 
 );
