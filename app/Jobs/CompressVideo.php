@@ -161,7 +161,7 @@ class CompressVideo extends Job implements ShouldQueue
 
                                   $push_data = ['type' => PUSH_REDIRECT_SINGLE_VIDEO, 'video_id' => $video->id];
 
-                                  PushRepo::push_notification($user_details->device_token, $title, $content, $push_data, $user_details->device_type);
+                                  dispatch(new sendPushNotification($user_details->device_token, $title, $content, $push_data, $user_details->device_type));
                               }
 
                           }
