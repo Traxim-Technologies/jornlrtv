@@ -256,7 +256,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-
+        
         $database = config('database.connections.mysql.database');
         
         $username = config('database.connections.mysql.username');

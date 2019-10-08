@@ -848,30 +848,12 @@ class CommonRepository {
 
                         $title = $content = $model->title;
 
-                        // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
-
 
                         if(check_push_notification_configuration() && Setting::get('push_notification') == YES ) {
 
-                            $subscribers = ChannelSubscription::where('channel_id', $model->channel_id)->get();
+                            $push_data = ['type' => PUSH_REDIRECT_SINGLE_VIDEO, 'video_id' => $model->id];
 
-                            foreach ($subscribers as $key => $subscriber) {
-            
-                                if($subscriber->getUser) {
-
-                                    $user_details = $subscriber->getUser;
-
-
-                                    if($user_details->push_status == YES && ($user_details->device_token != '')) {
-
-                                        $push_data = ['type' => PUSH_REDIRECT_SINGLE_VIDEO, 'video_id' => $model->id];
-
-                                        dispatch(new sendPushNotification($user_details->device_token, $title, $content, $push_data, $user_details->device_type));
-                                    }
-
-                                }
-                            
-                            }
+                            dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, $push_data, PUSH_TO_CHANNEL_SUBSCRIBERS));
  
                         }
                         
