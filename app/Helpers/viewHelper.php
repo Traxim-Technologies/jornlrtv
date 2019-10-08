@@ -1562,3 +1562,30 @@ function video_type_text($video_type) {
     return isset($video_types[$video_type]) ? $video_types[$video_type] : "NONE";
 
 }
+
+/**
+ * @method check_push_notification_configuration()
+ *
+ * @uses check the push notification configuration
+ *
+ * @created Vidhya
+ *
+ * @updated Vidhya
+ *
+ * @param boolean $is_user
+ *
+ * @return boolean $push_notification_status
+ */
+
+function check_push_notification_configuration($is_user) {
+
+    $push_notification_status = false;
+
+    if($is_user == YES) {
+
+        $push_notification_status = Setting::get('user_fcm_sender_id') && Setting::get('user_fcm_server_key');
+
+    }
+
+    return $push_notification_status;
+}

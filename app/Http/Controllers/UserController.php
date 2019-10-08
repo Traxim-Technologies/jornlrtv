@@ -307,7 +307,7 @@ class UserController extends Controller {
 
                 $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')
                             ->where('banner_ads.status', DEFAULT_TRUE)
-                            ->orderBy('banner_ads.created_at' , 'desc')
+                            ->orderBy('banner_ads.position' , 'asc')
                             ->get();
 
             }
@@ -456,7 +456,7 @@ class UserController extends Controller {
         ]);
 
         $histories = $this->UserAPI->watch_list($request)->getData();
-
+        
         return view('user.account.history')
                         ->with('page' , 'history')
                         ->with('subPage' , 'user-history')
@@ -2643,7 +2643,7 @@ class UserController extends Controller {
 
         if($request->payment_type == 1) {
 
-            return redirect(route('user.paypal' , $request->s_id, 'coupon_code', $request->coupon_code));
+            return redirect(route('user.paypal' ,['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
 
         } else {
 

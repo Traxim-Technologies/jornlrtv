@@ -144,7 +144,31 @@ class CompressVideo extends Job implements ShouldQueue
 
                     $push_message = $video->title;
 
-                    dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $video->id, $video->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+                    // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $video->id, $video->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+
+                    if(Setting::get('push_notification')) {
+
+                      $subscribers = ChannelSubscription::where('channel_id', $video->channel_id)->get();
+
+                      foreach ($subscribers as $key => $subscriber) {
+      
+                          if($subscriber->getUser) {
+
+                              $user_details = $subscriber->getUser;
+
+
+                              if($user_details->push_status == YES && ($user_details->device_token != '')) {
+
+                                  $push_data = ['type' => PUSH_REDIRECT_SINGLE_VIDEO, 'video_id' => $video->id];
+
+                                  PushRepo::push_notification($user_details->device_token, $title, $content, $push_data, $user_details->device_type, $is_user = YES);
+                              }
+
+                          }
+                      
+                      }
+
+                  }
 
               }
 

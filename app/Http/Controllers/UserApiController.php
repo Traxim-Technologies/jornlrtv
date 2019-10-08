@@ -1178,7 +1178,6 @@ class UserApiController extends Controller {
                     $new_password = Helper::generate_password();
                     $user->password = \Hash::make($new_password);
 
-                    $email_data = array();
                     $subject = tr('user_forgot_email_title');
                     $email = $user->email;
                     $email_data['user']  = $user;

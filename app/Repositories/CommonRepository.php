@@ -19,7 +19,8 @@ use App\UserPayment;
 use Auth;
 use Exception;
 use Setting;
-use ChannelSubscription;
+
+use App\ChannelSubscription;
 
 use App\Jobs\SubscriptionMail;
 
@@ -30,6 +31,8 @@ use App\Category;
 use App\VideoTapeTag;
 
 use App\Subscription;
+
+use App\Repositories\PushNotificationRepository as PushRepo;
 
 class CommonRepository {
 
@@ -845,10 +848,35 @@ class CommonRepository {
 
                         dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
 
-                        $push_message = $model->title;
+                        $title = $content = $model->title;
 
-                        dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
+                        // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
 
+
+                        if(Setting::get('push_notification')) {
+
+                            $subscribers = ChannelSubscription::where('channel_id', $model->channel_id)->get();
+
+                            foreach ($subscribers as $key => $subscriber) {
+            
+                                if($subscriber->getUser) {
+
+                                    $user_details = $subscriber->getUser;
+
+
+                                    if($user_details->push_status == YES && ($user_details->device_token != '')) {
+
+                                        $push_data = ['type' => PUSH_REDIRECT_SINGLE_VIDEO, 'video_id' => $model->id];
+
+                                        PushRepo::push_notification($user_details->device_token, $title, $content, $push_data, $user_details->device_type, $is_user = YES);
+                                    }
+
+                                }
+                            
+                            }
+ 
+                        }
+                        
                     }
                    
                 } else {

@@ -162,6 +162,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         vidhyar2612\Enveditor\EnveditorServiceProvider::class,
         Alaouy\Youtube\YoutubeServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class,
 
     ],
 
@@ -214,6 +215,8 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Enveditor' => 'vidhyar2612\Enveditor\Facade',
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
+        'FCM'      => LaravelFCM\Facades\FCM::class,
+        'FCMGroup' => LaravelFCM\Facades\FCMGroup::class,
     ],
 
 ];
