@@ -1676,3 +1676,27 @@ function video_type_text($video_type) {
     return isset($video_types[$video_type]) ? $video_types[$video_type] : "NONE";
 
 }
+
+
+/**
+ * @method check_push_notification_configuration()
+ *
+ * @uses check the push notification configuration
+ *
+ * @created Vidhya
+ *
+ * @updated Vidhya
+ *
+ * @param boolean $is_user
+ *
+ * @return boolean $push_notification_status
+ */
+
+function check_push_notification_configuration() {
+
+    if(Setting::get('user_fcm_sender_id') && Setting::get('user_fcm_server_key')) {
+        return YES;
+    }
+
+    return NO;
+}

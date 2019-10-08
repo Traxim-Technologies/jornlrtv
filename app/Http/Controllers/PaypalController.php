@@ -202,7 +202,7 @@ class PaypalController extends Controller {
 
         }
 
-
+        
 		$item = new Item();
 
         $item->setName(Setting::get('site_name')) // item name
@@ -245,6 +245,7 @@ class PaypalController extends Controller {
             ->setTransactions(array($transaction));
 
         try {
+            
             $payment->create($this->_api_context);
 
         } catch (\PayPal\Exception\PayPalConnectionException $ex) {
