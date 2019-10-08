@@ -69,10 +69,7 @@ class sendPushNotification extends Job implements ShouldQueue {
 
                         $user_details = $subscriber->getUser;
 
-                        if($user_details->push_status == YES && ($user_details->device_token != '')) {
-
-                            PushRepo::push_notification($user_details->device_token, $this->title, $this->content, $this->push_data, $user_details->device_type);
-                        }
+                        PushRepo::push_notification($user_details->device_token, $this->title, $this->content, $this->push_data, $user_details->device_type);
 
                     }
        
