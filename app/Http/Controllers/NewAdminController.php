@@ -5323,7 +5323,7 @@ class NewAdminController extends Controller {
      * @return success/error message
      */
     public function settings_save(Request $request) {
-        
+       
         try {
             
             DB::beginTransaction();
@@ -5361,13 +5361,17 @@ class NewAdminController extends Controller {
                         $user_ppv_commission_details->save();
                     }
 
-                    $result = Settings::where('key' ,'=', $key)->update(['value' => $value]);
+                } 
 
-                } else {
-                    
-                    $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
-  
-                }  
+                if ($key == "site_name") {
+
+                    $site_name = preg_replace("/[^A-Za-z0-9]/", "", $value);
+
+                        \Enveditor::set("SITENAME", $site_name);
+
+                }
+
+                $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
 
                 if( $result == TRUE ) {
                      
