@@ -2099,4 +2099,6 @@ return array(
 	'paypal_email_updated' => 'Paypal Email Updated.',
 	'paypal_email_note' => 'Paypal Email - Used While Admin Checkout with Papal Invoice.',
 
+	'user_no_paypal_email' => 'PayPal Payment is hided, because the user is not updated the PayPal email.',
+
 );
