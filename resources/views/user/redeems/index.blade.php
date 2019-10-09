@@ -139,6 +139,7 @@ thead>tr>th {
                             </div>
 
                             <div class="new-redeem-sec">
+                                <p style="color: #3398E6">{{tr('paypal_email_note')}}</p>
                                 <form  action="{{ route('user.update.paypal_email') }}" method="POST" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="paypal_email">{{tr('paypal_email')}}</label>
