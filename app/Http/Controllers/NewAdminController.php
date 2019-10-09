@@ -5446,11 +5446,15 @@ class NewAdminController extends Controller {
             } 
 
             // Send notifications to the users
-            $push_message = $request->message;
+            $content = $request->message;
+
+            $title = Setting::get('site_name');
 
             // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
 
-            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
+            $push_data = ['type' => PUSH_REDIRECT_HOME];
+
+            dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_HOME , 0, 0, $push_data));
 
             return back()->with('flash_success' , tr('push_send_success'));
         

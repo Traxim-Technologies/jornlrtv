@@ -76,15 +76,13 @@ class sendPushNotification extends Job implements ShouldQueue {
                 }
             } else {
 
-                $user_list = User::where('push_status' , YES)
-                    ->where('device_token' , '!=' , "")
-                    ->get();
+                $android_register_ids = User::where('status' , APPROVED)->where('device_token' , '!=' , "")->where('device_type' , DEVICE_ANDROID)->where('push_status' , YES)->pluck('device_token')->toArray();
 
-                foreach ($user_list as $key => $user_details) {
+                PushRepo::push_notification_andriod($android_register_ids , $this->title, $this->content, $this->push_data);
 
-                    PushRepo::push_notification($user_details->device_token, $this->title, $this->content, $this->push_data, $user_details->device_type);
+                $ios_register_ids = User::where('status' , APPROVED)->where('device_type' , DEVICE_IOS)->where('push_status' , YES)->pluck('device_token')->toArray();
 
-                }
+                PushRepo::push_notification_ios($ios_register_ids , $this->title, $this->content, $this->push_data);
             }
 
         } else {
