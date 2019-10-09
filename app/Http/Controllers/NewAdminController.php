@@ -5052,7 +5052,7 @@ class NewAdminController extends Controller {
     public function user_redeem_requests(Request $request) {
 
         try {
-        
+            
             $base_query = RedeemRequest::orderBy('status' , 'asc');
 
             $user_details = [];

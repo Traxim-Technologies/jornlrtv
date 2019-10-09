@@ -2096,4 +2096,6 @@ return array(
 	'user_fcm_sender_id' => 'User FCM Sender ID',
 	'user_fcm_server_key' => 'User FCM Server Key',
 
+	'paypal_email_updated' => 'Paypal Email Updated.',
+
 );

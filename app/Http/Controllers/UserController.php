@@ -886,6 +886,59 @@ class UserController extends Controller {
     }
 
     /**
+     * Function Name : update_paypal_email() 
+     *
+     * @uses Update Paypal Email.
+     * 
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update_paypal_email(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+        ]);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'paypal_email' => 'required|max:255',
+        ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            throw new Exception($error_messages, 101);
+            
+        } 
+
+        if($user = User::find($request->id)) {
+            
+            $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
+
+            if($user->save()) {
+
+                return back()->with('flash_success' , tr('paypal_email_updated'));
+
+            }
+            
+        } else {
+
+            throw new Exception(tr('user_details_not_saved'));
+                    
+        }
+    
+    }
+
+    /**
      * Function Name : profile_save_password() 
      * 
      * @uses Save changed password.
