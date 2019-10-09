@@ -72,6 +72,8 @@ use App\Referral;
 
 use App\UserReferrer;
 
+use App\Redeem;
+
 class UserController extends Controller {
 
     protected $UserAPI;
