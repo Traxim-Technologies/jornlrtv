@@ -2476,68 +2476,6 @@ class NewUserApiController extends Controller
 
             $video_tape_details = VideoTape::find($request->video_tape_id);
 
-            $user_id = Auth::check() ? Auth::user()->id : 0;
-
-            if($video_tape_details->getVideoAds) {
-
-                \Log::info("getVideoAds Relation Checked");
-
-                if ($video_tape_details->getVideoAds->status) {
-
-                    \Log::info("getVideoAds Status Checked");
-
-                    // User logged in or not
-
-                    if ($user_id) {
-
-                        if ($video->user_id != $user_id) {
-
-                            // Check the video view count reached admin viewers count, to add amount for each view
-
-                            if ($video->user_id != Auth::user()->id) {
-
-
-                                if($video->watch_count >= Setting::get('viewers_count_per_video') && $video->ad_status) {
-
-                                    \Log::info("Check the video view count reached admin viewers count, to add amount for each view");
-
-                                    $video_amount = Setting::get('amount_per_video');
-
-                                    // $video->redeem_count = 1;
-
-                                    // $video->watch_count = $video->watch_count + 1;
-
-                                    $video->amount += $video_amount;
-
-                                    add_to_redeem($video->user_id , $video_amount);
-
-                                    \Log::info("ADD History - add_to_redeem");
-
-
-                                } else {
-
-                                    \Log::info("ADD History - NO REDEEM");
-
-                                    // $video->redeem_count += 1;
-
-                                    // $video->watch_count = $video->watch_count + 1;
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-                }
-            }
-
-            $video->watch_count += 1;
-
-            $video->save();
-
-            \Log::info("ADD History - Watch Count Start completed");
-
             $navigateback = NO;
 
             if ($request->id != $video_tape_details->user_id) {
