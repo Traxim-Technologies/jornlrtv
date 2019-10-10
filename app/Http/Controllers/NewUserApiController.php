@@ -56,7 +56,7 @@ class NewUserApiController extends Controller
     protected $skip, $take, $loginUser, $currency;
 
 	public function __construct(Request $request) {
-
+        
         Log::info(url()->current());
 
         Log::info("Request Info".print_r($request->all(), true));

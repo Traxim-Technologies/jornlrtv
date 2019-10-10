@@ -44,5 +44,6 @@ class DatabaseSeeder extends Seeder
         $this->call(V4Seeder::class);
         $this->call(V5Seeder::class);
         $this->call(FcmSettingsSeeder::class);
+        $this->call(RedeempaypalSeeder::class);
     }
 }
