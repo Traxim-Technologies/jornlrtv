@@ -202,100 +202,107 @@ class PaypalController extends Controller {
 
         }
 
+        $payment_status = ($total == 0) ? NO : YES;
         
-		$item = new Item();
+        $payment_id = '';
 
-        $item->setName(Setting::get('site_name')) // item name
-                   ->setCurrency('USD')
-               ->setQuantity('1')
-               ->setPrice($total);
-     
-        $payer = new Payer();
-        
-        $payer->setPaymentMethod('paypal');
+        if($payment_status) {
 
-        // add item to list
-        $item_list = new ItemList();
-        $item_list->setItems(array($item));
-        $total = $total;
-        $details = new Details();
-        $details->setShipping('0.00')
-            ->setTax('0.00')
-            ->setSubtotal($total);
+    		$item = new Item();
 
-
-        $amount = new Amount();
-        $amount->setCurrency('USD')
-            ->setTotal($total)
-            ->setDetails($details);
-
-        $transaction = new Transaction();
-        $transaction->setAmount($amount)
-            ->setItemList($item_list)
-            ->setDescription('Payment for the Request');
-
-        $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(url('/user/payment/status'))
-                    ->setCancelUrl(url('/'));
-
-        $payment = new Payment();
-        $payment->setIntent('Sale')
-            ->setPayer($payer)
-            ->setRedirectUrls($redirect_urls)
-            ->setTransactions(array($transaction));
-
-        try {
+            $item->setName(Setting::get('site_name')) // item name
+                       ->setCurrency('USD')
+                   ->setQuantity('1')
+                   ->setPrice($total);
+         
+            $payer = new Payer();
             
-            $payment->create($this->_api_context);
+            $payer->setPaymentMethod('paypal');
 
-        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+            // add item to list
+            $item_list = new ItemList();
+            $item_list->setItems(array($item));
+            $total = $total;
+            $details = new Details();
+            $details->setShipping('0.00')
+                ->setTax('0.00')
+                ->setSubtotal($total);
 
-            // Log::info("Exception: " . $ex->getMessage() . PHP_EOL);
 
-            $error_data = json_decode($ex->getData(), true);
+            $amount = new Amount();
+            $amount->setCurrency('USD')
+                ->setTotal($total)
+                ->setDetails($details);
 
-            $error_message = tr('payment_failed_paypal');
+            $transaction = new Transaction();
+            $transaction->setAmount($amount)
+                ->setItemList($item_list)
+                ->setDescription('Payment for the Request');
 
-            if(is_array($error_data)) {
+            $redirect_urls = new RedirectUrls();
+            $redirect_urls->setReturnUrl(url('/user/payment/status'))
+                        ->setCancelUrl(url('/'));
 
-                Log::info(print_r($error_data , true));
+            $payment = new Payment();
+            $payment->setIntent('Sale')
+                ->setPayer($payer)
+                ->setRedirectUrls($redirect_urls)
+                ->setTransactions(array($transaction));
 
-                $error_message = array_key_exists('error', $error_data) ? $error_data['error']." " : "";
+            try {
                 
-                $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description']." " : "";
+                $payment->create($this->_api_context);
 
-                $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
+            } catch (\PayPal\Exception\PayPalConnectionException $ex) {
 
-            } else {
+                // Log::info("Exception: " . $ex->getMessage() . PHP_EOL);
 
-                $error_message = $ex->getMessage() . PHP_EOL;
+                $error_data = json_decode($ex->getData(), true);
+
+                $error_message = tr('payment_failed_paypal');
+
+                if(is_array($error_data)) {
+
+                    Log::info(print_r($error_data , true));
+
+                    $error_message = array_key_exists('error', $error_data) ? $error_data['error']." " : "";
+                    
+                    $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description']." " : "";
+
+                    $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
+
+                } else {
+
+                    $error_message = $ex->getMessage() . PHP_EOL;
+
+                }
+
+                Log::info("Pay API catch METHOD");
+
+                PaymentRepo::subscription_payment_failure_save(Auth::user()->id, $subscription->id, $error_message);
+
+                return redirect()->route('payment.failure')->with('flash_error' , $error_message);
 
             }
 
-            Log::info("Pay API catch METHOD");
+            foreach($payment->getLinks() as $link) {
 
-            PaymentRepo::subscription_payment_failure_save(Auth::user()->id, $subscription->id, $error_message);
+                if($link->getRel() == 'approval_url') {
 
-            return redirect()->route('payment.failure')->with('flash_error' , $error_message);
-
-        }
-
-        foreach($payment->getLinks() as $link) {
-
-            if($link->getRel() == 'approval_url') {
-
-                $redirect_url = $link->getHref();
-                break;
+                    $redirect_url = $link->getHref();
+                    break;
+                }
             }
+        
+            $payment_id = $payment->getId();
+            // add payment ID to session
+
+            Session::put('paypal_payment_id', $payment->getId());
+
+            Session::put('subscription_id' , $subscription->id);
         }
 
-        // add payment ID to session
-
-        Session::put('paypal_payment_id', $payment->getId());
-
-        Session::put('subscription_id' , $subscription->id);
-
-        if(isset($redirect_url)) {
+        if(isset($redirect_url) || !$payment_status) {
 
             $last_payment = UserPayment::where('user_id' , Auth::user()->id)
                     ->where('status', DEFAULT_TRUE)
@@ -321,7 +328,7 @@ class PaypalController extends Controller {
                 $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$subscription->plan." months"));
             }
 
-            $user_payment->payment_id  = $payment->getId();
+            $user_payment->payment_id  = $payment_id ? $payment_id : "FREE-".uniqid();
             $user_payment->subscription_id  = $subscription->id;
             $user_payment->user_id = Auth::user()->id;
 
@@ -343,6 +350,13 @@ class PaypalController extends Controller {
             $user_payment->save();
 
             $response_array = array('success' => true); 
+
+            if(!$payment_status) {
+
+                return back()->with('flash_success' , tr('payment_success'));
+
+            }
+            
 
             return redirect()->away($redirect_url);
         

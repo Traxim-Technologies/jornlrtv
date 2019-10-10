@@ -3310,7 +3310,7 @@ class UserController extends Controller {
         $request->request->add([ 
             'u_id'=>Auth::check() ? \Auth::user()->id : '',
         ]);
-
+        
         $model = $request->all();
 
         if (!$request->s_id) {
