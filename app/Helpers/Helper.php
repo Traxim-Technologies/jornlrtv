@@ -192,7 +192,9 @@
 
         public static function send_email($page,$subject,$email,$email_data) {
 
-            \Log::info(envfile('MAIL_USERNAME')); \Log::info(envfile('MAIL_PASSWORD'));
+            \Log::info(config('mail.username'));
+            Log::info("Password :".print_r(config('mail.password'),true));
+            Log::info("username :".print_r(config('mail.username'),true));
             
             if(Setting::get('email_notification') == YES) {
 
@@ -234,7 +236,6 @@
                         Log::info("Status :".print_r($isValid,true));
                     
                         if($isValid) {
-                            Log::info("Email data :".print_r($email_data,true));
 
                             if (Mail::queue($page, array('email_data' => $email_data,'site_url' => $site_url), 
                                     function ($message) use ($email, $subject) {

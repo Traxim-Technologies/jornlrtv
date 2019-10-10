@@ -23,7 +23,8 @@
         "php-http/curl-client": "^1.7",
         "guzzlehttp/psr7": "^1.4",
         "vidhyar2612/ffmpeg-php-class": "1.0",
-        "alaouy/youtube": "^2.2"
+        "alaouy/youtube": "^2.2",
+        "brozot/laravel-fcm": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

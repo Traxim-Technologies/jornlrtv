@@ -117,13 +117,7 @@ thead>tr>th {
                                 
                                 </div>
                                 
-                                <p class="redeem-content">{{ tr('redeem_content') }}</p>
-
-                                <?php 
-
-                                    
-                                ?>
-                              
+                                <p class="redeem-content">{{ tr('redeem_content') }}</p>                              
                                 @if($redeem_details->send_redeem_btn_status)
                                 
                                     <div class="text-right">
@@ -137,6 +131,22 @@ thead>tr>th {
                                 @endif
 
                             </div>
+
+                            <div class="new-redeem-sec">
+                                <p style="color: #3398E6">{{tr('paypal_email_note')}}</p>
+                                <form  action="{{ route('user.update.paypal_email') }}" method="POST" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="paypal_email">{{tr('paypal_email')}}</label>
+                                        <input type="paypal_email" value="{{old('paypal_email') ?: Auth::user()->paypal_email}}" name="paypal_email" class="form-control" id="paypal_email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
+                                    </div>
+
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-info">{{tr('submit')}}</button>
+                                    </div> 
+                                </form>
+                            </div>
+
+
                        
                         </div>
                        
