@@ -18,6 +18,8 @@
 
             <a href="#" class="hidden-xs"><img src="{{asset('images/menu.png')}}" class="toggle-icon"></a>
 
+            <a href="#" class="hidden-lg hidden-md hidden-sm"><img src="{{asset('images/menu_white.png')}}" class="toggle-icon"></a>
+
             <a href="{{route('user.dashboard')}}"> 
                 @if(Setting::get('site_logo'))
                     <img src="{{Setting::get('site_logo')}}" class="logo-img">

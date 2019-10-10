@@ -56,6 +56,8 @@ class NewUserApiController extends Controller
     protected $skip, $take, $loginUser, $currency;
 
 	public function __construct(Request $request) {
+        
+        Log::info(url()->current());
 
         Log::info("Request Info".print_r($request->all(), true));
 
@@ -555,7 +557,7 @@ class NewUserApiController extends Controller
 
             // Check email configuration and email notification enabled by admin
 
-            if(Setting::get('is_email_notification') != YES || envfile('MAIL_USERNAME') == "" || envfile('MAIL_PASSWORD') == "" ) {
+            if(Setting::get('email_notification') != YES || envfile('MAIL_USERNAME') == "" || envfile('MAIL_PASSWORD') == "" ) {
 
                 throw new Exception(CommonHelper::error_message(106), 106);
                 
@@ -2424,6 +2426,8 @@ class NewUserApiController extends Controller
 
         try {
 
+            Log::info("Video History Info".print_r($request->all(), true));
+
             $validator = Validator::make($request->all(),[
                     'video_tape_id' => 'required|integer|exists:video_tapes,id'
                 ]
@@ -3808,6 +3812,9 @@ class NewUserApiController extends Controller
                 throw new Exception(CommonHelper::error_message(224), 224); 
                 
             }
+
+            VideoRepo::watch_count($request->video_tape_id,$request->id,NO);
+
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
 
             $data = $video_tape_details;
