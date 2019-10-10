@@ -927,6 +927,9 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/channels_unsubscribe_subscribe', 'UserController@channels_unsubscribe_subscribe')->name('channels_unsubscribe_subscribe_ajax.channel');
     Route::get('/wishlist_operations', 'UserController@wishlist_operations')->name('wishlist_operations_ajax');
 
+    Route::post('/update/paypal_email', 'UserController@update_paypal_email')->name('update.paypal_email');
+
+
 });
 
 Route::group(['prefix' => 'userApi'], function() {
