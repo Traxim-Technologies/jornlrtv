@@ -972,6 +972,8 @@ class ApplicationController extends Controller {
 
                 $payment_data['PAYPAL_MODE'] = envfile('PAYPAL_MODE') ?: "sandbox";
 
+                $payment_data['PAYPAL_URL'] = envfile('PAYPAL_URL') ?: "";
+
                 $data['payments'] = $payment_data;
 
                 $data['urls']  = [];
