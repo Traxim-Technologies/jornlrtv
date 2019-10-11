@@ -19,7 +19,8 @@ use App\UserPayment;
 use Auth;
 use Exception;
 use Setting;
-use ChannelSubscription;
+
+use App\ChannelSubscription;
 
 use App\Jobs\SubscriptionMail;
 
@@ -435,7 +436,7 @@ class CommonRepository {
                 $model->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
 
                 $model->publish_time = $request->has('publish_time') 
-                            ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : '';
+                            ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : date('Y-m-d H:i:s');
                 
 
                 $model->status = DEFAULT_FALSE;
@@ -446,7 +447,7 @@ class CommonRepository {
 
                 if($model->publish_time) {
 
-                    if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
+                    if(strtotime($model->publish_time) <= strtotime(date('Y-m-d H:i:s'))) {
 
                         $model->publish_status = DEFAULT_TRUE;
 
@@ -843,10 +844,17 @@ class CommonRepository {
 
                         dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
 
-                        $push_message = $model->title;
+                        $title = $content = $model->title;
 
-                        dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
 
+                        if(check_push_notification_configuration() && Setting::get('push_notification') == YES ) {
+
+                            $push_data = ['type' => PUSH_REDIRECT_SINGLE_VIDEO, 'video_id' => $model->id];
+
+                            dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, $push_data, PUSH_TO_CHANNEL_SUBSCRIBERS));
+ 
+                        }
+                        
                     }
                    
                 } else {

@@ -153,6 +153,10 @@ hr {
 
                 <a href="#" class="list-group-item text-left">{{ tr('mobile_settings') }}</a>
 
+                <a href="#" class="list-group-item text-left">
+                    {{ tr('notification_settings') }}
+                </a>
+
                 <a href="#" class="list-group-item text-left">{{ tr('company_site_settings') }}</a>
 
                 <a href="#" class="list-group-item text-left">{{ tr('seo_settings')  }}</a>
@@ -715,6 +719,58 @@ hr {
 
             </div>
 
+            <!-- Notification Settings  -->
+
+            <div class="streamview-tab-content">
+               
+                <form action="{{  (Setting::get('admin_delete_control') == YES ) ? '#' : route('admin.settings.save') }}" method="POST" enctype="multipart/form-data" role="form">
+                    
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <h3 class="settings-sub-header text-uppercase"><b>{{ tr('notification_settings') }}</b></h3>
+
+                                <hr>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+
+                                    <label for="user_fcm_sender_id">{{ tr('user_fcm_sender_id') }}</label>
+
+                                    <input type="text" class="form-control" name="user_fcm_sender_id" id="user_fcm_sender_id"
+                                    value="{{ Setting::get('user_fcm_sender_id') }}" placeholder="{{ tr('user_fcm_sender_id') }}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user_fcm_server_key">{{ tr('user_fcm_server_key') }}</label>
+
+                                    <input type="text" class="form-control" name="user_fcm_server_key" value="{{ Setting::get('user_fcm_server_key')   }}" id="user_fcm_server_key" placeholder="{{ tr('user_fcm_server_key') }}">
+
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            
+                        </div>
+                    
+                    </div>
+                    
+                    <div class="box-footer">
+                        
+                        <button type="reset" class="btn btn-warning">{{ tr('reset') }}</button>
+
+                        <button type="submit" class="btn btn-primary pull-right"  @if(Setting::get('admin_delete_control') == YES )  disabled @endif >{{ tr('submit') }}</button>
+                    </div>
+
+                </form>
+
+            </div>
+
             <!-- Company Settings  -->
 
             <div class="streamview-tab-content">
@@ -870,11 +926,15 @@ hr {
 
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <label for="multi_channel_status">{{ tr('multi_channel_status') }}</label>
-
-                                        <br>
-
-                                        <input type="checkbox" name="multi_channel_status" @if(Setting::get('multi_channel_status') ) checked value="1" @else value="0" @endif id="multi_channel_status" style="vertical-align: middle;"> {{ tr('enable_channel_status') }}
+                                        <label for="multi_channel_status">{{ tr('multi_channel_status') }}</label><br>
+                                        <label>
+                                          <input required type="radio" name="multi_channel_status" value="1" class="flat-red" @if(Setting::get('multi_channel_status') == 1) checked @endif>
+                                          {{tr('yes')}}
+                                        </label>
+                                        <label>
+                                            <input required type="radio" name="multi_channel_status" class="flat-red"  value="0" @if(Setting::get('multi_channel_status') == 0) checked @endif>
+                                            {{tr('no')}}
+                                        </label><br><br>
                                         
                                     </div>   
                                 </div>

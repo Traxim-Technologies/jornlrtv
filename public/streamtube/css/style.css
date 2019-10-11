@@ -2601,7 +2601,7 @@ changes
 	display: inline-block !important;
 	padding-top: 10px;
 	/*width: 18.5%;*/
-	width: 24%;
+	width: 15%;
 	text-align: center;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -2640,13 +2640,13 @@ changes
 	margin-bottom: 15px;
 }
 .cross-mark2 {
-    width:20%;
+    width:50%;
     float:right;
     text-align: right;
     margin-top: 5px;
 }
 .cross-title2 {
-    width:80%;
+    width:50%;
     float: left;
     text-transform: capitalize;
 }

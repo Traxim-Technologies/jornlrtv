@@ -72,6 +72,8 @@ use App\Referral;
 
 use App\UserReferrer;
 
+use App\Redeem;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -256,7 +258,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-
+        
         $database = config('database.connections.mysql.database');
         
         $username = config('database.connections.mysql.username');
@@ -307,7 +309,7 @@ class UserController extends Controller {
 
                 $banner_ads = BannerAd::select('id as banner_id', 'file as image', 'title as video_title', 'description as content', 'link')
                             ->where('banner_ads.status', DEFAULT_TRUE)
-                            ->orderBy('banner_ads.created_at' , 'desc')
+                            ->orderBy('banner_ads.position' , 'asc')
                             ->get();
 
             }
@@ -456,7 +458,7 @@ class UserController extends Controller {
         ]);
 
         $histories = $this->UserAPI->watch_list($request)->getData();
-
+        
         return view('user.account.history')
                         ->with('page' , 'history')
                         ->with('subPage' , 'user-history')
@@ -650,7 +652,9 @@ class UserController extends Controller {
 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
 
@@ -741,7 +745,9 @@ class UserController extends Controller {
 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
         
@@ -873,6 +879,59 @@ class UserController extends Controller {
             $message = isset($response->error) ? $response->error : " "." ".$response->error_messages;
 
             return back()->with('flash_error' , $message);
+        }
+    
+    }
+
+    /**
+     * Function Name : update_paypal_email() 
+     *
+     * @uses Update Paypal Email.
+     * 
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update_paypal_email(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+        ]);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'paypal_email' => 'required|max:255',
+        ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            throw new Exception($error_messages, 101);
+            
+        } 
+
+        if($user = User::find($request->id)) {
+            
+            $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
+
+            if($user->save()) {
+
+                return back()->with('flash_success' , tr('paypal_email_updated'));
+
+            }
+            
+        } else {
+
+            throw new Exception(tr('user_details_not_saved'));
+                    
         }
     
     }
@@ -2630,7 +2689,7 @@ class UserController extends Controller {
 
         if($request->payment_type == 1) {
 
-            return redirect(route('user.paypal' , $request->s_id, 'coupon_code', $request->coupon_code));
+            return redirect(route('user.paypal' ,['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
 
         } else {
 
@@ -3811,7 +3870,9 @@ class UserController extends Controller {
             // Video is autoplaying ,so we are incrementing the watch count 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
 

@@ -675,6 +675,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('/profile/password', 'UserController@profile_save_password')->name('profile.password');
 
+    Route::post('/update/paypal_email', 'UserController@update_paypal_email')->name('update.paypal_email');
+
     // Delete Account
 
     Route::get('/delete/account', 'UserController@delete_account')->name('delete.account');
