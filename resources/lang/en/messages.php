@@ -323,6 +323,7 @@ return array(
 	'PAYPAL_ID' => 'Paypal Id',
 	'PAYPAL_SECRET' => 'Paypal Secret',
 	'PAYPAL_MODE' => 'Paypal Mode',
+	'PAYPAL_URL' => 'Paypal Url',
 
 	'login_success' => 'successfully logged in',
 	'master_login_success' => 'You have logged in as Master user.',

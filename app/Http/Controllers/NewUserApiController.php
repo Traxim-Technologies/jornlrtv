@@ -3810,6 +3810,9 @@ class NewUserApiController extends Controller
                 throw new Exception(CommonHelper::error_message(224), 224); 
                 
             }
+
+            VideoRepo::watch_count($request->video_tape_id,$request->id,NO);
+            
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
 
             $data = $video_tape_details;
