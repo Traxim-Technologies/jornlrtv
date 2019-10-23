@@ -683,6 +683,13 @@ hr {
                                 </div>
                             </div>
 
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="redeem_paypal_url">{{tr('PAYPAL_URL')}}</label>    
+                                    <input type="text" class="form-control" name="PAYPAL_URL" id="redeem_paypal_url" placeholder="{{tr('PAYPAL_URL')}}" value="{{ Setting::get('redeem_paypal_url')}}">
+                                </div>
+                            </div>
+                            
                             <div class="clearfix"></div>
 
                             <div class="col-md-12">

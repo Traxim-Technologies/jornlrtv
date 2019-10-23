@@ -310,9 +310,7 @@ class NewAdminController extends Controller {
             $validator = Validator::make( $request->all(), [
                     'user_id' => 'exists:users,id',
                     'name' => 'required|max:255',
-                    'email' => $request->user_id ? 'required|email|max:255|unique:users,email,'.$request->user_id.',id' : 'required|email|max:255|unique:users,email,NULL,id',
-                    'email' => $request->user_id ? 
-                        'required|email|max:255'.$request->user_id.',id' : 'required|email|max:255|unique:users,email,NULL,id',
+                    'email' => $request->user_id ? 'required|email|max:255|unique:users,email,'.$request->user_id: 'required|email|max:255|unique:users,email,NULL,id',
 
                     'mobile' => 'digits_between:6,13',
                     'password' => $request->user_id ? '' :'required|min:6|confirmed',

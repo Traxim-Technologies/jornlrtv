@@ -1478,7 +1478,9 @@ class UserController extends Controller {
 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
             
@@ -1569,7 +1571,9 @@ class UserController extends Controller {
 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
         
@@ -4656,7 +4660,9 @@ class UserController extends Controller {
             // Video is autoplaying ,so we are incrementing the watch count 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
 
