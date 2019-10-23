@@ -17,8 +17,6 @@
 
 @section('content')
 
-@include('notification.notify')
-
     @include('new_admin.users._form')
 
 @endsection
