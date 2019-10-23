@@ -1478,7 +1478,9 @@ class UserController extends Controller {
 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
             
@@ -1569,7 +1571,9 @@ class UserController extends Controller {
 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
         
@@ -3310,7 +3314,7 @@ class UserController extends Controller {
         $request->request->add([ 
             'u_id'=>Auth::check() ? \Auth::user()->id : '',
         ]);
-
+        
         $model = $request->all();
 
         if (!$request->s_id) {
@@ -3469,7 +3473,7 @@ class UserController extends Controller {
     public function subscription_payment(Request $request) {
 
         if($request->payment_type == 1) {
-
+            
             return redirect(route('user.paypal' ,['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
 
         } else {
@@ -4656,7 +4660,9 @@ class UserController extends Controller {
             // Video is autoplaying ,so we are incrementing the watch count 
             if ($request->id != $response->video->channel_created_by) {
 
-                $this->watch_count($request);
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+
+                VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
 
@@ -5185,5 +5191,58 @@ class UserController extends Controller {
                     ->with('user_referrer_details', $user_referrer_details);
 
     } 
+
+        /**
+     * Function Name : update_paypal_email() 
+     *
+     * @uses Update Paypal Email.
+     * 
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update_paypal_email(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+        ]);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'paypal_email' => 'required|max:255',
+        ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            throw new Exception($error_messages, 101);
+            
+        } 
+
+        if($user = User::find($request->id)) {
+            
+            $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
+
+            if($user->save()) {
+
+                return back()->with('flash_success' , tr('paypal_email_updated'));
+
+            }
+            
+        } else {
+
+            throw new Exception(tr('user_details_not_saved'));
+                    
+        }
+    
+    }
 
 }
