@@ -84,14 +84,14 @@ hr {
                                 <p>{{$custom_live_video_details->title}}</p>
                             </div> 
                             
-                            <div class="col-lg-4"> 
+                            <div class="col-lg-4" style="word-wrap: break-word;"> 
                                 <b><i class="fa fa-video-camera margin-r-5"></i>{{tr('hls_video_url')}}</b> 
                                 <br>  
                                 <br>                   
                                 <a href="{{ $custom_live_video_details->hls_video_url }}">{{$custom_live_video_details->hls_video_url}}</a>
                             </div> 
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-4" style="word-wrap: break-word;">
                                 <span><b><i class="fa fa-video-camera margin-r-5"></i>
                                 {{tr('rtmp_video_url')}}</b> </span>
                   
