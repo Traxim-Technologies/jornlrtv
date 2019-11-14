@@ -5458,40 +5458,6 @@ class NewAdminController extends Controller {
 
             dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_HOME , 0, 0, $push_data));
 
-            $android_register_ids = User::where('is_activated' , USER_APPROVED)->where('device_token' , '!=' , "")->where('device_type' , DEVICE_ANDROID)->where('push_status' , ON)->pluck('device_token')->toArray();
-
-            if($android_register_ids) {
-                
-                PushRepo::push_notification_android($android_register_ids , $title , $message);
-
-            }
-
-            $ios_register_ids = User::where('is_activated' , USER_APPROVED)->where('device_type' , 'DEVICE_IOS')->where('push_status' , ON)->select('device_token' , 'id as user_id')->get();
-
-            if($ios_register_ids) {
-                
-                PushRepo::push_notification_ios($ios_register_ids , $title , $message);
-
-            }
-
-            $total_android = count($android_register_ids);
-
-            $total_ios = count($ios_register_ids);
-
-            if($total_android <= 0 && $total_ios <= 0) {
-
-                throw new Exception(tr('admin_custom_push_no_users'), 101);
-
-            }
-
-            $message = "<h4>".tr('admin_push_notification_success')."</h4>";
-
-            $message .= "<br> <p>Total Android Users: $total_android</p>";
-
-            $message .= "<br> <p>Total iOS Users: $total_ios</p>";
-
-            return back()->with('flash_success', $message);
-
             return back()->with('flash_success' , tr('push_send_success'));
         
         } catch (Exception $e) {
