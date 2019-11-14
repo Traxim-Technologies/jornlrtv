@@ -5327,7 +5327,7 @@ class NewAdminController extends Controller {
         try {
             
             DB::beginTransaction();
-
+        
             foreach( $request->toArray() as $key => $value) {
               
                 $check_settings = Settings::where('key' ,'=', $key)->count();
@@ -5337,15 +5337,7 @@ class NewAdminController extends Controller {
                     throw new Exception( $key.tr('admin_settings_key_not_found'), 101);
                 }
 
-                if( $request->hasFile($key) ) {
-
-                    Helper::delete_picture($key, "/uploads/settings/");
-
-                    $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
-
-                    $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
-
-                } else if($key == "admin_ppv_commission") {
+                if($key == "admin_ppv_commission") {
 
                     $value = $request->admin_ppv_commission < 100 ? $request->admin_ppv_commission : 100;
 
@@ -5367,11 +5359,21 @@ class NewAdminController extends Controller {
 
                     $site_name = preg_replace("/[^A-Za-z0-9]/", "", $value);
 
-                        \Enveditor::set("SITENAME", $site_name);
+                    \Enveditor::set("SITENAME", $site_name);
 
                 }
 
                 $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
+
+                if($request->hasFile($key) ) {
+
+                    Helper::delete_picture($key, "/uploads/settings/");
+
+                    $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
+                    
+                    $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
+
+                }
 
                 if( $result == TRUE ) {
                      
@@ -5455,6 +5457,40 @@ class NewAdminController extends Controller {
             $push_data = ['type' => PUSH_REDIRECT_HOME];
 
             dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_HOME , 0, 0, $push_data));
+
+            $android_register_ids = User::where('is_activated' , USER_APPROVED)->where('device_token' , '!=' , "")->where('device_type' , DEVICE_ANDROID)->where('push_status' , ON)->pluck('device_token')->toArray();
+
+            if($android_register_ids) {
+                
+                PushRepo::push_notification_android($android_register_ids , $title , $message);
+
+            }
+
+            $ios_register_ids = User::where('is_activated' , USER_APPROVED)->where('device_type' , 'DEVICE_IOS')->where('push_status' , ON)->select('device_token' , 'id as user_id')->get();
+
+            if($ios_register_ids) {
+                
+                PushRepo::push_notification_ios($ios_register_ids , $title , $message);
+
+            }
+
+            $total_android = count($android_register_ids);
+
+            $total_ios = count($ios_register_ids);
+
+            if($total_android <= 0 && $total_ios <= 0) {
+
+                throw new Exception(tr('admin_custom_push_no_users'), 101);
+
+            }
+
+            $message = "<h4>".tr('admin_push_notification_success')."</h4>";
+
+            $message .= "<br> <p>Total Android Users: $total_android</p>";
+
+            $message .= "<br> <p>Total iOS Users: $total_ios</p>";
+
+            return back()->with('flash_success', $message);
 
             return back()->with('flash_success' , tr('push_send_success'));
         
