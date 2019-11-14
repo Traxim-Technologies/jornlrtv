@@ -189,13 +189,13 @@ hr {
 
                             <div class="col-md-6">
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     
                                     <label for="sitename">{{ tr('site_name') }}</label>
 
                                     <input type="text" class="form-control" name="site_name" value="{{  Setting::get('site_name')   }}" id="sitename" placeholder="{{ tr('enter_site_name') }}">
 
-                                </div>
+                                </div> -->
 
                                 <div class="form-group">
                                    
