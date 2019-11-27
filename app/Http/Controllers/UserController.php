@@ -285,7 +285,7 @@ class UserController extends Controller {
             }
 
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
-            // dd($recent_videos->items[12]);
+            
             $trendings = $this->UserAPI->trending_list($request)->getData();
             
             $suggestions  = $this->UserAPI->suggestion_videos($request)->getData();
@@ -607,7 +607,7 @@ class UserController extends Controller {
         }
         
         $data = $this->UserAPI->video_detail($request)->getData();
-        
+
         // video url
         if (isset($data->url)) {
 
