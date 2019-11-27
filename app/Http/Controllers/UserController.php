@@ -129,7 +129,8 @@ class UserController extends Controller {
                 'referrals_signup',
                 'channel_view',
                 'video_view',
-                'playlists_view'
+                'playlists_view',
+                'custom_live_videos_view'
 
         ]]);
 
