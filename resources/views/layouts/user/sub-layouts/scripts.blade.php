@@ -186,7 +186,7 @@
                           
                 messageTemplate +=  '</div>';
 
-                messageTemplate +=  '<small class="text-warning">27.11.2015, 15:00</small>';
+                messageTemplate +=  '<small class="text-warning">'+notificationDetails.created_at+'</small>';
                               
                 messageTemplate +=  '</div>';
 

@@ -4845,7 +4845,7 @@ class UserApiController extends Controller {
                 $items[] = displayVideoDetails($value, $request->id);
 
             }
-
+            
             $pagination = (string) $videos->links();
 
         }
