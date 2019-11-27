@@ -844,8 +844,6 @@ class CommonRepository {
 
                         $notification_data['video_tape_id'] = $model->id;
 
-                        Log::info("Notification".print_r($notification_data,true));
-
                         dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
 
                         $title = $content = $model->title;

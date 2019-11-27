@@ -155,8 +155,6 @@ class CompressVideo extends Job implements ShouldQueue
 
                 $notification_data['video_tape_id'] = $video->id;
 
-                Log::info("Notification".print_r($notification_data,true));
-
                 dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
                         
                 if(check_push_notification_configuration() && Setting::get('push_notification') == YES ) {
