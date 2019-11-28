@@ -7932,7 +7932,7 @@ class UserApiController extends Controller {
             $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
-                                        ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
+                                        ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at', \DB::raw('DATE_FORMAT(created_at , "%e %b %y %I:%i %p") as created_date'))
                                         ->skip($skip)
                                         ->take($take)
                                         ->orderBy('bell_notifications.created_at', 'desc')

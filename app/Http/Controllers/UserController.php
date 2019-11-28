@@ -3436,9 +3436,7 @@ class UserController extends Controller {
                     $notification_redirect_url = route('user.channel', $notification_details->channel_id);
 
                 }
-
-                $notification_details->created_at = date('d F Y', strtotime($notification_details->created_at));
-
+                
                 $notification_details->notification_redirect_url = $notification_redirect_url;
 
             }

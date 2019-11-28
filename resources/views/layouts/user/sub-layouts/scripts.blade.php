@@ -149,7 +149,7 @@
             }
 
             $('#global-notifications-count').html(response.data.length);
-
+            
             $.each(response.data, function(key,notificationDetails) { 
 
                 // console.log(JSON.stringify(notificationDetails));
@@ -186,7 +186,7 @@
                           
                 messageTemplate +=  '</div>';
 
-                messageTemplate +=  '<small class="text-warning">'+notificationDetails.created_at+'</small>';
+                messageTemplate +=  '<small class="text-warning">'+notificationDetails.created_date+'</small>';
                               
                 messageTemplate +=  '</div>';
 
