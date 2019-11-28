@@ -62,7 +62,7 @@ class sendPushNotification extends Job implements ShouldQueue {
                     ->where('users.push_status',YES)
                     ->where('users.device_token','!=' ,'')
                     ->get();
-
+                
                 foreach ($channel_subscriptions as $key => $subscriber) {
 
                     if($subscriber->getUser) {

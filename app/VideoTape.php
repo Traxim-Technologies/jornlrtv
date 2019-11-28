@@ -294,7 +294,6 @@ class VideoTape extends Model
 
     }
 
-
     public function toArray()
     {
         $array = parent::toArray();

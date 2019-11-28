@@ -285,7 +285,7 @@ class UserController extends Controller {
             }
 
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
-
+            
             $trendings = $this->UserAPI->trending_list($request)->getData();
             
             $suggestions  = $this->UserAPI->suggestion_videos($request)->getData();
@@ -1997,7 +1997,7 @@ class UserController extends Controller {
     }
 
     public function subscribe_channel(Request $request) {
-        
+
         $validator = Validator::make( $request->all(), array(
             'user_id'     => 'required|exists:users,id',
             'channel_id'     => 'required|exists:channels,id',
@@ -3436,7 +3436,7 @@ class UserController extends Controller {
                     $notification_redirect_url = route('user.channel', $notification_details->channel_id);
 
                 }
-
+                
                 $notification_details->notification_redirect_url = $notification_redirect_url;
 
             }
