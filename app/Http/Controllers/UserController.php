@@ -3437,7 +3437,7 @@ class UserController extends Controller {
 
                 }
 
-                $notification_details->created_at = date('d F Y', strtotime($notification_details->created_at);
+                $notification_details->created_at = date('d F Y', strtotime($notification_details->created_at));
 
                 $notification_details->notification_redirect_url = $notification_redirect_url;
 
