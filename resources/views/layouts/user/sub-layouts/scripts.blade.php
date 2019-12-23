@@ -48,12 +48,6 @@
     }
 
     $(window).load(function() {
-
-        @if(Auth::check())
-
-            updateTimezone();
-
-        @endif
         
         $('.placeholder').each(function () {
             var imagex = jQuery(this);
@@ -168,6 +162,10 @@
         
         });
         @if(Auth::check())
+
+
+        updateTimezone();
+
         $.post('{{ route("user.bell_notifications.index")}}', {'is_json': 1})
 
         .done(function(response) {
