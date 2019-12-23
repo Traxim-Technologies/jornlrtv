@@ -258,7 +258,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-        
+
         $database = config('database.connections.mysql.database');
         
         $username = config('database.connections.mysql.username');
@@ -881,7 +881,7 @@ class UserController extends Controller {
         if($response->success) {
 
             if($request->is_json == 1) {
-                
+
                 $response_array = ['success' =>  true, 'message' => 'Profile Updated'];
 
                 return response()->json($response_array, 200);

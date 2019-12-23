@@ -13,8 +13,12 @@ use App\Helpers\Helper;
 
 class SocialAuthController extends Controller
 {
+	protected $timezone;
+
     public function redirect(Request $request)
     {
+    	$this->timezone = $request->timezone ?: "UTC";
+
         return Socialite::driver($request->provider)->redirect();
     }
 
@@ -117,6 +121,8 @@ class SocialAuthController extends Controller
 	        $user->token_expiry = Helper::generate_token_expiry();
 
 	        $user->is_verified = 1;
+
+	        $user->timezone = $this->timezone ?: "UTC";
 
 			$user->save();
 
