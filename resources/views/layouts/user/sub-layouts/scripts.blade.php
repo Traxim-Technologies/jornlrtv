@@ -260,7 +260,7 @@
 
         var timezone = jstz.determine().name();
 
-        $.post('{{ route("user.profile.save")}}', {'timezone': timezone})
+        $.post('{{ route("user.profile.save")}}', {'timezone': timezone, 'is_json': 1})
 
         .done(function(response) {
 
