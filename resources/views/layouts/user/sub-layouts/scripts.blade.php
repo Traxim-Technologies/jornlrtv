@@ -235,28 +235,52 @@
 
     $(document).on("click", ".notification-link a", function(){ 
 
-            alert("notificationsStatusUpdate");
+        $.post('{{ route("user.bell_notifications.update")}}', {'is_json': 1})
 
-            $.post('{{ route("user.bell_notifications.update")}}', {'is_json': 1})
+        .done(function(response) {
 
-            .done(function(response) {
-
-                //$('#global-notifications-count').html(response.count);
-                return true;
-                
-            })
-            .fail(function(response) {
-                console.log(response);
-            })
-            .always(function(response) {
-                console.log(response);
-            });
+            //$('#global-notifications-count').html(response.count);
+            return true;
+            
+        })
+        .fail(function(response) {
+            console.log(response);
+        })
+        .always(function(response) {
+            console.log(response);
+        });
 
 
     });
 
 
+    function updateTimezone() {
+
+        var timezone = jstz.determine().name();
+
+        $.post('{{ route("user.profile.save")}}', {'timezone': timezone})
+
+        .done(function(response) {
+
+            // $('#global-notifications-count').html(response.count);
+            
+        })
+        .fail(function(response) {
+            // console.log(response);
+        })
+        .always(function(response) {
+            // console.log(response);
+        });
+
+    }
+
     jQuery(document).ready( function () {
+
+        @if(Auth::check())
+
+            updateTimezone();
+
+        @endif
         //autocomplete
         jQuery("#auto_complete_search").autocomplete({
             source: "{{route('search')}}",
