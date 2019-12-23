@@ -3439,8 +3439,6 @@ class UserController extends Controller {
                 
                 $notification_details->notification_redirect_url = $notification_redirect_url;
                 
-                // $notification_details->created_at = common_date($notification_details->created_at, Auth::user()->timezone, 'd M Y h:i A');
-
             }
 
             return view('user.notifications.index')->with('notifications', $notifications);
