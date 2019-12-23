@@ -880,6 +880,13 @@ class UserController extends Controller {
 
         if($response->success) {
 
+            if($request->is_json == 1) {
+                
+                $response_array = ['success' =>  true, 'message' => 'Profile Updated'];
+
+                return response()->json($response_array, 200);
+            }
+
             return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
 
         } else {
