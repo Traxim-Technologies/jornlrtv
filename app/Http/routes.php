@@ -670,6 +670,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('update/profile', 'UserController@update_profile')->name('update.profile');
 
     Route::post('update/profile', 'UserController@profile_save')->name('profile.save');
+    
+    Route::post('timezone_save', 'UserController@timezone_save')->name('timezone.save');
 
     Route::get('/profile/password', 'UserController@profile_change_password')->name('change.password');
 
