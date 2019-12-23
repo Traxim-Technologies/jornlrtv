@@ -893,7 +893,45 @@ class UserController extends Controller {
 
             $message = isset($response->error) ? $response->error : " "." ".$response->error_messages;
 
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  false, 'error' => $response->error, 'error_messages' => $response->error_messages];
+
+                return response()->json($response_array, 200);
+            }
+
             return back()->with('flash_error' , $message);
+        }
+    
+    }
+
+    public function timezone_save(Request $request) {
+
+        $user_details = User::find(Auth::user()->id);
+
+        $user_details->timezone = $request->timezone ?: $user_details->timezone;
+
+        if($user_details->save()) {
+
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  true, 'message' => 'Profile Updated'];
+
+                return response()->json($response_array, 200);
+            }
+
+            return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
+
+        } else {
+
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  false, 'error' => 'timezone save failed', 'error_messages' => 'timezone save failed'];
+
+                return response()->json($response_array, 200);
+            }
+
+            return back()->with('flash_error', 'timezone save failed');
         }
     
     }
