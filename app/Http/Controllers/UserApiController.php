@@ -7937,6 +7937,14 @@ class UserApiController extends Controller {
                                         ->take($take)
                                         ->orderBy('bell_notifications.created_at', 'desc')
                                         ->get();
+                                        
+            $user_details = User::find($request->id);
+            
+            if(!$user_details) {
+                throw new Exception(Helper::get_error_message(133), 133);
+            }
+            
+            $timezone = $user_details->timezone ?: "";
 
             foreach ($bell_notifications as $key => $bell_notification_details) {
 
@@ -7957,6 +7965,8 @@ class UserApiController extends Controller {
                 }
 
                 $bell_notification_details->picture = $picture;
+
+                $bell_notification_details->created_at = common_date($bell_notification_details->created_at, $timezone, 'd M Y h:i A');
 
                 unset($bell_notification_details->from_user_id);
 
