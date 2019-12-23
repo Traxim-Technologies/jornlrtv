@@ -186,7 +186,7 @@
                           
                 messageTemplate +=  '</div>';
 
-                messageTemplate +=  '<small class="text-warning">'+notificationDetails.created_date+'</small>';
+                messageTemplate +=  '<small class="text-warning">'+notificationDetails.created+'</small>';
                               
                 messageTemplate +=  '</div>';
 
