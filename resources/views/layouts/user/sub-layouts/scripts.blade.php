@@ -23,6 +23,8 @@
 
 <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>    
 
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+
 <script type="text/javascript">
 
     $(window).load(function() {
