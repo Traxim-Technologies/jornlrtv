@@ -27,7 +27,33 @@
 
 <script type="text/javascript">
 
+    function updateTimezone() {
+
+        var timezone = jstz.determine().name();
+
+        $.post('{{ route("user.timezone.save")}}', {'timezone': timezone, 'is_json': 1})
+
+        .done(function(response) {
+
+            // $('#global-notifications-count').html(response.count);
+            
+        })
+        .fail(function(response) {
+            // console.log(response);
+        })
+        .always(function(response) {
+            // console.log(response);
+        });
+
+    }
+
     $(window).load(function() {
+
+        @if(Auth::check())
+
+            updateTimezone();
+
+        @endif
         
         $('.placeholder').each(function () {
             var imagex = jQuery(this);
@@ -255,34 +281,7 @@
 
     });
 
-
-    function updateTimezone() {
-
-        var timezone = jstz.determine().name();
-
-        $.post('{{ route("user.timezone.save")}}', {'timezone': timezone, 'is_json': 1})
-
-        .done(function(response) {
-
-            // $('#global-notifications-count').html(response.count);
-            
-        })
-        .fail(function(response) {
-            // console.log(response);
-        })
-        .always(function(response) {
-            // console.log(response);
-        });
-
-    }
-
     jQuery(document).ready( function () {
-
-        @if(Auth::check())
-
-            updateTimezone();
-
-        @endif
         //autocomplete
         jQuery("#auto_complete_search").autocomplete({
             source: "{{route('search')}}",
