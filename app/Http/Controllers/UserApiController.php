@@ -7941,6 +7941,7 @@ class UserApiController extends Controller {
             $user_details = User::find($request->id);
             
             if(!$user_details) {
+
                 throw new Exception(Helper::get_error_message(133), 133);
             }
             
@@ -7966,7 +7967,7 @@ class UserApiController extends Controller {
 
                 $bell_notification_details->picture = $picture;
 
-                $bell_notification_details->created_at = common_date($bell_notification_details->created_at, $timezone, 'd M Y h:i A');
+                $bell_notification_details->created = common_date($bell_notification_details->created_at, $timezone, 'd M y h:i A');
 
                 unset($bell_notification_details->from_user_id);
 
@@ -7974,6 +7975,7 @@ class UserApiController extends Controller {
             }
 
             $response_array = ['success' => true, 'data' => $bell_notifications];
+
 
             return response()->json($response_array);
 
