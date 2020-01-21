@@ -32,6 +32,8 @@ Route::get('pages/list' , 'ApplicationController@static_pages_api');
 
 Route::get('video_tapes_auto_clear_cron' , 'ApplicationController@video_tapes_auto_clear_cron');
 
+Route::get('demo_credential_cron' , 'ApplicationController@demo_credential_cron');
+
 
 // UI
 

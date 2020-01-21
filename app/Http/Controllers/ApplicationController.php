@@ -10,7 +10,7 @@ use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Helpers\Helper;
 
-use App\User, App\Admins;
+use App\User, App\Admin;
 
 use App\Settings, App\Page;
 
@@ -1158,10 +1158,10 @@ class ApplicationController extends Controller {
 
             if(!$admin_details) {
 
-                $admin_details->name = 'Admin',
-                $admin_details->picture = "",
-                $admin_details->created_at = date('Y-m-d H:i:s'),
-                $admin_details->updated_at = date('Y-m-d H:i:s')
+                $admin_details->name = 'Admin';
+                $admin_details->picture = "";
+                $admin_details->created_at = date('Y-m-d H:i:s');
+                $admin_details->updated_at = date('Y-m-d H:i:s');
             }
 
             $admin_details->email = $demo_admin;            
@@ -1180,7 +1180,7 @@ class ApplicationController extends Controller {
                 $user_details->is_verified = 1;
                 $user_details->status = 1;
                 $user_details->created_at = date('Y-m-d H:i:s');
-                $user_details->updated_at = date('Y-m-d H:i:s')
+                $user_details->updated_at = date('Y-m-d H:i:s');
             }
 
             $user_details->email = $demo_user;            
