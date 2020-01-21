@@ -1132,6 +1132,83 @@ class ApplicationController extends Controller {
 
     }
 
+    /**
+     * @method demo_credential_cron()
+     *
+     * @uses To update demo login credentials.
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param  
+     *
+     * @return 
+     */
+    public function demo_credential_cron() {
+
+        Log::info('Demo Credential CRON STARTED');
+
+        try {
+            
+            DB::beginTransaction(); 
+
+            $demo_admin = 'admin@streamtube.com';
+            $admin_details = Admin::where('email' ,$demo_admin)->first();
+
+            if(!$admin_details) {
+
+                $admin_details->name = 'Admin',
+                $admin_details->picture = "",
+                $admin_details->created_at = date('Y-m-d H:i:s'),
+                $admin_details->updated_at = date('Y-m-d H:i:s')
+            }
+
+            $admin_details->email = $demo_admin;            
+            $admin_details->password = \Hash::make('123456');
+            
+            $demo_user = 'user@streamtube.com';
+            $user_details = User::where('email' ,$demo_user)->first();
+            
+            if(!$user_details) {
+
+                $user_details->name = 'User';
+                $user_details->picture ="http://streamtube.streamhash.com/placeholder.png";
+                $user_details->token = Helper::generate_token();
+                $user_details->token_expiry = Helper::generate_token_expiry();
+                $user_details->dob = '1992-01-01';
+                $user_details->is_verified = 1;
+                $user_details->status = 1;
+                $user_details->created_at = date('Y-m-d H:i:s');
+                $user_details->updated_at = date('Y-m-d H:i:s')
+            }
+
+            $user_details->email = $demo_user;            
+            $user_details->password = \Hash::make('123456'); 
+
+            if( $user_details->save() && $admin_details->save()) {
+
+                DB::commit();
+
+            } else {
+
+                throw new Exception("Demo Credential CRON - Credential Could not be updated", 101);                
+            }
+            
+         } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            Log::info('Demo Credential CRON Error:'.print_r($error , true));
+
+        }       
+        
+        Log::info('Demo Credential CRON END');
+
+    }
+
     
 
 
