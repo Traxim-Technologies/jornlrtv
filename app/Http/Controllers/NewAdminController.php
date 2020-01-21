@@ -5327,7 +5327,7 @@ class NewAdminController extends Controller {
         try {
             
             DB::beginTransaction();
-
+        
             foreach( $request->toArray() as $key => $value) {
               
                 $check_settings = Settings::where('key' ,'=', $key)->count();
@@ -5337,15 +5337,7 @@ class NewAdminController extends Controller {
                     throw new Exception( $key.tr('admin_settings_key_not_found'), 101);
                 }
 
-                if( $request->hasFile($key) ) {
-
-                    Helper::delete_picture($key, "/uploads/settings/");
-
-                    $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
-
-                    $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
-
-                } else if($key == "admin_ppv_commission") {
+                if($key == "admin_ppv_commission") {
 
                     $value = $request->admin_ppv_commission < 100 ? $request->admin_ppv_commission : 100;
 
@@ -5367,11 +5359,21 @@ class NewAdminController extends Controller {
 
                     $site_name = preg_replace("/[^A-Za-z0-9]/", "", $value);
 
-                        \Enveditor::set("SITENAME", $site_name);
+                    \Enveditor::set("SITENAME", $site_name);
 
                 }
 
                 $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
+
+                if($request->hasFile($key) ) {
+
+                    Helper::delete_picture($key, "/uploads/settings/");
+
+                    $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
+                    
+                    $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
+
+                }
 
                 if( $result == TRUE ) {
                      

@@ -72,6 +72,12 @@ class Channel extends Model
         return $this->hasMany('App\Playlist');
     }
 
+    public function getBellNotifications() {
+
+         return $this->hasMany('App\BellNotification', 'channel_id', 'id');
+
+    }
+
     /**
      * Boot function for using with User Events
      *
@@ -147,6 +153,17 @@ class Channel extends Model
                    $playlist->delete();    
                 }
             }
+
+            if (count($model->getBellNotifications) > 0) {
+
+                foreach ($model->getBellNotifications as $key => $value) {
+
+                   $value->delete();    
+
+                }            
+
+            }
+
 
         }); 
 

@@ -17,6 +17,8 @@ use App\Helpers\Helper;
 
 use Log; 
 
+use Setting;
+
 class SubscriptionMail extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;

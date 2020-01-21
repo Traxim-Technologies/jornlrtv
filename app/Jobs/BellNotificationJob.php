@@ -11,7 +11,7 @@ use App\Helpers\Helper;
 
 use Log; 
 
-use App\Setting;
+use Setting;
 
 use App\User;
 
