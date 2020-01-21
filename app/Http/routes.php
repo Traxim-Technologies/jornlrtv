@@ -30,6 +30,8 @@ Route::post('project/configurations' , 'ApplicationController@configuration_site
 
 Route::get('pages/list' , 'ApplicationController@static_pages_api');
 
+Route::get('video_tapes_auto_clear_cron' , 'ApplicationController@video_tapes_auto_clear_cron');
+
 
 // UI
 

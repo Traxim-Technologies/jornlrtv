@@ -10,27 +10,13 @@ use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Helpers\Helper;
 
-use App\VideoTape;
+use App\User, App\Admins;
 
-use App\User;
+use App\Settings, App\Page;
 
-use App\Settings;
+use App\VideoTape, App\UserPayment;
 
-use Log;
-
-use DB;
-
-use Validator;
-
-use App\Page;
-
-use App\Admin;
-
-use Auth;
-
-use Setting;
-
-use App\UserPayment;
+use Log, DB, Validator, Auth, Setting, Exception;
 
 class ApplicationController extends Controller {
 
@@ -48,12 +34,12 @@ class ApplicationController extends Controller {
     }
 
     /**
-     * Function Name : payment_failture()
+     * @method payment_failture()
+     *
+     * @uses to show thw view page, whenever the payment failed.
      * 
      * @created vidhya R
      * 
-     * Usage : used to show thw view page, whenever the payment failed.
-     *
      */
 
     public function payment_failure($error = "") {
@@ -107,7 +93,6 @@ class ApplicationController extends Controller {
 
         $page = Page::where('type', 'terms')->first();
 
-        // dd($page);
         return view('static.terms')->with('data' , $page)
                         ->with('page' , 'terms_and_condition')
                         ->with('subPage' , '');
@@ -616,15 +601,15 @@ class ApplicationController extends Controller {
     }
 
     /**
-     * Function Name : automatic_renewal()
+     * @method automatic_renewal()
      *
-     * @usage - Used to change the paid user to normal user based on the expiry date
+     * @uses to change the paid user to normal user based on the expiry date
      *
      * @created vithya 
      *
      * @updated 
      *
-     * @param -
+     * @param
      *
      * @return JSON RESPONSE
      */
@@ -924,9 +909,9 @@ class ApplicationController extends Controller {
     }
 
     /**
-     * Function Name : configuration_mobile()
+     * @method configuration_mobile()
      *
-     * @uses used to get the configurations for base products
+     * @uses to get the configurations for base products
      *
      * @created Vidhya R 
      *
@@ -1018,7 +1003,7 @@ class ApplicationController extends Controller {
     /**
      * @method static_pages_api()
      *
-     * @uses used to get the pages
+     * @uses to get the pages
      *
      * @created Vidhya R 
      *
@@ -1102,4 +1087,53 @@ class ApplicationController extends Controller {
         return response()->json($response_array, 200);
 
     }
+
+
+    /**
+     * @method video_tapes_auto_clear_cron()
+     *
+     * @uses To auto-clear videos uploaded
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     * @param  
+     *
+     * @return 
+     */
+    public function video_tapes_auto_clear_cron() {
+
+        Log::info('VideoTapes Auto-Clear Cron STARTED');
+
+        try {
+            
+            $date = date('Y-m-d');
+
+            DB::beginTransaction(); 
+
+            if(VideoTape::where('uploaded_by','!=',ADMIN)->whereDate('created_at','<', $date)->delete())
+            {
+                DB::commit();
+
+                Log::info('VideoTapes Auto-Cleared');
+            } 
+                        
+         } catch(Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            Log::info('VideoTapes Auto-Clear Cron Error:'.print_r($error , true));
+        }       
+        
+        Log::info('VideoTapes Auto-Clear Cron END');
+
+    }
+
+    
+
+
+
 }
