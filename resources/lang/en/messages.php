@@ -2372,4 +2372,6 @@ return array(
 
 	'user_no_paypal_email' => 'PayPal Payment is hided, because the user is not updated the PayPal email.',
 
+	'video_call_already_present'=>'You already have an ongoing live broadcast. By clicking continue, the existing streamings will get clear.',
+
 );

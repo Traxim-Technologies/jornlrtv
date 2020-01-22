@@ -5246,4 +5246,40 @@ class UserController extends Controller {
     
     }
 
+    /**
+     * Function Name : check_user_live_video() 
+     *
+     * @uses Check Live  Video Present for the user
+     * 
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function check_user_live_video(Request $request) {
+
+        $request->request->add([ 
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+
+        $model = LiveVideo::where('user_id', $request->id)
+                    ->where('status', DEFAULT_FALSE)
+                    ->first();
+        
+        if(count($model) > 0) {
+
+            return response()->json(['success'=>false, 'data'=>$model, 'error_messages'=>tr('video_call_already_present')]);
+
+        } else {
+
+            return response()->json(['success'=>true]);
+
+        }
+
+    }
+
 }

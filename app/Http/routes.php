@@ -929,6 +929,8 @@ Route::group(['as' => 'user.'], function(){
 
     Route::post('/update/paypal_email', 'UserController@update_paypal_email')->name('update.paypal_email');
 
+    Route::get('check_user_live_video', 'UserController@check_user_live_video')->name('check_user_live_video');
+
 
 });
 

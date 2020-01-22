@@ -149,7 +149,7 @@
 
                                                     @if(Setting::get('broadcast_by_user') == YES || Auth::user()->is_master_user == YES)
 
-                                                        <button class="st_video_upload_btn text-uppercase" data-toggle="modal" data-target="#start_broadcast">
+                                                        <button class="st_video_upload_btn text-uppercase" onclick="live_video()">
                                                             <i class="fa fa-video-camera"></i> 
                                                             {{tr('go_live')}}
                                                         </button>
@@ -1455,6 +1455,28 @@
             }
 
         }
+
+        function live_video() {
+            $.ajax({
+                url : "{{route('user.check_user_live_video')}}",
+                type: "get",
+                success : function(data) {
+                   
+                   if(data.success) {
+                   
+                      $("#start_broadcast").modal('show');
+                      
+                   } else {
+
+                      alert(data.error_messages);
+
+                   }
+                },
+       
+               error : function(data) {
+               },
+           })
+       }
 
     </script>
 
