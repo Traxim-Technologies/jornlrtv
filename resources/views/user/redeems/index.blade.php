@@ -185,7 +185,7 @@ thead>tr>th {
                                                             </p>
 
                                                             <p class="text-grey-clr mt-0">
-                                                                {{tr('paid_date')}}: {{$redeem_request->created_at->diffForHumans()}}
+                                                                {{tr('paid_date')}}: {{$redeem_request->updated_at->diffForHumans()}}
                                                             </p>
 
                                                             <p class="text-grey-clr mt-0">

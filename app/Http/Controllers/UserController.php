@@ -1961,7 +1961,7 @@ class UserController extends Controller {
         $redeem_details->send_redeem_btn_status = $redeem_details && $min_status;
 
         $redeem_requests = Auth::user()->userRedeemRequests()->orderBy('created_at', 'desc')->get();
-
+        
         return view('user.redeems.index')
                     ->with('redeem_details', $redeem_details)
                     ->with('redeem_requests', $redeem_requests);
