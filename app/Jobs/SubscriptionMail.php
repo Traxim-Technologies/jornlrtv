@@ -35,8 +35,8 @@ class SubscriptionMail extends Job implements ShouldQueue
     public function __construct($channel_id,$video_id)
     {
         Log::info("Inside Construct");
-       $this->channel_id = $channel_id;
-       $this->video_id = $video_id;
+        $this->channel_id = $channel_id;
+        $this->video_id = $video_id;
 
     }
 
@@ -49,14 +49,14 @@ class SubscriptionMail extends Job implements ShouldQueue
     {
         Log::info("Inside Queue Videos : ". 'Success');
         
-        /** Check emai notification status **/
+        /** Check email notification status **/
         if(Setting::get('email_notification') == YES) {
 
             $subscribers = ChannelSubscription::where('channel_id', $this->channel_id)->get();
 
             foreach ($subscribers as $key => $subscriber) {
                 
-                if($subscriber->getUser->where('status',APPROVED)) {
+                if($subscriber->getUser && ($subscriber->getUser->status == APPROVED)) {
 
                     $user = $subscriber->getUser;
 

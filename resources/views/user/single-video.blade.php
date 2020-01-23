@@ -1102,9 +1102,18 @@
       } catch (err) {
            // console.log('Oops, unable to copy');
       }
-   }
+   }   
    
-   // To add/remove video from playlist
+   /**
+     * @function playlist_video_update() 
+     *
+     * @uses To add/remove video from playlist 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     */
    function playlist_video_update(video_tape_id, playlist_id, playlist_checkbox) {
       
       // id of clicked playlist   
@@ -1156,6 +1165,16 @@
       });
    } 
 
+   /**
+     * @function playlist_save_video_add() 
+     *
+     * @uses update/create playlist 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     */
    function playlist_save_video_add(video_tape_id) {
       
       var title = $("#playlist_title" ).val();
@@ -1333,60 +1352,38 @@
      */
    function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");
-       $.ajax({
-<<<<<<< HEAD
-        url : "{{route('user.video.disLike')}}",
-        type: "post",
-        data : {video_tape_id : video_id},
-        success : function(data) {
-            if(data.success) {
+      
+      $.ajax({      
+         url : "{{route('user.video.disLike')}}",
+         type: "post",
+         data : {video_tape_id : video_id},
+         success : function(data) {              
+            if(data.success && data.dislike_status) {
 
-                $("#like_count").html(data.like_count);
-
-                $("#dislike_count").html(data.dislike_count);
+               $(".dislike").removeClass("dislike_color");
 
             } else {
 
-                // console.log(data.error_messages);
+               $(".dislike").addClass("dislike_color"); 
 
             }
-        },
 
-        error : function(data) {
-        },
-      });
-=======
-           url : "{{route('user.video.disLike')}}",
-           type: "post",
-           data : {video_tape_id : video_id},
-           success : function(data) {
-               if(data.success && data.dislike_status) {
+            if(data.success) {
 
-                  $(".dislike").removeClass("dislike_color");
+               $("#like_count").html(data.like_count);
+      
+               $("#dislike_count").html(data.dislike_count);
 
-               } else {
-
-                  $(".dislike").addClass("dislike_color"); 
-
-               }
-
-               if(data.success) {
+            } else {
+               // console.log(data.error_messages);
+            }
+         },
    
-                   $("#like_count").html(data.like_count);
-         
-                   $("#dislike_count").html(data.dislike_count);
-
-               } else {
+         error : function(data) {
+         },
+      
+      })
    
-                   // console.log(data.error_messages);
-   
-               }
-           },
-   
-           error : function(data) {
-           },
-       })
->>>>>>> c8a5ce8e36b779da0470f54e44416388c9505461
    }
    
    function addToast() {
@@ -1403,4 +1400,5 @@
    }
 
 </script>
+
 @endsection
