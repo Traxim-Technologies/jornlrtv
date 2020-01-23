@@ -1948,7 +1948,7 @@ class UserController extends Controller {
         $redeem_details->send_redeem_btn_status = $redeem_details && $min_status;
 
         $redeem_requests = Auth::user()->userRedeemRequests()->orderBy('created_at', 'desc')->get();
-
+        
         return view('user.redeems.index')
                     ->with('redeem_details', $redeem_details)
                     ->with('redeem_requests', $redeem_requests);
@@ -2272,26 +2272,27 @@ class UserController extends Controller {
 
 
                 $cards = new Card;
+                
                 $cards->user_id = \Auth::user()->id;
+
                 $cards->customer_id = $customer_id;
-                $cards->last_four = $last_four;
+
+                $cards->last_four = $customer->sources->data[0]->last4 ? $customer->sources->data[0]->last4 : "";
+
                 $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
-                $cards->cvv = $request->cvv;
+                // $cards->cvv = $request->cvv;
 
                 $cards->card_name = $request->card_name;
 
-                $cards->month = $request->month;
+                // $cards->month = $request->month;
 
-                $cards->year = $request->year;
+                // $cards->year = $request->year;
 
-                if($check_card)
-                    $cards->is_default = 0;
-                else
-                    $cards->is_default = 1;
+                $cards->is_default = $check_card ? 0 : 1;
                 
                 $cards->save();
 

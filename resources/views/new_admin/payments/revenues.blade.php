@@ -62,7 +62,7 @@
 
 			<div class="small-box bg-red">
 				<div class="inner">
-					<h3>{{ formatted_amount($subscription_tota) l}}</h3>
+					<h3>{{ formatted_amount($subscription_total)}}</h3>
 					<p>{{tr('subscription_payments')}}</p>
 				</div>
 
