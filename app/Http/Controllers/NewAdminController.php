@@ -135,20 +135,6 @@ class NewAdminController extends Controller {
    
     public function dashboard() {
 
-        // ============
-
-        $subscribers = ChannelSubscription::where('status',APPROVED)->get();
-        
-        foreach ($subscribers as $key => $subscriber) {
-
-            if($subscriber->getUser && ($subscriber->getUser->status == APPROVED)) {
-
-            }
-
-        }
-
-        // =============
-
         $admin = Admin::first();
 
         $admin->token = Helper::generate_token();
