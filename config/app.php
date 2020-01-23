@@ -162,7 +162,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         vidhyar2612\Enveditor\EnveditorServiceProvider::class,
         Alaouy\Youtube\YoutubeServiceProvider::class,
-        // LaravelFCM\FCMServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class,
 
     ],
 
