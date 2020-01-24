@@ -6026,7 +6026,7 @@ class UserApiController extends Controller {
 
                                         Log::info("ppv_commission_spilit started");
 
-                                        UserRepo::ppv_commission_split($video->id , $user_payment->id , "");
+                                        PaymentRepo::ppv_commission_split($video->id , $user_payment->id , "");
 
                                         Log::info("ppv_commission_spilit END"); 
                                         
