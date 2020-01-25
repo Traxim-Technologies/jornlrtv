@@ -110,7 +110,7 @@
 								      	<td>{{ $payment_details->payment_id }}</td>
 
 								      	<td>
-								      		<a href="{{route('admin.users.view',['user_id' => $payment_details->user_id])}}">{{$payment_details->user->name ?: "-"}}</a>
+								      		<a href="{{route('admin.users.view',['user_id' => $payment_details->user_id])}}">{{$payment_details->user->name ?$payment_details->user->name: "-"}}</a>
 								      	</td>
 
 
