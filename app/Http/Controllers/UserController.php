@@ -1796,7 +1796,7 @@ class UserController extends Controller {
     }
 
     public function video_save(Request $request) {
-
+       
         $response = CommonRepo::video_save($request)->getData();
 
         if ($response->success) {
@@ -2719,7 +2719,7 @@ class UserController extends Controller {
      * @return json response details
      */
     public function payment_type($id, Request $request) {
-
+       
         if($request->payment_type == 1) {
           
             return redirect(route('user.ppv-video-payment', ['id' => $id, 'coupon_code' => $request->coupon_code]));

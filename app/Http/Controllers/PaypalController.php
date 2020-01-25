@@ -505,7 +505,7 @@ class PaypalController extends Controller {
      */
 
     public function videoSubscriptionPay(Request $request) {
-     
+        
         // Get the PPV total amount based on the selected video
 
         $video = VideoTape::where('id', $request->id)->first();

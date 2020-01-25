@@ -10,97 +10,102 @@
 
 <div class="y-content">
 
-  <div class="row content-row">
+ <div class="row content-row">
 
-		@include('layouts.user.nav')
+    @include('layouts.user.nav')
 
     <div class="page-inner">
-        <!--      Wizard container        -->
-          <div class="col-sm-12">
-                <div class="wizard-container">
-                    <div class="card wizard-card" data-color="red" id="wizard">
-                        <form action="{{Setting::get('admin_delete_control') ? '' : route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">
-                    <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
 
-                          <div class="wizard-header">
-                              <h3 class="wizard-title">
+        <!--Wizard container-->
+        <div class="col-sm-12">
+
+            <div class="wizard-container">
+
+                <div class="card wizard-card" data-color="red" id="wizard">
+
+                    <form action="{{Setting::get('admin_delete_control') ? '' : route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">
+                        <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
+
+                        <div class="wizard-header">
+                            <h3 class="wizard-title">
                                 {{tr('upload_video')}}
                               </h3>
-                               <h5>{{tr('video_short_notes' , Setting::get('site_name'))}}</h5>
-                          </div>
-                          <div class="wizard-navigation">
-                              <ul>
-                                  <li id="1">
+                            <h5>{{tr('video_short_notes' , Setting::get('site_name'))}}</h5>
+                        </div>
+
+                        <div class="wizard-navigation">
+                            <ul>
+                                <li id="1">
                                     <a href="#video_type_upload" data-toggle="tab" class="dis-all">{{tr('video_type')}}</a>
                                     <a href="#video_type_upload" data-toggle="tab" class="dis-mob">type</a>
-                                  </li>
-                                  <li id="2">
+                                </li>
+                                <li id="2">
                                     <a href="#details" data-toggle="tab">{{tr('video_details')}}</a>
-                                  </li>
-                                  <li id="3">
+                                </li>
+                                <li id="3">
                                     <a href="#captain" data-toggle="tab">{{tr('upload_video')}}</a>
-                                  </li>
-                                  <li id="4">
+                                </li>
+                                <li id="4">
                                     <a href="#select_image" data-toggle="tab">{{tr('select_image')}}</a>
-                                  </li>
-                              </ul>
-                          </div>
+                                </li>
+                            </ul>
+                        </div>
 
-                            <div class="tab-content">
+                        <div class="tab-content">
 
-                                <div class="tab-pane" id="video_type_upload">
+                            <div class="tab-pane" id="video_type_upload">
 
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
 
-                                      <a onclick="saveVideoType({{VIDEO_TYPE_UPLOAD}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
+                                    <a onclick="saveVideoType({{VIDEO_TYPE_UPLOAD}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
 
-                                          <div style="background-image: url({{asset('images/folder.png')}})" class="category-img bg-img1"></div>
+                                        <div style="background-image: url({{asset('images/folder.png')}})" class="category-img bg-img1"></div>
 
-                                          <h3 class="category-tit">File Upload</h3>
+                                        <h3 class="category-tit">File Upload</h3>
 
-                                      </a>
-
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
-
-                                        <a onclick="saveVideoType({{VIDEO_TYPE_YOUTUBE}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
-
-                                            <div style="background-image: url({{asset('images/down-arrow.png')}})" class="category-img bg-img1"></div>
-
-                                            <h3 class="category-tit">YouTube Link</h3>
-
-                                        </a>
-
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
-
-                                        <a onclick="saveVideoType({{VIDEO_TYPE_OTHERS}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
-
-                                            <div style="background-image: url({{asset('images/link.png')}})" class="category-img bg-img1"></div>
-
-                                            <h3 class="category-tit">Others</h3>
-
-                                        </a>
-
-                                    </div>
-
-                                    <input type="hidden" name="video_type" id="video_type" required />
-
-                                    <input type='button' class='btn btn-fill btn-danger btn-next' name='next' value='Next'  style="display: none" id="first_btn"/>
+                                    </a>
 
                                 </div>
 
-                                <div class="tab-pane" id="details">
-                                  <div class="">
-                                      <h4 class="info-text">{{tr('start_basics_details')}}</h4>
-                                      <input type="hidden" name="channel_id" id="channel_id" value="{{$id}}">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
 
-                                      <input type="hidden" name="id" id="main_id">
-                                  </div>
-                                  <div class="row">
-                                    
+                                    <a onclick="saveVideoType({{VIDEO_TYPE_YOUTUBE}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
+
+                                        <div style="background-image: url({{asset('images/down-arrow.png')}})" class="category-img bg-img1"></div>
+
+                                        <h3 class="category-tit">YouTube Link</h3>
+
+                                    </a>
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
+
+                                    <a onclick="saveVideoType({{VIDEO_TYPE_OTHERS}}, {{REQUEST_STEP_PRE_1}})" class="category-item text-center">
+
+                                        <div style="background-image: url({{asset('images/link.png')}})" class="category-img bg-img1"></div>
+
+                                        <h3 class="category-tit">Others</h3>
+
+                                    </a>
+
+                                </div>
+
+                                <input type="hidden" name="video_type" id="video_type" required />
+
+                                <input type='button' class='btn btn-fill btn-danger btn-next' name='next' value='Next' style="display: none" id="first_btn" />
+
+                            </div>
+
+                            <div class="tab-pane" id="details">
+                                <div class="">
+                                    <h4 class="info-text">{{tr('start_basics_details')}}</h4>
+                                    <input type="hidden" name="channel_id" id="channel_id" value="{{$id}}">
+
+                                    <input type="hidden" name="id" id="main_id">
+                                </div>
+                                <div class="row">
+
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <label for="name" class="control-label">{{tr('title')}} * </label>
                                         <div>
@@ -109,15 +114,15 @@
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                       
+
                                         <label for="video" class="control-label">{{tr('sub_title')}}</label>
                                         <div class="clearfix"></div>
                                         <div>
-                                        <input type="file" id="subtitle" name="subtitle" style="width: 100%;overflow: hidden;" onchange="checksrt(this, this.id)">
-                                        <p class="help-block">{{tr('subtitle_validate')}}</p>
+                                            <input type="file" id="subtitle" name="subtitle" style="width: 100%;overflow: hidden;" onchange="checksrt(this, this.id)">
+                                            <p class="help-block">{{tr('subtitle_validate')}}</p>
 
                                         </div>
-                                       
+
                                     </div>
 
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -131,260 +136,244 @@
                                             <p class="help-block">{{tr('age_limit_note')}}</p>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                      <div class="form-group">
+                                        <div class="form-group">
                                             <label for="name" class="control-label">{{tr('publish_type')}}</label>&nbsp;&nbsp;
-                                             <div class="clearfix"></div>
-                                             <div>
-                                              <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_NOW}}" checked class='video_publish_type_class' required> {{tr('publish_now')}} &nbsp;
-                                              <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_LATER}}" class="video_publish_type_class" required /> {{tr('publish_later')}}
-                                             </div>
-                                       </div>
+                                            <div class="clearfix"></div>
+                                            <div>
+                                                <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_NOW}}" checked class='video_publish_type_class' required> {{tr('publish_now')}} &nbsp;
+                                                <input type="radio" onchange="checkPublishType(this.value)" name="video_publish_type" id="video_publish_type" value="{{PUBLISH_LATER}}" class="video_publish_type_class" required /> {{tr('publish_later')}}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                      <div class="form-group" style="display: none;" id="publish_time_div">
-                                          <label for="datepicker" class="">{{tr('publish_time')}} * </label>
-                                          <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" value="{{old('publish_time')}}">
-                                      </div>
+                                        <div class="form-group" style="display: none;" id="publish_time_div">
+                                            <label for="datepicker" class="">{{tr('publish_time')}} * </label>
+                                            <input type="text" name="publish_time" placeholder="dd-mm-yyyy hh:ii" class="form-control pull-right" id="datepicker" value="{{old('publish_time')}}">
+                                        </div>
                                     </div>
 
                                     <div class="clearfix"></div>
 
                                     <div class="form-data">
 
-                                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                         
-                                          <label for="video" class="control-label">{{tr('category')}} * </label>
-                                          <div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
-                                            <select id="category_id" name="category_id" class="form-control select2" required data-placeholder="{{tr('select_category')}}*" style="width: 100% !important">
-                                                @foreach($categories as $category)
-                                                      <option value="{{$category->category_id}}">{{$category->category_name}}</option>
+                                            <label for="video" class="control-label">{{tr('category')}} * </label>
+                                            <div>
+
+                                                <select id="category_id" name="category_id" class="form-control select2" required data-placeholder="{{tr('select_category')}}*" style="width: 100% !important">
+                                                    @foreach($categories as $category)
+                                                    <option value="{{$category->category_id}}">{{$category->category_name}}</option>
                                                     @endforeach
-                                            </select>
-
-                                          </div>
-                                       
-                                      </div>
-
-                                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                         
-                                          <label for="video" class="control-label">{{tr('tags')}}</label>
-                                          <div>
-                                              
-                                            <select id="tag_id" name="tag_id[]" class="form-control select2" data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
-                                                @foreach($tags as $tag)
-                                                      <option value="{{$tag->tag_id}}">{{$tag->tag_name}}</option>
-                                                @endforeach
-                                            </select>
-
-
-                                          </div>
-                                       
-                                      </div>       
-                                    </div>
-
-                                    <div class="clearfix"></div> 
-                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="display: none;" id="duration_div">
-                                      <div class="form-group">
-                                          <label>{{tr('duration')}} * : </label><small> 
-                                          {{tr('duration_note')}}</small>
-                                          <div class="clearfix"></div>
-                                          <div class="input-group">
-                                              <div class="input-group-addon">
-                                                  <i class="fa fa-calendar"></i>
-                                              </div>
-                                              <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration" value="{{old('duration')}}">
-                                          </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="clearfix"></div>
-                                    <div class="col-lg-12">
-                                      <label for="name" class="control-label">{{tr('description')}} *</label>
-                                        
-                                      <div class="col-sm-12 col-lg-12">
-                                          
-                                              <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description">{{old('description')}}</textarea>
-                                      </div>
-                                    </div>
-
-                                    <div class="clearfix"></div>
-
-                                      <div class="col-lg-12">
-
-
-                                          <div class="pull-left">
-
-                                             <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' id="previous"/>
-
-                                          </div>
-
-                                          <div class="pull-right">  
-
-                                              <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' onclick="countNext('description')" />
-
-                                          </div>
-
-                                          <div class="clearfix"></div>
-                                      </div>
-                                   
-                                  </div>
-                                </div>
-                                <div class="tab-pane" id="captain">
-                                    <h4 class="info-text">{{tr('do_upload')}}</h4>
-
-                                    <div class="row" id="others_video_upload_section" style="display: none;">
-
-                                        <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                            <p>{{tr('video_type')}} - <span id="selected_video_type"></span></p>
-
-                                        </div> -->
-
-                                        <div class="clearfix"></div>
-
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                            <div class="form-group">
-
-                                                <label for="other_video" class="">{{tr('video')}} * </label>
-
-                                                <input type="url" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}">
+                                                </select>
 
                                             </div>
 
                                         </div>
 
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
-                                            <label>Choose Image</label>
+                                            <label for="video" class="control-label">{{tr('tags')}}</label>
+                                            <div>
 
-                                            <input type="file" name="other_image" id="other_image" class="form-control" accept="image/png, image/jpeg">
+                                                <select id="tag_id" name="tag_id[]" class="form-control select2" data-placeholder="{{tr('select_tags')}}" multiple style="width: 100% !important">
+                                                    @foreach($tags as $tag)
+                                                    <option value="{{$tag->tag_id}}">{{$tag->tag_name}}</option>
+                                                    @endforeach
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="display: none;" id="duration_div">
+                                        <div class="form-group">
+                                            <label>{{tr('duration')}} * : </label><small> 
+                                          {{tr('duration_note')}}</small>
+                                            <div class="clearfix"></div>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input type="text" name="duration" class="form-control" data-inputmask="'alias': 'hh:mm:ss'" data-mask id="duration" value="{{old('duration')}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-12">
+                                        <label for="name" class="control-label">{{tr('description')}} *</label>
+
+                                        <div class="col-sm-12 col-lg-12">
+
+                                            <textarea placeholder="{{tr('description')}}" rows="5" required class="form-control" id="description" name="description">{{old('description')}}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+
+                                    <div class="col-lg-12">
+
+                                        <div class="pull-left">
+
+                                            <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' id="previous" />
+
+                                        </div>
+
+                                        <div class="pull-right">
+
+                                            <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' onclick="countNext('description')" />
+
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="captain">
+                                <h4 class="info-text">{{tr('do_upload')}}</h4>
+
+                                <div class="row" id="others_video_upload_section" style="display: none;">
+
+                                    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                            <p>{{tr('video_type')}} - <span id="selected_video_type"></span></p>
+
+                                        </div> -->
+
+                                    <div class="clearfix"></div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <div class="form-group">
+
+                                            <label for="other_video" class="">{{tr('video')}} * </label>
+
+                                            <input type="url" class="form-control" id="other_video" name="other_video" placeholder="{{tr('video')}}">
 
                                         </div>
 
                                     </div>
 
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                    <div class="" id="file_video_upload_section">
-                                        <div class="dropify-wrapper" onclick="VideoFile({{Setting::get('admin_delete_control')}});">
-                                          <div class="dropify-message">
+                                        <label>Choose Image</label>
+
+                                        <input type="file" name="other_image" id="other_image" class="form-control" accept="image/png, image/jpeg">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="" id="file_video_upload_section">
+                                    <div class="dropify-wrapper" onclick="VideoFile({{Setting::get('admin_delete_control')}});">
+                                        <div class="dropify-message">
                                             <span class="file-icon">
                                               <i class="fa fa-cloud-upload"></i>
                                             </span>
                                             <p>{{tr('click_here')}}</p>
-                                          </div>
-                                          <div class="dropify-preview">
-                                              <span class="dropify-render">
+                                        </div>
+                                        <div class="dropify-preview">
+                                            <span class="dropify-render">
                                               </span>
-                                          </div>
                                         </div>
-
-                                        @if(Setting::get('admin_delete_control')) 
-
-                                        @else
-                                        <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();" required>
-                                        @endif
-
-                                        <br>
-                                        <div class="progress" class="col-sm-12">
-                                            <div class="bar"></div >
-                                            <div class="percent">0%</div >
-                                        </div>
-
-                                        <input type="submit" name="submit" id="submit_btn" style="display: none">
                                     </div>
 
-                                    <div class="">
+                                    @if(Setting::get('admin_delete_control')) @else
+                                    <input id="video_file" type="file" name="video" style="display: none;" accept="video/mp4" onchange="$('#submit_btn').click();" required> @endif
 
-
-                                        <div class="pull-left">
-
-                                           <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' id="previous"/>
-
-                                        </div>
-
-                                        <div class="pull-right">  
-
-                                            <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' onclick="countNext()" style="display: none" id="next_btn"/>
-
-                                            <button type='submit' class='btn btn-fill btn-danger btn-wd finish' name='finish' value='Finish' id="manual_finish" style="display: none;" >{{tr('finish')}}</button>
-
-                                        </div>
-
-                                        
-
-                                        <div class="clearfix"></div>
-
-                                        <br>
-
-                                        
+                                    <br>
+                                    <div class="progress" class="col-sm-12">
+                                        <div class="bar"></div>
+                                        <div class="percent">0%</div>
                                     </div>
+
+                                    <input type="submit" name="submit" id="submit_btn" style="display: none">
                                 </div>
-                                <div class="tab-pane" id="select_image">
-                                    <div class="row">
-                                        <h4 class="info-text">{{tr('select_image_short_notes')}}</h4>
-                                        <div class="col-sm-12" id="select_image_div">
 
-                                        </div>
+                                <div class="">
+
+                                    <div class="pull-left">
+
+                                        <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' id="previous" />
+
                                     </div>
 
+                                    <div class="pull-right">
+
+                                        <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' onclick="countNext()" style="display: none" id="next_btn" />
+
+                                        <button type='submit' class='btn btn-fill btn-danger btn-wd finish' name='finish' value='Finish' id="manual_finish" style="display: none;">{{tr('finish')}}</button>
+
+                                    </div>
 
                                     <div class="clearfix"></div>
 
                                     <br>
 
-                                     <div class="">
-
-
-                                        <div class="pull-left">
-
-                                           <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' id="previous"/>
-
-                                        </div>
-
-                                        <div class="pull-right">  
-
-                                            <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd final' name='finish' value='Finish' onclick="redirect()" />
-
-                                        </div>
-
-                                        <br>
-
-                                        <div class="clearfix"></div>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="wizard-footer" style="display: none;">
-                                <div class="pull-right">
+                            <div class="tab-pane" id="select_image">
+                                <div class="row">
+                                    <h4 class="info-text">{{tr('select_image_short_notes')}}</h4>
+                                    <div class="col-sm-12" id="select_image_div">
 
-                                      <input type='button' class='btn btn-abort btn-fill btn-warning btn-wd' name='abort' value="{{tr('abort')}}" id="abort_btn" onclick="abortVideo();"/>
+                                    </div>
+                                </div>
 
-                                      @if (Setting::get('admin_delete_control'))
+                                <div class="clearfix"></div>
 
-                                      <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' disabled />
+                                <br>
 
-                                      @else
+                                <div class="">
 
-                                      <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next' id="next_btn"/>
-                                      
-                                      @endif
+                                    <div class="pull-left">
 
-                                      <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Finish' onclick="redirect()" />
-                                  </div>
-                                  <div class="pull-left">
-                                      <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
-                                  </div>
-                                  <div class="clearfix"></div>
+                                        <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' id="previous" />
+
+                                    </div>
+
+                                    <div class="pull-right">
+
+                                        <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd final' name='finish' value='Finish' onclick="redirect()" />
+
+                                    </div>
+
+                                    <br>
+
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                </div> <!-- wizard container -->
+                        </div>
+                        <div class="wizard-footer" style="display: none;">
+                            <div class="pull-right">
+
+                                <input type='button' class='btn btn-abort btn-fill btn-warning btn-wd' name='abort' value="{{tr('abort')}}" id="abort_btn" onclick="abortVideo();" /> @if (Setting::get('admin_delete_control'))
+
+                                <input type='button' class='btn btn-fill btn-danger btn-wd' name='next' value='Next' disabled /> @else
+
+                                <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next' id="next_btn" /> @endif
+
+                                <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Finish' onclick="redirect()" />
+                            </div>
+                            <div class="pull-left">
+                                <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+                </div>
             </div>
-      <div class="sidebar-back"></div> 
+            <!-- wizard container -->
+        </div>
+        <div class="sidebar-back"></div>
     </div>
-    </div>
+</div>
     		
 </div>
 <!-- <div class="overlay">
