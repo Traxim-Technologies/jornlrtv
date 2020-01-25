@@ -109,7 +109,7 @@
                                        <h3>{{$video->title}}</h3>
 
                                        <div class="views pull-left">
-                                          {{number_format_short($video->watch_count)}} {{tr('views')}}
+                                          {{number_format_short($video->watch_count)}} {{tr('views')}} -  {{common_date($video->created_at)}} 
                                        </div>
                      
                                        <div class="pull-right relative">

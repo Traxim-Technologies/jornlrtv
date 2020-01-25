@@ -5050,7 +5050,7 @@ class NewAdminController extends Controller {
     public function user_redeem_requests(Request $request) {
 
         try {
-        
+            
             $base_query = RedeemRequest::orderBy('status' , 'asc');
 
             $user_details = [];
@@ -5321,11 +5321,11 @@ class NewAdminController extends Controller {
      * @return success/error message
      */
     public function settings_save(Request $request) {
-        
+       
         try {
             
             DB::beginTransaction();
-
+        
             foreach( $request->toArray() as $key => $value) {
               
                 $check_settings = Settings::where('key' ,'=', $key)->count();
@@ -5335,15 +5335,7 @@ class NewAdminController extends Controller {
                     throw new Exception( $key.tr('admin_settings_key_not_found'), 101);
                 }
 
-                if( $request->hasFile($key) ) {
-
-                    Helper::delete_picture($key, "/uploads/settings/");
-
-                    $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
-
-                    $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
-               
-                } else if($key == "admin_ppv_commission") {
+                if($key == "admin_ppv_commission") {
 
                     $value = $request->admin_ppv_commission < 100 ? $request->admin_ppv_commission : 100;
 
@@ -5359,12 +5351,27 @@ class NewAdminController extends Controller {
                         $user_ppv_commission_details->save();
                     }
 
-                    $result = Settings::where('key' ,'=', $key)->update(['value' => $value]);
+                } 
 
-                } else {
+                if ($key == "site_name") {
+
+                    $site_name = preg_replace("/[^A-Za-z0-9]/", "", $value);
+
+                    \Enveditor::set("SITENAME", $site_name);
+
+                }
+
+                $result = Settings::where('key' ,'=', $key)->update(['value' => $value]); 
+
+                if($request->hasFile($key) ) {
+
+                    Helper::delete_picture($key, "/uploads/settings/");
+
+                    $file_path = Helper::normal_upload_picture($request->file($key), "/uploads/settings/");
                     
-                    $result = Settings::where('key' ,'=', $key)->update(['value' => $value]);   
-                }  
+                    $result = Settings::where('key' ,'=', $key)->update(['value' => $file_path]); 
+
+                }
 
                 if( $result == TRUE ) {
                      
@@ -5374,6 +5381,7 @@ class NewAdminController extends Controller {
 
                     throw new Exception(tr('admin_settings_save_error'), 101);
                 } 
+
             }
 
             return back()->with('flash_success', tr('admin_settings_key_save_success'));
@@ -5447,7 +5455,6 @@ class NewAdminController extends Controller {
             $push_data = ['type' => PUSH_REDIRECT_HOME];
 
             dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_HOME , 0, 0, $push_data));
-
 
             return back()->with('flash_success' , tr('push_send_success'));
         
@@ -6542,7 +6549,7 @@ class NewAdminController extends Controller {
         // Check the video present or not
         if ($video) {
 
-            $video->status = DEFAULT_TRUE;
+            $video->publish_status = DEFAULT_TRUE;
 
             $video->publish_time = date('Y-m-d H:i:s');
 

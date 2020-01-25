@@ -150,7 +150,6 @@ class UserApiController extends Controller {
 
     }
 
-    
     public function broadcast(Request $request) {
         
         $validator = Validator::make($request->all(),array(
@@ -4789,6 +4788,7 @@ class UserApiController extends Controller {
                     $cards->last_four = $last_four;
                     $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
+
                     $cards->card_name = $customer->sources->data ? $customer->sources->data[0]->brand : "";
 
                     // Check is any default is available
@@ -6607,7 +6607,7 @@ class UserApiController extends Controller {
                 $items[] = displayVideoDetails($value, $request->id);
 
             }
-
+            
             $pagination = (string) $videos->links();
 
         }
@@ -10096,11 +10096,20 @@ class UserApiController extends Controller {
             $skip = $this->skip ?: 0; $take = $this->take ?: TAKE_COUNT;
 
             $bell_notifications = BellNotification::where('to_user_id', $request->id)
-                                        ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at')
+                                        ->select('notification_type', 'channel_id', 'video_tape_id', 'message', 'status as notification_status', 'from_user_id', 'to_user_id', 'created_at', \DB::raw('DATE_FORMAT(created_at , "%e %b %y %I:%i %p") as created_date'))
                                         ->skip($skip)
                                         ->take($take)
                                         ->orderBy('bell_notifications.created_at', 'desc')
                                         ->get();
+                                        
+            $user_details = User::find($request->id);
+            
+            if(!$user_details) {
+
+                throw new Exception(Helper::get_error_message(133), 133);
+            }
+            
+            $timezone = $user_details->timezone ?: "";
 
             foreach ($bell_notifications as $key => $bell_notification_details) {
 
@@ -10122,12 +10131,15 @@ class UserApiController extends Controller {
 
                 $bell_notification_details->picture = $picture;
 
+                $bell_notification_details->created = common_date($bell_notification_details->created_at, $timezone, 'd M y h:i A');
+
                 unset($bell_notification_details->from_user_id);
 
                 unset($bell_notification_details->to_user_id);
             }
 
             $response_array = ['success' => true, 'data' => $bell_notifications];
+
 
             return response()->json($response_array);
 

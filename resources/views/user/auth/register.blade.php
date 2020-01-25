@@ -33,6 +33,8 @@
                                 
                                 <input type="hidden" value="facebook" name="provider" id="provider">
 
+                                <input type="hidden" name="timezone" value="" id="f-userTimezone">
+
                                 <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
 
                                 <a href="#">
@@ -55,6 +57,8 @@
                                 
                                 <input type="hidden" value="twitter" name="provider" id="provider">
 
+                                <input type="hidden" name="timezone" value="" id="t-userTimezone">
+
                                 <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
 
                                 <a href="#">
@@ -74,7 +78,8 @@
                         <div class="social-google">
                             <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
                                 <input type="hidden" value="google" name="provider" id="provider">
-                                
+                                <input type="hidden" name="timezone" value="" id="g-userTimezone">
+
                                 <a href="#">
                                     <button type="submit">
                                         <i class="fa fa-google-plus"></i>{{tr('login_via_google')}}
@@ -197,7 +202,7 @@
         var dMin = new Date().getTimezoneOffset();
 
         var dtz = -(dMin/60);
-        $("#userTimezone").val(jstz.determine().name());
+        $("#userTimezone, #t-userTimezone,#f-userTimezone,#g-userTimezone").val(jstz.determine().name());
     });
 
 </script>

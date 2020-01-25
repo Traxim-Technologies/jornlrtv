@@ -23,7 +23,29 @@
 
 <script src="{{asset('admin-css/plugins/input-mask/jquery.inputmask.extensions.js')}}"></script>    
 
+<script src="{{asset('assets/js/jstz.min.js')}}"></script>
+
 <script type="text/javascript">
+
+    function updateTimezone() {
+
+        var timezone = jstz.determine().name();
+
+        $.post('{{ route("user.timezone.save")}}', {'timezone': timezone, 'is_json': 1})
+
+        .done(function(response) {
+
+            // $('#global-notifications-count').html(response.count);
+            
+        })
+        .fail(function(response) {
+            // console.log(response);
+        })
+        .always(function(response) {
+            // console.log(response);
+        });
+
+    }
 
     $(window).load(function() {
         
@@ -140,6 +162,10 @@
         
         });
         @if(Auth::check())
+
+
+        updateTimezone();
+
         $.post('{{ route("user.bell_notifications.index")}}', {'is_json': 1})
 
         .done(function(response) {
@@ -149,7 +175,7 @@
             }
 
             $('#global-notifications-count').html(response.data.length);
-
+            
             $.each(response.data, function(key,notificationDetails) { 
 
                 // console.log(JSON.stringify(notificationDetails));
@@ -186,7 +212,7 @@
                           
                 messageTemplate +=  '</div>';
 
-                messageTemplate +=  '<small class="text-warning">27.11.2015, 15:00</small>';
+                messageTemplate +=  '<small class="text-warning">'+notificationDetails.created+'</small>';
                               
                 messageTemplate +=  '</div>';
 
@@ -235,26 +261,23 @@
 
     $(document).on("click", ".notification-link a", function(){ 
 
-            alert("notificationsStatusUpdate");
+        $.post('{{ route("user.bell_notifications.update")}}', {'is_json': 1})
 
-            $.post('{{ route("user.bell_notifications.update")}}', {'is_json': 1})
+        .done(function(response) {
 
-            .done(function(response) {
-
-                //$('#global-notifications-count').html(response.count);
-                return true;
-                
-            })
-            .fail(function(response) {
-                console.log(response);
-            })
-            .always(function(response) {
-                console.log(response);
-            });
+            //$('#global-notifications-count').html(response.count);
+            return true;
+            
+        })
+        .fail(function(response) {
+            console.log(response);
+        })
+        .always(function(response) {
+            console.log(response);
+        });
 
 
     });
-
 
     jQuery(document).ready( function () {
         //autocomplete

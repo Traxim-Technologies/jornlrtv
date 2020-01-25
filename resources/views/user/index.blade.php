@@ -191,7 +191,7 @@
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$recent_video->channel_id)}}">{{$recent_video->channel_name}}</a></div>
                                         <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$recent_video->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{common_date($recent_video->created_at) }}</div>
+                                        {{$recent_video->publish_time}}</div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->

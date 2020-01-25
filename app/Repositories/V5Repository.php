@@ -334,7 +334,7 @@ class V5Repository {
         $video_tape_details->history_status = count(Helper::history_status($user_id,$video_tape_id)) > 0? 1 : 0;
 
 
-        $video_tape_details->is_user_subscribed_the_channel = check_channel_status($user_id, $video_tape_details->channel_id);
+        $video_tape_details->is_user_subscribed_the_channel = check_channel_status($user_id, $video_tape_details->channel_id) ? CHANNEL_SUBSCRIBED : CHANNEL_UNSUBSCRIBED;
 
         $video_tape_details->is_liked = Helper::like_status($user_id, $video_tape_id);
 

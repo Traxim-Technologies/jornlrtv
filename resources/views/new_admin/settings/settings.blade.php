@@ -903,7 +903,6 @@ hr {
                 </form>
 
             </div>
-            
             <!-- Company Settings  -->
 
             <div class="streamview-tab-content">

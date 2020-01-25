@@ -16,8 +16,12 @@ use App\Helpers\AppJwt;
 
 class SocialAuthController extends Controller
 {
+	protected $timezone;
+
     public function redirect(Request $request)
     {
+    	$this->timezone = $request->timezone ?: "UTC";
+
         return Socialite::driver($request->provider)->redirect();
     }
 
@@ -123,6 +127,8 @@ class SocialAuthController extends Controller
 
 			$user->password = Hash::make($social_user->id);
 			
+	        $user->timezone = $this->timezone ?: "UTC";
+
 			$user->save();
 
 			if($user) {

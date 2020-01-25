@@ -25,6 +25,8 @@
                         <div class="social-fb">
                             <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
                                 <input type="hidden" value="facebook" name="provider" id="provider">
+                                <input type="hidden" name="timezone" value="" id="f-userTimezone">
+
                                 <a href="#">
                                     <button type="submit">
                                         <i class="fa fa-facebook"></i>&nbsp;&nbsp;{{tr('login_via_fb')}}
@@ -40,6 +42,8 @@
                         <div class="social-twitter">
                             <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
                             <input type="hidden" value="twitter" name="provider" id="provider">
+                            <input type="hidden" name="timezone" value="" id="t-userTimezone">
+
                             <a href="#">
                                 <button type="submit">
                                     <i class="fa fa-twitter"></i>&nbsp;&nbsp;{{tr('login_via_twitter')}}
@@ -55,6 +59,9 @@
                         <div class="social-google">
                             <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
                                 <input type="hidden" value="google" name="provider" id="provider">
+                                
+                                <input type="hidden" name="timezone" value="" id="g-userTimezone">
+
                                 <a href="#">
                                     <button type="submit">
                                         <i class="fa fa-google-plus"></i>&nbsp;&nbsp;{{tr('login_via_google')}}
@@ -139,7 +146,7 @@
         var dMin = new Date().getTimezoneOffset();
         var dtz = -(dMin/60);
         // alert(dtz);
-        $("#userTimezone").val(jstz.determine().name());
+        $("#userTimezone, #t-userTimezone,#f-userTimezone,#g-userTimezone").val(jstz.determine().name());
     });
 
 </script>

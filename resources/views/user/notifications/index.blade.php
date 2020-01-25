@@ -39,7 +39,7 @@
 				                        <div>
 				                            {{$notification_details->message}}
 				                        </div>
-				                        <small class="text-warning">{{ common_date($notification_details->created_at) }}</small>
+				                        <small class="text-warning">{{ common_date($notification_details->created) }}</small>
 				                    </div>
 				                </div>
 

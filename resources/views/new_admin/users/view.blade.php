@@ -262,6 +262,11 @@
 			            		<th>{{ tr('email') }}</th>
 			            		<td>{{ $user_details->email }}</td>
 			            	</tr>
+
+			            	<tr>
+			            		<th>{{ tr('paypal_email') }}</th>
+			            		<td>{{ $user_details->paypal_email }}</td>
+			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('dob') }}</th>
 			            		<td>{{ date('d-m-Y', strtotime($user_details->dob)) }}</td>

@@ -843,7 +843,6 @@ class UserController extends Controller {
 
                 $videoPayment = null;
 
-
                 if (Auth::check()) {
 
                     // $usrModel
@@ -1085,7 +1084,7 @@ class UserController extends Controller {
             }
 
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
-
+            
             $trendings = $this->UserAPI->trending_list($request)->getData();
             
             $suggestions  = $this->UserAPI->suggestion_videos($request)->getData();
@@ -1258,7 +1257,7 @@ class UserController extends Controller {
         ]);
 
         $histories = $this->UserAPI->watch_list($request)->getData();
-
+        
         return view('user.account.history')
                         ->with('page' , 'history')
                         ->with('subPage' , 'user-history')
@@ -1703,13 +1702,111 @@ class UserController extends Controller {
 
         if($response->success) {
 
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  true, 'message' => 'Profile Updated'];
+
+                return response()->json($response_array, 200);
+            }
+
             return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
 
         } else {
 
             $message = isset($response->error) ? $response->error : " "." ".$response->error_messages;
 
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  false, 'error' => $response->error, 'error_messages' => $response->error_messages];
+
+                return response()->json($response_array, 200);
+            }
+
             return back()->with('flash_error' , $message);
+        }
+    
+    }
+
+    public function timezone_save(Request $request) {
+
+        $user_details = User::find(Auth::user()->id);
+
+        $user_details->timezone = $request->timezone ?: $user_details->timezone;
+
+        if($user_details->save()) {
+
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  true, 'message' => 'Profile Updated'];
+
+                return response()->json($response_array, 200);
+            }
+
+            return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
+
+        } else {
+
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  false, 'error' => 'timezone save failed', 'error_messages' => 'timezone save failed'];
+
+                return response()->json($response_array, 200);
+            }
+
+            return back()->with('flash_error', 'timezone save failed');
+        }
+    
+    }
+
+    /**
+     * Function Name : update_paypal_email() 
+     *
+     * @uses Update Paypal Email.
+     * 
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update_paypal_email(Request $request) {
+
+        $request->request->add([ 
+            'id' => \Auth::user()->id,
+            'token' => \Auth::user()->token,
+            'device_token' => \Auth::user()->device_token,
+        ]);
+
+        $validator = Validator::make(
+            $request->all(),
+            array(
+                'paypal_email' => 'required|max:255',
+        ));
+
+        if ($validator->fails()) {
+            // Error messages added in response for debugging
+            $error_messages = implode(',',$validator->messages()->all());
+
+            throw new Exception($error_messages, 101);
+            
+        } 
+
+        if($user = User::find($request->id)) {
+            
+            $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
+
+            if($user->save()) {
+
+                return back()->with('flash_success' , tr('paypal_email_updated'));
+
+            }
+            
+        } else {
+
+            throw new Exception(tr('user_details_not_saved'));
+                    
         }
     
     }
@@ -2776,7 +2873,7 @@ class UserController extends Controller {
     }
 
     public function subscribe_channel(Request $request) {
-        
+
         $validator = Validator::make( $request->all(), array(
             'user_id'     => 'required|exists:users,id',
             'channel_id'     => 'required|exists:channels,id',
@@ -3474,7 +3571,7 @@ class UserController extends Controller {
     public function subscription_payment(Request $request) {
 
         if($request->payment_type == 1) {
-            
+
             return redirect(route('user.paypal' ,['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
 
         } else {
@@ -4213,9 +4310,9 @@ class UserController extends Controller {
                     $notification_redirect_url = route('user.channel', $notification_details->channel_id);
 
                 }
-
+                
                 $notification_details->notification_redirect_url = $notification_redirect_url;
-
+                
             }
 
             return view('user.notifications.index')->with('notifications', $notifications);

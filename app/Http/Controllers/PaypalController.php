@@ -210,11 +210,11 @@ class PaypalController extends Controller {
 
     		$item = new Item();
 
-            $item->setName(Setting::get('site_name')) // item name
-                       ->setCurrency('USD')
-                   ->setQuantity('1')
+    		$item->setName(Setting::get('site_name')) // item name
+    				   ->setCurrency('USD')
+    			   ->setQuantity('1')
                    ->setPrice($total);
-         
+    	 
             $payer = new Payer();
             
             $payer->setPaymentMethod('paypal');
@@ -232,7 +232,7 @@ class PaypalController extends Controller {
             $amount = new Amount();
             $amount->setCurrency('USD')
                 ->setTotal($total)
-                ->setDetails($details);
+            	->setDetails($details);
 
             $transaction = new Transaction();
             $transaction->setAmount($amount)
@@ -250,7 +250,6 @@ class PaypalController extends Controller {
                 ->setTransactions(array($transaction));
 
             try {
-                
                 $payment->create($this->_api_context);
 
             } catch (\PayPal\Exception\PayPalConnectionException $ex) {
@@ -259,7 +258,7 @@ class PaypalController extends Controller {
 
                 $error_data = json_decode($ex->getData(), true);
 
-                $error_message = tr('payment_failed_paypal');
+                $error_message = tr('payment_failed_error');
 
                 if(is_array($error_data)) {
 
@@ -271,10 +270,10 @@ class PaypalController extends Controller {
 
                     $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
 
+
                 } else {
 
                     $error_message = $ex->getMessage() . PHP_EOL;
-
                 }
 
                 Log::info("Pay API catch METHOD");
@@ -293,15 +292,16 @@ class PaypalController extends Controller {
                     break;
                 }
             }
-        
+
             $payment_id = $payment->getId();
             // add payment ID to session
 
             Session::put('paypal_payment_id', $payment->getId());
 
             Session::put('subscription_id' , $subscription->id);
-        }
 
+
+        }
         if(isset($redirect_url) || !$payment_status) {
 
             $last_payment = UserPayment::where('user_id' , Auth::user()->id)
@@ -349,6 +349,12 @@ class PaypalController extends Controller {
 
             $user_payment->save();
 
+            if(!$payment_status) {
+
+                return back()->with('flash_success' , tr('payment_success'));
+
+            }
+            
             $response_array = array('success' => true); 
 
             if(!$payment_status) {

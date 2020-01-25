@@ -91,8 +91,9 @@ class PushNotificationRepository {
 	 		config(['fcm.http.server_key' => Setting::get('user_fcm_server_key')]);
 				
 			config(['fcm.http.sender_id' => Setting::get('user_fcm_sender_id')]);
+			
+			Log::info("Push Success");
 
-			Log::info("Android Push Success");
 
 	 		$optionBuilder = new OptionsBuilder();
 

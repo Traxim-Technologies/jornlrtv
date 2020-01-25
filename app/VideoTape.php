@@ -295,6 +295,11 @@ class VideoTape extends Model
 
     }
 
+    public function getBellNotifications() {
+
+         return $this->hasMany('App\BellNotification', 'video_tape_id', 'id');
+
+    }
 
     public function toArray()
     {
@@ -410,6 +415,16 @@ class VideoTape extends Model
                     $model->getVideoAds->delete();   
 
                 }             
+
+            }
+
+            if (count($model->getBellNotifications) > 0) {
+
+                foreach ($model->getBellNotifications as $key => $value) {
+
+                   $value->delete();    
+
+                }            
 
             }
 
