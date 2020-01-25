@@ -138,7 +138,7 @@ thead>tr>th {
                                     <div class="form-group">
                                         <label for="paypal_email">{{tr('paypal_email')}}</label>
 
-                                        <input type="paypal_email" value="{{old('paypal_email') ?: Auth::user()->paypal_email}}" name="paypal_email" class="form-control" id="paypal_email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
+                                        <input type="paypal_email" required value="{{old('paypal_email') ?: Auth::user()->paypal_email}}" name="paypal_email" class="form-control" id="paypal_email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
                                     </div>
 
                                     <div class="text-right">
