@@ -2623,7 +2623,7 @@ class UserController extends Controller {
      * @return json response details
      */
     public function ppv_invoice($id) {
-
+       
         $video = VideoTape::find($id);
 
         if ($video) {
@@ -2721,7 +2721,7 @@ class UserController extends Controller {
     public function payment_type($id, Request $request) {
 
         if($request->payment_type == 1) {
-
+          
             return redirect(route('user.ppv-video-payment', ['id' => $id, 'coupon_code' => $request->coupon_code]));
 
         } else {

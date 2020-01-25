@@ -463,7 +463,7 @@ class NewAdminController extends Controller {
      *
      */
     public function users_view(Request $request) {
-
+       
         try {
                
             $user_details = User::find($request->user_id) ;

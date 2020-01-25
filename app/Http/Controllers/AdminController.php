@@ -446,7 +446,7 @@ class AdminController extends Controller {
      *
      */
     public function users_view($id) {
-
+        
         $user = User::where('id', $id)->withCount('getChannel')
                     ->withCount('getChannelVideos')
                     ->withCount('userWishlist')
