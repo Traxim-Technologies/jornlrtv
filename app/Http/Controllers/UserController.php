@@ -877,7 +877,7 @@ class UserController extends Controller {
         ]);
 
         $response = $this->UserAPI->update_profile($request)->getData();
-        
+
         if($response->success) {
 
             if($request->is_json == 1) {
@@ -1383,7 +1383,7 @@ class UserController extends Controller {
 
             if (Auth::user()->user_type) {
 
-                return view('user.channels.create')->with('page', 'channels')
+                return view('user.channels.create')->with('page', 'my_channel')
                     ->with('subPage', 'create_channel')->with('model', $model);
 
             } else {
