@@ -117,13 +117,13 @@
 
                                         } else {
 
-                                            $dob = "00-00-0000";
+                                            // $dob = "00-00-0000";
                                         }
 
                                         echo $dob;
 
                                         ?></h4>
-                                        <h4><i class="fa fa-file"></i>{{Auth::user()->description}}</h4>
+                                        <h4><i class="fa fa-file"></i>{{(Auth::user()->description)}}</h4>
                                         
                                         <div class="text-right">
                                             <a href="{{route('user.update.profile')}}" class="btn btn-info">{{tr('edit_profile')}}</a>

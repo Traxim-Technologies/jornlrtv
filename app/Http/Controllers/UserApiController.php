@@ -173,9 +173,9 @@ class UserApiController extends Controller {
             $error_messages = implode(',',$validator->messages()->all());
             $response_array = array(
                     'success' => false,
-                    'error' => Helper::get_error_message(101),
+                    // 'error' => Helper::get_error_message(101),
                     'error_code' => 101,
-                    'error_messages' => $error_messages
+                    'error' => $error_messages
             );
         } else {
 

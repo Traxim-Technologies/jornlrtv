@@ -3544,11 +3544,10 @@ tr.active{
 }*/
 .btn-info{
 	background-color: #2E93E0;
-	border-color: #2E93E0;
+	/*border-color:rgb(229, 45, 39)!important;*/
 }
 .btn-info:hover, .btn-info:active, .btn-info:focus{
 	background-color: #3398E6;
-	border-color:#3398E6;
 }
 .mb-3{
 	margin-bottom: 3px !important;
@@ -4500,10 +4499,12 @@ input:checked + .slider{
 
 .subscription_button{
 	background: rgb(229, 45, 39);
+	border-color: red !important;
 }
 
-.subscription_button:hover{
+.subscription_button:hover,.subscription_button:active, .subscription_button:focus{
 	background-color: rgb(229, 45, 39);
+	border-color: red !important;
 }
 
 .like_color {

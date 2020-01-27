@@ -877,7 +877,7 @@ class UserController extends Controller {
         ]);
 
         $response = $this->UserAPI->update_profile($request)->getData();
-
+        
         if($response->success) {
 
             if($request->is_json == 1) {
@@ -951,41 +951,46 @@ class UserController extends Controller {
      */
     public function update_paypal_email(Request $request) {
 
-        $request->request->add([ 
-            'id' => \Auth::user()->id,
-            'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token,
-        ]);
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'paypal_email' => 'required|max:255',
-        ));
-
-        if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $error_messages = implode(',',$validator->messages()->all());
-
-            throw new Exception($error_messages, 101);
+         try {
+                $request->request->add([ 
+                    'id' => \Auth::user()->id,
+                    'token' => \Auth::user()->token,
+                    'device_token' => \Auth::user()->device_token,
+                ]);
             
-        } 
+            $validator = Validator::make($request->all(),array(
+                    'paypal_email' => 'required|max:255',
+            ));
 
-        if($user = User::find($request->id)) {
-            
-            $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
+            if ($validator->fails()) {
+                // Error messages added in response for debugging
+                $error_messages = implode(',',$validator->messages()->all());
 
-            if($user->save()) {
+                throw new Exception($error_messages, 101);
+                
+            } 
 
-                return back()->with('flash_success' , tr('paypal_email_updated'));
+            if($user = User::find($request->id)) {
+                
+                $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
 
+                if($user->save()) {
+
+                    return back()->with('flash_success' , tr('paypal_email_updated'));
+
+                }
+                
+            } else {
+
+                throw new Exception(tr('user_details_not_saved'));
+                        
             }
-            
-        } else {
 
-            throw new Exception(tr('user_details_not_saved'));
-                    
+        }  catch(Exception $e) {
+
+            return redirect()->back()->with('flash_error', $e->getMessage());
         }
+    
     
     }
 

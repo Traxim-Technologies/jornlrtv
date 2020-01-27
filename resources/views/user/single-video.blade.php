@@ -69,7 +69,6 @@
         left: -100vw;
       }
 
-
    </style>
 @endsection
 
