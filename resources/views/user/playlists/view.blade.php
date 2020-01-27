@@ -60,7 +60,7 @@
 
                         @if($playlist_type == PLAYLIST_TYPE_USER) 
 
-                            <a class="share-new global_playlist_id pull-right" id="{{$playlist_details->playlist_id, PLAYLIST_TYPE_USER}}" title="{{tr('edit')}}"><i class="fa fa-edit"></i><h4>{{ tr('edit') }}</h4></a>
+                            <a class="share-new global_playlist_id pull-right" id="{{$playlist_details->playlist_id, PLAYLIST_TYPE_USER}}" title="{{tr('edit')}}"><i class="fa fa-edit"></i></a>
                            
                         @endif
 
