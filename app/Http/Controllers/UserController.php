@@ -529,8 +529,7 @@ class UserController extends Controller {
                 if ($channel->status == USER_CHANNEL_DECLINED || $channel->is_approved == ADMIN_CHANNEL_DECLINED) {
 
                     return redirect()->to('/')->with('flash_error', tr('channel_declined'));
-                }
- 
+                } 
             }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
@@ -640,15 +639,8 @@ class UserController extends Controller {
                 $i = 0;
                
                 foreach ($data->response_array->playlists->data as $value) {
-                                  
-                    if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
-
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
-                    
-                    } else  { 
-                        
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
-                    }
+                   
+                    $data->response_array->playlists->data[$i]->is_video_exists = (in_array($value->playlist_id, $playlist_ids_video_exists)) ? YES : NO;
 
                     $i++;
                 }
@@ -665,7 +657,7 @@ class UserController extends Controller {
                 VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
-            
+
             return view('user.single-video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -1737,7 +1729,6 @@ class UserController extends Controller {
             if(!Auth::user()->user_type) {
 
                 return redirect(route('user.dashboard'))->with('flash_error', tr('subscribe_to_continue_video'));
-
             }
             
         }
@@ -1874,13 +1865,9 @@ class UserController extends Controller {
                         Helper::delete_picture($exp, "/uploads/videos/");
 
                     }
-
                 }
-
-                
-
             }
-
+            
             $video->delete();
         }
 
@@ -1961,7 +1948,7 @@ class UserController extends Controller {
         $redeem_details->send_redeem_btn_status = $redeem_details && $min_status;
 
         $redeem_requests = Auth::user()->userRedeemRequests()->orderBy('created_at', 'desc')->get();
-
+        
         return view('user.redeems.index')
                     ->with('redeem_details', $redeem_details)
                     ->with('redeem_requests', $redeem_requests);
@@ -2285,26 +2272,27 @@ class UserController extends Controller {
 
 
                 $cards = new Card;
+                
                 $cards->user_id = \Auth::user()->id;
+
                 $cards->customer_id = $customer_id;
-                $cards->last_four = $last_four;
+
+                $cards->last_four = $customer->sources->data[0]->last4 ? $customer->sources->data[0]->last4 : "";
+
                 $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
-                $cards->cvv = $request->cvv;
+                // $cards->cvv = $request->cvv;
 
                 $cards->card_name = $request->card_name;
 
-                $cards->month = $request->month;
+                // $cards->month = $request->month;
 
-                $cards->year = $request->year;
+                // $cards->year = $request->year;
 
-                if($check_card)
-                    $cards->is_default = 0;
-                else
-                    $cards->is_default = 1;
+                $cards->is_default = $check_card ? 0 : 1;
                 
                 $cards->save();
 
@@ -3811,7 +3799,7 @@ class UserController extends Controller {
                        
                         foreach ($channel_videos as $value) {
                             
-                            $value->exist_in_playlists = NO;                      
+                            $value->exist_in_playlists = NO;      
 
                             if(in_array( $value->video_tape_id, $playlist_video_ids )) {
                             
@@ -3823,7 +3811,6 @@ class UserController extends Controller {
                 // }
 
             // }
-                    // dd($playlist_details);
 
             return view('user.playlists.view')
                     ->with('playlist_details', $playlist_details)
@@ -4220,36 +4207,20 @@ class UserController extends Controller {
      *
      */
     public function playlist_video_update(Request $request)  {
-
-        // Log::info("playlist_video".print_r($request->all(), true));
         
         $request->request->add([
             'id' => Auth::user()->id,
             'token'=>Auth::user()->token
         ]);
-       
+
         if($request->status == DEFAULT_TRUE)  {
-
-            // $playlists = PlaylistVideo::where('user_id',$request->id)->where('video_tape_id', $request->video_tape_id)->get();           
-
-            // $playlist_ids = array_column($playlists->toArray(), 'playlist_id');
-
-            // dd($request->playlist_id);
-
-            // array_push($playlist_ids, $request->playlist_id);
-           
-            // array_push($request->playlist_ids, $request->playlist_id);
-
-            // dd($request->playlist_ids);
-
-            $response = $this->NewUserAPI->playlists_video_status($request)->getData();
-                  
+            
+            $response = $this->NewUserAPI->playlists_video_status($request)->getData();                  
         } 
 
         if($request->status == DEFAULT_FALSE) {
 
-            $response = $this->NewUserAPI->playlists_video_remove($request)->getData();
-        
+            $response = $this->NewUserAPI->playlists_video_remove($request)->getData();        
         }
       
         return response()->json($response);

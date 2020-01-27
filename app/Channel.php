@@ -44,6 +44,7 @@ class Channel extends Model
     {
         return $this->hasOne('App\User', 'id', 'user_id');
     }
+    
     /**
      * Save the unique ID 
      *
@@ -62,7 +63,6 @@ class Channel extends Model
     public function getVideoTape() {
         return $this->hasMany('App\VideoTape');
     }
-
 
     public function getChannelSubscribers() {
         return $this->hasMany('App\ChannelSubscription');
@@ -122,17 +122,12 @@ class Channel extends Model
 
                         if (count($explode) > 0) {
 
-
                             foreach ($explode as $key => $exp) {
-
 
                                 Helper::delete_picture($exp, "/uploads/videos/");
 
                             }
-
                         }
-                
-
                     }
 
                    $value->delete();    
@@ -153,12 +148,10 @@ class Channel extends Model
 
             if (count($model->getPlaylist) > 0) {
 
-                foreach ($model->getPlaylist as $key => $value) {
+                foreach ($model->getPlaylist as $key => $playlist) {
 
-                   $value->delete();    
-
+                   $playlist->delete();    
                 }
-
             }
 
             if (count($model->getBellNotifications) > 0) {
@@ -175,6 +168,5 @@ class Channel extends Model
         }); 
 
     }
-
 
 }

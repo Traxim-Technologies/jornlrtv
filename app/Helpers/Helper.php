@@ -267,6 +267,7 @@
                 }
 
             } else {
+                
                 Log::info("email_notification OFF");
             }
         }

@@ -999,7 +999,8 @@ class UserApiController extends Controller {
                     'user_type' => $user->user_type,
                     'social_unique_id' => $user->social_unique_id,
                     'push_status' => $user->push_status,
-                    'payment_subscription' => Setting::get('ios_payment_subscription_status')
+                    'payment_subscription' => Setting::get('ios_payment_subscription_status'),
+                    'is_appstore_upload' => Setting::get('is_appstore_upload', 0)
 
                 );
 
@@ -1139,7 +1140,8 @@ class UserApiController extends Controller {
                     'push_status' => $user->push_status,
                     'dob'=> $user->dob,
                     'description'=> $user->description,
-                    'payment_subscription' => Setting::get('ios_payment_subscription_status')
+                    'payment_subscription' => Setting::get('ios_payment_subscription_status'),
+                    'is_appstore_upload' => Setting::get('is_appstore_upload', 0)
 
                 );
 
