@@ -463,9 +463,9 @@ class NewAdminController extends Controller {
     public function users_view(Request $request) {
 
         try {
-               
-            $user_details = User::find($request->user_id) ;
             
+            $user_details = User::find($request->user_id) ;
+          
             if(!$user_details) {
 
                 throw new Exception(tr('admin_user_not_found'), 101);

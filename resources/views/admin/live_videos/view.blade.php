@@ -252,7 +252,7 @@ video {
 
                                             <h4><b>{{tr('payment')}}</b></h4>
 
-                                            @if($data->payment)
+                                            @if($data->payment_status)
 
                                                 <label class="text-red">{{tr('payment')}}</label>
 
