@@ -481,11 +481,7 @@ class AdminRepository {
             $language_details->language = $request->language;
 
             $language_details->status = APPROVED;
-            /**
-             * undocumented constant
-             **/
             
-
             if ($request->hasFile('auth_file')) {
 
                 // Read File Length
@@ -517,7 +513,7 @@ class AdminRepository {
                 $originallength = readFileLength(base_path().'/resources/lang/en/messages.php');
 
                 $length = readFileLength($_FILES['messages_file']['tmp_name']);
-               
+
                 if ($originallength != $length) {
 
                     throw new Exception(Helper::get_error_message(162), 162);
