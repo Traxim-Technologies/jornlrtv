@@ -97,6 +97,9 @@ class sendPushNotification extends Job implements ShouldQueue {
 
                 PushRepo::push_notification($user_details->device_token, $this->title, $this->content, $this->push_data, $user_details->device_type);
 
+            } else {
+              
+                Log::info('Push notifictaion is not enabled. Please contact admin');
             }
            
         }

@@ -211,7 +211,7 @@ class version4AdminController extends Controller
             }
 
             $invoice_data['user_details'] = $user_details = User::find($request->user_id);
-
+            
             $invoice_data['redeem_request_id'] = $request->redeem_request_id;
 
             $invoice_data['redeem_request_status'] = $redeem_request_details->status;
@@ -223,7 +223,7 @@ class version4AdminController extends Controller
             $invoice_data['payout_amount'] = $request->paid_amount;
 
             $data = json_decode(json_encode($invoice_data));
-
+            
             return view('new_admin.payments.redeems-payout')->with('data' , $data)->withPage('redeems')->with('sub_page' , 'redeems');
            
 	        

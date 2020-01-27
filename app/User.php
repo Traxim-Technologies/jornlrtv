@@ -175,6 +175,13 @@ class User extends Authenticatable
 
     }
 
+    /**
+     * Get the Playlist record associated with the user.
+     */
+    public function getPlaylist() {
+        return $this->hasMany('App\Playlist');
+    }
+
      /**
      * Boot function for using with User Events
      *
@@ -266,8 +273,7 @@ class User extends Authenticatable
             if (count($user->getChannelVideos) > 0) {
 
                 foreach($user->getChannelVideos as $video) {
-
-                    
+ 
                     Helper::delete_picture($video->video, "/uploads/videos/");
 
                     Helper::delete_picture($video->subtitle, "/uploads/subtitles/"); 
@@ -285,16 +291,12 @@ class User extends Authenticatable
 
                         if (count($explode) > 0) {
 
-
                             foreach ($explode as $key => $exp) {
 
-
                                 Helper::delete_picture($exp, "/uploads/videos/");
-
                             }
 
-                        }
-                
+                        }                
 
                     }
 
@@ -315,7 +317,17 @@ class User extends Authenticatable
                 $user->userRedeemRequests()->delete();
 
             }
-        
+
+            if (count($user->getPlaylist) > 0) {
+
+                foreach($user->getPlaylist as $playlist) {
+
+                    $playlist->delete();
+
+                } 
+
+            }
+
         }); 
     }
 

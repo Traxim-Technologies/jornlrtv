@@ -216,6 +216,7 @@ class LanguageController extends Controller
      * @return success/error message
      */
     public function languages_status_change(Request $request) {
+     
         try {
 
             DB::beginTransaction();
