@@ -47,7 +47,7 @@
                                     <a href="{{route('user.channel',$suggestion->channel_id)}}">{{$suggestion->channel_name}}</a>
                                 </div>
                                 <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
-                                {{ common_date($suggestion->created_at) }} 
+                                {{$suggestion->created_at}} 
                             </span>
 
                             <br>

@@ -82,7 +82,7 @@
 
 						      	<td>
 
-						      		<a href="{{$video->user ? route('admin.users.view' , $video->user_id) : '#'}}"> {{$video->user ? $video->user->name : "-"}}</a>
+						      		<a href="{{$video->user ? route('admin.users.view' , ['user_id' => $video->user_id]) : '#'}}"> {{$video->user ? $video->user->name : "-"}}</a>
 
 						      	</td>
 

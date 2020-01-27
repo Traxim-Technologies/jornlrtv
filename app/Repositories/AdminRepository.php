@@ -481,8 +481,7 @@ class AdminRepository {
             $language_details->language = $request->language;
 
             $language_details->status = APPROVED;
-
-
+            
             if ($request->hasFile('auth_file')) {
 
                 // Read File Length

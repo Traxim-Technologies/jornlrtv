@@ -30,3 +30,4 @@ class FcmSettingsSeeder extends Seeder
         }
     }
 }
+

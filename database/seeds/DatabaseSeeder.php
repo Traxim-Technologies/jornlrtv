@@ -55,6 +55,6 @@ class DatabaseSeeder extends Seeder
         $this->call(V5Seeder::class);
         $this->call(FcmSettingsSeeder::class);
         $this->call(RedeempaypalSeeder::class);
-        
+        $this->call(V5_1_Seeder::class);
     }
 }

@@ -350,6 +350,7 @@ class CommonRepository {
                         'other_video'=> $required ? 'required|url' : 'url',
                         'other_image' => $required ? 'required| mimes:jpeg,jpg,bmp,png' : 'mimes:jpeg,jpg,bmp,png',
                     ));
+                   
                     if($OtherVideovalidator->fails()) {
 
                         $error_messages = implode(',', $OtherVideovalidator->messages()->all());
@@ -371,6 +372,7 @@ class CommonRepository {
                     $uploadVideovalidator = Validator::make( $request->all(), array(
                         'video'=>$request->id ? 'mimes:mp4' : 'required|mimes:mp4',
                     ));
+                    
                     if($uploadVideovalidator->fails()) {
 
                         $error_messages = implode(',', $uploadVideovalidator->messages()->all());
@@ -435,7 +437,7 @@ class CommonRepository {
                 $model->age_limit = $request->has('age_limit') ? $request->age_limit : 0;
 
                 $model->publish_time = $request->has('publish_time') 
-                            ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : '';
+                            ? date('Y-m-d H:i:s', strtotime($request->publish_time)) : date('Y-m-d H:i:s');
                 
 
                 $model->status = DEFAULT_FALSE;
@@ -446,7 +448,7 @@ class CommonRepository {
 
                 if($model->publish_time) {
 
-                    if(strtotime($model->publish_time) < strtotime(date('Y-m-d H:i:s'))) {
+                    if(strtotime($model->publish_time) <= strtotime(date('Y-m-d H:i:s'))) {
 
                         $model->publish_status = DEFAULT_TRUE;
 
@@ -456,7 +458,6 @@ class CommonRepository {
                     }
                     
                 }
-
 
                 if($request->hasFile('subtitle')) {
 
@@ -546,7 +547,6 @@ class CommonRepository {
 
                     if($request->hasFile('other_image')) {
 
-
                         if ($model->id) {
 
                             Helper::delete_picture($model->default_image, "/uploads/images/");
@@ -610,7 +610,6 @@ class CommonRepository {
                             ->customVideoFrames(1 / ($seconds/$frames))
                             ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
                             ->ready();
-
 
                         if ($request->video->getClientSize()) {
 
@@ -690,7 +689,6 @@ class CommonRepository {
                         }
 
                     }
-
 
                     if ($new_category) {
 
@@ -850,10 +848,6 @@ class CommonRepository {
 
                         dispatch(new BellNotificationJob(json_decode(json_encode($notification_data))));
 
-                        // $push_message = $model->title;
-
-                        // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, [] , PUSH_TO_CHANNEL_SUBSCRIBERS));
-
                         $title = $content = $model->title;
 
 
@@ -864,7 +858,7 @@ class CommonRepository {
                             dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_SINGLE_VIDEO , $model->id, $model->channel_id, $push_data, PUSH_TO_CHANNEL_SUBSCRIBERS));
  
                         }
-
+                        
                     }
                    
                 } else {

@@ -83,7 +83,7 @@ class CommonHelper {
 	                            }
 	                    )) {
 
-	                        $message = Helper::success_message(102);
+	                        $message = CommonHelper::success_message(102);
 
 	                        $response_array = ['success' => true , 'message' => $message];
 

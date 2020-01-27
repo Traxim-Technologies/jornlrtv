@@ -82,7 +82,7 @@
 							      	<td>{{$i+1}}</td>
 							      	<td><a target="_blank" href="{{route('admin.live-videos.view' , $value->id)}}">{{$value->getVideoPayment ? $value->getVideoPayment->title : ''}}</a></td>
 
-							      	<td><a target="_blank" href="{{route('admin.users.view' , $value->user_id)}}"> {{$value->user ? $value->user->name : '-'}} </a></td>
+							      	<td><a  href="{{route('admin.users.view' , ['user_id' => $value->user_id])}}"> {{$value->user ? $value->user->name : '-'}} </a></td>
 							      	<td>{{$value->payment_id}}</td>
 							      	<td>{{Setting::get('currency')}}{{$value->amount ? $value->amount : 0}}</td>
 

@@ -118,7 +118,7 @@ class LanguageController extends Controller
      * @return success/error message
      */
     public function languages_save(Request $request) {
-        
+            
         try {
             
             $language_details = AdminRepo::languages_save($request);
@@ -216,6 +216,7 @@ class LanguageController extends Controller
      * @return success/error message
      */
     public function languages_status_change(Request $request) {
+     
         try {
 
             DB::beginTransaction();

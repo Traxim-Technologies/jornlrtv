@@ -461,7 +461,7 @@ class AdminController extends Controller {
      *
      */
     public function users_view($id) {
-
+       
         $user = User::where('id', $id)->withCount('getChannel')
                     ->withCount('getChannelVideos')
                     ->withCount('userWishlist')
@@ -4410,11 +4410,15 @@ class AdminController extends Controller {
 
         } else {
             // Send notifications to the users
-            $push_message = $request->message;
+            $title = $content = $request->message;
 
             // dispatch(new sendPushNotification(PUSH_TO_ALL , $push_message , PUSH_REDIRECT_SINGLE_VIDEO , 29, 0, [] , PUSH_TO_CHANNEL_SUBSCRIBERS ));
 
-            dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
+            // dispatch(new sendPushNotification(PUSH_TO_ALL,$push_message,PUSH_REDIRECT_HOME,0));
+
+            $push_data = ['type' => PUSH_REDIRECT_HOME];
+
+            dispatch(new sendPushNotification(PUSH_TO_ALL , $title , $content, PUSH_REDIRECT_HOME , 0, 0, $push_data));
 
             return back()->with('flash_success' , tr('push_send_success'));
         }

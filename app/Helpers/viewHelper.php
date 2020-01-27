@@ -1369,7 +1369,8 @@ function displayVideoDetails($data,$userId) {
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
         'channel_image'=>$data->channel_picture,
-        'created_at'=>$data->created_at->diffForHumans(),   
+        'created_at'=>date('d F Y', strtotime($data->created_at)),
+        // 'created_at'=>$data->created_at->diffForHumans(),   
         'ad_status'=>$data->ad_status,
         'description'=>$data->description,
         'ratings'=>$data->ratings ? $data->ratings : 0,
@@ -1677,7 +1678,6 @@ function video_type_text($video_type) {
 
 }
 
-
 /**
  * @method check_push_notification_configuration()
  *
@@ -1700,3 +1700,4 @@ function check_push_notification_configuration() {
 
     return NO;
 }
+

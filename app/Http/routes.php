@@ -30,6 +30,10 @@ Route::post('project/configurations' , 'ApplicationController@configuration_site
 
 Route::get('pages/list' , 'ApplicationController@static_pages_api');
 
+Route::get('video_tapes_auto_clear_cron' , 'ApplicationController@video_tapes_auto_clear_cron');
+
+Route::get('demo_credential_cron' , 'ApplicationController@demo_credential_cron');
+
 
 // UI
 
@@ -703,10 +707,14 @@ Route::group(['as' => 'user.'], function(){
     Route::get('update/profile', 'UserController@update_profile')->name('update.profile');
 
     Route::post('update/profile', 'UserController@profile_save')->name('profile.save');
+    
+    Route::post('timezone_save', 'UserController@timezone_save')->name('timezone.save');
 
     Route::get('/profile/password', 'UserController@profile_change_password')->name('change.password');
 
     Route::post('/profile/password', 'UserController@profile_save_password')->name('profile.password');
+
+    Route::post('/update/paypal_email', 'UserController@update_paypal_email')->name('update.paypal_email');
 
     // Delete Account
 
@@ -928,6 +936,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/wishlist_operations', 'UserController@wishlist_operations')->name('wishlist_operations_ajax');
 
     Route::post('/update/paypal_email', 'UserController@update_paypal_email')->name('update.paypal_email');
+
+    Route::get('check_user_live_video', 'UserController@check_user_live_video')->name('check_user_live_video');
 
 
 });

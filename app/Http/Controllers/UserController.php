@@ -843,7 +843,6 @@ class UserController extends Controller {
 
                 $videoPayment = null;
 
-
                 if (Auth::check()) {
 
                     // $usrModel
@@ -1085,7 +1084,7 @@ class UserController extends Controller {
             }
 
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
-
+            
             $trendings = $this->UserAPI->trending_list($request)->getData();
             
             $suggestions  = $this->UserAPI->suggestion_videos($request)->getData();
@@ -1258,7 +1257,7 @@ class UserController extends Controller {
         ]);
 
         $histories = $this->UserAPI->watch_list($request)->getData();
-
+        
         return view('user.account.history')
                         ->with('page' , 'history')
                         ->with('subPage' , 'user-history')
@@ -1329,8 +1328,7 @@ class UserController extends Controller {
                 if ($channel->status == USER_CHANNEL_DECLINED || $channel->is_approved == ADMIN_CHANNEL_DECLINED) {
 
                     return redirect()->to('/')->with('flash_error', tr('channel_declined'));
-                }
- 
+                } 
             }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
@@ -1459,15 +1457,8 @@ class UserController extends Controller {
                 $i = 0;
                
                 foreach ($data->response_array->playlists->data as $value) {
-                                  
-                    if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
-
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
-                    
-                    } else  { 
-                        
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
-                    }
+                   
+                    $data->response_array->playlists->data[$i]->is_video_exists = (in_array($value->playlist_id, $playlist_ids_video_exists)) ? YES : NO;
 
                     $i++;
                 }
@@ -1484,7 +1475,7 @@ class UserController extends Controller {
                 VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
-            
+
             return view('user.single-video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -1703,16 +1694,62 @@ class UserController extends Controller {
 
         if($response->success) {
 
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  true, 'message' => 'Profile Updated'];
+
+                return response()->json($response_array, 200);
+            }
+
             return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
 
         } else {
 
             $message = isset($response->error) ? $response->error : " "." ".$response->error_messages;
 
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  false, 'error' => $response->error, 'error_messages' => $response->error_messages];
+
+                return response()->json($response_array, 200);
+            }
+
             return back()->with('flash_error' , $message);
         }
     
     }
+
+    public function timezone_save(Request $request) {
+
+        $user_details = User::find(Auth::user()->id);
+
+        $user_details->timezone = $request->timezone ?: $user_details->timezone;
+
+        if($user_details->save()) {
+
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  true, 'message' => 'Profile Updated'];
+
+                return response()->json($response_array, 200);
+            }
+
+            return redirect(route('user.profile'))->with('flash_success' , tr('profile_updated'));
+
+        } else {
+
+            if($request->is_json == 1) {
+
+                $response_array = ['success' =>  false, 'error' => 'timezone save failed', 'error_messages' => 'timezone save failed'];
+
+                return response()->json($response_array, 200);
+            }
+
+            return back()->with('flash_error', 'timezone save failed');
+        }
+    
+    }
+
 
     /**
      * Function Name : profile_save_password() 
@@ -2470,7 +2507,6 @@ class UserController extends Controller {
             if(!Auth::user()->user_type) {
 
                 return redirect(route('user.dashboard'))->with('flash_error', tr('subscribe_to_continue_video'));
-
             }
             
         }
@@ -2607,13 +2643,9 @@ class UserController extends Controller {
                         Helper::delete_picture($exp, "/uploads/videos/");
 
                     }
-
                 }
-
-                
-
             }
-
+            
             $video->delete();
         }
 
@@ -2695,7 +2727,7 @@ class UserController extends Controller {
         $redeem_details->send_redeem_btn_status = $redeem_details && $min_status;
 
         $redeem_requests = Auth::user()->userRedeemRequests()->orderBy('created_at', 'desc')->get();
-
+        
         return view('user.redeems.index')
                     ->with('redeem_details', $redeem_details)
                     ->with('redeem_requests', $redeem_requests);
@@ -2776,7 +2808,7 @@ class UserController extends Controller {
     }
 
     public function subscribe_channel(Request $request) {
-        
+
         $validator = Validator::make( $request->all(), array(
             'user_id'     => 'required|exists:users,id',
             'channel_id'     => 'required|exists:channels,id',
@@ -3019,20 +3051,27 @@ class UserController extends Controller {
 
 
                 $cards = new Card;
+                
                 $cards->user_id = \Auth::user()->id;
+
                 $cards->customer_id = $customer_id;
-                $cards->last_four = $last_four;
+
+                $cards->last_four = $customer->sources->data[0]->last4 ? $customer->sources->data[0]->last4 : "";
+
                 $cards->card_token = $customer->sources->data ? $customer->sources->data[0]->id : "";
 
                 // Check is any default is available
                 $check_card = Card::where('user_id', \Auth::user()->id)->first();
 
+                // $cards->cvv = $request->cvv;
+
                 $cards->card_name = $request->card_name;
 
-                if($check_card)
-                    $cards->is_default = DECLINED;
-                else
-                    $cards->is_default = APPROVED;
+                // $cards->month = $request->month;
+
+                // $cards->year = $request->year;
+
+                $cards->is_default = $check_card ? 0 : 1;
                 
                 $cards->save();
 
@@ -3474,7 +3513,7 @@ class UserController extends Controller {
     public function subscription_payment(Request $request) {
 
         if($request->payment_type == 1) {
-            
+
             return redirect(route('user.paypal' ,['subscription_id' => $request->s_id, 'coupon_code'=>$request->coupon_code]));
 
         } else {
@@ -4213,9 +4252,9 @@ class UserController extends Controller {
                     $notification_redirect_url = route('user.channel', $notification_details->channel_id);
 
                 }
-
+                
                 $notification_details->notification_redirect_url = $notification_redirect_url;
-
+                
             }
 
             return view('user.notifications.index')->with('notifications', $notifications);
@@ -4543,7 +4582,7 @@ class UserController extends Controller {
                        
                         foreach ($channel_videos as $value) {
                             
-                            $value->exist_in_playlists = NO;                      
+                            $value->exist_in_playlists = NO;      
 
                             if(in_array( $value->video_tape_id, $playlist_video_ids )) {
                             
@@ -4555,7 +4594,6 @@ class UserController extends Controller {
                 // }
 
             // }
-                    // dd($playlist_details);
 
             return view('user.playlists.view')
                     ->with('playlist_details', $playlist_details)
@@ -4952,36 +4990,20 @@ class UserController extends Controller {
      *
      */
     public function playlist_video_update(Request $request)  {
-
-        // Log::info("playlist_video".print_r($request->all(), true));
         
         $request->request->add([
             'id' => Auth::user()->id,
             'token'=>Auth::user()->token
         ]);
-       
+
         if($request->status == DEFAULT_TRUE)  {
-
-            // $playlists = PlaylistVideo::where('user_id',$request->id)->where('video_tape_id', $request->video_tape_id)->get();           
-
-            // $playlist_ids = array_column($playlists->toArray(), 'playlist_id');
-
-            // dd($request->playlist_id);
-
-            // array_push($playlist_ids, $request->playlist_id);
-           
-            // array_push($request->playlist_ids, $request->playlist_id);
-
-            // dd($request->playlist_ids);
-
-            $response = $this->NewUserAPI->playlists_video_status($request)->getData();
-                  
+            
+            $response = $this->NewUserAPI->playlists_video_status($request)->getData();                  
         } 
 
         if($request->status == DEFAULT_FALSE) {
 
-            $response = $this->NewUserAPI->playlists_video_remove($request)->getData();
-        
+            $response = $this->NewUserAPI->playlists_video_remove($request)->getData();        
         }
       
         return response()->json($response);
@@ -5208,42 +5230,82 @@ class UserController extends Controller {
      */
     public function update_paypal_email(Request $request) {
 
-        $request->request->add([ 
-            'id' => \Auth::user()->id,
-            'token' => \Auth::user()->token,
-            'device_token' => \Auth::user()->device_token,
-        ]);
-
-        $validator = Validator::make(
-            $request->all(),
-            array(
-                'paypal_email' => 'required|max:255',
-        ));
-
-        if ($validator->fails()) {
-            // Error messages added in response for debugging
-            $error_messages = implode(',',$validator->messages()->all());
-
-            throw new Exception($error_messages, 101);
+        try{
+            $request->request->add([ 
+                'id' => \Auth::user()->id,
+                'token' => \Auth::user()->token,
+                'device_token' => \Auth::user()->device_token,
+            ]);
             
-        } 
+            $validator = Validator::make($request->all(),array(
+                    'paypal_email' => 'required|max:255',
+            ));
 
-        if($user = User::find($request->id)) {
-            
-            $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
+            if ($validator->fails()) {
+                // Error messages added in response for debugging
+                $error_messages = implode(',',$validator->messages()->all());
 
-            if($user->save()) {
+                throw new Exception($error_messages, 101);
+                
+            } 
 
-                return back()->with('flash_success' , tr('paypal_email_updated'));
+            if($user = User::find($request->id)) {
+                
+                $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
 
+                if($user->save()) {
+
+                    return back()->with('flash_success' , tr('paypal_email_updated'));
+
+                }
+                
+            } else {
+
+                throw new Exception(tr('user_details_not_saved'));
+                        
             }
-            
-        } else {
 
-            throw new Exception(tr('user_details_not_saved'));
-                    
+        }  catch(Exception $e) {
+
+            return redirect()->back()->with('flash_error', $e->getMessage());
         }
     
+    }
+
+    /**
+     * Function Name : check_user_live_video() 
+     *
+     * @uses Check Live  Video Present for the user
+     * 
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function check_user_live_video(Request $request) {
+
+        $request->request->add([ 
+            'id' => Auth::user()->id,
+            'token'=>Auth::user()->token
+        ]);
+
+        $model = LiveVideo::where('user_id', $request->id)
+                    ->where('status', DEFAULT_FALSE)
+                    ->first();
+        
+        if(count($model) > 0) {
+
+            return response()->json(['success'=>false, 'data'=>$model, 'error_messages'=>tr('video_call_already_present')]);
+
+        } else {
+
+            return response()->json(['success'=>true]);
+
+        }
+
     }
 
 }

@@ -54,15 +54,15 @@ class sendPushNotification extends Job implements ShouldQueue {
     public function handle() {
 
         if($this->user_id == PUSH_TO_ALL) {
-                
+            
             if($this->push_all_type == PUSH_TO_CHANNEL_SUBSCRIBERS) {
-                
+
                 $channel_subscriptions = ChannelSubscription::leftJoin('users', 'users.id', '=', 'channel_subscriptions.user_id')
                     ->where('channel_subscriptions.channel_id', $this->channel_id)
                     ->where('users.push_status',YES)
                     ->where('users.device_token','!=' ,'')
                     ->get();
-
+                
                 foreach ($channel_subscriptions as $key => $subscriber) {
 
                     if($subscriber->getUser) {
@@ -92,11 +92,14 @@ class sendPushNotification extends Job implements ShouldQueue {
                     ->where('push_status' , YES)
                     ->where('device_token' , '!=' , "")
                     ->first();
-            
+
             if($user_details) { 
 
                 PushRepo::push_notification($user_details->device_token, $this->title, $this->content, $this->push_data, $user_details->device_type);
 
+            } else {
+              
+                Log::info('Push notifictaion is not enabled. Please contact admin');
             }
            
         }

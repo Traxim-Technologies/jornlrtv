@@ -1349,7 +1349,7 @@ return array(
 	'page_not_found' => 'Page Not Found',
 	'go_back_home' => 'Go Back Home Page',
 	'share' => 'Share',
-	'report_this_video' => 'Report this Video ?',
+	'report_this_video' => 'Report this Video?',
 	'embed_video' => 'Embed Video',
 	'copy' => 'Copy',
 	'start_basics_details' => 'Lets start with the basic details.',
@@ -1459,7 +1459,8 @@ return array(
 	'success!' => 'Success!',
 	'on_sanp' => 'Oh snap!',
 	'visa' => 'Visa',
-	'single_video_content' => 'If you report this video, you won\'t see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.',
+
+	'single_video_content' => 'If you report this video, you won\'t see again this video again anywhere in your account except "Spam Videos". If you want to continue to report this video, Click continue and proceed the same.',
 	'installation_done' => 'Installation Process is done',
 	'verification_code_expired' => 'Verification Code Expired',
 
@@ -2355,6 +2356,7 @@ return array(
 	'redeem_paypal_cancelled' => 'Redeem by PayPal cancelled',
 	'admin_video_tape_not_found' => 'Video Not Found',
 	'playlist_add_video' => 'Add Video',
+	'no_playlists' => 'No Playlists',
 
 	'referral_code_applied' => 'Referral code applied.',
 
@@ -2368,8 +2370,11 @@ return array(
   	'user_fcm_server_key' => 'User FCM Server Key',
 
   	'paypal_email_updated' => 'Paypal Email Updated.',
+
 	'paypal_email_note' => 'Paypal Email - Used While Admin Checkout with Papal Invoice.',
 
 	'user_no_paypal_email' => 'PayPal Payment is hided, because the user is not updated the PayPal email.',
+
+	'video_call_already_present'=>'You already have an ongoing live broadcast. By clicking continue, the existing streamings will get clear.',
 
 );

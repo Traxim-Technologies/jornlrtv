@@ -56,6 +56,8 @@ class NewUserApiController extends Controller
     protected $skip, $take, $loginUser, $currency;
 
 	public function __construct(Request $request) {
+        
+        Log::info(url()->current());
 
         Log::info("Request Info".print_r($request->all(), true));
 
@@ -282,7 +284,6 @@ class NewUserApiController extends Controller
                 $user_details->picture = $request->picture ?: $user_details->picture;
 
             }   
-
 
             if($user_details->save()) {
 
@@ -2426,6 +2427,8 @@ class NewUserApiController extends Controller
 
         try {
 
+            Log::info("Video History Info".print_r($request->all(), true));
+
             $validator = Validator::make($request->all(),[
                     'video_tape_id' => 'required|integer|exists:video_tapes,id'
                 ]
@@ -3812,7 +3815,7 @@ class NewUserApiController extends Controller
             }
 
             VideoRepo::watch_count($request->video_tape_id,$request->id,NO);
-            
+
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
 
             $data = $video_tape_details;
@@ -4571,86 +4574,74 @@ class NewUserApiController extends Controller
             $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
                                         ->where('user_id', $request->id)
                                         ->first();
-            
-            // if($playlist_video_details) {
 
-            //     $message = Helper::get_message(127); $code = 127;
+            $validator = Validator::make($request->all(),[
+                'playlist_id' => 'required',
+                'video_tape_id' => 'required|exists:video_tapes,id,status,'.APPROVED,
+            ]);
 
-            //     $playlist_video_details->delete();
+            if($validator->fails()) {
 
-            // } else {
+                $error = implode(',',$validator->messages()->all());
 
-                $validator = Validator::make($request->all(),[
-                    'playlist_id' => 'required',
-                    'video_tape_id' => 'required|exists:video_tapes,id,status,'.APPROVED,
-                ]);
+                throw new Exception($error, 101);
+                
+            }
 
-                if($validator->fails()) {
+            // check the video added in spams (For Viewer)
 
-                    $error = implode(',',$validator->messages()->all());
+            if(!$request->channel_id && $request->id) {
 
-                    throw new Exception($error, 101);
+                $flagged_videos = getFlagVideos($request->id);
+
+                if(in_array($request->video_tape_id, $flagged_videos)) {
+
+                    throw new Exception(tr('video_in_spam_list'), 101);
                     
                 }
+            }
 
-                // check the video added in spams (For Viewer)
+            // Spam check end
 
-                if(!$request->channel_id && $request->id) {
+            $playlist_ids = explode(',', $request->playlist_id);
 
-                    $flagged_videos = getFlagVideos($request->id);
+            PlaylistVideo::whereNotIn('playlist_id', $playlist_ids)->where('video_tape_id', $request->video_tape_id)
+                            ->where('user_id', $request->id)
+                            ->delete();
 
-                    if(in_array($request->video_tape_id, $flagged_videos)) {
+            $total_playlists_update = 0;
+            
+            foreach ($playlist_ids as $key => $playlist_id) {
 
-                        throw new Exception(tr('video_in_spam_list'), 101);
-                        
+                // Check the playlist id belongs to the logged user
+
+                $playlist_details = Playlist::where('id', $playlist_id)->where('user_id', $request->id)->count();
+
+                if($playlist_details) {
+
+                    $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
+                                        ->where('user_id', $request->id)
+                                        ->where('playlist_id', $playlist_id)
+                                        ->first();
+                   
+                    if(!$playlist_video_details) {
+
+                        $playlist_video_details = new PlaylistVideo; 
                     }
-                }
 
-                // Spam check end
+                    $playlist_video_details->user_id = $request->id;
 
-                $playlist_ids = explode(',', $request->playlist_id);
+                    $playlist_video_details->playlist_id = $playlist_id;
 
-                PlaylistVideo::whereNotIn('playlist_id', $playlist_ids)->where('video_tape_id', $request->video_tape_id)
-                                ->where('user_id', $request->id)
-                                ->delete();
+                    $playlist_video_details->video_tape_id = $request->video_tape_id;
 
-                $total_playlists_update = 0;
-                
-                foreach ($playlist_ids as $key => $playlist_id) {
+                    $playlist_video_details->status = APPROVED;
 
-                    // Check the playlist id belongs to the logged user
+                    $playlist_video_details->save();
 
-                    $playlist_details = Playlist::where('id', $playlist_id)->where('user_id', $request->id)->count();
-
-                    if($playlist_details) {
-
-                        $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
-                                            ->where('user_id', $request->id)
-                                            ->where('playlist_id', $playlist_id)
-                                            ->first();
-                        if(!$playlist_video_details) {
-
-                            $playlist_video_details = new PlaylistVideo;
-     
-                        }
-
-                        $playlist_video_details->user_id = $request->id;
-
-                        $playlist_video_details->playlist_id = $playlist_id;
-
-                        $playlist_video_details->video_tape_id = $request->video_tape_id;
-
-                        $playlist_video_details->status = APPROVED;
-
-                        $playlist_video_details->save();
-
-                        $total_playlists_update++;
-
-                    }
-                
-                }
-
-            // }
+                    $total_playlists_update++;
+                }                
+            }
 
             DB::commit();
 
