@@ -529,8 +529,7 @@ class UserController extends Controller {
                 if ($channel->status == USER_CHANNEL_DECLINED || $channel->is_approved == ADMIN_CHANNEL_DECLINED) {
 
                     return redirect()->to('/')->with('flash_error', tr('channel_declined'));
-                }
- 
+                } 
             }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
@@ -640,15 +639,8 @@ class UserController extends Controller {
                 $i = 0;
                
                 foreach ($data->response_array->playlists->data as $value) {
-                                  
-                    if (in_array($value->playlist_id, $playlist_ids_video_exists)) {
-
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_TRUE;
-                    
-                    } else  { 
-                        
-                        $data->response_array->playlists->data[$i]->is_video_exists = DEFAULT_FALSE;
-                    }
+                   
+                    $data->response_array->playlists->data[$i]->is_video_exists = (in_array($value->playlist_id, $playlist_ids_video_exists)) ? YES : NO;
 
                     $i++;
                 }
@@ -665,7 +657,7 @@ class UserController extends Controller {
                 VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
-           
+
             return view('user.single-video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -1742,7 +1734,6 @@ class UserController extends Controller {
             if(!Auth::user()->user_type) {
 
                 return redirect(route('user.dashboard'))->with('flash_error', tr('subscribe_to_continue_video'));
-
             }
             
         }
@@ -1879,13 +1870,9 @@ class UserController extends Controller {
                         Helper::delete_picture($exp, "/uploads/videos/");
 
                     }
-
                 }
-
-                
-
             }
-
+            
             $video->delete();
         }
 
@@ -3552,7 +3539,7 @@ class UserController extends Controller {
             ]);
 
             $response = $this->UserAPI->bell_notifications_count($request)->getData();
-
+            
             if($response->success == false) {
 
                 throw new Exception($response->error_messages, $response->error_code);
@@ -3817,7 +3804,7 @@ class UserController extends Controller {
                        
                         foreach ($channel_videos as $value) {
                             
-                            $value->exist_in_playlists = NO;                      
+                            $value->exist_in_playlists = NO;      
 
                             if(in_array( $value->video_tape_id, $playlist_video_ids )) {
                             
@@ -3829,7 +3816,6 @@ class UserController extends Controller {
                 // }
 
             // }
-                    // dd($playlist_details);
 
             return view('user.playlists.view')
                     ->with('playlist_details', $playlist_details)
@@ -4226,36 +4212,20 @@ class UserController extends Controller {
      *
      */
     public function playlist_video_update(Request $request)  {
-
-        // Log::info("playlist_video".print_r($request->all(), true));
         
         $request->request->add([
             'id' => Auth::user()->id,
             'token'=>Auth::user()->token
         ]);
-       
+
         if($request->status == DEFAULT_TRUE)  {
-
-            // $playlists = PlaylistVideo::where('user_id',$request->id)->where('video_tape_id', $request->video_tape_id)->get();           
-
-            // $playlist_ids = array_column($playlists->toArray(), 'playlist_id');
-
-            // dd($request->playlist_id);
-
-            // array_push($playlist_ids, $request->playlist_id);
-           
-            // array_push($request->playlist_ids, $request->playlist_id);
-
-            // dd($request->playlist_ids);
-
-            $response = $this->NewUserAPI->playlists_video_status($request)->getData();
-                  
+            
+            $response = $this->NewUserAPI->playlists_video_status($request)->getData();                  
         } 
 
         if($request->status == DEFAULT_FALSE) {
 
-            $response = $this->NewUserAPI->playlists_video_remove($request)->getData();
-        
+            $response = $this->NewUserAPI->playlists_video_remove($request)->getData();        
         }
       
         return response()->json($response);
