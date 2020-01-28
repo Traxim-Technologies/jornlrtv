@@ -20,11 +20,17 @@
             <div id="comment_form">
                <div>
                   <form method="post" id="comment_sent" name="comment_sent" action="{{route('user.add.comment')}}">
+
                      <input type="hidden" value="{{$video->video_tape_id}}" name="video_tape_id">
+
                      @if($comment_rating_status)
-                     <input id="rating_system" name="ratings" type="number" class="rating comment_rating" min="1" max="5" step="1">
+
+                        <input id="rating_system" name="ratings" type="number" class="rating comment_rating" min="1" max="5" step="1">
+
                      @endif
+
                      <textarea rows="10" id="comment" name="comments" placeholder="{{tr('add_comment_msg')}}"></textarea>
+
                      <p class="underline"></p>
                      <button class="btn pull-right btn-sm btn-info btn-lg top-btn-space" type="submit" id="comment_btn">{{tr('comment')}}</button>
                      <div class="clearfix"></div>
@@ -53,7 +59,9 @@
                   <a class="text-none">
                      <p>{{$comment->diff_human_time}}</p>
                   </a>
+                  @if($comment->rating>=1)
                   <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$comment->rating}}"></p>
+                  @endif
                   <p class="com-para">{{$comment->comment}}</p>
                </span>
             </div>

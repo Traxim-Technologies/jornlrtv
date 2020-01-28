@@ -665,7 +665,7 @@ class UserController extends Controller {
                 VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
-            
+           
             return view('user.single-video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -4279,11 +4279,27 @@ class UserController extends Controller {
     public function playlist_save_video_add(Request $request) {
 
         try {
-           
+        
             $request->request->add([
                 'id'=> Auth::user()->id,
                 'token'=> Auth::user()->token
             ]);
+
+            $validator = Validator::make($request->all(),array(
+
+                'playlist_title' => 'max:20',
+            ));
+
+            if ($validator->fails()) {
+    
+                $error = implode(',',$validator->messages()->all());
+
+                $response = ['success' => false, 'error_messages' => $error];
+       
+                return response()->json($response);
+                
+            } 
+
             
             $playlists_response = $this->NewUserAPI->playlists_save($request)->getData();
             

@@ -78,7 +78,7 @@
                                 <label for="name" required class="col-sm-2 control-label">{{tr('username')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="name" name="name" value="{{Auth::guard('admin')->user()->name}}" placeholder="{{tr('username')}}" required title="{{tr('only_for_alpha_values')}}">
+                                  <input type="text" class="form-control" id="name" name="name" value="{{old('name') ?: Auth::guard('admin')->user()->name}}" placeholder="{{tr('username')}}" required title="{{tr('only_for_alpha_values')}}">
                                 </div>
                             </div>
 
@@ -86,7 +86,7 @@
                                 <label for="email" class="col-sm-2 control-label">{{tr('email')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="email" required value="{{Auth::guard('admin')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}">
+                                  <input type="email" required value="{{old('email') ?: Auth::guard('admin')->user()->email}}" name="email" class="form-control" id="email" placeholder="{{tr('email')}}">
                                 </div>
                             </div>
 
@@ -94,7 +94,7 @@
                                 <label for="mobile" class="col-sm-2 control-label">{{tr('mobile')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" value="{{Auth::guard('admin')->user()->mobile}}" name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}" pattern="[0-9]{4,16}">
+                                  <input type="text" value="{{old('mobile') ?: Auth::guard('admin')->user()->mobile}}" name="mobile" class="form-control" id="mobile" placeholder="{{tr('mobile')}}" pattern="[0-9]{4,16}">
                                   <small style="color:brown">{{tr('mobile_note')}}</small>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                 <label for="address" class="col-sm-2 control-label">{{tr('address')}}</label>
 
                                 <div class="col-sm-10">
-                                  <input type="text" value="{{Auth::guard('admin')->user()->address}}" name="address" class="form-control" id="address" placeholder="{{tr('address')}}">
+                                  <input type="text" value="{{old('address') ?: Auth::guard('admin')->user()->address}}" name="address" class="form-control" id="address" placeholder="{{tr('address')}}">
                                 </div>
                             </div>
 

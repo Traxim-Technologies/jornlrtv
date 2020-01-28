@@ -44,14 +44,14 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="name" class="control-label">{{ tr('name') }} *</label>
-                    <input type="text" required class="form-control" id="name" name="name" placeholder="{{ tr('channel_name') }}" minlength="6" title="Min length must be an 6 character" value="{{ $channel_details->name }}">
+                    <input type="text" required class="form-control" id="name" name="name" placeholder="{{ tr('channel_name') }}" minlength="6" title="Min length must be an 6 character" value="{{old('name') ?: $channel_details->name}}">
                 </div>
             </div>
 
             <div class="col-sm-12">
                 <div class="form-group">                        
                     <label for="description" class="control-label">{{ tr('description') }} *</label>
-                    <textarea required class="form-control" id="description" name="description" placeholder="{{ tr('description') }}" required>{{ $channel_details->description }}</textarea> 
+                    <textarea required class="form-control" id="description" name="description" placeholder="{{ tr('description') }}" required>{{ old('description') ?: $channel_details->description }}</textarea> 
                 </div>
             </div>
             
