@@ -297,7 +297,7 @@ class AdminController extends Controller {
      *
      */
     public function users_save(Request $request) {
-
+       
         $validator = Validator::make( $request->all(), array(
                 'id'=>'exists:users,id',
                 'name' => 'required|max:255',

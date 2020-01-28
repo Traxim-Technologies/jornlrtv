@@ -214,7 +214,7 @@
 	        <!-- /.box-header -->
 	        <div class="box-body">
 
-	          	<strong><i class="fa fa-map-marker margin-r-5"></i> {{ tr('location') }}</strong>
+	          	<strong> {{ tr('timezone') }}</strong>
 	         	<p class="text-muted">{{ $user_details->timezone }}</p>
 	          	<hr>	         
 
@@ -288,8 +288,8 @@
 			            	</tr>
 
 			            	<tr>
-			            		<th>{{ tr('login_type') }}</th>
-			            		<td>{{ $user_details->login_type }}</td>
+			            		<th>{{ tr('login_by') }}</th>
+			            		<td>{{ $user_details->login_by }}</td>
 			            	</tr>
 
 			            	<tr>
