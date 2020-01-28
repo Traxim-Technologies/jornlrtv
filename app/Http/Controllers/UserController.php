@@ -3539,7 +3539,7 @@ class UserController extends Controller {
             ]);
 
             $response = $this->UserAPI->bell_notifications_count($request)->getData();
-            
+
             if($response->success == false) {
 
                 throw new Exception($response->error_messages, $response->error_code);
@@ -4254,21 +4254,6 @@ class UserController extends Controller {
                 'id'=> Auth::user()->id,
                 'token'=> Auth::user()->token
             ]);
-
-            $validator = Validator::make($request->all(),array(
-
-                'playlist_title' => 'max:20',
-            ));
-
-            if ($validator->fails()) {
-    
-                $error = implode(',',$validator->messages()->all());
-
-                $response = ['success' => false, 'error_messages' => $error];
-       
-                return response()->json($response);
-                
-            } 
 
             
             $playlists_response = $this->NewUserAPI->playlists_save($request)->getData();

@@ -45,7 +45,7 @@
 	float: right;
 	padding: 10px;
 }
-table, tbody, td, tfoot, th, thead, tr, tt, u, ul, var {
+/*table, tbody, td, tfoot, th, thead, tr, tt, u, ul, var {
 	background: transparent none repeat scroll 0 0;
 	border: 0 none;
 	font-size: 100%;
@@ -54,7 +54,7 @@ table, tbody, td, tfoot, th, thead, tr, tt, u, ul, var {
 }
 menu, ol, ul {
 	list-style: outside none none;
-}
+}*/
 .channel-header .about-secondary-links .channel-links-item:first-child {
 	margin-left: 0;
 }
@@ -620,7 +620,7 @@ a:focus {
 	position: relative;
 	width: 100px;
 	cursor: pointer;
-	margin-left: 15px;
+	margin-left: 5px;
 }
 .st_photo {
 	position: absolute;

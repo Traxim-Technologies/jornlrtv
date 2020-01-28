@@ -8,7 +8,11 @@
 .history-title {
     width: 65% !important;
 }
-
+.text-word-wrap {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
 </style>
 @endsection
 @section('content')
@@ -124,7 +128,7 @@
                                         echo $dob;
 
                                         ?></h4>
-                                        <h4 style="word-break: break-all;"><i class="fa fa-file"></i>{{(Auth::user()->description)}}</h4>
+                                        <h4 class="text-word-wrap"><i class="fa fa-file"></i>{{(Auth::user()->description)}}</h4>
                                         
                                         <div class="text-right">
                                             <a href="{{route('user.update.profile')}}" class="btn btn-info">{{tr('edit_profile')}}</a>

@@ -125,7 +125,7 @@
                                              <!--  <p class="hidden-xs">share</p> -->
                                           </a>                                            
                                           <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
-                                             <i class="material-icons">playlist_add</i>&nbsp;{{tr('save')}}&nbsp;&nbsp;
+                                             <i class="material-icons" value ="Refresh">playlist_add</i>&nbsp;{{tr('save')}}&nbsp;&nbsp;
                                           </a>
                                           
                                           @if(Auth::check())
@@ -667,10 +667,10 @@
    
                                $('.comment_rating').rating('clear');
    
-                               window.location.reload();
-   
+                                    window.location.reload();
                                }
-   
+                               window.location.reload();
+                               
                                jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a><h5 style="float:left">{{Auth::user()->name}}</h5></a><a><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                            @endif
                        } else {
@@ -1192,7 +1192,7 @@
             data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
             type: "post",
             success : function(data) {
-            
+               
                if (data.success) {
 
                   $('#playlist_title').removeAttr('value');  
@@ -1201,11 +1201,12 @@
                   
                   $('#no_playlist_text').hide();
 
-                  window.location.reload();
-
                   var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked> <input type="hidden" name="playlist_ids[]" value="playlist_'+data.playlist_id+'"><span class="playlist-checkmark"></span></label>';
 
                   $('#user_playlists').append(labal);
+
+                  // window.location.reload();
+
 
                } else {
                   

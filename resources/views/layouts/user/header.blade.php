@@ -124,6 +124,7 @@
                             </li>
 
                             <span id="global-notifications-box"></span>
+                            
                             <div id="viewAll">
                                 <li class="notification-footer bg-dark text-center">
                                     <a href="{{route('user.bell_notifications.index')}}" class="text-light">
