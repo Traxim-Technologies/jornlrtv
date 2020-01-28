@@ -394,6 +394,21 @@
                       
                   </div>
 
+                  <div id="dislike_video" style="display: none">
+                     {{tr('you_disliked_this_video')}}
+                  </div>
+
+                  <div id="like_video" style="display: none">
+                     {{tr('you_liked_this_video')}}
+                  </div>
+
+                  <div id="add_wishlist" style="display: none">
+                     {{tr('add_to_wishlist')}}
+                  </div>
+
+                  <div id="remove_wishlist" style="display: none">
+                     {{tr('remove_from_wishlist')}}
+                  </div>
                   <!--end of col-sm-4-->
                </div>
             
@@ -1205,7 +1220,7 @@
 
                   $('#user_playlists').append(labal);
 
-                  // window.location.reload();
+                  window.location.reload();
 
 
                } else {
@@ -1280,11 +1295,23 @@
 
                if(data.data && data.data.wishlist_status) {
                  
-                 $(".icon_color").addClass("wishlist-add");
+                    $(".icon_color").addClass("wishlist-add");
+
+                    var x = document.getElementById("add_wishlist")
+
+                    x.className = "show";
+
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                   
                } else {
                   
-                  $(".icon_color").removeClass("wishlist-add");
+                    $(".icon_color").removeClass("wishlist-add");
+
+                    var x = document.getElementById("remove_wishlist")
+
+                    x.className = "show";
+
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 
                }
            },
@@ -1315,10 +1342,22 @@
                if(data.success && data.like_status) {
                
                   $(".like").removeClass("like_color");
+
+                  var x = document.getElementById("like_video")
+
+                  x.className = "hide";
+
+                  setTimeout(function(){ x.className = x.className.replace("hide", ""); }, 3000);
                   
                } else {
 
-                  $(".like").addClass("like_color"); 
+                  $(".like").addClass("like_color");
+
+                  var x = document.getElementById("like_video")
+
+                  x.className = "show";
+
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); 
 
                }
 
@@ -1352,7 +1391,7 @@
      */
    function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");
-      
+
       $.ajax({      
          url : "{{route('user.video.disLike')}}",
          type: "post",
@@ -1362,9 +1401,21 @@
 
                $(".dislike").removeClass("dislike_color");
 
+               var x = document.getElementById("dislike_video")
+
+               x.className = "hide";
+
+               setTimeout(function(){ x.className = x.className.replace("hide", ""); }, 3000);
+
             } else {
 
-               $(".dislike").addClass("dislike_color"); 
+               $(".dislike").addClass("dislike_color");
+
+                  var x = document.getElementById("dislike_video")
+
+                  x.className = "show";
+
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); 
 
             }
 

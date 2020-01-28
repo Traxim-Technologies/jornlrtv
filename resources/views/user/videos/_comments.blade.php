@@ -25,7 +25,7 @@
 
                      @if($comment_rating_status)
 
-                        <input id="rating_system" name="ratings" type="number" class="rating comment_rating" min="1" max="5" step="1">
+                        <input id="rating_system" name="ratings" type="number" class="rating comment_rating" value="{{old('ratings')}}" min="1" max="5" step="1">
 
                      @endif
 

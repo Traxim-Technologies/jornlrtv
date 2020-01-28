@@ -1,5 +1,15 @@
 @extends('layouts.user')
 
+@section('styles')
+<style type="text/css">
+    .text-word-wrap {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="y-content">
@@ -32,7 +42,7 @@
 
                         @endif
 
-                        <h3>{{$playlist_details->title}}</h3>
+                        <h3 class="text-word-wrap">{{$playlist_details->title}}</h3>
 
                         @if($video_tapes)
                             <div class="pull-right btn btn-danger mb-15">
@@ -77,7 +87,7 @@
                     
                         <div>
                           
-                            <h4 class="bold no-margin-top">
+                            <h4 class="bold no-margin-top text-word-wrap">
                                {{tr('playlist_videos')}} - {{$playlist_details->title}}
                             </h4>
                  

@@ -3988,6 +3988,7 @@ class UserController extends Controller {
             $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
                                         ->where('user_id', $request->id)
                                         ->first();
+           
             // if($playlist_video_details) {
 
             //     $message = Helper::get_message(127); $code = 127;

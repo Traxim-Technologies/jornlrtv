@@ -2104,5 +2104,9 @@ return array(
 
 	'user_no_paypal_email' => 'PayPal Payment is hided, because the user is not updated the PayPal email.',
 	'description_note' =>'Description may not be greater than 1000 characters',
+	'you_disliked_this_video' => 'You disliked this video',
+	'you_liked_this_video' => 'You liked this video',
+	'add_to_wishlist' => 'Video added to wishlist',
+	'remove_from_wishlist' => 'Video removed from wishlist',
 
 );
