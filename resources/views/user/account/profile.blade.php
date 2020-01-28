@@ -8,11 +8,6 @@
 .history-title {
     width: 65% !important;
 }
-.text-word-wrap {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto;
-}
 </style>
 @endsection
 @section('content')

@@ -1,15 +1,5 @@
 @extends('layouts.user')
 
-@section('styles')
-<style type="text/css">
-    .text-word-wrap {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        hyphens: auto;
-    }
-</style>
-@endsection
-
 @section('content')
 
 <div class="y-content">

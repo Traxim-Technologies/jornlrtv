@@ -369,9 +369,7 @@ class NewAdminController extends Controller {
             $user_details->token_expiry = Helper::generate_token_expiry();
 
             $user_details->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user_details->dob;
-
-            $user_details->login_by = $request->login_by ?: "manual";
-
+            
             $user_details->paypal_email = $request->paypal_email ?: "";
 
             if ($user_details->dob) {
