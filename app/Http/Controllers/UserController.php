@@ -1903,7 +1903,7 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return redirect()->route('user.subscriptions')->with('flash_success', $response->message);
+            return redirect()->route('user.channel.mychannel')->with('flash_success', $response->message);
 
         } else {
 

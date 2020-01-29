@@ -142,26 +142,26 @@
                     @endif
                     
                     <div class="form-group">
-                        <label for="name">{{tr('name')}}</label>
+                        <label for="name">{{tr('name')}}*</label>
                         <input type="text" required name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}" title="{{tr('username_notes')}}" value="{{old('name')}}">
                     </div>
                     <div class="form-group">
-                        <label for="email">{{tr('email')}}</label>
+                        <label for="email">{{tr('email')}}*</label>
                         <input type="email" required name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}" value="{{old('email')}}"> 
                     </div>
 
                     <div class="form-group">
-                        <label for="dob">{{tr('dob')}}</label>
+                        <label for="dob">{{tr('dob')}}*</label>
                         <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off" value="{{old('dob')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="password">{{tr('password')}}</label>
+                        <label for="password">{{tr('password')}}*</label>
                         <input type="password" required name="password" min="6" class="form-control" id="password" placeholder="{{tr('password')}}" value="{{old('password')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="confirm_password">{{tr('confirm_password')}}</label>
+                        <label for="confirm_password">{{tr('confirm_password')}}*</label>
                         <input type="password" required name="password_confirmation" min="6" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}" value="{{old('confirm_password')}}">
                     </div>
 
