@@ -2520,7 +2520,7 @@ class AdminController extends Controller {
      * @return response of Ad Details Object with video details
      */
     public function video_ads_view(Request $request) {
-
+        
         $model = AdminRepo::video_ads_view($request)->getData();
 
         if(!$model) {

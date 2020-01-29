@@ -22,7 +22,7 @@
                 <div class="box-header label-primary">
 
                     <div class="pull-left">
-                        <h2 class="box-title" style="color: white"><b>{{$page_details->type}}</b></h2>
+                        <h2 class="box-title" style="color: white"><b>{{tr('view_page')}}</b></h2>
                     </div>
 
                     <div class="pull-right">
@@ -55,6 +55,10 @@
 
                     <strong><i class="fa fa-book margin-r-5"></i> {{tr('title')}}</strong>
                     <p class="text-muted">{{$page_details->title}}</p>
+                    <hr>
+
+                    <strong><i class="fa fa-book margin-r-5"></i> {{tr('page_type')}}</strong>
+                    <p class="text-muted">{{$page_details->type}}</p>
                     <hr>
 
                     <strong><i class="fa fa-book margin-r-5"></i> {{tr('description')}}</strong>

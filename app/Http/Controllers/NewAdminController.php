@@ -2895,7 +2895,7 @@ class NewAdminController extends Controller {
             'video_ads.*','video_tapes.channel_id')
                     ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
                     ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
-                    ->orderBy('video_tapes.created_at' , 'asc')
+                    ->orderBy('video_tapes.updated_at' , 'asc')
                     ->get();
 
         return view('new_admin.video_ads.ad_videos')
@@ -6886,6 +6886,16 @@ class NewAdminController extends Controller {
     public function video_tapes_set_ppv($id, Request $request) {
 
         try {
+            $validator = Validator::make($request->all() , [
+                    'ppv_amount' => 'required|max:6',
+                ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);                
+            }
 
             if($request->ppv_amount > 0) {
 

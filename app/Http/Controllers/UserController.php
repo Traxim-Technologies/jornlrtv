@@ -152,7 +152,7 @@ class UserController extends Controller {
             // Get current login admin details
 
             $master_user_id = Auth::guard('admin')->user()->user_id;
-
+            
             // Check the admin has logged in
 
             if(!$master_user_id) {
@@ -160,7 +160,7 @@ class UserController extends Controller {
                 // Check already record exists
 
                 $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
-
+               
                 if($check_admin_user_details) {
 
                     $check_admin_user_details->is_master_user = 1;
@@ -622,7 +622,7 @@ class UserController extends Controller {
             $playlists = array();
            
             $response = $data->response_array;
-            
+           
             if ($data->response_array->playlists->success) {
                   
                 // check video already exists in user playlits
@@ -691,7 +691,7 @@ class UserController extends Controller {
        
         $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
 
-        return redirect()->back()->with('flash_error', $error_message);
+        return redirect()->route('user.dashboard')->with('flash_error', $error_message);
         
     }
 
