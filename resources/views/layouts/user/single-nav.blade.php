@@ -15,7 +15,7 @@
 
     @if(count($categories) > 0)
         
-        <ul class="y-home ">
+        <ul class="y-home">
             <h3>Best of Streamtube</h3>
             @foreach($categories as $category)
                 <li>
