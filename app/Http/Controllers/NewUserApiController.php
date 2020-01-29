@@ -848,6 +848,12 @@ class NewUserApiController extends Controller
 
             $user_details->description = $request->description ?: '';
 
+            if($request->dob) {
+
+                $user_details->dob = date('Y-m-d', strtotime($request->dob));
+
+            }
+
             // Upload picture
             if($request->hasFile('picture') != "") {
 
