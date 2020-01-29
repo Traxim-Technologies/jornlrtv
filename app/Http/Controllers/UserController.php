@@ -152,10 +152,12 @@ class UserController extends Controller {
             // Get current login admin details
 
             $master_user_id = Auth::guard('admin')->user()->user_id;
+
+            $master_user_details = User::find($master_user_id);
             
             // Check the admin has logged in
 
-            if(!$master_user_id) {
+            if(!$master_user_details) {
 
                 // Check already record exists
 
@@ -211,7 +213,6 @@ class UserController extends Controller {
             }
 
             $master_user_details = User::find($master_user_id);
-
             // If master user details is not empty -> Login the admin as user
 
             if(!$master_user_details) {
@@ -219,7 +220,7 @@ class UserController extends Controller {
                 throw new Exception(tr('user_not_found'));
 
             }
-
+            
             $master_user_details->token = Helper::generate_token();
 
             $master_user_details->token_expiry = Helper::generate_token_expiry();

@@ -602,12 +602,12 @@ class CommonRepository {
 
                         Log::info('seconds with frames : '.($seconds/$frames));
 
-                        $FFmpeg
-                            ->input($main_video_duration['baseUrl'])
-                            ->constantVideoFrames($frames)
-                            ->customVideoFrames(1 / ($seconds/$frames))
-                            ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
-                            ->ready();
+                        // $FFmpeg
+                        //     ->input($main_video_duration['baseUrl'])
+                        //     ->constantVideoFrames($frames)
+                        //     ->customVideoFrames(1 / ($seconds/$frames))
+                        //     ->output(public_path()."/uploads/images/{$model->channel_id}_{$img}_%03d.png")
+                        //     ->ready();
 
                         if ($request->video->getClientSize()) {
 
