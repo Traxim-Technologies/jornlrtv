@@ -172,7 +172,7 @@
 	                					<img src="{{asset('images/redeems.png')}}" class="settings-icon">
 	                				</div>
 	                				<div class="settings-right">
-	                					<h4 class="settings-head">{{tr('redeem')}}</h4>
+	                					<h4 class="settings-head">{{tr('redeems')}}</h4>
 	                					<!-- <p class="settings-subhead">total amount $120</p> -->
 	                				</div>
 	                			</div>

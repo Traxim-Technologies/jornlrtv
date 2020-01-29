@@ -20,9 +20,13 @@
 			@include('notification.notify')
 
 			<div class="invoice">
+
 				<div class="row" > 
+
 					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 " >
+
 						<div class="text-center invoice1 white-bg">
+							
 						 	<div class="row">
 						 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 invoice-img" style="background-image: url({{asset('images/invoice-bg.jpg')}});">
 							 		<div class="invoice-overlay">
@@ -32,8 +36,8 @@
 									 	</div>
 									</div>
 								</div>
+								
 								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 white-bg">
-
 
 									<div class="spacing1">
 									 	<table  class="table text-right top-space table-sripped">

@@ -32,35 +32,34 @@
 
                         @endif
 
-                        <h3> {{$playlist_details->title }} </h3>
+                        <h3 class="text-word-wrap">{{$playlist_details->title}}</h3>
 
                         @if($video_tapes)
                             <div class="pull-right btn btn-danger mb-15">
                                 <a href="{{route('user.playlists.play_all', ['playlist_id' => $playlist_details->playlist_id, 'playlist_type' => $playlist_type])}}" style="color: #fff">Play All</a>
                             </div>
                         @endif
+                        
                         <p> {{tr('total_videos')}} : {{$playlist_details->total_videos }} </p>
 
-                        <p> {{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>
+                        <p>{{tr('last_updated')}} : {{ date('d M y', strtotime($playlist_details->updated_at)) }}</p>
 
                         <hr>
 
                         @if(Auth::check())
-                        <!-- <a href="{{route('user.profile')}}"> -->
                             <img class="img-circle " width="70px" src="{{$playlist_details->user_picture}}" style="margin-right: 10px">
                             <h4 style="display: inline;">{{ $playlist_details->user_name }}</h4>
-                        <!-- </a> -->
                         @endif
 
                         @if($playlist_details->is_my_channel && $playlist_type == PLAYLIST_TYPE_CHANNEL) 
 
-                        <a class="share-new global_playlist_id pull-right" id="{{ $playlist_details->channel_id, PLAYLIST_TYPE_CHANNEL }}" title="{{ tr('edit') }}"><i class="fa fa-edit"></i></a>
+                        <a class="share-new global_playlist_id pull-right" id="{{ $playlist_details->channel_id, PLAYLIST_TYPE_CHANNEL }}" title="{{ tr('edit') }}"><i class="fa fa-edit"></i><h4>{{ tr('edit') }}</h4></a>
 
                         @endif
 
                         @if($playlist_type == PLAYLIST_TYPE_USER) 
 
-                            <a class="share-new global_playlist_id pull-right" id="{{$playlist_details->playlist_id, PLAYLIST_TYPE_USER}}" title="{{tr('edit')}}"><i class="fa fa-edit"></i><h4>{{ tr('edit') }}</h4></a>
+                            <a class="share-new global_playlist_id pull-right" id="{{$playlist_details->playlist_id, PLAYLIST_TYPE_USER}}" title="{{tr('edit')}}"><i class="fa fa-edit"></i></a>
                            
                         @endif
 
@@ -78,7 +77,7 @@
                     
                         <div>
                           
-                            <h4 class="bold no-margin-top">
+                            <h4 class="bold no-margin-top text-word-wrap">
                                {{tr('playlist_videos')}} - {{$playlist_details->title}}
                             </h4>
                  
@@ -168,7 +167,7 @@
 
                                         </div>
 
-                                        @if(!$playlist_type == PLAYLIST_TYPE_USER) 
+                                        @if($playlist_type == PLAYLIST_TYPE_CHANNEL) 
 
                                         <div class="form-group">
 

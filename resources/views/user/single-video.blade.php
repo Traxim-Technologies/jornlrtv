@@ -69,7 +69,6 @@
         left: -100vw;
       }
 
-
    </style>
 @endsection
 
@@ -126,7 +125,7 @@
                                              <!--  <p class="hidden-xs">share</p> -->
                                           </a>                                            
                                           <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
-                                             <i class="material-icons">playlist_add</i>&nbsp;{{tr('save')}}&nbsp;&nbsp;
+                                             <i class="material-icons" value ="Refresh">playlist_add</i>&nbsp;{{tr('save')}}&nbsp;&nbsp;
                                           </a>
                                           
                                           @if(Auth::check())
@@ -206,7 +205,7 @@
                                             </div>
 
                                             <h5 class="rating no-margin mt-5">
-                                                <span class="rating1"><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
+                                                <span class="rating1"><i @if($video->ratings <= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                 <span class="rating1"><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                 <span class="rating1"><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
                                                 <span class="rating1"><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
@@ -225,20 +224,22 @@
                                                    
                                                       @if($flaggedVideo == '')
 
-                                                            <button  type="button" class="btn btn-danger report-button bottom-space" title="{{tr('report')}}" data-toggle="modal" data-target="#report-form">
-                                                                <i class="fa fa-flag"></i> 
-                                                            </button>
+                                                         <button  type="button" class="btn btn-danger report-button bottom-space" title="{{tr('report')}}" data-toggle="modal" data-target="#report-form">
+                                                            <i class="fa fa-flag"></i> 
+                                                         </button>
                                                         
-                                                        @else 
-                                                            <a href="{{route('user.remove.report_video', $flaggedVideo->video_tape_id)}}" class="btn btn-info unmark bottom-space" title="{{tr('remove_report')}}">
-                                                                <i class="fa fa-flag"></i> 
-                                                            </a>
+                                                      @else 
+                                                            
+                                                         <a href="{{route('user.remove.report_video', $flaggedVideo->video_tape_id)}}" class="btn btn-info unmark bottom-space" title="{{tr('remove_report')}}">
+                                                            <i class="fa fa-flag"></i> 
+                                                         </a>
                                                         
-                                                        @endif
+                                                      @endif
 
-                                                     @endif
+                                                   @endif
 
                                                 @endif
+
                                              </div>
                                              
                                              <div class="pull-right">
@@ -285,17 +286,20 @@
                                    
                                        <div class="tag-and-category">
                                            
-                                           <div class="row m-0">
+                                          <div class="row m-0">
+                                             
                                              <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 p-0 mt-10">
                                                 <p class="category-name" style="float: none !important;font-size: 15px !important;">category</p>
                                              </div>
                                              <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8 p-0 mt-10">
                                                 <a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank" class="category-name blue-link">{{$video->category_name}}</a>
                                              </div>
-                                           </div>
+                                          
+                                          </div>
                                            
-                                           @if(count($tags) > 0)
-                                                <div class="row m-0">
+                                          @if(count($tags) > 0)
+                                             
+                                             <div class="row m-0">
                                                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-4 p-0 mt-10">
                                                       <p class="category-name" style="float: none !important;font-size: 15px !important;">{{tr('tags')}}</p>
                                                    </div>
@@ -312,9 +316,11 @@
                                                    ?>
                                                    <?= $tags_list ? implode(', ', $tags_list) : '' ?>
                                                    </div>
-                                               </div>
+                                             
+                                             </div>
                                            
-                                           @endif
+                                          @endif
+
                                        </div>
                                    
                                     </div>
@@ -323,25 +329,27 @@
 
                                     @if(Setting::get('is_spam'))
 
-                                       @if (!$flaggedVideo)
+                                       @if(!$flaggedVideo)
                                           
                                           <div class="more-content" style="display: none;" id="report_video_form">
+                                             
                                              <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
                                                 <b>{{tr('report_this_video')}}</b>
                                                 <br>
                                                
                                                 @foreach($report_video as $report) 
+                                                
                                                 <div class="report_list">
-                                                  <label class="radio1">
-                                                     <input id="radio1" type="radio" name="reason" checked="" value="{{$report->value}}" required>
+                                                   <label class="radio1">
+                                                     <input type="radio" name="reason" value="{{$report->value}}" required>
                                                      <span class="outer"><span class="inner"></span></span>{{$report->value}}
-                                                  </label>
+                                                   </label>
                                                 </div>
-                                                <!-- <div class="clearfix"></div> -->
+
                                                 @endforeach
 
                                                 <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
-                                                <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                                <p class="help-block"><small>{{tr('single_video_content')}}</small></p>
                                                 <div class="pull-right">
                                                    <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
                                                 </div>
@@ -386,6 +394,21 @@
                       
                   </div>
 
+                  <div id="dislike_video" style="display: none">
+                     {{tr('you_disliked_this_video')}}
+                  </div>
+
+                  <div id="like_video" style="display: none">
+                     {{tr('you_liked_this_video')}}
+                  </div>
+
+                  <div id="add_wishlist" style="display: none">
+                     {{tr('add_to_wishlist')}}
+                  </div>
+
+                  <div id="remove_wishlist" style="display: none">
+                     {{tr('remove_from_wishlist')}}
+                  </div>
                   <!--end of col-sm-4-->
                </div>
             
@@ -456,17 +479,17 @@
    
    function showReportForm() {
    
-       var divId = document.getElementById('report_video_form').style.display;
+      var divId = document.getElementById('report_video_form').style.display;
    
-       if (divId == 'none') {
+      if (divId == 'none') {
    
-           $('#report_video_form').show(500);
+         $('#report_video_form').show(500);
    
-       } else {
+      } else {
    
-           $('#report_video_form').hide(500);
+         $('#report_video_form').hide(500);
    
-       }
+      }
    
    }
    
@@ -493,7 +516,6 @@
    });
    
    jQuery(document).ready(function(){ 
-
       
        // Opera 8.0+
        var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
@@ -660,10 +682,10 @@
    
                                $('.comment_rating').rating('clear');
    
-                               window.location.reload();
-   
+                                    window.location.reload();
                                }
-   
+                               window.location.reload();
+                               
                                jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a><h5 style="float:left">{{Auth::user()->name}}</h5></a><a><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                            @endif
                        } else {
@@ -1094,41 +1116,55 @@
       } catch (err) {
            // console.log('Oops, unable to copy');
       }
-   }
+   }   
    
-   // To add/remove video from playlist
-   function playlist_video_update(video_tape_id, playlist_id,playlist_checkbox) {
+   /**
+     * @function playlist_video_update() 
+     *
+     * @uses To add/remove video from playlist 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     */
+   function playlist_video_update(video_tape_id, playlist_id, playlist_checkbox) {
+      
       // id of clicked playlist   
       var playlist_checkbox_id = playlist_checkbox.id;
-     
-      var playlist_ids = $("input[name='playlist_ids[]']").val();
-     
-      // var playlist_ids = document.getElementsByName("playlist_ids[]").value();
-      // alert(playlist_ids);
-      // alert(JSON.stringify(playlist_ids));
-     
-      // playlist_ids.push("playlist_id");
-
+            
       var status;
 
-      if($('#'+playlist_checkbox_id).prop("checked") == true) {
+      var playlist_ids = $("input[name='playlist_ids[]']").map(function(){
+         return $(this).val();
+      }).get();
 
+      if($('#'+playlist_checkbox_id).prop("checked") == true) {
+         
          var status = 1;
-      } 
- 
-      else if($('#'+playlist_checkbox_id).prop("checked") == false) {
+         
+         // Do not change else causes string error in array explode
+         if(playlist_ids != '') {       
+
+            playlist_ids.push(playlist_id.toString()); 
+
+            playlist_id = playlist_ids.toString();
+         }
+
+      } else if($('#'+playlist_checkbox_id).prop("checked") == false) {
 
          var status = 0;
       }
 
       $.ajax({
          url : "{{route('user.playlist.video.update')}}",
-         data : {video_tape_id : video_tape_id, playlist_id : playlist_id, status : status, playlist_ids : playlist_ids},
+         data : { video_tape_id : video_tape_id, playlist_id : playlist_id, status : status },
          type: "POST",
          success : function(data) {
             if (data.success) {
                
                alert(data.message);
+
             } else {
 
                console.log(data.error_messages);
@@ -1140,9 +1176,19 @@
    
          },
 
-      })
+      });
    } 
 
+   /**
+     * @function playlist_save_video_add() 
+     *
+     * @uses update/create playlist 
+     *
+     * @created Anjana H
+     *
+     * @updated Anjana H
+     *
+     */
    function playlist_save_video_add(video_tape_id) {
       
       var title = $("#playlist_title" ).val();
@@ -1156,34 +1202,38 @@
       } else {
 
          $.ajax({
+
+            url : "{{route('user.playlist.save.video_add')}}",
+            data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
+            type: "post",
+            success : function(data) {
                
-               url : "{{route('user.playlist.save.video_add')}}",
-               data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
-               type: "post",
-               success : function(data) {
-               
-                  if (data.success) {
+               if (data.success) {
 
-                     $('#playlist_title').removeAttr('value');  
+                  $('#playlist_title').removeAttr('value');  
 
-                     $('#create_playlist_form').hide();
-
-                     alert(data.message);
-
-                     var labal = '<br><label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked><span class="playlist-checkmark"></span></label>';
-
-                     $('#user_playlists').append(labal);
-
-                  } else {
-                     
-                     alert(data.error_messages);
-                  }
+                  $('#create_playlist_form').hide();
                   
-               },
-      
-               error : function(data) {
-               },
-         })
+                  $('#no_playlist_text').hide();
+
+                  var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked> <input type="hidden" name="playlist_ids[]" value="playlist_'+data.playlist_id+'"><span class="playlist-checkmark"></span></label>';
+
+                  $('#user_playlists').append(labal);
+
+                  window.location.reload();
+
+
+               } else {
+                  
+                  alert(data.error_messages);
+               }
+               
+            },
+   
+            error : function(data) {
+            },
+         });
+
       }
    }  
 
@@ -1245,11 +1295,23 @@
 
                if(data.data && data.data.wishlist_status) {
                  
-                 $(".icon_color").addClass("wishlist-add");
+                    $(".icon_color").addClass("wishlist-add");
+
+                    var x = document.getElementById("add_wishlist")
+
+                    x.className = "show";
+
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                   
                } else {
                   
-                  $(".icon_color").removeClass("wishlist-add");
+                    $(".icon_color").removeClass("wishlist-add");
+
+                    var x = document.getElementById("remove_wishlist")
+
+                    x.className = "show";
+
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 
                }
            },
@@ -1280,10 +1342,22 @@
                if(data.success && data.like_status) {
                
                   $(".like").removeClass("like_color");
+
+                  var x = document.getElementById("like_video")
+
+                  x.className = "hide";
+
+                  setTimeout(function(){ x.className = x.className.replace("hide", ""); }, 3000);
                   
                } else {
 
-                  $(".like").addClass("like_color"); 
+                  $(".like").addClass("like_color");
+
+                  var x = document.getElementById("like_video")
+
+                  x.className = "show";
+
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); 
 
                }
 
@@ -1302,7 +1376,7 @@
    
            error : function(data) {
            },
-       })
+      });
    }
    
    /**
@@ -1317,37 +1391,50 @@
      */
    function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");
-       $.ajax({
-           url : "{{route('user.video.disLike')}}",
-           type: "post",
-           data : {video_tape_id : video_id},
-           success : function(data) {
-               if(data.success && data.dislike_status) {
 
-                  $(".dislike").removeClass("dislike_color");
+      $.ajax({      
+         url : "{{route('user.video.disLike')}}",
+         type: "post",
+         data : {video_tape_id : video_id},
+         success : function(data) {              
+            if(data.success && data.dislike_status) {
 
-               } else {
+               $(".dislike").removeClass("dislike_color");
 
-                  $(".dislike").addClass("dislike_color"); 
+               var x = document.getElementById("dislike_video")
 
-               }
+               x.className = "hide";
 
-               if(data.success) {
+               setTimeout(function(){ x.className = x.className.replace("hide", ""); }, 3000);
+
+            } else {
+
+               $(".dislike").addClass("dislike_color");
+
+                  var x = document.getElementById("dislike_video")
+
+                  x.className = "show";
+
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); 
+
+            }
+
+            if(data.success) {
+
+               $("#like_count").html(data.like_count);
+      
+               $("#dislike_count").html(data.dislike_count);
+
+            } else {
+               // console.log(data.error_messages);
+            }
+         },
    
-                   $("#like_count").html(data.like_count);
-         
-                   $("#dislike_count").html(data.dislike_count);
-
-               } else {
+         error : function(data) {
+         },
+      
+      })
    
-                   // console.log(data.error_messages);
-   
-               }
-           },
-   
-           error : function(data) {
-           },
-       })
    }
    
    function addToast() {
@@ -1364,4 +1451,5 @@
    }
 
 </script>
+
 @endsection

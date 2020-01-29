@@ -306,39 +306,34 @@
                                         </div>
                                      </div>
                                      <div class="clearfix"></div>
-                                     @if(Setting::get('is_spam'))
-                                     @if (!$flaggedVideo)
-                                     <div class="more-content" style="display: none;" id="report_video_form">
-                                        <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
-                                           <b>{{tr('report_this_video')}}</b>
-                                           <br>
-                                           <!-- @foreach($report_video as $report) 
-                                           <div class="report_list">
-                                              <input type="radio" name="reason" value="{{$report->value}}" required> {{$report->value}}
-                                           </div>
-                                           @endforeach -->
+                                      @if(Setting::get('is_spam'))
+                                        @if (!$flaggedVideo)
+                                          <div class="more-content" style="display: none;" id="report_video_form">
+                                            <form name="report_video" method="post" id="report_video" action="{{route('user.add.spam_video')}}">
+                                              <b>{{tr('report_this_video')}}</b>
+                                              <br>
 
-                                           @foreach($report_video as $report) 
-                                           <div class="report_list">
-                                              <label class="radio1">
-                                                 <input id="radio1" type="radio" name="reason" checked="" value="{{$report->value}}" required>
-                                                 <span class="outer"><span class="inner"></span></span>{{$report->value}}
-                                              </label>
-                                           </div>
-                                           <!-- <div class="clearfix"></div> -->
-                                           @endforeach
+                                              @foreach($report_video as $report) 
+                                                <div class="report_list">
+                                                  <label class="radio1">
+                                                     <input id="radio1" type="radio" name="reason" checked="" value="{{$report->value}}" required>
+                                                     <span class="outer"><span class="inner"></span></span>{{$report->value}}
+                                                  </label>
+                                                </div>
+                                              @endforeach
 
-                                           <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
-                                           <p class="help-block"><small>If you report this video, you won't see again the same video in anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
-                                           <div class="pull-right">
-                                              <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
-                                           </div>
-                                           <div class="clearfix"></div>
-                                        </form>
-                                     </div>
-                                     @endif
-                                     @endif
-                                     <div class="modal fade" id="report-form" role="dialog">
+                                              <input type="hidden" name="video_tape_id" value="{{$video->video_tape_id}}" />
+                                              
+                                              <p class="help-block"><small>If you report this video, you won't see this video again anywhere in your account except "Spam Videos". If you want to continue to report this video as same. Click continue and proceed the same.</small></p>
+                                               <div class="pull-right">
+                                                  <button class="btn btn-info btn-sm">{{tr('submit')}}</button>
+                                               </div>
+                                               <div class="clearfix"></div>
+                                            </form>
+                                          </div>
+                                        @endif
+                                      @endif
+                                      <div class="modal fade" id="report-form" role="dialog">
                                         <div class="modal-dialog">
                                            <!-- Modal content-->
                                            <div class="modal-content">
@@ -375,8 +370,8 @@
                                            </div>
                                            <!-- modal content ends -->
                                         </div>
-                                     </div>
-                                     <div class="modal fade" id="login_error" role="dialog">
+                                      </div>
+                                      <div class="modal fade" id="login_error" role="dialog">
                                         <div class="modal-dialog modal-sm">
                                            <!-- Modal content-->
                                            <div class="modal-content">
@@ -399,7 +394,7 @@
                                            </div>
                                            <!-- modal content ends -->
                                         </div>
-                                     </div>
+                                      </div>
                                   </div>
                                   <div class="hr-class">
                                      <hr>
@@ -464,7 +459,9 @@
                                               <a class="text-none">
                                                  <p>{{$comment->diff_human_time}}</p>
                                               </a>
+                                              
                                               <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$comment->rating}}"></p>
+                                              
                                               <p class="com-para">{{$comment->comment}}</p>
                                            </span>
                                         </div>

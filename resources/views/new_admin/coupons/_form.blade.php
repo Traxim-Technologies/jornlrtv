@@ -51,12 +51,12 @@
 		<div class="form-group">
 			<div class="col-sm-6">
 				<label for="amount" class="control-label"> * {{ tr('per_users_limit') }}</label>
-				<input type="text" name="per_users_limit" class="form-control" placeholder="{{tr('per_users_limit')}}" value="{{$coupon_details->per_users_limit}}" required title="{{tr('per_users_limit_notes')}}">
+				<input type="text" name="per_users_limit" class="form-control" placeholder="{{tr('per_users_limit')}}" value="{{old('per_users_limit') ?: $coupon_details->per_users_limit}}" required title="{{tr('per_users_limit_notes')}}">
 			</div>
 
 			<div class="col-sm-6">
 				<label for="no_of_users_limit" class="control-label"> * {{ tr('no_of_users_limit') }}</label>
-				<input type="text" name="no_of_users_limit" class="form-control" placeholder="{{tr('no_of_users_limit')}}" value="{{$coupon_details->no_of_users_limit}}" required title="{{tr('no_of_users_limit_notes')}}">
+				<input type="text" name="no_of_users_limit" class="form-control" placeholder="{{tr('no_of_users_limit')}}" value="{{old('no_of_users_limit') ?: $coupon_details->no_of_users_limit}}" required title="{{tr('no_of_users_limit_notes')}}">
 			</div>
 		</div>
 

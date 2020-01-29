@@ -143,7 +143,7 @@ thead>tr>th {
                                 <form  action="{{ route('user.update.paypal_email') }}" method="POST" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="paypal_email">{{tr('paypal_email')}}</label>
-                                        <input type="paypal_email" value="{{old('paypal_email') ?: Auth::user()->paypal_email}}" name="paypal_email" class="form-control" id="paypal_email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}">
+                                        <input type="paypal_email" value="{{old('paypal_email') ?: Auth::user()->paypal_email}}" name="paypal_email" class="form-control" id="paypal_email" aria-describedby="emailHelp" placeholder="{{tr('enter_email')}}" required>
                                     </div>
 
                                     <div class="text-right">
@@ -185,7 +185,7 @@ thead>tr>th {
                                                             </p>
 
                                                             <p class="text-grey-clr mt-0">
-                                                                {{tr('paid_date')}}: {{$redeem_request->created_at->diffForHumans()}}
+                                                                {{tr('paid_date')}}: {{$redeem_request->updated_at->diffForHumans()}}
                                                             </p>
 
                                                             <p class="text-grey-clr mt-0">

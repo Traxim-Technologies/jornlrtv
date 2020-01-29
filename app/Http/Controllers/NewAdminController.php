@@ -302,7 +302,7 @@ class NewAdminController extends Controller {
      *
      */
     public function users_save(Request $request) {
-
+       
         try {
             
             DB::beginTransaction(); 
@@ -369,6 +369,8 @@ class NewAdminController extends Controller {
             $user_details->token_expiry = Helper::generate_token_expiry();
 
             $user_details->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user_details->dob;
+            
+            $user_details->paypal_email = $request->paypal_email ?: "";
 
             if ($user_details->dob) {
 
@@ -463,7 +465,7 @@ class NewAdminController extends Controller {
      *
      */
     public function users_view(Request $request) {
-
+       
         try {
                
             $user_details = User::find($request->user_id) ;
@@ -7230,6 +7232,7 @@ class NewAdminController extends Controller {
         }
 
     }
+    
     /**
      * @method channels_playlists_create()
      *

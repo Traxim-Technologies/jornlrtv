@@ -124,13 +124,14 @@
                             </li>
 
                             <span id="global-notifications-box"></span>
-
-                            <li class="notification-footer bg-dark text-center">
-                                <a href="{{route('user.bell_notifications.index')}}" class="text-light">
-                                    {{tr('view_all')}}
-                                </a>
-                            </li>
-                        
+                            
+                            <div id="viewAll">
+                                <li class="notification-footer bg-dark text-center">
+                                    <a href="{{route('user.bell_notifications.index')}}" class="text-light">
+                                        {{tr('view_all')}}
+                                    </a>
+                                </li>
+                            </div>
                         </ul>
 
                     </li>

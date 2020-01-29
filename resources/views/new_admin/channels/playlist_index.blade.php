@@ -11,7 +11,6 @@
 @section('breadcrumb')
      
 	<li ><i class="fa fa-suitcase"></i> <a href="{{ route('admin.channels.index')}}" > {{ tr('channels') }} </a></li>
-	<li ><i class="fa fa-suitcase"></i> <a href="{{ route('admin.channels.view',['channel_id' => $channel_details])}}" >{{ $channel_details->name }}'s </a></li>
     <li class="active"><i class="fa fa-list"></i> {{ tr('playlist') }}</li>
 
 @endsection
