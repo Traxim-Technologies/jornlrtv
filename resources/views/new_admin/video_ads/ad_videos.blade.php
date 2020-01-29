@@ -83,11 +83,11 @@
 								      	</td>
 
 								      	<td>
-								      		{{common_date($video_ad_details->created_at,'','d M Y H:i:s')}}
+								      		{{common_date($video_ad_details->created_at,Auth::guard('admin')->user()->timezone,'d M Y H:i:s')}}
 								      	</td>
 
 								      	<td>
-								      		{{common_date($video_ad_details->updated_at,'','d M Y H:i:s')}}
+								      		{{common_date($video_ad_details->updated_at,Auth::guard('admin')->user()->timezone,'d M Y H:i:s')}}
 								      	</td>
 
 									    <td>
@@ -110,7 +110,7 @@
                                                             <li role="presentation"><a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('delete') }}</a></li>
                                                         @else
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_ads.edit' , ['id' => $video_ad_details->id] ) }}">{{ tr('edit') }}</a></li>
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{ route('admin.video_ads.delete' ,  ['id' => $video_ad_details->id] ) }}">{{ tr('delete') }}</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('are_you_sure') }}&quot;);" href="{{ route('admin.video_ads.delete' ,  ['id' => $video_ad_details->id] ) }}">{{ tr('delete') }}</a></li>
 
                                                         @endif
 

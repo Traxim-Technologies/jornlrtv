@@ -2108,5 +2108,6 @@ return array(
 	'you_liked_this_video' => 'You liked this video',
 	'add_to_wishlist' => 'Video added to wishlist',
 	'remove_from_wishlist' => 'Video removed from wishlist',
+	'are_you_sure' => 'Are you sure?', 
 
 );

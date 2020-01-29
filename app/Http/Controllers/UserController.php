@@ -534,7 +534,7 @@ class UserController extends Controller {
             }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
-
+           
             $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
 
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
@@ -1793,7 +1793,7 @@ class UserController extends Controller {
     }
 
     public function video_save(Request $request) {
-       
+    
         $response = CommonRepo::video_save($request)->getData();
 
         if ($response->success) {

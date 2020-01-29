@@ -5017,14 +5017,12 @@ class UserApiController extends Controller {
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
-
         $u_id = $request->id;
 
         $channel = Channel::find($channel_id);
         
-
         if ($channel) {
-
+             
             if ($u_id == $channel->user_id) {
 
                 if ($u_id) {
@@ -5040,7 +5038,7 @@ class UserApiController extends Controller {
                         ->where('channels.status', 1)
                         ->where('channels.is_approved', 1)
                         ->where('categories.status', CATEGORY_APPROVE_STATUS);
-
+                
             }
 
         } else {
@@ -5089,7 +5087,6 @@ class UserApiController extends Controller {
             }
 
         }
-        // dd($items);
 
         return response()->json($items);
 

@@ -40,7 +40,7 @@ hr {
                     <a href="{{route('admin.video_ads.edit' , ['id' => $ads->id] )}}" class="pull-right btn btn-warning" title="{{tr('edit')}}" style="margin: 4px">
                         <b><i class="fa fa-pencil"></i></b>
                     </a>
-                     <a href="{{route('admin.video_ads.delete' , ['id' => $ads->id] )}}" onclick="return confirm('Are you sure?')" class="pull-right btn btn-danger" title="{{tr('delete')}}" style="margin: 4px">
+                     <a href="{{route('admin.video_ads.delete' , ['id' => $ads->id] )}}" onclick="return confirm(&quot;{{ tr('are_you_sure') }}&quot;);" class="pull-right btn btn-danger" title="{{tr('delete')}}" style="margin: 4px">
                         <b><i class="fa fa-trash"></i></b>
                     </a>
                 @endif
