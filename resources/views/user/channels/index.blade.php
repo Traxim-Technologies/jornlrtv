@@ -318,13 +318,16 @@
                                                                             
                                                                             <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$trending_video->video_image}}" class="slide-img1 placeholder" /></a>
 
-                                                                            @if($trending_video->ppv_amount > 0) @if(!$trending_video->ppv_status)
+                                                                            @if($trending_video->ppv_amount > 0) 
+                                                                                @if(!$trending_video->ppv_status)
 
-                                                                            <div class="video_amount">
-                                                                                {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_video->ppv_amount}}
-                                                                            </div>
+                                                                                    <div class="video_amount">
+                                                                                        {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_video->ppv_amount}}
+                                                                                    </div>
 
-                                                                            @endif @endif
+                                                                                @endif 
+
+                                                                            @endif
 
                                                                             <div class="video_duration">
                                                                                 {{$trending_video->duration}}
