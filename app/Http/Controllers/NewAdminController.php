@@ -6659,7 +6659,7 @@ class NewAdminController extends Controller {
 
                 $page = 'banner-videos'; $sub_page = 'banner-videos';
             }
-
+           
             return view('new_admin.video_tapes.view')
                         ->with('video' , $video_tape_details)
                         ->with('video_images' , $admin_video_images)
