@@ -379,7 +379,7 @@
                         
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;color: #E02424;font-size: 12px;font-style: normal;font-weight: normal;" valign="top">
                         
-                            <h1>Welcome {{$email_data->username}},</h1>
+                            <h1>Welcome {{$email_data['username']}},</h1>
 
                         </td>
                     </tr>
