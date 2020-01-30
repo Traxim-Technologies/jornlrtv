@@ -1158,7 +1158,7 @@
 
       $.ajax({
          url : "{{route('user.playlist.video.update')}}",
-         data : { video_tape_id : video_tape_id, playlist_id : playlist_id, status : status },
+         data : { video_tape_id : video_tape_id, playlist_id : playlist_id, status : status, playlist_ids : playlist_ids },
          type: "POST",
          success : function(data) {
             if (data.success) {
