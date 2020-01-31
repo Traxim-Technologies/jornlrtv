@@ -8321,6 +8321,8 @@ class UserApiController extends Controller {
 
             $user_referrer_details->currency = Setting::get('currency', '$');
 
+            $user_referrer_details->formatted_total_referrals_earnings = formatted_amount($user_referrer_details->total_referrals_earnings);
+            
             // share message start
 
             $share_message = apitr('referral_code_share_message', Setting::get('site_name', 'STREAMTUBE'));
