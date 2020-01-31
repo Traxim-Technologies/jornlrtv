@@ -269,7 +269,12 @@
 			            	</tr>
 			            	<tr>
 			            		<th>{{ tr('dob') }}</th>
-			            		<td>{{ date('d-m-Y', strtotime($user_details->dob)) }}</td>
+			            		@if($user_details->dob != 0000-00-00)
+			            			<td>{{ date('d-m-Y', strtotime($user_details->dob)) }}</td>
+			            		@else
+			            			<td></td>
+			            		@endif
+
 			            	</tr>
 			            	
 			            	<tr>

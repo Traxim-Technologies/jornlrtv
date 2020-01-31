@@ -86,7 +86,6 @@ class NewUserApiController extends Controller
     public function register(Request $request) {
 
         try {
-
             DB::beginTransaction();
 
             // Validate the common and basic fields
@@ -225,7 +224,7 @@ class NewUserApiController extends Controller
 
                 $user_details->dob = date("Y-m-d" , strtotime($request->dob));
             }
-
+            
             if ($user_details->dob) {
 
                 if ($user_details->dob != '0000-00-00') {
@@ -359,7 +358,7 @@ class NewUserApiController extends Controller
                 } else {
 
                     $response_array = ['success'=>false, 'error' => CommonHelper::error_message(1001), 'error_code'=>1001];
-
+                    
                     DB::commit();
 
                     return response()->json($response_array, 200);
@@ -631,9 +630,9 @@ class NewUserApiController extends Controller
 
             } else {
 
-                $error = $email_send_response->error;
+                $error = $email_send_response;
 
-                throw new Exception($error, $email_send_response->error_code);
+                throw new Exception($error, 101);
             }
 
             DB::commit();
