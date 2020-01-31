@@ -226,7 +226,6 @@
 	            		<td>{{$user_details->email}}</td>
 	            	</tr>
 	            	<tr>
-	            		{{dd($user_details)}}
 	            		<th>{{tr('dob')}}</th>
 	            		<td>{{date('d-m-Y', strtotime($user_details->dob))}}</td>
 	            	</tr>
