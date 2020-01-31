@@ -255,15 +255,27 @@
 
                         \Log::info($e);
 
-                        return Helper::get_error_message(123);
+                        $message = Helper::get_error_message(123);
+
+                        $response_array = ['success' => false , 'message' => $message, 'error_code' =>123];
+
+                        return json_decode(json_encode($response_array));
 
                     }
 
-                    return Helper::get_message(105);
+                    $message = Helper::get_message(105);
+
+                    $response_array = ['success' => true , 'message' => $message,'error_code' =>105];
+
+                    return json_decode(json_encode($response_array));
 
                 } else {
 
-                    return Helper::get_error_message(123);
+                    $message = Helper::get_error_message(123);
+
+                    $response_array = ['success' => false , 'message' => $message,'error_code' => 123];
+
+                    return json_decode(json_encode($response_array));
                 }
 
             } else {

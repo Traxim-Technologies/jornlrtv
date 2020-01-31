@@ -617,8 +617,8 @@ class NewUserApiController extends Controller
             $page = "emails.users.forgot-password";
 
             $email_send_response = Helper::send_email($page,$subject,$user_details->email,$email_data);
-            
-            if($email_send_response != Helper::get_error_message(123)) {
+
+            if($email_send_response->success) {
 
                 if(!$user_details->save()) {
 
@@ -630,9 +630,9 @@ class NewUserApiController extends Controller
 
             } else {
 
-                $error = $email_send_response;
-
-                throw new Exception($error, 101);
+                $error = $email_send_response->message;
+                
+                throw new Exception($error, $email_send_response->error_code);
             }
 
             DB::commit();
