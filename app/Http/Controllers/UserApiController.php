@@ -1153,7 +1153,7 @@ class UserApiController extends Controller {
     }
 
     public function forgot_password(Request $request) {
-
+            
         $email =$request->email;
         // Validate the email field
         $validator = Validator::make(

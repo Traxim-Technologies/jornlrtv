@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use DB, Log, Hash, Validator, Exception, Setting;
 
 use App\Helpers\Helper, App\Helpers\CommonHelper, App\Helpers\VideoHelper;
-
-
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Repositories\CommonRepository as CommonRepo;
@@ -621,7 +619,7 @@ class NewUserApiController extends Controller
 
             $email_send_response = Helper::send_email($page,$subject,$user_details->email,$email_data);
 
-            if($email_send_response->success) {
+            if($email_send_response) {
 
                 if(!$user_details->save()) {
 
