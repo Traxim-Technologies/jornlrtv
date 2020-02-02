@@ -441,7 +441,7 @@ class CommonRepository {
 
                 $model->status = DEFAULT_FALSE;
 
-                $model->publish_status = DEFAULT_TRUE;
+                // $model->publish_status = DEFAULT_TRUE;
 
                 $model->is_approved = DEFAULT_TRUE;
 

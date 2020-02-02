@@ -26,7 +26,7 @@
 	background-color: #333;
 	background-position: center center;
 	border-bottom: 1px solid #e2e2e2;
-	height: 175px;
+	height: 250px;
 	position: relative;
 }
 .channel-header #header-links {
@@ -35,7 +35,7 @@
 	/*font-size: 0;*/
 	padding: 0;
 	position: absolute;
-	right: 15px;
+	right: 3px;
 }
 .channel-header .about-secondary-links {
 	margin-left: 2px;
@@ -45,7 +45,7 @@
 	float: right;
 	padding: 10px;
 }
-table, tbody, td, tfoot, th, thead, tr, tt, u, ul, var {
+/*table, tbody, td, tfoot, th, thead, tr, tt, u, ul, var {
 	background: transparent none repeat scroll 0 0;
 	border: 0 none;
 	font-size: 100%;
@@ -54,7 +54,7 @@ table, tbody, td, tfoot, th, thead, tr, tt, u, ul, var {
 }
 menu, ol, ul {
 	list-style: outside none none;
-}
+}*/
 .channel-header .about-secondary-links .channel-links-item:first-child {
 	margin-left: 0;
 }
@@ -620,7 +620,7 @@ a:focus {
 	position: relative;
 	width: 100px;
 	cursor: pointer;
-	margin-left: 15px;
+	margin-left: 5px;
 }
 .st_photo {
 	position: absolute;
@@ -633,7 +633,7 @@ a:focus {
 }
 .st_cover_photo_img {
 	width: 100%;
-	height: 175px;
+	height: 250px;
 	position: absolute;
 }
 .st_channel_heading {

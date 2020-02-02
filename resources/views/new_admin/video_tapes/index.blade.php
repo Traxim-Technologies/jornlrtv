@@ -141,7 +141,7 @@
 
 								      	@endif */?>
 
-								      	<td><b>{{ formatted_amount($video_tape_details->admin_ppv_amount) }}</b></td>
+								      	<td><b>{{ formatted_amount($video_tape_details->ppv_amount) }}</b></td>
 
 								      	@if(Setting::get('is_payper_view'))
 								      	<td class="text-center">

@@ -69,7 +69,6 @@
         left: -100vw;
       }
 
-
    </style>
 @endsection
 
@@ -126,7 +125,7 @@
                                              <!--  <p class="hidden-xs">share</p> -->
                                           </a>                                            
                                           <a class="share-new global_playlist_id" id="{{$video->video_tape_id}}" href="#">
-                                             <i class="material-icons">playlist_add</i>&nbsp;{{tr('save')}}&nbsp;&nbsp;
+                                             <i class="material-icons" value ="Refresh">playlist_add</i>&nbsp;{{tr('save')}}&nbsp;&nbsp;
                                           </a>
                                           
                                           @if(Auth::check())
@@ -205,13 +204,13 @@
                                                 </a>
                                             </div>
 
-                                            <h5 class="rating no-margin mt-5">
-                                                <span class="rating1"><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                                <span class="rating1"><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></span>
-                                            </h5>
+                                            <span class="stars">
+                                                <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                <a><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                            </span> 
 
                                           </div>
                                           
@@ -395,6 +394,21 @@
                       
                   </div>
 
+                  <div id="dislike_video" style="display: none">
+                     {{tr('you_disliked_this_video')}}
+                  </div>
+
+                  <div id="like_video" style="display: none">
+                     {{tr('you_liked_this_video')}}
+                  </div>
+
+                  <div id="add_wishlist" style="display: none">
+                     {{tr('add_to_wishlist')}}
+                  </div>
+
+                  <div id="remove_wishlist" style="display: none">
+                     {{tr('remove_from_wishlist')}}
+                  </div>
                   <!--end of col-sm-4-->
                </div>
             
@@ -668,10 +682,10 @@
    
                                $('.comment_rating').rating('clear');
    
-                               window.location.reload();
-   
+                                    window.location.reload();
                                }
-   
+                               window.location.reload();
+                               
                                jQuery('#new-comment').prepend('<div class="display-com"><div class="com-image"><img style="width:48px;height:48px;  border-radius:24px;" src="{{Auth::user()->picture}}"></div><div class="display-comhead"><span class="sub-comhead"><a><h5 style="float:left">{{Auth::user()->name}}</h5></a><a><p>'+data.date+'</p></a><p>'+stars+'</p><p class="com-para">'+data.comment.comment+'</p></span></div></div>');
                            @endif
                        } else {
@@ -1144,7 +1158,7 @@
 
       $.ajax({
          url : "{{route('user.playlist.video.update')}}",
-         data : { video_tape_id : video_tape_id, playlist_id : playlist_id, status : status },
+         data : { video_tape_id : video_tape_id, playlist_id : playlist_id, status : status, playlist_ids : playlist_ids },
          type: "POST",
          success : function(data) {
             if (data.success) {
@@ -1193,7 +1207,7 @@
             data : {title : title , video_tape_id : video_tape_id, privacy : privacy, },
             type: "post",
             success : function(data) {
-            
+               
                if (data.success) {
 
                   $('#playlist_title').removeAttr('value');  
@@ -1202,11 +1216,12 @@
                   
                   $('#no_playlist_text').hide();
 
-                  alert(data.message);
-
                   var labal = '<label class="playlist-container">'+data.title+'<input type="checkbox" onclick="playlist_video_update('+video_tape_id+ ', '+data.playlist_id+ ',this)" id="playlist_'+data.playlist_id+'" checked> <input type="hidden" name="playlist_ids[]" value="playlist_'+data.playlist_id+'"><span class="playlist-checkmark"></span></label>';
 
                   $('#user_playlists').append(labal);
+
+                  window.location.reload();
+
 
                } else {
                   
@@ -1280,11 +1295,23 @@
 
                if(data.data && data.data.wishlist_status) {
                  
-                 $(".icon_color").addClass("wishlist-add");
+                    $(".icon_color").addClass("wishlist-add");
+
+                    var x = document.getElementById("add_wishlist")
+
+                    x.className = "show";
+
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                   
                } else {
                   
-                  $(".icon_color").removeClass("wishlist-add");
+                    $(".icon_color").removeClass("wishlist-add");
+
+                    var x = document.getElementById("remove_wishlist")
+
+                    x.className = "show";
+
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 
                }
            },
@@ -1315,10 +1342,22 @@
                if(data.success && data.like_status) {
                
                   $(".like").removeClass("like_color");
+
+                  var x = document.getElementById("like_video")
+
+                  x.className = "hide";
+
+                  setTimeout(function(){ x.className = x.className.replace("hide", ""); }, 3000);
                   
                } else {
 
-                  $(".like").addClass("like_color"); 
+                  $(".like").addClass("like_color");
+
+                  var x = document.getElementById("like_video")
+
+                  x.className = "show";
+
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); 
 
                }
 
@@ -1352,7 +1391,7 @@
      */
    function dislikeVideo(video_id) {
       $(".like").removeClass("like_color");
-      
+
       $.ajax({      
          url : "{{route('user.video.disLike')}}",
          type: "post",
@@ -1362,9 +1401,21 @@
 
                $(".dislike").removeClass("dislike_color");
 
+               var x = document.getElementById("dislike_video")
+
+               x.className = "hide";
+
+               setTimeout(function(){ x.className = x.className.replace("hide", ""); }, 3000);
+
             } else {
 
-               $(".dislike").addClass("dislike_color"); 
+               $(".dislike").addClass("dislike_color");
+
+                  var x = document.getElementById("dislike_video")
+
+                  x.className = "show";
+
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); 
 
             }
 

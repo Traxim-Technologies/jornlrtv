@@ -242,7 +242,7 @@
 
                     </div>
 
-                    <ul class="tab-content">
+                    <ul class="tab-content"  style="padding-left: 0px;">
 
                         <li role="tabpanel" class="tab-pane active" id="home1">
 
@@ -309,58 +309,54 @@
 
                                                             @foreach($trending_videos as $index => $trending_video)
 
-                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 channel-view">
-                                                                <div class="slide-box recom-box big-box-slide mt-0 mb-15">
-                                                                                                                                        
-                                                                    <div class="slide-image">
-                                                                        <a href="{{$trending_video->url}}">
-                                                                        </a> 
+                                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 channel-view">
 
-                                                                    @if($trending_video->ppv_amount > 0)
+                                                                    <div class="slide-box recom-box big-box-slide mt-0 mb-15">
 
+                                                                        <div class="slide-image">
+                                                                            <a href="{{$trending_video->url}}">
+                                                                            
+                                                                            <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$trending_video->video_image}}" class="slide-img1 placeholder" /></a>
 
-                                                                    @endif
-                                                                                                                                            
-                                                                        <div class="video_duration">
-                                                                                      </div>
+                                                                            @if($trending_video->ppv_amount > 0) 
+                                                                                @if(!$trending_video->ppv_status)
+
+                                                                                    <div class="video_amount">
+                                                                                        {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_video->ppv_amount}}
+                                                                                    </div>
+
+                                                                                @endif 
+
+                                                                            @endif
+
+                                                                            <div class="video_duration">
+                                                                                {{$trending_video->duration}}
+                                                                            </div>
 
                                                                         </div>
 
                                                                         <div class="video-details">
 
-                                                                                        </div>
+                                                                        </div>
 
                                                                         <span class="video_views">
-                                                                                    
-                                                                                    <div class="video-head">
 
+                                                                          <div class="video-head">
 
+                                                                            <!-- <img src="{{$trending_video->video_image}}"> -->
 
-                                                                                    <!-- <img src="{{$trending_video->video_image}}"> -->
-                                                                                    <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$trending_video->video_image}}" class="slide-img1 placeholder" />
- 
+                                                                            <a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
 
-                                                                                    @if(!$trending_video->ppv_status)
-                                                                                    
-                                                                                        <div class="video_amount">
-                                                                                        {{tr('pay')}} - {{Setting::get('currency')}}{{$trending_video->ppv_amount}}
-                                                                                        </div>
-                                                                                    
-                                                                                    @endif 
+                                                                            <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}}
+                                                                            {{ common_date($trending_video->created_at) }}
 
-                                                                                    {{$trending_video->duration}}
-  
-                                                                                    <a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
+                                                                          </div>
+                                                                          
+                                                                        </span>
 
-                                                                                    <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}} <b>.</b> 
-                                                                                     {{ common_date($trending_video->created_at) }}
-                                                                            </span>
-                                                                           
-                                                                            </div>
-
-                                                                        </div>
-                                                                   
                                                                     </div>
+
+                                                                </div>
 
                                                                 @endforeach 
 
@@ -430,10 +426,10 @@
                                                             <!-- <img src="{{$video->video_image}}"> -->
                                                             <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$video->video_image}}" class="slide-img1 placeholder" />
                                                         </a> 
-
+                                                        
                                                         @if($video->ppv_amount > 0) 
 
-                                                            @if(!$video->ppv_status)
+                                                            @if($video->ppv_status)
                                                                 <div class="video_amount">
                                                                     {{tr('pay')}} - {{Setting::get('currency')}}{{$video->ppv_amount}}
 

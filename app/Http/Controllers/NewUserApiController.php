@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use DB, Log, Hash, Validator, Exception, Setting;
 
 use App\Helpers\Helper, App\Helpers\CommonHelper, App\Helpers\VideoHelper;
-
-
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Repositories\CommonRepository as CommonRepo;
@@ -88,7 +86,6 @@ class NewUserApiController extends Controller
     public function register(Request $request) {
 
         try {
-
             DB::beginTransaction();
 
             // Validate the common and basic fields
@@ -227,7 +224,7 @@ class NewUserApiController extends Controller
 
                 $user_details->dob = date("Y-m-d" , strtotime($request->dob));
             }
-
+            
             if ($user_details->dob) {
 
                 if ($user_details->dob != '0000-00-00') {
@@ -361,7 +358,7 @@ class NewUserApiController extends Controller
                 } else {
 
                     $response_array = ['success'=>false, 'error' => CommonHelper::error_message(1001), 'error_code'=>1001];
-
+                    
                     DB::commit();
 
                     return response()->json($response_array, 200);
@@ -633,8 +630,8 @@ class NewUserApiController extends Controller
 
             } else {
 
-                $error = $email_send_response->error;
-
+                $error = $email_send_response->message;
+                
                 throw new Exception($error, $email_send_response->error_code);
             }
 
@@ -846,6 +843,12 @@ class NewUserApiController extends Controller
             $user_details->gender = $request->gender ?: $user_details->gender;
 
             $user_details->description = $request->description ?: '';
+
+            if($request->dob) {
+
+                $user_details->dob = date('Y-m-d', strtotime($request->dob));
+
+            }
 
             // Upload picture
             if($request->hasFile('picture') != "") {

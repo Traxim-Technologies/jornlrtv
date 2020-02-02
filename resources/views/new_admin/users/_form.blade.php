@@ -63,21 +63,30 @@
 
                             @if(!$user_details->id)
 
+                                <div class="form-group">
+
+                                    <div class="col-lg-6">
+                                        <label for="exampleInputEmail1">{{ tr('password') }}*</label>
+                                        <input type="password" required name="password" class="form-control" id="password" placeholder="{{ tr('password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}" >
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label for="exampleInputEmail1">{{ tr('confirm_password') }} * </label>
+                                        <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="{{ tr('confirm_password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
+                                    </div>
+
+                                </div>
+
+                            @endif
+
                             <div class="form-group">
 
                                 <div class="col-lg-6">
-                                    <label for="exampleInputEmail1">{{ tr('password') }}*</label>
-                                    <input type="password" required name="password" class="form-control" id="password" placeholder="{{ tr('password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}" >
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <label for="exampleInputEmail1">{{ tr('confirm_password') }} * </label>
-                                    <input type="password" required name="password_confirmation" class="form-control" id="confirm-password" placeholder="{{ tr('confirm_password') }} *" minlength="6" title="{{tr('minimum_6_characters')}}">
+                                    <label for="{{ tr('paypal_email') }}">{{ tr('paypal_email') }} </label>
+                                    <input type="text" name="paypal_email" class="form-control" placeholder="{{ tr('paypal_email') }} "  autocomplete="off" value="{{ old('paypal_email') ?: $user_details->paypal_email }}">
                                 </div>
 
                             </div>
-
-                            @endif
 
                         </div>
 

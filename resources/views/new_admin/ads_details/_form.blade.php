@@ -1,6 +1,4 @@
-
-
-	<div class="row">
+<div class="row">
 
     <div class="col-md-12">
 
@@ -31,7 +29,7 @@
 
                                         <label>{{tr('name')}} *</label>
 
-                                        <input type="text" name="name" id="name" class="form-control" value="{{$ads_detail_details->name}}" required>
+                                        <input type="text" name="name" id="name" class="form-control" value="{{old('name') ?: $ads_detail_details->name}}" required>
 
                                     </div>
 
@@ -39,7 +37,7 @@
 
                                         <label>{{tr('ad_time')}} ({{tr('in_sec')}}) *</label>
 
-                                        <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$ads_detail_details->ad_time}}" required>
+                                        <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{old('ad_time') ?: $ads_detail_details->ad_time}}" required>
 
                                     </div>
 
@@ -55,7 +53,7 @@
 
                                         <label>{{tr('url')}} *</label>
 
-                                        <input type="text" name="ad_url" id="ad_url" class="form-control" value="{{$ads_detail_details->ad_url}}" required>
+                                        <input type="text" name="ad_url" id="ad_url" class="form-control" value="{{old('ad_url') ?: $ads_detail_details->ad_url}}" required>
 
                                     </div>
 

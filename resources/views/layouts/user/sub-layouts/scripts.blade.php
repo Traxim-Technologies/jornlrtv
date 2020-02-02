@@ -223,7 +223,7 @@
                 messageTemplate +=  '</li>';
                 
                 $('#global-notifications-box').append(messageTemplate);
-
+                
                 // $(chatBox).animate({scrollTop: chatBox.scrollHeight}, 500);
 
             });
@@ -237,7 +237,7 @@
         });
 
         function loadNotificationsCount() {
-
+            
             $.post('{{ route("user.bell_notifications.count")}}', {'is_json': 1})
 
             .done(function(response) {
@@ -346,6 +346,27 @@
         }); 
 
     });
+
+   function notificationsStatusUpdate(){
+
+        $.post('{{ route("user.bell_notifications.count")}}', {'is_json': 1})
+
+        .done(function(response) {
+
+            var x = document.getElementById("viewAll");
+
+            if (response.count == 0) {
+
+                x.style.display = "none";
+            } 
+        })
+        .fail(function(response) {
+            // console.log(response);
+        })
+        .always(function(response) {
+            // console.log(response);
+        });
+   }
 
 </script>
 

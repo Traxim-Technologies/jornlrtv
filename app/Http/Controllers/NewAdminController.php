@@ -302,7 +302,7 @@ class NewAdminController extends Controller {
      *
      */
     public function users_save(Request $request) {
-
+       
         try {
             
             DB::beginTransaction(); 
@@ -369,6 +369,8 @@ class NewAdminController extends Controller {
             $user_details->token_expiry = Helper::generate_token_expiry();
 
             $user_details->dob = $request->dob ? date('Y-m-d', strtotime($request->dob)) : $user_details->dob;
+            
+            $user_details->paypal_email = $request->paypal_email ?: "";
 
             if ($user_details->dob) {
 
@@ -463,7 +465,7 @@ class NewAdminController extends Controller {
      *
      */
     public function users_view(Request $request) {
-
+       
         try {
                
             $user_details = User::find($request->user_id) ;
@@ -2893,7 +2895,7 @@ class NewAdminController extends Controller {
             'video_ads.*','video_tapes.channel_id')
                     ->leftJoin('video_tapes' , 'video_tapes.id' , '=' , 'video_ads.video_tape_id')
                     ->leftJoin('channels' , 'channels.id' , '=' , 'video_tapes.channel_id')
-                    ->orderBy('video_tapes.created_at' , 'asc')
+                    ->orderBy('video_tapes.updated_at' , 'asc')
                     ->get();
 
         return view('new_admin.video_ads.ad_videos')
@@ -6308,7 +6310,7 @@ class NewAdminController extends Controller {
      *
      */
     public function video_tapes_save(Request $request) {
-
+        
         $response = CommonRepo::video_save($request)->getData();
 
         if ($response->success) {
@@ -6657,7 +6659,7 @@ class NewAdminController extends Controller {
 
                 $page = 'banner-videos'; $sub_page = 'banner-videos';
             }
-
+           
             return view('new_admin.video_tapes.view')
                         ->with('video' , $video_tape_details)
                         ->with('video_images' , $admin_video_images)
@@ -6884,6 +6886,16 @@ class NewAdminController extends Controller {
     public function video_tapes_set_ppv($id, Request $request) {
 
         try {
+            $validator = Validator::make($request->all() , [
+                    'ppv_amount' => 'required|max:6',
+                ]);
+
+            if($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);                
+            }
 
             if($request->ppv_amount > 0) {
 
