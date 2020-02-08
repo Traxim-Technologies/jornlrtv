@@ -1153,7 +1153,7 @@ class UserApiController extends Controller {
     }
 
     public function forgot_password(Request $request) {
-            
+
         $email =$request->email;
         // Validate the email field
         $validator = Validator::make(
@@ -4665,7 +4665,6 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
-                            ->where('video_tapes.compress_status',1)
                             ->where('video_tapes.publish_status' , 1)
                             ->where('channels.status', 1)
                             ->where('channels.is_approved', 1)
@@ -4803,7 +4802,6 @@ class UserApiController extends Controller {
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
-                            ->where('video_tapes.compress_status',1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->videoResponse()
@@ -5017,12 +5015,14 @@ class UserApiController extends Controller {
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
+
         $u_id = $request->id;
 
         $channel = Channel::find($channel_id);
         
+
         if ($channel) {
-             
+
             if ($u_id == $channel->user_id) {
 
                 if ($u_id) {
@@ -5038,7 +5038,7 @@ class UserApiController extends Controller {
                         ->where('channels.status', 1)
                         ->where('channels.is_approved', 1)
                         ->where('categories.status', CATEGORY_APPROVE_STATUS);
-                
+
             }
 
         } else {
@@ -5087,6 +5087,7 @@ class UserApiController extends Controller {
             }
 
         }
+        // dd($items);
 
         return response()->json($items);
 
@@ -8321,8 +8322,6 @@ class UserApiController extends Controller {
 
             $user_referrer_details->currency = Setting::get('currency', '$');
 
-            $user_referrer_details->formatted_total_referrals_earnings = formatted_amount($user_referrer_details->total_referrals_earnings);
-            
             // share message start
 
             $share_message = apitr('referral_code_share_message', Setting::get('site_name', 'STREAMTUBE'));
