@@ -5087,7 +5087,6 @@ class UserApiController extends Controller {
             }
 
         }
-        // dd($items);
 
         return response()->json($items);
 
@@ -8321,6 +8320,8 @@ class UserApiController extends Controller {
             }
 
             $user_referrer_details->currency = Setting::get('currency', '$');
+
+            $user_referrer_details->formatted_total_referrals_earnings = formatted_amount($user_referrer_details->total_referrals_earnings);
 
             // share message start
 
