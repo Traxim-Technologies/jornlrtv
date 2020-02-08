@@ -32,7 +32,7 @@
 
                         @endif
 
-                        <h3>{{$playlist_details->title}}</h3>
+                        <h3 class="text-word-wrap">{{$playlist_details->title}}</h3>
 
                         @if($video_tapes)
                             <div class="pull-right btn btn-danger mb-15">
@@ -59,7 +59,7 @@
 
                         @if($playlist_type == PLAYLIST_TYPE_USER) 
 
-                            <a class="share-new global_playlist_id pull-right" id="{{$playlist_details->playlist_id, PLAYLIST_TYPE_USER}}" title="{{tr('edit')}}"><i class="fa fa-edit"></i><h4>{{ tr('edit') }}</h4></a>
+                            <a class="share-new global_playlist_id pull-right" id="{{$playlist_details->playlist_id, PLAYLIST_TYPE_USER}}" title="{{tr('edit')}}"><i class="fa fa-edit"></i></a>
                            
                         @endif
 
@@ -77,7 +77,7 @@
                     
                         <div>
                           
-                            <h4 class="bold no-margin-top">
+                            <h4 class="bold no-margin-top text-word-wrap">
                                {{tr('playlist_videos')}} - {{$playlist_details->title}}
                             </h4>
                  

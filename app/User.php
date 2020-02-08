@@ -34,6 +34,7 @@ class User extends Authenticatable
 
         return $query->select(
             'users.id as user_id',
+            'users.id as id',
             'users.name',
             'users.email as email',
             'users.picture as picture',

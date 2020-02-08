@@ -303,7 +303,7 @@ class AdminController extends Controller {
      *
      */
     public function users_save(Request $request) {
-
+       
         $validator = Validator::make( $request->all(), array(
                 'id'=>'exists:users,id',
                 'name' => 'required|max:255',
@@ -461,7 +461,7 @@ class AdminController extends Controller {
      *
      */
     public function users_view($id) {
-       
+
         $user = User::where('id', $id)->withCount('getChannel')
                     ->withCount('getChannelVideos')
                     ->withCount('userWishlist')
@@ -1594,7 +1594,7 @@ class AdminController extends Controller {
      *
      */
     public function videos_save(Request $request) {
-
+        
         $response = CommonRepo::video_save($request)->getData();
 
         if ($response->success) {
@@ -2539,7 +2539,7 @@ class AdminController extends Controller {
      * @return response of Ad Details Object with video details
      */
     public function video_ads_view(Request $request) {
-
+        
         $model = AdminRepo::video_ads_view($request)->getData();
 
         if(!$model) {

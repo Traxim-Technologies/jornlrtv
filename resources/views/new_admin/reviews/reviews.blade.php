@@ -4,12 +4,9 @@
 
 @section('content-header', tr('reviews'))
 
-
 @section('styles')
 
-
 <link rel="stylesheet" href="{{ asset('assets/css/star-rating.css') }}">
-
 
 @endsection
 

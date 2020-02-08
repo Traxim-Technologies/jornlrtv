@@ -459,7 +459,9 @@
                                               <a class="text-none">
                                                  <p>{{$comment->diff_human_time}}</p>
                                               </a>
+                                              
                                               <p><input id="view_rating" name="rating" type="number" class="rating view_rating" min="1" max="5" step="1" value="{{$comment->rating}}"></p>
+                                              
                                               <p class="com-para">{{$comment->comment}}</p>
                                            </span>
                                         </div>

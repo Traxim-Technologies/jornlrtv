@@ -100,11 +100,13 @@ class AdminAuthController extends Controller
     protected function authenticated(Request $request, Admin $admin){
 
         if(\Auth::guard('admin')->check()) {
+
             if($admin = Admin::find(\Auth::guard('admin')->user()->id)) {
                 $admin->timezone = $request->has('timezone') ? $request->timezone : '';
                 $admin->save();
             }   
         };
+        
        return redirect()->intended($this->redirectPath());
     }
 }

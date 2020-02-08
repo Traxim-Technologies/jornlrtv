@@ -130,7 +130,7 @@
 			                                    </div> <!--end of history-head--> 
 
 			                                    <div class="description hidden-xs">
-			                                        <?= $channel->description?>
+			                                        <!-- <?= $channel->description?> -->
 			                                    </div><!--end of description-->                  
 			                                </div><!--end of history-title--> 
 			                                

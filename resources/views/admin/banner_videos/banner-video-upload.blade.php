@@ -278,6 +278,7 @@
     <script type="text/javascript">
 
         function checkPublishType(val){
+            
             $("#publish_time_div").hide();
             $("#datepicker").prop('required',false);
             $("#datepicker").val("");

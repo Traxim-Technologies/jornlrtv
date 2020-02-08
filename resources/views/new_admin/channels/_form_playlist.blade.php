@@ -30,7 +30,7 @@
             <div class="col-sm-12">
                 <div class="form-group">                        
                     <label for="description" class="control-label">{{ tr('description') }} *</label>
-                    <textarea required class="form-control" id="description" name="description" placeholder="{{ tr('description') }}" required>{{ $playlist_details->description }}</textarea> 
+                    <textarea required class="form-control" id="description" name="description" placeholder="{{ tr('description') }}" required>{{ old('description') ?: $playlist_details->description }}</textarea> 
                 </div>
             </div>
 

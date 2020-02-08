@@ -81,6 +81,8 @@
 
 						<h5>{{tr('description')}}</h5>
 
+						<p><small><b>{{tr('note')}} :</b>&nbsp;<span class="dark-grey">{{tr('description_note')}}</span></small></p>
+
 						<textarea class="form-control description" id="ckeditor" name="description" required>{{old('description') ?: $model->description}}</textarea>
 						<br>
 						<div>

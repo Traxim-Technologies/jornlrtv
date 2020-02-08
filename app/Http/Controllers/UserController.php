@@ -947,13 +947,15 @@ class UserController extends Controller {
             // Get current login admin details
             $master_user_id = Auth::guard('admin')->user()->user_id;
 
+            $master_user_details = User::find($master_user_id);
+            
             // Check the admin has logged in
 
-            if(!$master_user_id) {
+            if(!$master_user_details) {
 
                 // Check already record exists
                 $check_admin_user_details = User::where('email' , Auth::guard('admin')->user()->email)->first();
-
+               
                 if($check_admin_user_details) {
 
                     $check_admin_user_details->is_master_user = 1;
@@ -1004,7 +1006,6 @@ class UserController extends Controller {
             }
 
             $master_user_details = User::find($master_user_id);
-
             // If master user details is not empty -> Login the admin as user
 
             if(!$master_user_details) {
@@ -1012,7 +1013,7 @@ class UserController extends Controller {
                 throw new Exception(tr('user_not_found'));
 
             }
-
+            
             $master_user_details->token = Helper::generate_token();
 
             $master_user_details->token_expiry = Helper::generate_token_expiry();
@@ -1332,7 +1333,7 @@ class UserController extends Controller {
             }
 
             $videos = $this->UserAPI->channel_videos($id, 0 , $request)->getData();
-
+           
             $channel_owner_id = Auth::check() ? ($channel->user_id == Auth::user()->id ? $channel->user_id : "") : "";
 
             $trending_videos = $this->UserAPI->channel_trending($id, 4 , $channel_owner_id , $request)->getData();
@@ -1440,7 +1441,7 @@ class UserController extends Controller {
             $playlists = array();
            
             $response = $data->response_array;
-            
+           
             if ($data->response_array->playlists->success) {
                   
                 // check video already exists in user playlits
@@ -1509,7 +1510,7 @@ class UserController extends Controller {
        
         $error_message = isset($data->error_messages) ? $data->error_messages : tr('something_error');
 
-        return redirect()->back()->with('flash_error', $error_message);
+        return redirect()->route('user.dashboard')->with('flash_error', $error_message);
         
     }
 
@@ -1750,6 +1751,63 @@ class UserController extends Controller {
     
     }
 
+    /**
+     * Function Name : update_paypal_email() 
+     *
+     * @uses Update Paypal Email.
+     * 
+     * @created Bhawya
+     *
+     * @updated Bhawya
+     *
+     * @param object $request - User Details
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update_paypal_email(Request $request) {
+
+         try {
+                $request->request->add([ 
+                    'id' => \Auth::user()->id,
+                    'token' => \Auth::user()->token,
+                    'device_token' => \Auth::user()->device_token,
+                ]);
+            
+            $validator = Validator::make($request->all(),array(
+                    'paypal_email' => 'required|max:255',
+            ));
+
+            if ($validator->fails()) {
+                // Error messages added in response for debugging
+                $error_messages = implode(',',$validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+                
+            } 
+
+            if($user = User::find($request->id)) {
+                
+                $user->paypal_email = $request->paypal_email ? $request->paypal_email : $user->paypal_email;
+
+                if($user->save()) {
+
+                    return back()->with('flash_success' , tr('paypal_email_updated'));
+
+                }
+                
+            } else {
+
+                throw new Exception(tr('user_details_not_saved'));
+                        
+            }
+
+        }  catch(Exception $e) {
+
+            return redirect()->back()->with('flash_error', $e->getMessage());
+        }
+    
+    
+    }
 
     /**
      * Function Name : profile_save_password() 
@@ -2147,7 +2205,7 @@ class UserController extends Controller {
 
             if (Auth::user()->user_type) {
 
-                return view('user.channels.create')->with('page', 'channels')
+                return view('user.channels.create')->with('page', 'my_channel')
                     ->with('subPage', 'create_channel')->with('model', $model);
 
             } else {
@@ -2565,7 +2623,7 @@ class UserController extends Controller {
     }
 
     public function video_save(Request $request) {
-
+    
         $response = CommonRepo::video_save($request)->getData();
 
         if ($response->success) {
@@ -2676,7 +2734,7 @@ class UserController extends Controller {
 
         if($response->success) {
 
-            return redirect()->route('user.subscriptions')->with('flash_success', $response->message);
+            return redirect()->route('user.channel.mychannel')->with('flash_success', $response->message);
 
         } else {
 
@@ -3389,7 +3447,7 @@ class UserController extends Controller {
      * @return json response details
      */
     public function ppv_invoice($id) {
-
+       
         $video = VideoTape::find($id);
 
         if ($video) {
@@ -3485,9 +3543,9 @@ class UserController extends Controller {
      * @return json response details
      */
     public function payment_type($id, Request $request) {
-
+       
         if($request->payment_type == 1) {
-
+          
             return redirect(route('user.ppv-video-payment', ['id' => $id, 'coupon_code' => $request->coupon_code]));
 
         } else {
@@ -4766,6 +4824,7 @@ class UserController extends Controller {
             $playlist_video_details = PlaylistVideo::where('video_tape_id', $request->video_tape_id)
                                         ->where('user_id', $request->id)
                                         ->first();
+           
             // if($playlist_video_details) {
 
             //     $message = Helper::get_message(127); $code = 127;
@@ -5027,11 +5086,12 @@ class UserController extends Controller {
     public function playlist_save_video_add(Request $request) {
 
         try {
-           
+        
             $request->request->add([
                 'id'=> Auth::user()->id,
                 'token'=> Auth::user()->token
             ]);
+
             
             $playlists_response = $this->NewUserAPI->playlists_save($request)->getData();
             

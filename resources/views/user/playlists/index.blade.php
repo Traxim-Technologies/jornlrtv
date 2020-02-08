@@ -15,7 +15,7 @@
 		<div class="page-inner col-sm-9 col-md-10">
 
 			@include('notification.notify')
-
+            
 			<div class="row col-md-12">
 
 				<div class="slide-area1 recom-area">

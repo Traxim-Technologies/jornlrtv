@@ -363,7 +363,7 @@ class AdminRepository {
     public static function video_ads_view($request) {
 
         $model = VideoAd::with('getVideoTape')->find($request->id);
-
+       
         $model = $model ? $model : '';
 
         return response()->json($model);

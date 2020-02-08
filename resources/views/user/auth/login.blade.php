@@ -100,7 +100,7 @@
             <form class="signup-form login-form" role="form" method="POST" action="{{ url('/login') }}">
                 <div class="form-group">
 
-                    <label for="email">{{tr('email')}}</label>
+                    <label for="email">{{tr('email')}}*</label>
 
                     <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}" required value="{{old('email')}}"> 
                     
@@ -108,7 +108,7 @@
 
                 <div class="form-group">
 
-                    <label for="password">{{tr('password')}}</label>
+                    <label for="password">{{tr('password')}}*</label>
 
                     <input type="password" name="password" class="form-control" id="password" placeholder="{{tr('password')}}" required value="{{old('password')}}">
 

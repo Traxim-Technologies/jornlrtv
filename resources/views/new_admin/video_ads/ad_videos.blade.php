@@ -31,11 +31,13 @@
 
 							<thead>
 							    <tr>
-							      <th>{{ tr('id') }}</th>
-							      <th>{{ tr('channel') }}</th>
-							      <th>{{ tr('title') }}</th>
-							      <th>{{ tr('type_of_ads') }}</th>
-							      <th>{{ tr('status') }}</th>
+							      <th>{{tr('id')}}</th>
+							      <th>{{tr('channel')}}</th>
+							      <th>{{tr('title')}}</th>
+							      <th>{{tr('type_of_ads')}}</th>
+							      <th>{{tr('status')}}</th>
+							      <th>{{tr('updated_at')}}</th>
+							      <th>{{tr('created_at')}}
 							      <th>{{ tr('action') }}</th>
 							    </tr>
 							</thead>
@@ -80,6 +82,14 @@
 								       		@endif
 								      	</td>
 
+								      	<td>
+								      		{{common_date($video_ad_details->created_at,Auth::guard('admin')->user()->timezone,'d M Y H:i:s')}}
+								      	</td>
+
+								      	<td>
+								      		{{common_date($video_ad_details->updated_at,Auth::guard('admin')->user()->timezone,'d M Y H:i:s')}}
+								      	</td>
+
 									    <td>
 	            							<ul class="admin-action btn btn-default">
 	            								
@@ -100,7 +110,7 @@
                                                             <li role="presentation"><a role="button" href="javascript:;" class="btn disabled" style="text-align: left">{{ tr('delete') }}</a></li>
                                                         @else
                                                             <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.video_ads.edit' , ['id' => $video_ad_details->id] ) }}">{{ tr('edit') }}</a></li>
-                                                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_video_ad_delete_confirmation', $video_ad_details->name) }}&quot;)" href="{{ route('admin.video_ads.delete' ,  ['id' => $video_ad_details->id] ) }}">{{ tr('delete') }}</a></li>
+                                                            <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('are_you_sure') }}&quot;);" href="{{ route('admin.video_ads.delete' ,  ['id' => $video_ad_details->id] ) }}">{{ tr('delete') }}</a></li>
 
                                                         @endif
 

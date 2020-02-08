@@ -231,10 +231,11 @@
                     
                     @else
      
-                    <div id="user-playlists-form">
+                    <div id="user-playlists-form" style="padding-left: 10px;">
      
-                        <div id="user_playlists"></div>
-                            <span id="no_playlist_text">{{tr('no_playlists')}}</span>
+                        <div id="user_playlists">
+                            <span id="no_playlist_text" style="padding-left: 10px;">{{tr('no_playlists')}}</span>
+                        </div>
                         <div class="clearfix"></div>
                     </div>   
                                 
