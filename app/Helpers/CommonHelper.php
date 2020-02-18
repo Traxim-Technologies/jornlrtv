@@ -117,7 +117,7 @@ class CommonHelper {
 	        
 	        } else {
 
-	            $error = Helper::error_message(106);
+	            $error = Helper::get_error_message(106);
 
 	            $response_array = ['success' => false , 'error' => $error , 'error_code' => 106];
 	                
