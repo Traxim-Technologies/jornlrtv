@@ -16,7 +16,7 @@
 
     <div class="page-inner">
         <!--      Wizard container        -->
-          <div class="col-sm-10">
+          <div class="col-sm-12">
                 <div class="wizard-container">
                     <div class="card wizard-card" data-color="red" id="wizard">
                         <form action="{{ (Setting::get('admin_delete_control')) ? '' : route('user.video_save')}}" method="post" id="video_form" enctype="multipart/form-data">

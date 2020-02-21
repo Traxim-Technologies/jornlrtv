@@ -18,15 +18,9 @@ use App\VideoTape, App\UserPayment;
 
 use Log, DB, Validator, Auth, Setting, Exception;
 
-use App\Page;
-
-use App\Admin;
-
 use App\ChatMessage;
 
 use App\LiveVideo;
-
-use App\UserPayment;
 
 class ApplicationController extends Controller {
 

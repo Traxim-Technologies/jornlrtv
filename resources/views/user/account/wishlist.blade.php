@@ -59,9 +59,10 @@
                                             </div><!--end of cross-mark-->                       
                                         </div> <!--end of history-head--> 
 
-                                        <div class="description">
-                                            <?= $video->description ?>
-                                        </div><!--end of description--> 
+                                        <!-- <div class="description"> -->
+                                            <!-- <?= $video->description ?> -->
+                                        <!-- </div> -->
+                                        <!--end of description--> 
 
                                         <span class="stars">
                                             <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>

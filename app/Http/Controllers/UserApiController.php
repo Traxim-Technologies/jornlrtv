@@ -1936,7 +1936,7 @@ class UserApiController extends Controller {
             $error_messages = implode(',',$validator->messages()->all());
             $response_array = array(
                     'success' => false,
-                    'error' => Helper::get_error_message(101),
+                    'error' => $error_messages,
                     'error_code' => 101,
                     'error_messages' => $error_messages
             );
@@ -6427,6 +6427,7 @@ class UserApiController extends Controller {
 
         $base_query = VideoTape::where('video_tapes.is_approved' , 1)
                             ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.compress_status',1)
                             ->where('video_tapes.publish_status' , 1)
                             ->where('channels.status', 1)
                             ->where('channels.is_approved', 1)
@@ -6564,6 +6565,7 @@ class UserApiController extends Controller {
                             ->leftJoin('channels' , 'video_tapes.channel_id' , '=' , 'channels.id')
                             ->leftJoin('categories' , 'categories.id' , '=' , 'video_tapes.category_id') 
                             ->where('video_tapes.status' , 1)
+                            ->where('video_tapes.compress_status',1)
                             ->where('video_tapes.publish_status' , 1)
                             ->orderby('video_tapes.created_at' , 'desc')
                             ->videoResponse()
@@ -6849,7 +6851,6 @@ class UserApiController extends Controller {
             }
 
         }
-        // dd($items);
 
         return response()->json($items);
 
@@ -10222,7 +10223,7 @@ class UserApiController extends Controller {
         // TODO
             
         $bell_notifications_count = BellNotification::where('status', BELL_NOTIFICATION_STATUS_UNREAD)->where('to_user_id', $request->id)->count();
-
+       
         $response_array = ['success' => true, 'count' => $bell_notifications_count];
 
         return response()->json($response_array);
@@ -10485,6 +10486,8 @@ class UserApiController extends Controller {
             }
 
             $user_referrer_details->currency = Setting::get('currency', '$');
+
+            $user_referrer_details->formatted_total_referrals_earnings = formatted_amount($user_referrer_details->total_referrals_earnings);
 
             // share message start
 

@@ -15,8 +15,8 @@
 
     @if(count($categories) > 0)
         
-        <ul class="y-home ">
-            <h3>{{tr('best_of_streamtube')}}</h3>
+        <ul class="y-home">
+            <h3>Best of Streamtube</h3>
             @foreach($categories as $category)
                 <li>
                     <a href="{{route('user.category',$category->id)}}"><img src="{{$category->picture}}">{{$category->name}}</a>

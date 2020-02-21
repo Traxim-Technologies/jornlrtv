@@ -22,7 +22,7 @@
                                         
                     <div class="form-group">
                         <label for="title">{{ tr('title') }} *</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="{{ tr('enter_title') }}" value="{{ $banner_ad_details->title }}" required>
+                        <input type="text" class="form-control" name="title" id="title" placeholder="{{ tr('enter_title') }}" value="{{old('title') ?: $banner_ad_details->title }}" required>
                     </div>
 
                     <div class="form-group">
@@ -34,14 +34,14 @@
 
                     <div class="form-group">
                         <label for="url">{{ tr('link') }} *</label>
-                        <input type="url" class="form-control" name="link" id="link" placeholder="{{ tr('enter_link') }}" value="{{ $banner_ad_details->link }}" required>
+                        <input type="url" class="form-control" name="link" id="link" placeholder="{{ tr('enter_link') }}" value="{{ old('link') ?: $banner_ad_details->link }}" required>
                     </div>
 
                     <div class="form-group">
                         
                         <label for="description">{{ tr('description') }} *</label>
 
-                        <textarea id="ckeditor" name="description" class="form-control" placeholder="{{ tr('enter_text') }}">{{ $banner_ad_details->description }}</textarea>
+                        <textarea id="ckeditor" name="description" class="form-control" placeholder="{{ tr('enter_text') }}">{{ old('description') ?: $banner_ad_details->description }}</textarea>
                         
                     </div>
 

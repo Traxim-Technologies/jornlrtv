@@ -321,6 +321,7 @@ class VideoTapeRepository {
                     ->where('video_tapes.channel_id' , $channel_id)
                     ->videoResponse()
                     ->orderby('video_tapes.created_at' , 'desc');
+
         if (Auth::check()) {
             // Check any flagged videos are present
             $flagVideos = getFlagVideos(Auth::user()->id);
@@ -335,6 +336,8 @@ class VideoTapeRepository {
 
         if($web) {
             $videos = $videos_query->paginate(16);
+
+           
         } else {
             $videos = $videos_query->skip($skip)->take(Setting::get('admin_take_count' ,12))->get();
         }
