@@ -101,6 +101,7 @@ class LiveVideo extends Model
                  'live_videos.no_of_minutes as no_of_minutes',
                  'live_videos.payment_status as payment_status',
                  'live_videos.status as video_stopped_status',
+                 'live_videos.created_at',
                 \DB::raw('DATE_FORMAT(live_videos.created_at , "%e %b %y") as date')
             );
     }

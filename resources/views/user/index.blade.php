@@ -145,6 +145,64 @@
 
                 <!-- wishlist end -->
 
+                @if(count($live_videos->items) > 0)
+
+                <hr>
+                
+                    <div class="slide-area">
+                       
+                        <div class="box-head">
+                            <h3>{{tr('live_videos')}}</h3>
+                        </div>
+
+                        <div class="box">
+
+                            @foreach($live_videos->items as $live_video)
+                            <div class="slide-box">
+                                <div class="slide-image">
+                                    <a href="{{$live_video->url}}">
+                                        <!-- <img src="{{$live_video->video_image}}" /> -->
+                                        <!-- <div style="background-image: url({{$live_video->video_image}});" class="slide-img1"></div> -->
+                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$live_video->video_image}}"class="slide-img1 placeholder" />
+                                    </a>
+                                    @if($live_video->ppv_amount > 0)
+                                        @if(!$live_video->ppv_status)
+                                            <div class="video_amount">
+
+                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$live_video->ppv_amount}}
+
+                                            </div>
+                                        @endif
+                                    @endif
+                                    <div class="video_mobile_views">
+                                        {{$live_video->watch_count}} {{tr('views')}}
+                                    </div>
+                                    <div class="video_duration">
+                                        {{$live_video->duration}}
+                                    </div>
+                                </div><!--end of slide-image-->
+
+                                <div class="video-details">
+                                    <div class="video-head">
+                                        <a href="{{$live_video->url}}">{{$live_video->title}}</a>
+                                    </div>
+
+                                    <span class="video_views">
+                                        <div><a href="{{route('user.channel',$live_video->channel_id)}}">{{$live_video->channel_name}}</a></div>
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$live_video->watch_count}} {{tr('views')}} <b>.</b> 
+                                        {{$live_video->publish_time}}</div>
+                                    </span>
+                                </div><!--end of video-details-->
+                            </div><!--end of slide-box-->
+                            @endforeach
+                   
+                              
+                        </div><!--end of box--> 
+                   
+                    </div>
+                    <!--end of slide-area-->
+
+                @endif
 
                 @if(count($recent_videos->items) > 0)
 

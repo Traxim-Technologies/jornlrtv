@@ -1082,10 +1082,11 @@ class UserController extends Controller {
                 $wishlists = $this->UserAPI->wishlist_list($request)->getData();
 
                 $watch_lists = $this->UserAPI->watch_list($request)->getData();  
-            }
-
+            }   
+            $live_videos = $this->UserAPI->live_videos_list($request)->getData();
+             
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
-            
+           
             $trendings = $this->UserAPI->trending_list($request)->getData();
             
             $suggestions  = $this->UserAPI->suggestion_videos($request)->getData();
@@ -1124,7 +1125,8 @@ class UserController extends Controller {
                         ->with('suggestions' , $suggestions)
                         ->with('channels' , $channels)
                         ->with('banner_videos', $banner_videos)
-                        ->with('banner_ads', $banner_ads);
+                        ->with('banner_ads', $banner_ads)
+                        ->with('live_videos',$live_videos);
         } else {
 
             return redirect()->route('installTheme');

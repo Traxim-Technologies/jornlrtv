@@ -6480,6 +6480,55 @@ class UserApiController extends Controller {
     
     }
 
+     /**
+     * @method live_videos_list()
+     *
+     * @usage_place : WEB
+     *
+     * @uses To display based on watch count, no of users seen videos
+     *
+     * @param object $request - User Details
+     *
+     * @created Akshata
+     *
+     * @updated 
+     *
+     * @return Response of videos list
+     */
+    public function live_videos_list($request) {
+
+        $base_query = LiveVideo::where('is_streaming', DEFAULT_TRUE)
+                        ->where('live_videos.status', DEFAULT_FALSE)
+                        ->videoResponse()
+                        ->leftJoin('users' , 'users.id' ,'=' , 'live_videos.user_id')
+                        ->leftJoin('channels' , 'channels.id' ,'=' , 'live_videos.channel_id')
+                        ->orderBy('live_videos.created_at', 'desc')
+                        ->skip($request->skip)
+                        ->take(Setting::get('admin_take_count' ,12));
+    
+        $videos = $base_query->paginate(16);
+
+        $items = [];
+
+        $pagination = 0;
+
+        if (count($videos)) {
+
+            foreach ($videos->items() as $key => $value) {
+                
+                $items[] = displayVideoDetails($value, $request->id);
+
+            }
+
+            $pagination  = (string) $videos->links();
+
+        }
+
+
+        return response()->json(['items'=>$items, 'pagination'=>$pagination]);
+    
+    }
+
 
     /**
      * @method trending_list()
