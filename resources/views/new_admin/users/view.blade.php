@@ -233,7 +233,9 @@
 	    <div class="col-md-9">
 
 	      	<div class="nav-tabs-custom">
-		        <ul class="nav nav-tabs">
+
+		        <ul class="nav nav-tabs"  id="myTab">
+
 		          	<li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">{{ tr('profile') }}</a></li>
 		          	
 		          	<li class=""><a href="#channels_id" data-toggle="tab" aria-expanded="false">{{ tr('channels') }}</a></li>
@@ -249,7 +251,7 @@
 
 		        <div class="tab-content">
 
-		          	<div class="tab-pane active" id="activity">
+		          	<div class="tab-pane fade in active" id="activity">
 
 		          		<h4 class="h4-header"><b>{{ tr('personal_info') }}</b></h4>
 
@@ -662,6 +664,18 @@
 
 
 @section('scripts')
+
+<script>
+$(document).ready(function(){
+	$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+		localStorage.setItem('activeTab', $(e.target).attr('href'));
+	});
+	var activeTab = localStorage.getItem('activeTab');
+	if(activeTab){
+		$('#myTab a[href="' + activeTab + '"]').tab('show');
+	}
+});
+</script>
 
 <script type="text/javascript">
 $("#datatable-withoutpagination").DataTable({
