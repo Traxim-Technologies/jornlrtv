@@ -234,7 +234,7 @@
 
 	      	<div class="nav-tabs-custom">
 
-		        <ul class="nav nav-tabs"  id="myTab">
+		        <ul class="nav nav-tabs"  id="activeTab">
 
 		          	<li class="active"><a href="#activity" data-toggle="tab" aria-expanded="true">{{ tr('profile') }}</a></li>
 		          	
@@ -672,7 +672,7 @@ $(document).ready(function(){
 	});
 	var activeTab = localStorage.getItem('activeTab');
 	if(activeTab){
-		$('#myTab a[href="' + activeTab + '"]').tab('show');
+		$('#activeTab a[href="' + activeTab + '"]').tab('show');
 	}
 });
 </script>
