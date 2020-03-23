@@ -1358,6 +1358,7 @@ function displayVideoDetails($data,$userId) {
         $playlist_details->is_selected = $check_video ? YES : NO;
     }
 
+   
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
