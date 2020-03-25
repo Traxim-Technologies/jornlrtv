@@ -43,7 +43,7 @@
 
                                         <label>{{tr('name')}}</label>
 
-                                        <input type="text" name="name" id="name" class="form-control" value="{{$model->name}}" required>
+                                        <input type="text" name="name" id="name" class="form-control" value="{{old('name') ?: $model->name}}" required>
 
                                     </div>
 
@@ -51,7 +51,7 @@
 
                                         <label>{{tr('ad_time')}} ({{tr('in_sec')}})</label>
 
-                                        <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{$model->ad_time}}" required>
+                                        <input type="text" name="ad_time" id="ad_time" class="form-control" value="{{old('name') ?:$model->ad_time}}" required>
 
                                     </div>
 
@@ -67,7 +67,7 @@
 
                                         <label>{{tr('url')}}</label>
 
-                                        <input type="text" name="ad_url" id="ad_url" class="form-control" value="{{$model->ad_url}}" required>
+                                        <input type="text" name="ad_url" id="ad_url" class="form-control" value="{{old('ad_url') ?: $model->ad_url}}" required>
 
                                     </div>
 
