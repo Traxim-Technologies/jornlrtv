@@ -1162,7 +1162,7 @@ class UserController extends Controller {
         }
 
         $trending = $this->UserAPI->trending_list($request)->getData();
-
+        
         return view('user.trending')->with('page', 'trending')
                                     ->with('videos',$trending);
     

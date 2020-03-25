@@ -6395,7 +6395,7 @@ class UserApiController extends Controller {
         }
 
 
-        $videos = $base_query->paginate(16);
+        $videos = $base_query->paginate(15);
 
         $model = array('data' => $videos->items(), 'pagination' => (string) $videos->links());
 
@@ -6574,7 +6574,7 @@ class UserApiController extends Controller {
             $base_query = $base_query->where('video_tapes.age_limit','=', 0);
         }
 
-        $videos = $base_query->paginate(16);
+        $videos = $base_query->paginate(15);
 
         $items = [];
 

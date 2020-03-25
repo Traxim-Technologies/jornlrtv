@@ -2666,7 +2666,7 @@ class NewAdminController extends Controller {
             
             $error = $e->getMessage();
 
-            return back()->with('flash_error',$error);
+            return back()->withInput()->with('flash_error',$error);
         }
 
     }
