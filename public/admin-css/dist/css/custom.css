@@ -142,3 +142,9 @@
   border-top: 2px solid #d6355854 !important;
   border-bottom: 2px solid #d6355854 !important;
 }
+
+.text-word-wrap {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}

@@ -89,7 +89,7 @@
 										<td>{{Setting::get('currency')}}{{$value->admin_amount ? $value->admin_amount : 0}}</td>
 
 										<td>{{Setting::get('currency')}}{{$value->user_amount ? $value->user_amount : 0}}</td>
-										<td class="text-capitalize">{{$value->payment_mode}}</td>
+										<td class="text-capitalize">{{$value->payment_mode ?: tr('cod')}}</td>
 										<td>{{$value->coupon_code}}</td>
 
 							      	<td>{{Setting::get('currency')}} {{$value->coupon_amount? $value->coupon_amount : "0.00"}}</td>

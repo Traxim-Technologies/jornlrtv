@@ -2382,5 +2382,6 @@ return array(
 	'are_you_sure' => 'Are you sure?', 
 
 	'video_call_already_present'=>'You already have an ongoing live broadcast. By clicking continue, the existing streamings will get clear.',
+	'cod' => 'Cod',
 
 );

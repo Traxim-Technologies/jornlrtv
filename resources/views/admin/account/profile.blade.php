@@ -40,8 +40,9 @@
                         </li>
 
                         <li class="list-group-item">
-                            <b>{{tr('address')}}</b> <a class="pull-right">{{Auth::guard('admin')->user()->address}}</a>
+                            <b>{{tr('address')}}</b>
                         </li>
+                        <div  class="col-md-8 text-word-wrap pull-left"><a>{{Auth::guard('admin')->user()->address}}</a></div>
 
                         <li class="list-group-item">
 
