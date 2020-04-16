@@ -39,14 +39,9 @@
                         </li>
 
                         <li class="list-group-item">
-                            <b>{{tr('address')}}</b> <a class="pull-right">{{Auth::guard('admin')->user()->address}}</a>
+                            <b>{{tr('address')}}</b> 
                         </li>
-
-                        <li class="list-group-item">
-
-                            <a href="{{route('master.login')}}" class="btn btn-success">{{tr('login_as_user')}}</a>
-
-                        </li>
+                        <div  class="col-md-8 text-word-wrap pull-left"><a>{{Auth::guard('admin')->user()->address}}</a></div>
                         
                     </ul>
                 
@@ -112,6 +107,8 @@
                                 <div class="col-sm-offset-2 col-sm-10">
                                     
                                     <button type="submit" @if(Setting::get('admin_dele te_control') == 1) disabled @endif class="btn btn-danger">{{tr('submit')}}</button>
+
+                                    <a href="{{route('master.login')}}" class="btn btn-success">{{tr('login_as_user')}}</a>
                                     
                                 </div>
                             
@@ -131,25 +128,14 @@
                             @else
                                 <img style="margin-left: 15px;margin-bottom: 10px" class="profile-user-img img-responsive img-circle"  src="{{asset('placeholder.png')}}" id="image_preview">
                             @endif
-
                             <div class="form-group">
-                                <label for="picture" class="col-sm-2 control-label">{{tr('picture')}}</label>
-
                                 <div class="col-sm-10">
+                                    <label for="picture" class="control-label">{{tr('picture')}}</label>
 
-                                  <input type="file" required accept="image/png,image/jpeg" name="picture" id="picture" onchange="loadFile(this,'image_preview')">
-                                  <p class="help-block">{{tr('image_validate')}} {{tr('image_square')}}</p>
+                                    <input type="file" required class="" name="picture" id="picture" accept="image/png, image/jpeg">
+                                    <br>
+                                    <button type="submit" class="btn btn-danger" @if(Setting::get('admin_delete_control')) disabled @endif>Submit</button>
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                
-                                <div class="col-sm-offset-2 col-sm-10">
-                                   
-                                    <button type="submit" @if(Setting::get('admin_dele te_control') == 1) disabled @endif class="btn btn-danger">{{tr('submit')}}</button>
-
-                                </div>
-                            
                             </div>
 
                         </form>

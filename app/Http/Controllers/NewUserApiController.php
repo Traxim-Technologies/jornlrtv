@@ -299,7 +299,7 @@ class NewUserApiController extends Controller
 
                     user_type_check($user_details->id);
 
-                    if($user_details->login_by == 'manual') {
+                    if($user_details->login_by == 'manual' && Setting::get('email_verify_control')) {
 
                         $user_details->password = $request->password;
 
@@ -329,6 +329,11 @@ class NewUserApiController extends Controller
 
                         }
 
+                    } else{
+
+                        $user_details->is_verified = USER_EMAIL_VERIFIED;
+
+                        $user_details->save();
                     }
 
                 }

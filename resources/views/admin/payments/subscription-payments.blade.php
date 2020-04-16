@@ -119,7 +119,7 @@
 								      	<td class="text-red"><b>{{Setting::get('currency')}} {{$payment->amount}}</b></td>
 
 							   
-							      		<td class="text-capitalize">{{$payment->payment_mode}}</td>
+							      		<td class="text-capitalize">{{$payment->payment_mode ?: tr('cod')}}</td>
 								      	<td>{{$payment->coupon_code}}</td>
 
 								      	<td>{{Setting::get('currency')}} {{$payment->coupon_amount? $payment->coupon_amount : "0.00"}}</td>

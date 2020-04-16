@@ -165,6 +165,14 @@ class User extends Authenticatable
         return $this->hasMany('App\RedeemRequest')->orderBy('status' , 'asc');
     }
 
+     /**
+     * Get the Redeems
+     */
+    
+    public function userLiveVideoPayments() {
+        return $this->hasMany('App\LiveVideoPayment','user_id');
+    }
+
     /**
      * Save the unique ID 
      *
@@ -211,6 +219,15 @@ class User extends Authenticatable
                 foreach($user->userHistory as $history)
                 {
                     $history->delete();
+                } 
+
+            }
+
+            if (count($user->ppvDetails) > 0) {
+
+                foreach($user->ppvDetails as $ppv)
+                {
+                    $ppv->delete();
                 } 
 
             }
@@ -266,6 +283,15 @@ class User extends Authenticatable
                 foreach($user->getChannel as $channel) {
 
                     $channel->delete();
+
+                } 
+
+            }
+            if (count($user->userLiveVideoPayments) > 0) {
+
+                foreach($user->userLiveVideoPayments as $payment) {
+
+                    $payment->delete();
 
                 } 
 
