@@ -1074,6 +1074,8 @@ class UserController extends Controller {
                 $request->request->add([ 
                     'id'=>\Auth::user()->id,
                     'age' => \Auth::user()->age_limit,
+                    'browser' => 'chrome',
+                    'device_type' => DEVICE_WEB
                 ]);   
             }
 
