@@ -370,7 +370,7 @@ class UserApiController extends Controller {
                         ->where('live_video_viewer_id', $request->id)
                         ->where('status',DEFAULT_TRUE)->first();
 
-                    $url = ($value->amount > 0 && $videopayment == DEFAULT_FALSE) ? route('user.payment_url', array('id'=>$value->id, 'user_id'=> $request->id)): route('user.live_video.start_broadcasting' , array('id'=>$value->unique_id,'c_id'=>$value->channel_id));
+                    $url = ($value->amount > 0 && $videopayment == DEFAULT_FALSE) ? route('user.payment_url', array('id'=>$value->video_id, 'user_id'=> $request->id)): route('user.live_video.start_broadcasting', array('id'=>$value->unique_id,'c_id'=>$value->channel_id));
 
                         // dd($value);
 

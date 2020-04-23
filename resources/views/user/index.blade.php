@@ -162,7 +162,7 @@
                             <div class="slide-box">
                                 <div class="slide-image">
                                     <a href="{{$live_video->url}}">
-                                        <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$live_video->video_image}}"class="slide-img1 placeholder" />
+                                        <img src="{{$live_video->video_image ?: asset('live.jpg')}}"class="slide-img1 placeholder" />
                                     </a>
                                     @if($live_video->payment_status > 0 && $live_video->amount > 0)
 
