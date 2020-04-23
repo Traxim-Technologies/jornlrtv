@@ -1079,6 +1079,11 @@ class UserController extends Controller {
                 ]);   
             }
 
+            $request->request->add([
+                'browser' => 'chrome',
+                'device_type' => DEVICE_WEB
+            ]);
+
             if($request->has('id')){
 
                 $wishlists = $this->UserAPI->wishlist_list($request)->getData();
