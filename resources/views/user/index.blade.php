@@ -145,7 +145,7 @@
 
                 <!-- wishlist end -->
 
-                @if(count($live_videos->items) > 0)
+                @if(count($live_videos) > 0)
 
                 <hr>
                 
@@ -157,28 +157,27 @@
 
                         <div class="box">
 
-                            @foreach($live_videos->items as $live_video)
+                            @foreach($live_videos as $live_video)
+
                             <div class="slide-box">
                                 <div class="slide-image">
                                     <a href="{{$live_video->url}}">
-                                        <!-- <img src="{{$live_video->video_image}}" /> -->
-                                        <!-- <div style="background-image: url({{$live_video->video_image}});" class="slide-img1"></div> -->
                                         <img src="{{asset('streamtube/images/placeholder.gif')}}" data-src="{{$live_video->video_image}}"class="slide-img1 placeholder" />
                                     </a>
-                                    @if($live_video->ppv_amount > 0)
-                                        @if(!$live_video->ppv_status)
-                                            <div class="video_amount">
+                                    @if($live_video->payment_status > 0 && $live_video->amount > 0)
 
-                                            {{tr('pay')}} - {{Setting::get('currency')}}{{$live_video->ppv_amount}}
+                                        <div class="video_amount">
 
-                                            </div>
-                                        @endif
+                                        {{$live_video->video_payment_status ? tr('paid') : tr('pay')}} - {{formatted_amount($live_video->amount)}}
+
+                                        </div>
                                     @endif
+
                                     <div class="video_mobile_views">
                                         {{$live_video->watch_count}} {{tr('views')}}
                                     </div>
                                     <div class="video_duration">
-                                        {{$live_video->duration}}
+                                        {{tr('live')}}
                                     </div>
                                 </div><!--end of slide-image-->
 
@@ -189,8 +188,7 @@
 
                                     <span class="video_views">
                                         <div><a href="{{route('user.channel',$live_video->channel_id)}}">{{$live_video->channel_name}}</a></div>
-                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$live_video->watch_count}} {{tr('views')}} <b>.</b> 
-                                        {{$live_video->publish_time}}</div>
+                                        <div class="hidden-mobile"><i class="fa fa-eye"></i> {{$live_video->watch_count}} {{tr('views')}} <b>.</b></div>
                                     </span>
                                 </div><!--end of video-details-->
                             </div><!--end of slide-box-->

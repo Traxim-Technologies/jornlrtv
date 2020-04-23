@@ -1083,8 +1083,16 @@ class UserController extends Controller {
 
                 $watch_lists = $this->UserAPI->watch_list($request)->getData();  
             }   
-            $live_videos = $this->UserAPI->live_videos_list($request)->getData();
-             
+            $live_videos_response = $this->UserAPI->live_videos($request)->getData();
+
+            $live_videos = [];
+
+            if($live_videos_response->success == true) {
+
+                $live_videos = $live_videos_response->data;
+
+            }
+
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
            
             $trendings = $this->UserAPI->trending_list($request)->getData();
