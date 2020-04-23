@@ -324,6 +324,11 @@ class UserApiController extends Controller {
 
     public function live_videos(Request $request) {
 
+        if(!$request->skip) {
+
+            $request->request->add(['skip' => 0]);
+        }
+
         $validator = Validator::make(
             $request->all(),
             array(
@@ -365,6 +370,8 @@ class UserApiController extends Controller {
                         ->where('live_video_viewer_id', $request->id)
                         ->where('status',DEFAULT_TRUE)->first();
 
+                    $url = ($value->amount > 0 && $videopayment == DEFAULT_FALSE) ? route('user.payment_url', array('id'=>$value->video_id, 'user_id'=> $request->id)): route('user.live_video.start_broadcasting', array('id'=>$value->unique_id,'c_id'=>$value->channel_id));
+
                         // dd($value);
 
                     $null_safe_value = [
@@ -373,7 +380,7 @@ class UserApiController extends Controller {
                         "title"=> $value->title,
                         "channel_name"=> $value->channel_name ? $value->channel_name : '',
                         "watch_count"=> $value->viewers,
-                      // "video"=> $value->video_url ? $value->video_url : VideoRepo::getUrl($value, $request),
+                        // "video"=> $value->video_url ? $value->video_url : VideoRepo::getUrl($value, $request),
                         "video_tape_id"=>$value->video_id,
                         "channel_id"=>$value->channel_id,
                         "description"=> $value->description,
@@ -388,6 +395,7 @@ class UserApiController extends Controller {
                         "share_link"=>route('user.live_video.start_broadcasting', array('id'=>$value->unique_id,'c_id'=>$value->channel_id)),
                         'video_stopped_status'=>$value->video_stopped_status,
                         'video_payment_status'=> $videopayment ? DEFAULT_TRUE : DEFAULT_FALSE,
+                        'url' => $url ?? "#",
                         'redirect_web_url'=>route('user.android.video',['u_id'=>$value->unique_id,
                             'id'=>$request->id, 'c_id'=>$value->channel_id]),
                     ];
