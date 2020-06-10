@@ -938,6 +938,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('check_user_live_video', 'UserController@check_user_live_video')->name('check_user_live_video');
 
+    Route::get('erase_old_live_videos', 'UserController@erase_old_live_videos')->name('erase_old_live_videos');
 
 });
 

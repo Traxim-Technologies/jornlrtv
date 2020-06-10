@@ -1460,7 +1460,18 @@
                       
                    } else {
 
-                      alert(data.error_messages);
+                      if(confirm(data.error_messages)) {
+
+                        $.ajax({
+                            url : "{{route('user.erase_old_live_videos')}}",
+                            type: "get",
+                            success : function(data) {
+                            },
+                            error : function(data) {
+                            },
+                        });
+
+                    }
 
                    }
                 },

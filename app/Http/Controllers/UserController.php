@@ -5325,6 +5325,49 @@ class UserController extends Controller {
 
         }
 
+    }    /**
+     * @method erase_old_live_videos()
+     *
+     * @uses used to delete the user selected playlist
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $playlist_id
+     *
+     * @return JSON Response
+     */
+    public function erase_old_live_videos(Request $request) {
+
+        try {
+
+            $request->request->add([
+                'id'=> Auth::user()->id,
+                'token'=> Auth::user()->token,
+            ]);
+
+            $response = $this->UserAPI->erase_streaming($request)->getData();
+
+            if($response->success == false) {
+
+                throw new Exception($response->error_messages, $response->error_code);
+            }
+
+            return response()->json($response, 200);
+
+        } catch(Exception $e) {
+
+            $error_messages = $e->getMessage(); $error_code = $e->getCode();
+
+            $response_array = ['success' => false, 'error_messages' => $error_messages, 'error_code' => $error_code];
+
+            return response()->json($response_array);
+
+        }
+
     }
+
+    
 
 }
