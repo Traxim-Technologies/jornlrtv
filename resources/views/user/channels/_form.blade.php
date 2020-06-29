@@ -79,6 +79,17 @@
 
 						<input type="text" name="youtube_channel_id" id="youtube_channel_id" class="form-control" value="{{old('youtube_channel_id') ?: $model->youtube_channel_id}}"/> -->
 
+						<h5>{{ tr('is_paid_channel') }}</h5>
+	                    <select name="is_paid_channel" id="is_paid_channel" required class="form-control">
+	                       <option value="yes" @if ($model->is_paid_channel == YES) {{ 'selected' }} @endif>Yes</option>
+	                       <option value="no" @if ($model->is_paid_channel == NO) {{ 'selected' }} @endif>No</option>
+	                    </select>
+
+	                    <div>
+	                    	<h5>{{tr('subscription_amount')}}</h5>
+							<input type="text" name="subscription_amount" class="form-control" value="{{old('subscription_amount') ?: $model->subscription_amount}}" />
+	                    </div>
+                
 						<h5>{{tr('description')}}</h5>
 
 						<p><small><b>{{tr('note')}} :</b>&nbsp;<span class="dark-grey">{{tr('description_note')}}</span></small></p>
