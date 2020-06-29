@@ -13,10 +13,10 @@ class AddChannelPaymentsToChannelTable extends Migration
     public function up()
     {
         Schema::table('channels', function (Blueprint $table) {
-            $table->integer('paid_channel')->default(0);
-            $table->integer('total_amount')->after('paid_channel')->default(0.00);
-            $table->integer('admin_commission');
-            $table->integer('owner_commission');
+            $table->tinyInteger('is_ paid_channel')->default(0);
+            $table->float('total_amount')->default(0.00);
+            $table->float('admin_commission')->default(0.00);
+            $table->float('owner_commission')->default(0.00);
         });
     }
 
@@ -29,6 +29,9 @@ class AddChannelPaymentsToChannelTable extends Migration
     {
         Schema::table('channels', function (Blueprint $table) {
             $table->dropColumn('paid_channel');
+            $table->dropColumn('total_amount');
+            $table->dropColumn('admin_commission');
+            $table->dropColumn('owner_commission');
         });
     }
 }
