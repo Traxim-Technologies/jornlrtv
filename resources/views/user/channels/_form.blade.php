@@ -81,8 +81,8 @@
 
 						<h5>{{ tr('is_paid_channel') }}</h5>
 	                    <select name="is_paid_channel" id="is_paid_channel" required class="form-control">
-	                       <option value="yes" @if ($model->is_paid_channel == YES) {{ 'selected' }} @endif>Yes</option>
-	                       <option value="no" @if ($model->is_paid_channel == NO) {{ 'selected' }} @endif>No</option>
+	                       <option value="1" @if ($model->is_paid_channel == YES) {{ 'selected' }} @endif>Yes</option>
+	                       <option value="0" @if ($model->is_paid_channel == NO) {{ 'selected' }} @endif>No</option>
 	                    </select>
 
 	                    <div>
