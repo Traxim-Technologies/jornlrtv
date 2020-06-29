@@ -48,6 +48,16 @@
                 </div>
             </div>
 
+             <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="is_paid_channel" class="control-label">{{ tr('is_paid_channel') }} *</label>
+                    <select name="is_paid_channel" id="is_paid_channel" required class="form-control">
+                       <option value="yes" @if ($channel_details->is_paid_channel == YES) {{ 'selected' }} @endif>Yes</option>
+                       <option value="no" @if ($channel_details->is_paid_channel == NO) {{ 'selected' }} @endif>No</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="col-sm-12">
                 <div class="form-group">                        
                     <label for="description" class="control-label">{{ tr('description') }} *</label>

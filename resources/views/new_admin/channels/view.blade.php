@@ -141,6 +141,15 @@
                                     <td>{{ $channel_details->name }}</td>
                                 </tr>
                                 <tr>
+                                    <th>{{ tr('is_paid_channel') }}</th>
+                                    @if($channel_details->is_paid_channel ==YES)
+
+                                        <td><span class="text-success">{{tr('yes')}}</span></td>
+                                    @else
+                                        <td><span class="text-danger">{{tr('no')}}</span></td>
+                                    @endif
+                                </tr>
+                                <tr>
                                     <th>{{ tr('description') }}</th>
                                     <td>
                                         <?= $channel_details->description?>

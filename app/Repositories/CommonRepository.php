@@ -201,7 +201,8 @@ class CommonRepository {
                     'description' => 'required|max:1000',
                     'picture' => $request->channel_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
                     'cover' => $request->channel_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
-                    'channel_id' => $request->channel_id ? 'required|exists:channels,id' : ''
+                    'channel_id' => $request->channel_id ? 'required|exists:channels,id' : '',
+                    'is_paid_channel' => 'required',
                 ]
             );
 
@@ -233,7 +234,8 @@ class CommonRepository {
                 $channel_details->name = $request->has('name') ? $request->name : '';
 
                 $channel_details->description = $request->has('description') ? $request->description : '';
-
+                $channel_details->is_paid_channel = $request->is_paid_channel == 'yes' ? YES : NO;
+                
                 $channel_details->user_id = $request->has('id') ? $request->id : $request->user_id;
 
                 if($channel_details->youtube_channel_id == "" && $request->youtube_channel_id) {

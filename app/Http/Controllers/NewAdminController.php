@@ -1188,7 +1188,7 @@ class NewAdminController extends Controller {
         try {
 
             $channel_details = Channel::find($request->channel_id);
-
+           
             if(!$channel_details) {
 
                 throw new Exception(tr('admin_channel_not_found'), 101);

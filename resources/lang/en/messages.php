@@ -2384,5 +2384,6 @@ return array(
 	'video_call_already_present'=>'You already have an ongoing live broadcast. By clicking continue, the existing streamings will get clear.',
 	'cod' => 'Cod',
 	'live' => 'Live',
+	'is_paid_channel' => 'Is paid channel',
 
 );
