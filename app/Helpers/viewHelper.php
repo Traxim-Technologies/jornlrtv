@@ -1370,6 +1370,7 @@ function displayVideoDetails($data,$userId) {
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
         'channel_image'=>$data->channel_picture,
+        'channel_subscription_amount' => $data->channel_subscription_amount,
         'created_at'=>date('d F Y', strtotime($data->created_at)),
         // 'created_at'=>$data->created_at->diffForHumans(),   
         'ad_status'=>$data->ad_status,

@@ -32,6 +32,7 @@ class VideoTape extends Model
             'channels.name as channel_name',
             'channels.picture as channel_picture',
             'channels.status as channel_status',
+            'channels.subscription_amount as channel_subscription_amount',
             'channels.is_approved as channel_approved_status',
             'channels.status as channel_status',
             'video_tapes.title',
