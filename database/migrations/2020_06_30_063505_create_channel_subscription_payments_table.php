@@ -17,7 +17,6 @@ class CreateChannelSubscriptionPaymentsTable extends Migration
             $table->integer('user_id');
             $table->integer('channel_id');
             $table->string('payment_id');
-            $table->string('payment_mode');
             $table->float('amount');
             $table->dateTime('expiry_date');
             $table->integer('status');
