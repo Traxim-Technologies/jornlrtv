@@ -1438,9 +1438,11 @@ class UserController extends Controller {
         
         $data = $this->UserAPI->video_detail($request)->getData();
 
-         $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id',Auth::user()->id)->where('channel_id',$data->response_array->video->channel_id)->first();
+        $user_id = Auth::user()->id ?? 0;
+
+        $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id',$user_id)->where('channel_id',$data->response_array->video->channel_id)->first();
         
-        if($data->response_array->video->is_paid_channel == PAID_CHANNAL && ! $check_user_channel_payment) {
+        if($data->response_array->video->is_paid_channel == PAID_CHANNAL && !$check_user_channel_payment) {
 
             $channel_id = $data->response_array->video->channel_id;
 

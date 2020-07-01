@@ -28,8 +28,8 @@
 						 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 invoice-img" style="background-image: url({{asset('images/invoice-bg.jpg')}});">
 							 		<div class="invoice-overlay">
 							 			<div class="invoice-desc">
-										 	<h3 class="no-margin black-clr">{{$channel_details->channel_name}}</h3>
-										 	<p class="invoice-desc"><?= $channel_details->description ?></p>
+										 	<!-- <h3 class="no-margin black-clr">{{$channel_details->name}}</h3> -->
+										 	<!-- <p class="invoice-desc"><?= $channel_details->description ?></p> -->
 									 	</div>
 									</div>
 								</div>
@@ -37,6 +37,12 @@
 									<div class="spacing1">
 									 	<table  class="table text-right top-space table-sripped">
 									 		<tbody>
+
+									 			<tr class="active">
+											        <td>{{tr('channel_name')}}</td>
+											        <td> <span id="remaining_amount">{{$channel_details->name}}</span></td>
+											    </tr> 
+
 											    <tr class="danger">
 												    <td>{{tr('amount')}}</td>
 												    <td> {{Setting::get('currency')}} {{$channel_details->subscription_amount}}</td>
@@ -51,10 +57,7 @@
 											        <td>{{tr('coupon_amount')}}</td>
 											        <td> {{Setting::get('currency')}}<span id="coupon_amount_val"></span></td>
 											    </tr>
-											    <tr class="active">
-											        <td>{{tr('total')}}</td>
-											        <td>{{Setting::get('currency')}} <span id="remaining_amount">{{$channel_details->amount}}</span></td>
-											    </tr> 
+											    
 										    </tbody>
 										</table>
 

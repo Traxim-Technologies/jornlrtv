@@ -50,6 +50,8 @@ use App\LiveVideoPayment;
 
 use App\Channel;
 
+use App\ChannelSubscriptionPayment;
+
 class PaypalController extends Controller {
    
     private $_api_context;
@@ -1425,10 +1427,7 @@ class PaypalController extends Controller {
 
             $user_channel_subscription_payment->coupon_amount = $coupon_amount;
 
-            $user_channel_subscription_payment->subscription_amount = $channel->subscription_amount;
-
-            $user_channel_subscription_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
-
+            $user_channel_subscription_payment->amount = $channel->subscription_amount;
 
             $user_channel_subscription_payment->save();
 
