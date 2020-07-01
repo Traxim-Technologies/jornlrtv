@@ -1446,7 +1446,17 @@ class UserController extends Controller {
 
             $channel_id = $data->response_array->video->channel_id;
 
-            return redirect()->route('channel_subscription_invoice',$channel_id);
+            $video_id = $data->response_array->video->video_tape_id;
+
+            $channel_details = Channel::find($channel_id);
+
+            if($channel_details->user_id != $user_id) {
+
+                return redirect()->route('channel_subscription_invoice',$channel_id);
+                
+            }
+
+
         }
         // video url
         if (isset($data->url)) {
@@ -5388,8 +5398,9 @@ class UserController extends Controller {
     public function channel_subscription_invoice($channel_id) {
 
         $channel_details = Channel::find($channel_id);
-       
+
         return view('user.channels.invoice')->with('channel_details',$channel_details);
+
     }
     /**
     * @method channel_subscription_payment
@@ -5615,9 +5626,9 @@ class UserController extends Controller {
 
                                         if ($user->save()) {
 
-                                             $data = ['id' => $user->id , 'token' => $user->token, 'payment_id' => $user_payment->payment_id];
+                                            $data = ['id' => $user->id , 'token' => $user->token, 'payment_id' => $user_payment->payment_id];
 
-                                             return redirect()->back()->with('flash_success', tr('payment_success'));
+                                            return redirect()->route('user.single')->with('flash_success', tr('payment_success'));
 
                                         } else {
 
@@ -5696,7 +5707,6 @@ class UserController extends Controller {
 
                                         $user_payment->payment_mode = CARD;
 
-
                                         // Coupon details
 
                                         $user_payment->is_coupon_applied = $is_coupon_applied;
@@ -5724,7 +5734,7 @@ class UserController extends Controller {
 
                                                      $data = ['id' => $user->id , 'token' => $user->token,'payment_id' => $user_payment->payment_id];
 
-                                                    return redirect()->back()->with('flash_success', tr('payment_success'));
+                                                    return redirect()->route('user.subscription.success')->with('flash_success', tr('payment_success'));
 
                                                 } else {
 

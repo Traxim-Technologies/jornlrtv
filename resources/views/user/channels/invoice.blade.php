@@ -73,7 +73,7 @@
 
 									    	<input type="hidden" name="channel_id" value="{{$channel_details->id}}">
 
-									    	<input type="hidden" name="u_id" value="{{Auth::user()->id}}">
+									    	<input type="hidden" name="u_id" value="{{Auth::user()->id ?? 0}}">
 									    	<div>
 												<label class="radio1">
 												    <input id="radio1" type="radio" name="payment_type" checked value="1">
