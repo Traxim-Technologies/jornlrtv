@@ -1437,8 +1437,10 @@ class UserController extends Controller {
         }
         
         $data = $this->UserAPI->video_detail($request)->getData();
+
+         $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id',Auth::user()->id)->where('channel_id',$data->response_array->video->channel_id)->first();
         
-        if($data->response_array->video->is_paid_channel == PAID_CHANNAL) {
+        if($data->response_array->video->is_paid_channel == PAID_CHANNAL && ! $check_user_channel_payment) {
 
             $channel_id = $data->response_array->video->channel_id;
 
@@ -5404,7 +5406,7 @@ class UserController extends Controller {
        
         try {
             
-            DB::beginTransaction();
+            // DB::beginTransaction();
 
             $validator = Validator::make($request->all(), 
                 array(
@@ -5427,7 +5429,7 @@ class UserController extends Controller {
                
                 $user = User::find($request->u_id);
 
-                $total = $request->amount;
+                $total = $channel_details->subscription_amount;
 
                 if(!$user) {
 
@@ -5550,7 +5552,7 @@ class UserController extends Controller {
                             if ($total <= 0) {
 
                                 
-                                $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->u_id)
+                                $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->u_id)->where('channel_id',$request->channel_id)
                                             ->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
 
                                 $user_payment = new ChannelSubscriptionPayment;
@@ -5597,7 +5599,7 @@ class UserController extends Controller {
 
                                 if ($user_payment->save()) {
 
-                                
+                                    
                                     if ($user) {
 
                                         $user->user_type = 1;
@@ -5701,7 +5703,7 @@ class UserController extends Controller {
 
                                         $user_payment->coupon_amount = $coupon_amount;
 
-                                        $user_payment->amount = $request->amount;
+                                        $user_payment->amount = $channel_details->subscription_amount;
 
                                         if ($user_payment->save()) {
 
@@ -5821,7 +5823,7 @@ class UserController extends Controller {
                 
             }
 
-            DB::commit();
+            // DB::commit();
 
             return redirect()->back()->with('flash_success', tr('payment_success'));
 
