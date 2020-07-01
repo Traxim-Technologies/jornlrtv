@@ -30,7 +30,7 @@ class V5UserApiController extends Controller
         Log::info("Request Data".print_r($request->all(), true));
         
         $this->middleware('UserApiVal', ['except' => ['channels_index', 'channels_view', 'channel_based_videos']]);
-
+        
         $this->middleware('ChannelOwner' , ['only' => ['video_tapes_status', 'video_tapes_delete', 'video_tapes_ppv_status','video_tapes_publish_status']]);
 
         $this->skip = $request->skip ?: 0;

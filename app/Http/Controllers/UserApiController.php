@@ -109,7 +109,7 @@ class UserApiController extends Controller {
     protected $skip, $take;
 
     public function __construct(Request $request) {
-
+        
         $this->skip = $request->skip ?: 0;
 
         $this->take = $request->take ?: (Setting::get('admin_take_count') ?: TAKE_COUNT);

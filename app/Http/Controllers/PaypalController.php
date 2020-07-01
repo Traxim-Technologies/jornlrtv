@@ -48,6 +48,8 @@ use App\LiveVideo;
 
 use App\LiveVideoPayment;
 
+use App\Channel;
+
 class PaypalController extends Controller {
    
     private $_api_context;
@@ -1181,6 +1183,278 @@ class PaypalController extends Controller {
                     
     }
     
+    public function paypal_for_channel_subscription(Request $request) {
+        
+        $channel = Channel::find($request->id);
+
+        $u_id = Auth::check() ? Auth::user()->id : '';
+
+        $user = User::find($u_id);
+
+        if(count($channel) == 0 && $user) {
+
+            Log::info("Subscription Details Not Found");
+
+            $error_message = tr('subscription_details_not_found');
+
+            return back()->with('flash_error' , $error_message);
+
+        }
+
+        if ($channel->subscription_amount <= 0) {
+
+            return back()->with('flash_error', tr('cannot_pay_zero_amount'));
+
+        }
+
+        $total = $channel ? $channel->subscription_amount : "1.00" ;
+
+        $coupon_amount = 0;
+
+        $coupon_reason = '';
+
+        $is_coupon_applied = COUPON_NOT_APPLIED;
+
+        if ($request->coupon_code) {
+
+            $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+            if ($coupon) {
+
+                $is_coupon_applied = DEFAULT_TRUE;
+
+                if ($coupon->status == COUPON_INACTIVE) {
+
+                    $coupon_reason = tr('coupon_code_declined');
+
+                } else {
+
+                    $check_coupon = $this->UserAPI->check_coupon_applicable_to_user($user, $coupon)->getData();
+
+                    if ($check_coupon->success) {
+
+                        $amount_convertion = $coupon->amount;
+
+                        if ($coupon->amount_type == PERCENTAGE) {
+
+                            $amount_convertion = amount_convertion($coupon->amount,$channel->subscription_amount);
+
+                        }
+
+                        if ($amount_convertion <= $channel->subscription_amount) {
+
+                            $total = $channel->subscription_amount - $amount_convertion;
+
+                            $coupon_amount = $amount_convertion;
+
+                        }
+
+                        // Create user applied coupon
+
+                        if($check_coupon->code == 2002) {
+
+                            $user_coupon = UserCoupon::where('user_id', $user->id)
+                                    ->where('coupon_code', $request->coupon_code)
+                                    ->first();
+
+                            // If user coupon not exists, create a new row
+
+                            if ($user_coupon) {
+
+                                if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                    $user_coupon->no_of_times_used += 1;
+
+                                    $user_coupon->save();
+
+                                }
+
+                            }
+
+                        } else {
+
+                            $user_coupon = new UserCoupon;
+
+                            $user_coupon->user_id = $user->id;
+
+                            $user_coupon->coupon_code = $request->coupon_code;
+
+                            $user_coupon->no_of_times_used = 1;
+
+                            $user_coupon->save();
+
+                        }
+
+                    } else {
+
+                        $coupon_reason = $check_coupon->error_messages;
+
+                    }
+
+                }
+
+            } else {
+
+                $coupon_reason = tr('coupon_code_not_exists');
+
+            }
+
+        }
+
+        $payment_status = ($total == 0) ? NO : YES;
+        
+        $payment_id = '';
+
+        if($payment_status) {
+
+            $item = new Item();
+
+            $item->setName(Setting::get('site_name')) // item name
+                       ->setCurrency('USD')
+                   ->setQuantity('1')
+                   ->setPrice($total);
+         
+            $payer = new Payer();
+            
+            $payer->setPaymentMethod('paypal');
+
+            // add item to list
+            $item_list = new ItemList();
+            $item_list->setItems(array($item));
+            $total = $total;
+            $details = new Details();
+            $details->setShipping('0.00')
+                ->setTax('0.00')
+                ->setSubtotal($total);
+
+
+            $amount = new Amount();
+            $amount->setCurrency('USD')
+                ->setTotal($total)
+                ->setDetails($details);
+
+            $transaction = new Transaction();
+            $transaction->setAmount($amount)
+                ->setItemList($item_list)
+                ->setDescription('Payment for the Request');
+
+            $redirect_urls = new RedirectUrls();
+            $redirect_urls->setReturnUrl(url('/user/payment/status'))
+                        ->setCancelUrl(url('/'));
+
+            $payment = new Payment();
+            $payment->setIntent('Sale')
+                ->setPayer($payer)
+                ->setRedirectUrls($redirect_urls)
+                ->setTransactions(array($transaction));
+
+            try {
+                $payment->create($this->_api_context);
+
+            } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+
+                // Log::info("Exception: " . $ex->getMessage() . PHP_EOL);
+
+                $error_data = json_decode($ex->getData(), true);
+
+                $error_message = tr('payment_failed_error');
+
+                if(is_array($error_data)) {
+
+                    Log::info(print_r($error_data , true));
+
+                    $error_message = array_key_exists('error', $error_data) ? $error_data['error']." " : "";
+                    
+                    $error_message .= array_key_exists('error_description', $error_data) ? $error_data['error_description']." " : "";
+
+                    $error_message .= array_key_exists('message', $error_data) ? $error_data['message'] : "";
+
+
+                } else {
+
+                    $error_message = $ex->getMessage() . PHP_EOL;
+                }
+
+                Log::info("Pay API catch METHOD");
+
+                PaymentRepo::subscription_payment_failure_save(Auth::user()->id, $channel->id, $error_message);
+
+                return redirect()->route('payment.failure')->with('flash_error' , $error_message);
+
+            }
+
+            foreach($payment->getLinks() as $link) {
+
+                if($link->getRel() == 'approval_url') {
+
+                    $redirect_url = $link->getHref();
+                    break;
+                }
+            }
+
+            $payment_id = $payment->getId();
+            // add payment ID to session
+
+            Session::put('paypal_payment_id', $payment->getId());
+
+            Session::put('channel_id' , $channel->id);
+
+
+        }
+        if(isset($redirect_url) || !$payment_status) {
+
+            $last_payment = UserPayment::where('user_id' , Auth::user()->id)
+                    ->where('status', DEFAULT_TRUE)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+            $user_channel_subscription_payment = new ChannelSubscriptionPayment;
+
+           
+            $user_channel_subscription_payment->payment_id  = $payment_id ? $payment_id : "FREE-".uniqid();
+            $user_channel_subscription_payment->channel_id  = $channel->id;
+            $user_channel_subscription_payment->user_id = Auth::user()->id;
+
+            $user_channel_subscription_payment->payment_mode = PAYPAL;
+
+            // Coupon details
+
+            $user_channel_subscription_payment->is_coupon_applied = $is_coupon_applied;
+
+            $user_channel_subscription_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+            $user_channel_subscription_payment->coupon_amount = $coupon_amount;
+
+            $user_channel_subscription_payment->subscription_amount = $channel->subscription_amount;
+
+            $user_channel_subscription_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+
+            $user_channel_subscription_payment->save();
+
+            if(!$payment_status) {
+
+                return back()->with('flash_success' , tr('payment_success'));
+
+            }
+            
+            $response_array = array('success' => true); 
+
+            if(!$payment_status) {
+
+                return back()->with('flash_success' , tr('payment_success'));
+
+            }
+            
+
+            return redirect()->away($redirect_url);
+        
+        }
+
+        return response()->json(Helper::null_safe($response_array) , 200);
+                    
+    }
+
     public function getLiveVideoPaymentStatus(Request $request) {
 
         // Get the payment ID before session clear

@@ -97,8 +97,9 @@ class UserController extends Controller {
      */
     public function __construct(UserApiController $API, NewUserApiController $NewAPI)
     { 
+
         $this->UserAPI = $API;
-        
+
         $this->NewUserAPI = $NewAPI;
 
         $this->middleware(['auth'], ['except' => [
@@ -132,7 +133,7 @@ class UserController extends Controller {
                 'channel_view',
                 'video_view',
                 'playlists_view',
-                'custom_live_videos_view'
+                'custom_live_videos_view',
 
         ]]);
 
@@ -1436,7 +1437,13 @@ class UserController extends Controller {
         }
         
         $data = $this->UserAPI->video_detail($request)->getData();
-       
+        
+        if($data->response_array->video->is_paid_channel == PAID_CHANNAL) {
+
+            $channel_id = $data->response_array->video->channel_id;
+
+            return redirect()->route('channel_subscription_invoice',$channel_id);
+        }
         // video url
         if (isset($data->url)) {
 
@@ -5361,6 +5368,25 @@ class UserController extends Controller {
         }
 
     }
+     /**
+    * @method channel_subscription_invoice
+    *
+    * @uses used to redirect  to invoice page.
+    *
+    * @created Akshata
+    *
+    * @updated 
+    *
+    * @param Request $request
+    *
+    * @return 
+    */
+    public function channel_subscription_invoice($channel_id) {
+
+        $channel_details = Channel::find($channel_id);
+       
+        return view('user.channels.invoice')->with('channel_details',$channel_details);
+    }
     /**
     * @method channel_subscription_payment
     *
@@ -5375,7 +5401,7 @@ class UserController extends Controller {
     * @return 
     */
     public function channel_subscription_payment(Request $request) {
-
+       
         try {
             
             DB::beginTransaction();
@@ -5398,8 +5424,8 @@ class UserController extends Controller {
             } else {
 
                 $channel_details = Channel::find($request->channel_id);
-
-                $user = User::find($request->user_id);
+               
+                $user = User::find($request->u_id);
 
                 $total = $request->amount;
 
@@ -5512,7 +5538,7 @@ class UserController extends Controller {
 
                     if ($user) {
 
-                        $check_card_exists = User::where('users.id' , $request->user_id)
+                        $check_card_exists = User::where('users.id' , $request->u_id)
                                         ->leftJoin('cards' , 'users.id','=','cards.user_id')
                                         ->where('cards.id' , $user->card_id)
                                         ->where('cards.is_default' , DEFAULT_TRUE);
@@ -5524,7 +5550,7 @@ class UserController extends Controller {
                             if ($total <= 0) {
 
                                 
-                                $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->user_id)
+                                $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->u_id)
                                             ->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
 
                                 $user_payment = new ChannelSubscriptionPayment;
@@ -5548,9 +5574,9 @@ class UserController extends Controller {
 
                                 $user_payment->payment_id = "free plan";
 
-                                $user_payment->user_id = $request->id;
+                                $user_payment->user_id = $request->u_id;
 
-                                $user_payment->subscription_id = $request->subscription_id;
+                                $user_payment->channel_id = $request->channel_id;
 
                                 $user_payment->status = 1;
 
@@ -5566,11 +5592,7 @@ class UserController extends Controller {
 
                                 $user_payment->coupon_amount = $coupon_amount;
 
-                                $user_payment->subscription_amount = $channel_details->subscription_amount;
-
-                                $user_payment->amount = $total;
-
-                                $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+                                $user_payment->amount = $channel_details->subscription_amount;
 
 
                                 if ($user_payment->save()) {
@@ -5644,7 +5666,7 @@ class UserController extends Controller {
 
                                     if($paid_status) {
 
-                                        $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->id)
+                                        $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->u_id)
                                             ->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
 
                                         $user_payment = new ChannelSubscriptionPayment;
@@ -5662,7 +5684,7 @@ class UserController extends Controller {
 
                                         $user_payment->payment_id  = $payment_id;
 
-                                        $user_payment->user_id = $request->user_id;
+                                        $user_payment->user_id = $request->u_id;
 
                                         $user_payment->channel_id = $request->channel_id;
 
@@ -5813,4 +5835,31 @@ class UserController extends Controller {
         }
 
     }
+
+     /**
+    * @method channel_payment
+    *
+    * @uses used to payment for the specified channel 
+    *
+    * @created Akshata
+    *
+    * @updated 
+    *
+    * @param 
+    *
+    * @return 
+    */
+    public function channel_payment(Request $request){
+
+        if($request->payment_type == 1) {
+
+            return redirect(route('user.paypal_channel_subscription' ,['channel_id' => $request->channel_id, 'coupon_code'=>$request->coupon_code]));
+
+        } else {
+
+            return redirect(route('user.channel_subscription_payment' , ['channel_id' => $request->channel_id, 'coupon_code'=>$request->coupon_code,'u_id'=>$request->u_id]));
+        }
+
+    }
+
 }

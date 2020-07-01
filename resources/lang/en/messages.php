@@ -2387,5 +2387,6 @@ return array(
 	'is_paid_channel' => 'Is paid channel',
 	'channel_subscription' => 'Please subscribe for the channel before proceeding',
 	'no_user_detail_found' =>'No user details found',
+	'channel_invoice' => 'Channel invoice',
 
 );

@@ -133,6 +133,8 @@ Route::get('page_view/{id}', 'UserController@page_view')->name('page_view');
 
 Route::get('/admin/check_role', 'NewAdminController@check_role');
 
+Route::get('/channel_subscription_invoice/{data}', 'UserController@channel_subscription_invoice')->name('channel_subscription_invoice');
+
 Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('login', 'Auth\AdminAuthController@showLoginForm')->name('login');
@@ -441,6 +443,7 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
     Route::get('/spam/per-user-reports/{id}', 'AdminController@spam_videos_each_user_reports')->name('spam-videos.per-user-reports');
 
     Route::get('/unspam-video/{id}', 'AdminController@spam_videos_unspam')->name('spam-videos.unspam-video');
+    
 
     // New Video CRUD end
 
@@ -757,6 +760,8 @@ Route::group(['as' => 'user.'], function(){
     // Paypal Payment
     Route::get('/paypal/{id}/{coupon_code?}','PaypalController@pay')->name('paypal');
 
+     Route::get('/paypal/{id}/{coupon_code?}','PaypalController@paypal_for_channel_subscription')->name('paypal_channel_subscription');
+
     Route::get('/user/payment/status','PaypalController@getPaymentStatus')->name('paypalstatus');
 
     Route::get('/live_videos', 'UserController@live_videos')->name('live_videos');
@@ -815,6 +820,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('/ppv-stripe-payment', 'UserController@ppv_stripe_payment')->name('card.ppv-stripe-payment');
 
     Route::get('/subscribed-channels', 'UserController@subscribed_channels')->name('channels.subscribed');
+
+    Route::post('/channel_payment', 'UserController@channel_payment')->name('channel.payment');
 
 
     // Live videos
@@ -940,7 +947,7 @@ Route::group(['as' => 'user.'], function(){
 
     Route::get('erase_old_live_videos', 'UserController@erase_old_live_videos')->name('erase_old_live_videos');
 
-    Route::post('channel_subscription_payment','UserController@channel_subscription_payment')->name('channel_subscription_payment');
+    Route::get('channel_subscription_payment','UserController@channel_subscription_payment')->name('channel_subscription_payment');
 
 });
 

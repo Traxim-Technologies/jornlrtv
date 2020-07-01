@@ -457,4 +457,9 @@ if(!defined('PAY_WATCH_VIDEO')) define('PAY_WATCH_VIDEO', 1);
 
 if(!defined('FREE_VIDEO')) define('FREE_VIDEO', 0);
 
+if(!defined('PAID_CHANNAL')) define('PAID_CHANNAL', 1);
+
+if(!defined('FREE_CHANNEL')) define('FREE_CHANNEL', 0);
+
+
 

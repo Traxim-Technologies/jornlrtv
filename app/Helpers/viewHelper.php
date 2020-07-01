@@ -1358,7 +1358,6 @@ function displayVideoDetails($data,$userId) {
         $playlist_details->is_selected = $check_video ? YES : NO;
     }
 
-   
     $model = [
         'video_tape_id'=>$data->video_tape_id,
         'title'=>$data->title,
@@ -1370,6 +1369,7 @@ function displayVideoDetails($data,$userId) {
         'channel_id'=>$data->channel_id,
         'channel_name'=>$data->channel_name,
         'channel_image'=>$data->channel_picture,
+        'is_paid_channel' => $data->is_paid_channel,
         'channel_subscription_amount' => $data->channel_subscription_amount,
         'created_at'=>date('d F Y', strtotime($data->created_at)),
         // 'created_at'=>$data->created_at->diffForHumans(),   

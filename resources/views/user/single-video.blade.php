@@ -91,7 +91,9 @@
                   <div class="col-sm-12 col-md-8 play-video">
                      
                      <div class="single-video-sec">
-                         @include('user.videos.streaming')
+
+                        @include('user.videos.streaming')
+
                      </div>
                      
                      <div class="main-content">

@@ -204,7 +204,7 @@
                 @endif
 
                 @if(count($recent_videos->items) > 0)
-
+               
                 <hr>
                 
                     <div class="slide-area">
