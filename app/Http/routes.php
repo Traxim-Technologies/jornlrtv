@@ -99,7 +99,7 @@ Route::get('/rc/{referral_code}', 'UserController@referrals_signup')->name('refe
 
 // Embed Links
 
-Route::get('/embed', 'ApplicationController@embed_video')->name('embed_video');
+Route::get('/embed', 'ApplicationConFtroller@embed_video')->name('embed_video');
 
 // Admin to users login
 
@@ -939,6 +939,8 @@ Route::group(['as' => 'user.'], function(){
     Route::get('check_user_live_video', 'UserController@check_user_live_video')->name('check_user_live_video');
 
     Route::get('erase_old_live_videos', 'UserController@erase_old_live_videos')->name('erase_old_live_videos');
+
+    Route::post('channel_subscription_payment','UserController@channel_subscription_payment')->name('channel_subscription_payment');
 
 });
 

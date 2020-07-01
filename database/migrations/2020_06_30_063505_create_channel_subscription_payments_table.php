@@ -14,17 +14,17 @@ class CreateChannelSubscriptionPaymentsTable extends Migration
     {
         Schema::create('channel_subscription_payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('channel_id');
-            $table->string('payment_id');
-            $table->string('payment_mode');
-            $table->float('amount');
-            $table->string('currency')
+            $table->integer('user_id')->default(0);
+            $table->integer('channel_id')->default(0);
+            $table->string('payment_id')->default(0);
+            $table->string('payment_mode')->default('cod');
+            $table->float('amount')->default(0.00);
+            $table->string('currency')->default('$');
             $table->tinyInteger('is_current')->default(0);
-            $table->tinyInteger('is_cancelled');
-            $table->text('cancel_reason');
+            $table->tinyInteger('is_cancelled')->default(0);
+            $table->text('cancel_reason')->default('');
             $table->tinyInteger('is_coupon_applied')->default(0);
-            $table->string('coupon_code');
+            $table->string('coupon_code')->default('');
             $table->float('coupon_amount')->default(0.00);
             $table->dateTime('expiry_date');
             $table->integer('status');

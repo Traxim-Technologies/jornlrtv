@@ -105,6 +105,7 @@
                                  <div class="title row">
                                          
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-lg-12 zero-padding">
+                                       
                                        <h3>{{$video->title}}</h3>
 
                                        <div class="views pull-left">

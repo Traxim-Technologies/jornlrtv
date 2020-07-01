@@ -82,6 +82,8 @@ use App\UserReferrer;
 
 use App\Redeem;
 
+use App\ChannelSubscriptionPayment;
+
 class UserController extends Controller {
 
     protected $UserAPI;
@@ -629,10 +631,6 @@ class UserController extends Controller {
                         \Stripe\Stripe::setApiKey($stripe_secret_key);
                     } else {
 
-                        // $response_array = array('success' => false, 'error' => Helper::error_message(902) , 'error_code' => 902);
-
-                       // return response()->json($response_array , 200);
-
                         return back()->with('flash_error', Helper::get_error_message(902));
                     }
 
@@ -706,11 +704,7 @@ class UserController extends Controller {
 
                         Log::info(print_r($e,true));
 
-                        /*$response_array = array('success' => false , 'error' => Helper::get_error_message(903) ,'error_code' => 903);*/
-
                         return back()->with('flash_error', Helper::get_error_message(903));
-
-                       // return response()->json($response_array , 200);
                     
                     }
 
@@ -1442,7 +1436,7 @@ class UserController extends Controller {
         }
         
         $data = $this->UserAPI->video_detail($request)->getData();
-
+       
         // video url
         if (isset($data->url)) {
 
@@ -1458,7 +1452,7 @@ class UserController extends Controller {
             $playlists = array();
            
             $response = $data->response_array;
-           
+          
             if ($data->response_array->playlists->success) {
                   
                 // check video already exists in user playlits
@@ -1586,7 +1580,7 @@ class UserController extends Controller {
                 VideoRepo::watch_count($request->video_tape_id,$user_id,YES);
 
             }
-        
+           
             return view('user.videos.playlist_single_video')
                         ->with('page' , '')
                         ->with('subPage' , '')
@@ -5367,7 +5361,456 @@ class UserController extends Controller {
         }
 
     }
+    /**
+    * @method channel_subscription_payment
+    *
+    * @uses used to payment for the specified channel 
+    *
+    * @created Akshata
+    *
+    * @updated 
+    *
+    * @param 
+    *
+    * @return 
+    */
+    public function channel_subscription_payment(Request $request) {
 
-    
+        try {
+            
+            DB::beginTransaction();
 
+            $validator = Validator::make($request->all(), 
+                array(
+                    'channel_id' => 'required|exists:channels,id',
+                    'coupon_code'=>'exists:coupons,coupon_code',
+                ), array(
+                    'coupon_code.exists' => tr('coupon_code_not_exists'),
+                    'channel_id.exists' => tr('channel_not_exists'),
+            ));
+
+            if($validator->fails()) {
+
+                $error_messages = implode(',', $validator->messages()->all());
+
+                throw new Exception($error_messages, 101);
+
+            } else {
+
+                $channel_details = Channel::find($request->channel_id);
+
+                $user = User::find($request->user_id);
+
+                $total = $request->amount;
+
+                if(!$user) {
+
+                    throw new Exception(tr('user_not_found'), 101);
+                }
+
+                $plan = "1";
+                
+                if ($channel_details) {
+
+                    $coupon_amount = 0;
+
+                    $is_coupon_applied = COUPON_NOT_APPLIED;
+
+                    if ($request->coupon_code) {
+
+                        $coupon = Coupon::where('coupon_code', $request->coupon_code)->first();
+
+                        if ($coupon) {
+                            
+                            if ($coupon->status == COUPON_INACTIVE) {
+
+                                $coupon_reason = tr('coupon_inactive_reason');
+
+
+                            } else {
+
+                                $check_coupon = $this->check_coupon_applicable_to_user($user, $coupon)->getData();
+
+                                if ($check_coupon->success) {
+
+                                    $is_coupon_applied = COUPON_APPLIED;
+
+                                    $amount_convertion = $coupon->amount;
+
+                                    if ($coupon->amount_type == PERCENTAGE) {
+
+                                        $amount_convertion = amount_convertion($coupon->amount, $channel_details->subscription_amount);
+
+                                    }
+
+
+                                    if ($amount_convertion < $channel_details->subscription_amount) {
+
+                                        $total = $channel_details->subscription_amount - $amount_convertion;
+
+                                        $coupon_amount = $amount_convertion;
+
+                                    } else {
+
+                                        // throw new Exception(Helper::get_error_message(156),156);
+
+                                        $total = 0;
+
+                                        $coupon_amount = $amount_convertion;
+                                        
+                                    }
+
+                                    // Create user applied coupon
+
+                                    if($check_coupon->code == 2002) {
+
+                                        $user_coupon = UserCoupon::where('user_id', $user->id)
+                                                ->where('coupon_code', $request->coupon_code)
+                                                ->first();
+
+                                        // If user coupon not exists, create a new row
+
+                                        if ($user_coupon) {
+
+                                            if ($user_coupon->no_of_times_used < $coupon->per_users_limit) {
+
+                                                $user_coupon->no_of_times_used += 1;
+
+                                                $user_coupon->save();
+
+                                            }
+
+                                        }
+
+                                    } else {
+
+                                        $user_coupon = new UserCoupon;
+
+                                        $user_coupon->user_id = $user->id;
+
+                                        $user_coupon->coupon_code = $request->coupon_code;
+
+                                        $user_coupon->no_of_times_used = 1;
+
+                                        $user_coupon->save();
+
+                                    }
+
+                                } else {
+
+                                    $coupon_reason = $check_coupon->error_messages;
+                                    
+                                }
+
+                            }
+
+                        } else {
+
+                            $coupon_reason = tr('coupon_delete_reason');
+                        }
+                    }
+
+                    if ($user) {
+
+                        $check_card_exists = User::where('users.id' , $request->user_id)
+                                        ->leftJoin('cards' , 'users.id','=','cards.user_id')
+                                        ->where('cards.id' , $user->card_id)
+                                        ->where('cards.is_default' , DEFAULT_TRUE);
+                       
+                        if($check_card_exists->count() != 0) {
+
+                            $user_card = $check_card_exists->first();
+
+                            if ($total <= 0) {
+
+                                
+                                $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->user_id)
+                                            ->where('status', DEFAULT_TRUE)->orderBy('created_at', 'desc')->first();
+
+                                $user_payment = new ChannelSubscriptionPayment;
+
+                                if($previous_payment) {
+
+                                    if (strtotime($previous_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                                     $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime("+{$plan} months", strtotime($previous_payment->expiry_date)));
+
+                                    } else {
+
+                                        $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+{$plan} months"));
+
+                                    }
+
+                                } else {
+                                   
+                                    $user_payment->expiry_date = date('Y-m-d H:i:s');
+                                }
+
+                                $user_payment->payment_id = "free plan";
+
+                                $user_payment->user_id = $request->id;
+
+                                $user_payment->subscription_id = $request->subscription_id;
+
+                                $user_payment->status = 1;
+
+                                $user_payment->amount = $total;
+
+                                $user_payment->payment_mode = CARD;
+
+                                // Coupon details
+
+                                $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                                $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+                                $user_payment->coupon_amount = $coupon_amount;
+
+                                $user_payment->subscription_amount = $channel_details->subscription_amount;
+
+                                $user_payment->amount = $total;
+
+                                $user_payment->coupon_reason = $is_coupon_applied == COUPON_APPLIED ? '' : $coupon_reason;
+
+
+                                if ($user_payment->save()) {
+
+                                
+                                    if ($user) {
+
+                                        $user->user_type = 1;
+
+                                        $user->expiry_date = $user_payment->expiry_date;
+
+                                        if ($user_payment->amount <= 0) {
+
+                                            $user->zero_subscription_status = 1;
+                                        }
+
+                                        if ($user->save()) {
+
+                                             $data = ['id' => $user->id , 'token' => $user->token, 'payment_id' => $user_payment->payment_id];
+
+                                             return redirect()->back()->with('flash_success', tr('payment_success'));
+
+                                        } else {
+
+
+                                            throw new Exception(tr('user_details_not_saved'));
+                                            
+                                        }
+
+                                    } else {
+
+                                        throw new Exception(tr('user_not_found'));
+                                        
+                                    }
+                                    
+                                   
+                                } else {
+
+                                    throw new Exception(tr(Helper::get_error_message(902)), 902);
+
+                                }
+
+
+                            } else {
+
+                                $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                                $customer_id = $user_card->customer_id;
+
+                                if($stripe_secret_key) {
+
+                                    \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+                                } else {
+
+                                    throw new Exception(Helper::get_error_message(902), 902);
+
+                                }
+
+                                try{
+
+                                   $user_charge =  \Stripe\Charge::create(array(
+                                      "amount" => $total * 100,
+                                      "currency" => "usd",
+                                      "customer" => $customer_id,
+                                    ));
+
+                                   $payment_id = $user_charge->id;
+                                   $amount = $user_charge->amount/100;
+                                   $paid_status = $user_charge->paid;
+
+                                    if($paid_status) {
+
+                                        $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->id)
+                                            ->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+
+                                        $user_payment = new ChannelSubscriptionPayment;
+
+                                        if($previous_payment) {
+
+                                            $expiry_date = $previous_payment->expiry_date;
+                                            $user_payment->expiry_date = date('Y-m-d H:i:s', strtotime($expiry_date. "+".$plan." months"));
+
+                                        } else {
+                                            
+                                            $user_payment->expiry_date = date('Y-m-d H:i:s',strtotime("+".$plan." months"));
+                                        }
+
+
+                                        $user_payment->payment_id  = $payment_id;
+
+                                        $user_payment->user_id = $request->user_id;
+
+                                        $user_payment->channel_id = $request->channel_id;
+
+                                        $user_payment->status = PAID_STATUS;
+
+                                        $user_payment->payment_mode = CARD;
+
+
+                                        // Coupon details
+
+                                        $user_payment->is_coupon_applied = $is_coupon_applied;
+
+                                        $user_payment->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+                                        $user_payment->coupon_amount = $coupon_amount;
+
+                                        $user_payment->amount = $request->amount;
+
+                                        if ($user_payment->save()) {
+
+                                            if ($user) {
+
+                                                $user->user_type = SUBSCRIBED_USER;
+
+                                                $user->expiry_date = $user_payment->expiry_date;
+
+                                                if ($user_payment->amount <= 0) {
+
+                                                    $user->zero_subscription_status = 1;
+                                                }
+
+                                                if ($user->save()) {
+
+                                                     $data = ['id' => $user->id , 'token' => $user->token,'payment_id' => $user_payment->payment_id];
+
+                                                    return redirect()->back()->with('flash_success', tr('payment_success'));
+
+                                                } else {
+
+
+                                                    throw new Exception(tr('user_details_not_saved'));
+                                                    
+                                                }
+
+                                            } else {
+
+                                                throw new Exception(tr('user_not_found'));
+                                                
+                                            }
+
+                                        
+
+                                        } else {
+
+                                             throw new Exception(tr(Helper::get_error_message(902)), 902);
+
+                                        }
+
+
+                                    } else {
+
+                                        $response_array = array('success' => false, 'error_messages' => Helper::get_error_message(903) , 'error_code' => 903);
+
+                                        throw new Exception(Helper::get_error_message(903), 903);
+
+                                    }
+
+                                
+                                } catch(\Stripe\Error\RateLimit $e) {
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch(\Stripe\Error\Card $e) {
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\InvalidRequest $e) {
+                                    // Invalid parameters were supplied to Stripe's API
+                                   
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\Authentication $e) {
+
+                                    // Authentication with Stripe's API failed
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\ApiConnection $e) {
+
+                                    // Network communication with Stripe failed
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\Error\Base $e) {
+                                  // Display a very generic error to the user, and maybe send
+                                    
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (Exception $e) {
+                                    // Something else happened, completely unrelated to Stripe
+
+                                    throw new Exception($e->getMessage(), 903);
+
+                                } catch (\Stripe\StripeInvalidRequestError $e) {
+
+                                        Log::info(print_r($e,true));
+
+                                    throw new Exception($e->getMessage(), 903);
+                                    
+                                
+                                }
+
+
+                            }
+
+                        } else {
+     
+                            throw new Exception(Helper::get_error_message(901), 901);
+                            
+                        }
+
+                    } else {
+
+                        throw new Exception(tr('no_user_detail_found'));
+                        
+                    }
+
+                } else {
+
+                    throw new Exception(Helper::get_error_message(901), 901);
+
+                }         
+
+                
+            }
+
+            DB::commit();
+
+            return redirect()->back()->with('flash_success', tr('payment_success'));
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            $error = $e->getMessage();
+
+            return redirect()->back()->with('flash_error', $e->getMessage());
+        }
+
+    }
 }

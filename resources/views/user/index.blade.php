@@ -68,7 +68,8 @@
                             <div class="carousel-inner">
                                 @foreach($banner_videos as $key => $banner_video)
                                 <div class="{{$key == 0 ? 'active item' : 'item'}}" data-slide-number="{{$key}}">
-                                    <a href="{{route('user.single' , $banner_video->video_tape_id)}}"><img src="{{$banner_video->image}}" style="height:250px;width: 100%;">
+                                    <a href="{{route('user.single' , $banner_video->video_tape_id)}}">
+                                    <img src="{{$banner_video->image}}" style="height:250px;width: 100%;">
                                     
                                     </a>
                                 </div>
