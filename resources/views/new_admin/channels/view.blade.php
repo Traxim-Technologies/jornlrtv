@@ -145,6 +145,10 @@
                                     @if($channel_details->is_paid_channel ==YES)
 
                                         <td><span class="text-success">{{tr('yes')}}</span></td>
+                                        <tr> 
+                                        <th>{{tr('subscription_amount')}} </th>
+                                            <td><span  class="text-success"> {{formatted_amount($channel_details->subscription_amount)}}</span></td>
+                                        </tr>
                                     @else
                                         <td><span class="text-danger">{{tr('no')}}</span></td>
                                     @endif

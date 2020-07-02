@@ -58,6 +58,13 @@
                 </div>
             </div>
 
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="subscription_amount" class="control-label">{{ tr('subscription_amount') }} *</label>
+                    <input type="number" required class="form-control" id="subscription_amount" name="subscription_amount" placeholder="{{ tr('subscription_amount') }}" minlength="6" title="Min length must be an 6 character" value="{{old('subscription_amount') ?: $channel_details->subscription_amount}}">
+                </div>
+            </div>
+
             <div class="col-sm-12">
                 <div class="form-group">                        
                     <label for="description" class="control-label">{{ tr('description') }} *</label>
