@@ -203,6 +203,7 @@ class CommonRepository {
                     'cover' => $request->channel_id ? 'mimes:jpeg,jpg,bmp,png' : 'required|mimes:jpeg,jpg,bmp,png',
                     'channel_id' => $request->channel_id ? 'required|exists:channels,id' : '',
                     'is_paid_channel' => 'required',
+                    'subscription_amount' => $request->is_paid_channel == YES ? 'required' :'',
                 ]
             );
 
