@@ -279,6 +279,8 @@ Route::group(['prefix' => 'admin' , 'as' => 'admin.'], function() {
 
     Route::get('/channel/playlists/create', 'NewAdminController@channels_playlists_create')->name('channels.playlists.create');
 
+    Route::get('/channel/paid_channel_index', 'NewAdminController@paid_channel_index')->name('paid_channels.index');
+
     Route::get('/channel/playlists/edit', 'NewAdminController@channels_playlists_edit')->name('channels.playlists.edit');
 
     Route::post('/channel/playlists/save', 'NewAdminController@channels_playlists_save')->name('channels.playlists.save');

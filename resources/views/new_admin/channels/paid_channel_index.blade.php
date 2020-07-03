@@ -29,7 +29,7 @@
 
             <div class="box-header label-primary">
 
-                <b style="font-size:18px;">{{ tr('channels') }}</b>
+                <b style="font-size:18px;">{{ tr('paid_channels') }}</b>
                 <a href="{{ route('admin.channels.create') }}" class="btn btn-default pull-right">{{ tr('add_channel') }}</a>
 
                 <!-- EXPORT OPTION START -->

@@ -66,6 +66,7 @@
 						      <th>{{tr('id')}}</th>
 						      <th>{{tr('channel')}}</th>
 						      <th>{{tr('user_name')}}</th>
+						      <th>{{tr('subscription_amount')}}</th>
 						      <th>{{tr('no_of_videos')}}</th>
 						      <th>{{tr('subscribers')}}</th>
 						      <th>{{tr('amount')}}</th>

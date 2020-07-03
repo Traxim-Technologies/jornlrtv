@@ -62,6 +62,8 @@
                     <li id="channels-create"><a href="{{route('admin.channels.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
                     
                     <li id="channels-view"><a href="{{route('admin.channels.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
+
+                     <li id="channels-view"><a href="{{route('admin.paid_channels.index')}}"><i class="fa fa-circle-o"></i>{{tr('paid_channels')}}</a></li>
                     
                     <li id="channels-subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
                 

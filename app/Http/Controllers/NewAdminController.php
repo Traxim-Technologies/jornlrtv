@@ -7549,4 +7549,33 @@ class NewAdminController extends Controller {
     
     }
 
+     /**
+     * @method paid_channel_index()
+     *
+     * @uses used for listing all paid channels
+     * 
+     * @created Akshata
+     *
+     * @updated 
+     *
+     * @param Integer (request) - $playlist_video_id
+     *
+     * @return view page
+     */
+
+     public function paid_channel_index(Request $request) {
+
+         $channels = Channel::where('is_paid_channel',YES)->orderBy('channels.created_at', 'desc')
+                        ->distinct('channels.id')
+                        ->withCount('getChannelSubscribers')
+                        ->withCount('getVideoTape')
+                        ->get();
+
+        return view('new_admin.channels.paid_channel_index')
+                    ->withPage('channels')
+                    ->with('sub_page','channels-view')
+                    ->with('channels' , $channels); 
+
+     }
+
 }
