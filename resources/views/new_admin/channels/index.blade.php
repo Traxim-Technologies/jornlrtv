@@ -139,6 +139,10 @@
                                                     <li role="presentation"><a role="menuitem" tabindex="-1" onclick="return confirm(&quot;{{ tr('admin_channel_delete_confirmation', $channel_details->name) }}&quot;)" href="{{ route('admin.channels.delete' , ['channel_id' => $channel_details->id] ) }}">{{ tr('delete') }}</a></li>
 
                                                 @endif
+
+                                                @if($channel_details->is_paid_channel == YES) 
+                                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ route('admin.revenues.channel_payments' , ['channel_id' => $channel_details->id] ) }}">{{ tr('channel_payments') }}</a></li>
+                                                @endif
                                           
 	                                            <li class="divider" role="presentation"></li>
 

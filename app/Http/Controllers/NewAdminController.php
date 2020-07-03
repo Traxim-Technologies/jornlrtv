@@ -98,6 +98,8 @@ use App\Referral;
 
 use App\UserReferrer;
 
+use App\ChannelSubscriptionPayment;
+
 class NewAdminController extends Controller {
 
     /**
@@ -7576,6 +7578,38 @@ class NewAdminController extends Controller {
                     ->with('sub_page','channels-view')
                     ->with('channels' , $channels); 
 
-     }
+    }
+
+    /**
+     * @method channel_paymets_index()
+     *
+     * @uses Display the channel payment details for all users
+     * 
+     * @created Akshata
+     *
+     * @updated 
+     *
+     * @param Integer (request) - $playlist_video_id
+     *
+     * @return view page
+     */
+
+    public function channel_payments(Request $request) {
+
+        $base_query = ChannelSubscriptionPayment::orderBy('created_at','DESC');
+
+        if($request->channel_id) {
+
+            $base_query = $base_query->where('channel_id',$request->channel_id);
+        }
+
+        $payments = $base_query->paginate(10);
+        
+        return view('new_admin.payments.channel-payments')
+                    ->withPage('payments')
+                    ->with('sub_page','payments-channels')
+                    ->with('payments' , $payments);
+
+    }
 
 }
