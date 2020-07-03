@@ -240,7 +240,10 @@ class V5Repository {
                     $video_tape_details->should_display_ppv = PAY_WATCH_VIDEO;
                         
                 }
+            
             }
+
+            $video_tape_details->is_user_pay_for_channel = is_user_pay_for_channel($video_tape_details->channel_id, $user_details);
 
             $video_tape_details->publish_time = common_date($video_tape_details->publish_time, "", 'd M Y');
 

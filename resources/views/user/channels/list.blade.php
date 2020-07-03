@@ -80,7 +80,8 @@
 			                                    </a>
 			                                    <div class="video_duration">
 			                                        {{$channel->no_of_videos}} {{tr('videos')}}
-			                                    </div>                        
+			                                    </div>   
+
 			                                </div><!--history-image-->
 
 			                                <div class="history-title">
@@ -95,7 +96,19 @@
 			                                            	 <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}} <b>.</b> 
 					                                        {{ common_date($channel->created_at) }}
 					                                    </span>
+					                                </div>
+
+					                                @if($channel->is_paid_channel == YES)
+			                                        <div class="cross-title">
+
+					                                    <span class="video_views">
+
+					                                    	{{formatted_amount($channel->subscription_amount)}}
+
+					                                    </span>
 			                                        </div> 
+
+			                                        @endif
 			                                        
 			                                        @if(Auth::check())
 

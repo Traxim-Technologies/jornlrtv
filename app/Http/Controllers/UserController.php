@@ -1096,7 +1096,7 @@ class UserController extends Controller {
             }
 
             $recent_videos = $this->UserAPI->recently_added($request)->getData();
-           
+
             $trendings = $this->UserAPI->trending_list($request)->getData();
             
             $suggestions  = $this->UserAPI->suggestion_videos($request)->getData();
@@ -1205,7 +1205,6 @@ class UserController extends Controller {
         }
 
         $response = $this->UserAPI->channel_list($request)->getData();
-
 
         return view('user.channels.list')->with('page', 'channels')
                 ->with('subPage', 'channel_list')
@@ -1456,9 +1455,8 @@ class UserController extends Controller {
                 
             }
 
-
         }
-        // video url
+                // video url
         if (isset($data->url)) {
 
             return redirect($data->url);

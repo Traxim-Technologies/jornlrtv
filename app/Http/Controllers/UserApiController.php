@@ -4066,6 +4066,8 @@ class UserApiController extends Controller {
                     'user_id'=>$value->user_id,
                     'picture'=> $value->picture, 
                     'title'=>$value->name,
+                    'is_paid_channel'=>$value->is_paid_channel,
+                    'subscription_amount'=>$value->subscription_amount,
                     'description'=>$value->description, 
                     'created_at'=>$value->created_at->diffForHumans(),
                     'no_of_videos'=>videos_count($value->id, MY_CHANNEL),
@@ -4859,7 +4861,7 @@ class UserApiController extends Controller {
 
     public function my_channels(Request $request) {
 
-       $model = Channel::select('id as channel_id', 'name as channel_name')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)
+       $model = Channel::select('id as channel_id', 'name as channel_name', 'is_paid_channel', 'subscription_amount')->where('is_approved', DEFAULT_TRUE)->where('status', DEFAULT_TRUE)
             ->where('user_id', $request->id)->get();
 
         if($model) {
@@ -6696,7 +6698,7 @@ class UserApiController extends Controller {
         $channel_id = [];
 
         $query = Channel::where('channels.is_approved', DEFAULT_TRUE)
-                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved',
+                ->select('channels.*', 'video_tapes.id as video_tape_id', 'video_tapes.is_approved','channels.is_paid_channel','channels.subscription_amount',
                     'video_tapes.status', 'video_tapes.channel_id')
                 ->leftJoin('video_tapes', 'video_tapes.channel_id', '=', 'channels.id')
                 ->where('channels.status', DEFAULT_TRUE)
@@ -6743,6 +6745,8 @@ class UserApiController extends Controller {
                         'user_id'=>$value->user_id,
                         'picture'=> $value->picture, 
                         'title'=>$value->name,
+                        'is_paid_channel'=>$value->is_paid_channel,
+                        'subscription_amount'=>$value->subscription_amount,
                         'description'=>$value->description, 
                         'created_at'=>$value->created_at->diffForHumans(),
                         'no_of_videos'=>videos_count($value->id),

@@ -80,14 +80,14 @@
 						<input type="text" name="youtube_channel_id" id="youtube_channel_id" class="form-control" value="{{old('youtube_channel_id') ?: $model->youtube_channel_id}}"/> -->
 
 						<h5>{{ tr('is_paid_channel') }}</h5>
-	                    <select name="is_paid_channel" id="is_paid_channel" required class="form-control">
-	                       <option value="1" @if ($model->is_paid_channel == YES) {{ 'selected' }} @endif>Yes</option>
-	                       <option value="0" @if ($model->is_paid_channel == NO) {{ 'selected' }} @endif>No</option>
+	                    <select name="is_paid_channel" id="is_paid_channel" required class="form-control" >
+	                       <option value="1" @if($model->is_paid_channel == YES) {{ 'selected' }} @endif>Yes</option>
+	                       <option value="0" @if($model->is_paid_channel == NO) {{ 'selected' }} @endif>No</option>
 	                    </select>
 
-	                    <div>
+	                    <div id="paid_channel_div">
 	                    	<h5>{{tr('subscription_amount')}}</h5>
-							<input type="text" name="subscription_amount" class="form-control" value="{{old('subscription_amount') ?: $model->subscription_amount}}" />
+							<input type="number" name="subscription_amount" class="form-control" value="{{old('subscription_amount') ?: $model->subscription_amount}}" />
 	                    </div>
                 
 						<h5>{{tr('description')}}</h5>
@@ -119,6 +119,30 @@
 <!-- Add Js files and inline js here -->
 
 <script type="text/javascript">
+
+$(document).ready(function() {
+
+	var is_paid_channel = "{{old('description') ?: $model->is_paid_channel}}";
+
+	if(is_paid_channel) {
+		$('#paid_channel_div').show();
+	} else {
+		$('#paid_channel_div').hide();
+	}
+
+});
+
+$('#is_paid_channel').on('change', function() {
+
+	var is_paid_channel = $('#is_paid_channel').val();
+
+	if(is_paid_channel == 1) {
+		$('#paid_channel_div').show();
+	} else {
+		$('#paid_channel_div').hide();
+	}
+});
+
 function loadFile(event, id){
     // alert(event.files[0]);
     if ('cover_preview' == id) {

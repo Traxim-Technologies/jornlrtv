@@ -3822,6 +3822,32 @@ class NewUserApiController extends Controller
                 
             }
 
+            $channel_details = Channel::find($video_details->channel_id);
+
+            $is_paid_channel = $channel_details->is_paid_channel ?? FREE_CHANNEL;
+
+            if($is_paid_channel == PAID_CHANNAL) {
+
+                $is_user_needs_pay_channel = YES;
+
+                if($request->id && $channel_details) {
+
+                    $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id', $request->id)->where('channel_id', $video_details->channel_id)->first();
+
+                    if(($channel_details->user_id == $request->id) || $check_user_channel_payment) {
+
+                        $is_user_needs_pay_channel = NO;
+                    }
+                }
+
+            }
+
+            if($is_user_needs_pay_channel == YES) {
+
+                throw new Exception('Pay amount to watch the video', 10001);
+                
+            }
+
             VideoRepo::watch_count($request->video_tape_id,$request->id,NO);
 
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
