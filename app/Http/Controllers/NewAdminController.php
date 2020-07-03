@@ -7581,7 +7581,7 @@ class NewAdminController extends Controller {
     }
 
     /**
-     * @method channel_paymets_index()
+     * @method channel_payments()
      *
      * @uses Display the channel payment details for all users
      * 
