@@ -62,6 +62,8 @@
                     <li id="channels-create"><a href="{{route('admin.channels.create')}}"><i class="fa fa-circle-o"></i>{{tr('add_channel')}}</a></li>
                     
                     <li id="channels-view"><a href="{{route('admin.channels.index')}}"><i class="fa fa-circle-o"></i>{{tr('view_channels')}}</a></li>
+
+                     <li id="channels-view"><a href="{{route('admin.paid_channels.index')}}"><i class="fa fa-circle-o"></i>{{tr('paid_channels')}}</a></li>
                     
                     <li id="channels-subscribers"><a href="{{route('admin.channels.subscribers')}}"><i class="fa fa-circle-o"></i>{{tr('channel_subscribers')}}</a></li>
                 
@@ -301,6 +303,15 @@
                             {{tr('ppv_payments')}}
                         </a>
                     </li>
+
+
+                    <li id="payments-channels">
+                        <a href="{{route('admin.revenues.channel_payments')}}">
+                            <i class="fa fa-circle-o"></i>
+                            {{tr('channel_payments')}}
+                        </a>
+                    </li>
+
 
                      <li id="video_payments"><a href="{{route('admin.live-videos.payments')}}"><i class="fa fa-circle-o"></i>{{tr('live_payments')}}</a></li>
                 </ul>

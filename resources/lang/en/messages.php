@@ -2388,5 +2388,9 @@ return array(
 	'channel_subscription' => 'Please subscribe for the channel before proceeding',
 	'no_user_detail_found' =>'No user details found',
 	'channel_invoice' => 'Channel invoice',
+	'paid_channels' => 'Paid Channels',
+	'channel_payments' => 'Channel Payments',
+	'is_current' => 'Is Current?'
+
 
 );

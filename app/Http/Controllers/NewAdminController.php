@@ -98,6 +98,8 @@ use App\Referral;
 
 use App\UserReferrer;
 
+use App\ChannelSubscriptionPayment;
+
 class NewAdminController extends Controller {
 
     /**
@@ -7547,6 +7549,67 @@ class NewAdminController extends Controller {
             return back()->with('flash_error',$error);
         }
     
+    }
+
+     /**
+     * @method paid_channel_index()
+     *
+     * @uses used for listing all paid channels
+     * 
+     * @created Akshata
+     *
+     * @updated 
+     *
+     * @param Integer (request) - $playlist_video_id
+     *
+     * @return view page
+     */
+
+     public function paid_channel_index(Request $request) {
+
+         $channels = Channel::where('is_paid_channel',YES)->orderBy('channels.created_at', 'desc')
+                        ->distinct('channels.id')
+                        ->withCount('getChannelSubscribers')
+                        ->withCount('getVideoTape')
+                        ->get();
+
+        return view('new_admin.channels.paid_channel_index')
+                    ->withPage('channels')
+                    ->with('sub_page','channels-view')
+                    ->with('channels' , $channels); 
+
+    }
+
+    /**
+     * @method channel_payments()
+     *
+     * @uses Display the channel payment details for all users
+     * 
+     * @created Akshata
+     *
+     * @updated 
+     *
+     * @param Integer (request) - $playlist_video_id
+     *
+     * @return view page
+     */
+
+    public function channel_payments(Request $request) {
+
+        $base_query = ChannelSubscriptionPayment::orderBy('created_at','DESC');
+
+        if($request->channel_id) {
+
+            $base_query = $base_query->where('channel_id',$request->channel_id);
+        }
+
+        $payments = $base_query->paginate(10);
+        
+        return view('new_admin.payments.channel-payments')
+                    ->withPage('payments')
+                    ->with('sub_page','payments-channels')
+                    ->with('payments' , $payments);
+
     }
 
 }
