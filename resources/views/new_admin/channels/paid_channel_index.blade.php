@@ -81,7 +81,7 @@
                             <th>{{tr('subscription_amount')}}</th>
                             <th>{{ tr('no_of_videos') }}</th>
                             <th>{{ tr('subscribers') }}</th>
-                            <th>{{ tr('amount') }}</th>
+                            <th>{{ tr('ppv_amount') }}</th>
                             <th>{{ tr('status') }}</th>
                             <th>{{ tr('action') }}</th>
                         </tr>

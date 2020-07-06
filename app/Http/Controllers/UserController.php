@@ -1366,6 +1366,8 @@ class UserController extends Controller {
 
             $subscriberscnt = subscriberscnt($channel->id);
 
+            $channel_subscription_amount = 
+
             $live_video_history = [];
 
             if (Auth::check()) {
@@ -1381,6 +1383,8 @@ class UserController extends Controller {
 
             }
 
+            $channel_total_subscription_amount = Channel::where('id',$id)->sum('subscription_amount');
+
             return view('user.channels.index')
                         ->with('page' , 'channels_'.$id)
                         ->with('subPage' , 'channels')
@@ -1392,7 +1396,8 @@ class UserController extends Controller {
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
                         ->with('subscriberscnt', $subscriberscnt)
-                        ->with('live_video_history', $live_video_history);
+                        ->with('live_video_history', $live_video_history)
+                        ->with('channel_total_subscription_amount',$channel_total_subscription_amount);
         } else {
 
             return back()->with('flash_error', tr('channel_not_found'));
@@ -1438,21 +1443,24 @@ class UserController extends Controller {
         $data = $this->UserAPI->video_detail($request)->getData();
 
         $user_id = Auth::user()->id ?? 0;
-
-        $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id',$user_id)->where('channel_id',$data->response_array->video->channel_id)->first();
         
-        if($data->response_array->video->is_paid_channel == PAID_CHANNAL && !$check_user_channel_payment) {
+        if($data->response_array->video->is_paid_channel == PAID_CHANNAL) {
 
-            $channel_id = $data->response_array->video->channel_id;
+            $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id',$user_id)->where('channel_id',$data->response_array->video->channel_id)->first();
 
-            $video_id = $data->response_array->video->video_tape_id;
+            if(!$check_user_channel_payment){
 
-            $channel_details = Channel::find($channel_id);
+                  $channel_id = $data->response_array->video->channel_id;
 
-            if($channel_details->user_id != $user_id) {
+                $video_id = $data->response_array->video->video_tape_id;
 
-                return redirect()->route('channel_subscription_invoice',$channel_id);
-                
+                $channel_details = Channel::find($channel_id);
+
+                if($channel_details->user_id != $user_id) {
+
+                    return redirect()->route('channel_subscription_invoice',$channel_id);
+                    
+                }
             }
 
         }

@@ -243,7 +243,7 @@
 
                                                 <li role="presentation" id="payment_managment_sec">
                                                     <a href="#payment_managment" class="yt-uix-button  spf-link  yt-uix-sessionlink yt-uix-button-epic-nav-item yt-uix-button-size-default" aria-controls="payment_managment" role="tab" data-toggle="tab">
-                                                        <span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}} ({{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}})</span>
+                                                        <span class="yt-uix-button-content hidden-xs">{{tr('payment_managment')}}</span>
                                                         <span class="visible-xs"><i class="fa fa-suitcase channel-tab-icon"></i> &nbsp;({{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}})</span>
                                                     </a>
                                                 </li>
@@ -893,7 +893,26 @@
                                            
                                             </div>
 
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                                                <div class="ppv-dashboard">
+                                           
+                                                    <div class="ppv-dashboard-left">
+                                                        <img src="{{asset('images/dollar.png')}}">
+                                                    </div>
+                                           
+                                                    <div class="ppv-dashboard-right">
+                                                        <p>{{tr('channel_total_subscription_amount')}}</p>
+                                                        <h2 class="">{{Setting::get('currency')}} {{$channel_total_subscription_amount}}</h2>
+                                                    </div>
+                                           
+                                                </div>
+                                           
+                                            </div>
+
                                         </div>
+
+
                                         <!-- dashboard -->
 
                                         @if($payment_videos->count > 0)
