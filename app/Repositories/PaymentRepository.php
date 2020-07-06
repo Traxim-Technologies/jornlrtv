@@ -32,6 +32,8 @@ use App\Coupon, App\UserCoupon;
 
 use App\Card;
 
+use App\ChannelSubscriptionPayment;
+
 class PaymentRepository {
 
     /**
@@ -649,5 +651,95 @@ class PaymentRepository {
         }
 
         return $is_user_can_watch_now;
+    }
+
+    /**
+     * @method channel_subscriptions_payment_save()
+     *
+     * @uses subscription payment record update
+     *
+     * @created vithya
+     *
+     * @updated
+     *
+     * @param objects $subscription_details
+     *
+     * @param objects $user_details
+     *
+     * @return response of success/failure message
+     */
+    
+    public static function channel_subscriptions_payment_save($request, $channel_details, $user_details) {
+
+        $previous_payment = ChannelSubscriptionPayment::where('user_id' , $request->id)->where('status', PAID_STATUS)->orderBy('created_at', 'desc')->first();
+
+        $payment_details = new ChannelSubscriptionPayment;
+
+        $no_of_months = 1;
+
+        $payment_details->expiry_date = date('Y-m-d H:i:s',strtotime("+{$no_of_months} months"));
+
+        if($previous_payment) {
+
+            if (strtotime($previous_payment->expiry_date) >= strtotime(date('Y-m-d H:i:s'))) {
+
+                $payment_details->expiry_date = date('Y-m-d H:i:s', strtotime("+{$no_of_months} months", strtotime($previous_payment->expiry_date)));
+
+            }
+
+        }
+
+        $payment_details->payment_id = $request->payment_id ?: "FREE-".uniqid();
+
+        $payment_details->user_id = $request->id;
+
+        $payment_details->channel_id = $request->channel_id;
+
+        $payment_details->status = PAID_STATUS;
+
+        $payment_details->payment_mode = $request->payment_mode;
+
+        // Update previous current subscriptions as zero
+
+        ChannelSubscriptionPayment::where('user_id', $request->id)->update(['is_current' => NO]);
+
+        $payment_details->is_current = YES;
+
+        // Coupon details
+
+        $payment_details->is_coupon_applied = $request->is_coupon_applied;
+
+        $payment_details->coupon_code = $request->coupon_code  ? $request->coupon_code  :'';
+
+        $payment_details->coupon_amount = $request->coupon_amount;
+
+        // $payment_details->coupon_reason = $request->is_coupon_applied == COUPON_APPLIED ? '' : $request->coupon_reason;
+
+        // Amount update
+
+        $payment_details->amount = $channel_details->subscription_amount;
+
+        if($payment_details->save()) {
+
+
+            $data = [
+                        'id' => $user_details->id , 
+                        'token' => $user_details->token, 
+                        'payment_id' => $payment_details->payment_id,
+                        'amount' => $payment_details->amount,
+                        'amount_formatted' => formatted_amount($payment_details->amount),
+                        'paid_status' => $payment_details->status
+                    ];
+
+            $response_array = ['success' => true, 'message' => CommonHelper::success_message(205), 'code' => 205, 'data' => $data];
+
+        } else {
+
+            $response_array = ['success' => false, 'error_messages' => Helper::error_message(204), 'error_code' => 204];
+
+        }
+
+        return $response_array;
+    
     }
 }

@@ -3510,6 +3510,36 @@ class UserApiController extends Controller {
 
             if(!$check_flag_video) {
 
+                $video_details = VideoTape::find($request->video_tape_id); 
+
+                $channel_details = Channel::find($video_details->channel_id ?? 0);
+
+                $is_paid_channel = $channel_details->is_paid_channel ?? FREE_CHANNEL;
+
+                if($is_paid_channel == PAID_CHANNAL) {
+
+                    $is_user_needs_pay_channel = YES;
+
+                    if($request->id && $channel_details) {
+
+                        $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id', $request->id)->where('channel_id', $video_details->channel_id)->first();
+
+                        if(($channel_details->user_id == $request->id) || $check_user_channel_payment) {
+
+                            $is_user_needs_pay_channel = NO;
+                        }
+                    }
+
+                }
+
+                if($is_user_needs_pay_channel == YES) {
+
+                    $response_array = ['success' => false, 'error_messages' => 'Pay amount to watch the video', 'error_code' => 10001);
+
+                    return response()->json($response_array, 200);
+                
+                }
+
                 $data = VideoRepo::single_response($request->video_tape_id , $request->id , $login_by);
 
                 if(count($data) > 0) {

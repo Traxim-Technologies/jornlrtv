@@ -1382,6 +1382,14 @@ Route::group(['prefix' => 'api/user'], function() {
 
         Route::post('channels_edit', 'UserApiController@channel_edit');
 
+        Route::post('channels_subscription_history', 'NewUserApiController@channels_subscription_history');
+
+        Route::post('channels_subscription_payments', 'NewUserApiController@channels_subscription_payments');
+
+        Route::post('channel_subscriptions_payment_by_stripe', 'NewUserApiController@channel_subscriptions_payment_by_stripe');
+
+        Route::post('channel_subscriptions_payment_by_paypal', 'NewUserApiController@channel_subscriptions_payment_by_paypal');
+
         // Referrals 
 
         Route::post('/referrals', 'UserApiController@referrals')->name('referrals');
