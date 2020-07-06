@@ -3534,7 +3534,7 @@ class UserApiController extends Controller {
 
                 if($is_user_needs_pay_channel == YES) {
 
-                    $response_array = ['success' => false, 'error_messages' => 'Pay amount to watch the video', 'error_code' => 10001);
+                    $response_array = ['success' => false, 'error_messages' => 'Pay amount to watch the video', 'error_code' => 10001];
 
                     return response()->json($response_array, 200);
                 

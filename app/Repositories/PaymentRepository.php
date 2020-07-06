@@ -721,7 +721,6 @@ class PaymentRepository {
 
         if($payment_details->save()) {
 
-
             $data = [
                         'id' => $user_details->id , 
                         'token' => $user_details->token, 
