@@ -1703,3 +1703,7 @@ function check_push_notification_configuration() {
     return NO;
 }
 
+
+function is_user_pay_for_channel($channel_id, $user_details) {
+    
+}

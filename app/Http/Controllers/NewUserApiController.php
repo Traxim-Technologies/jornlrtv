@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB, Log, Hash, Validator, Exception, Setting;
 
 use App\Helpers\Helper, App\Helpers\CommonHelper, App\Helpers\VideoHelper;
+
 use App\Repositories\VideoTapeRepository as VideoRepo;
 
 use App\Repositories\CommonRepository as CommonRepo;
@@ -16,7 +17,6 @@ use App\Repositories\PaymentRepository as PaymentRepo;
 use App\Repositories\UserRepository as UserRepo;
 
 use App\Repositories\V5Repository as V5Repo;
-
 
 use App\Jobs\sendPushNotification;
 
@@ -48,6 +48,8 @@ use App\VideoTapeTag;
 use App\LikeDislikeVideo;
 
 use App\Playlist, App\PlaylistVideo;
+
+use App\ChannelSubscriptionPayment;
 
 class NewUserApiController extends Controller
 {
@@ -3822,6 +3824,32 @@ class NewUserApiController extends Controller
                 
             }
 
+            $channel_details = Channel::find($video_details->channel_id);
+
+            $is_paid_channel = $channel_details->is_paid_channel ?? FREE_CHANNEL;
+
+            if($is_paid_channel == PAID_CHANNAL) {
+
+                $is_user_needs_pay_channel = YES;
+
+                if($request->id && $channel_details) {
+
+                    $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id', $request->id)->where('channel_id', $video_details->channel_id)->first();
+
+                    if(($channel_details->user_id == $request->id) || $check_user_channel_payment) {
+
+                        $is_user_needs_pay_channel = NO;
+                    }
+                }
+
+            }
+
+            if($is_user_needs_pay_channel == YES) {
+
+                throw new Exception('Pay amount to watch the video', 10001);
+                
+            }
+
             VideoRepo::watch_count($request->video_tape_id,$request->id,NO);
 
             $video_tape_details = V5Repo::single_video_response($request->video_tape_id, $request->id);
@@ -4921,4 +4949,377 @@ class NewUserApiController extends Controller
         }
 
     }
+
+    /**
+     * @method channels_subscription_history()
+     *
+     * @uses get channel payment history
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $playlist_id
+     *
+     * @return JSON Response
+     */
+    public function channels_subscription_history(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(),['channel_id' =>'required|exists:channels,id']
+            );
+
+            if ($validator->fails()) {
+
+                $error = implode(',', $validator->messages()->all());
+
+                throw new Exception($error, 101);
+                
+            }
+
+            $history = ChannelSubscriptionPayment::where('channel_id', $request->channel_id)->CommonResponse()->skip($this->skip)->take($this->take)->get();
+
+            foreach ($history as $key => $value) {
+                
+                $value->amount_formatted = formatted_amount($value->amount);
+                
+                $value->status_text = $value->status == 1 ? tr('paid') : tr('unpaid');
+            }
+
+            $response_array = ['success' => true, 'message' => '', 'code' => 200, 'data' => $history];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            $response_array = ['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getCode()];
+
+            return response()->json($response_array);
+
+        }
+
+    }
+
+    /**
+     * @method channels_subscription_payments()
+     *
+     * @uses get channel payment history
+     *
+     * @created vithya R
+     *
+     * @updated vithya R
+     *
+     * @param integer $playlist_id
+     *
+     * @return JSON Response
+     */
+    public function channels_subscription_payments(Request $request) {
+
+        try {
+
+            $history = ChannelSubscriptionPayment::where('channel_subscription_payments.user_id', $request->id)->CommonResponse()->skip($this->skip)->take($this->take)->get();
+
+            foreach ($history as $key => $value) {
+                
+                $value->amount_formatted = formatted_amount($value->amount);
+                
+                $value->status_text = $value->status == 1 ? tr('paid') : tr('unpaid');
+            }
+
+            $response_array = ['success' => true, 'message' => '', 'code' => 200, 'data' => $history];
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            $response_array = ['success' => false, 'error' => $e->getMessage(), 'error_code' => $e->getCode()];
+
+            return response()->json($response_array);
+
+        }
+
+    }
+
+    /**
+     * @method channel_subscriptions_payment_by_stripe() 
+     *
+     * @uses used to deduct amount for selected subscription
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */     
+
+    public function channel_subscriptions_payment_by_stripe(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'channel_id' => 'required|exists:channels,id',
+                'coupon_code'=>'exists:coupons,coupon_code',
+            ],
+            [
+                'coupon_code' => CommonHelper::error_message(205)
+            ]
+            );
+
+            if ($validator->fails()) {
+
+                // Error messages added in response for debugging
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+            // Check Subscriptions
+
+            $channel_details = Channel::where('id', $request->channel_id)->where('status', APPROVED)->where('user_id', '!=', $request->id)->first();
+
+            if(!$channel_details) {
+
+                throw new Exception(CommonHelper::error_message(223), 223);            
+            }
+
+            $user_details  = User::find($request->id);
+
+            // Initial detault values
+
+            $total = $channel_details->subscription_amount; 
+
+            $coupon_amount = 0.00;
+           
+            $coupon_reason = ""; 
+
+            $is_coupon_applied = COUPON_NOT_APPLIED;
+
+            // Check the coupon code
+
+            if($request->coupon_code) {
+                
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $channel_details->subscription_amount);
+
+                $coupon_amount = $coupon_code_response['coupon_amount'];
+
+                $coupon_reason = $coupon_code_response['coupon_reason'];
+
+                $is_coupon_applied = $coupon_code_response['is_coupon_applied'];
+
+                $total = $coupon_code_response['total'];
+
+            }
+
+            // Update the coupon details and total to the request
+
+            $request->coupon_amount = $coupon_amount ?: 0.00;
+
+            $request->coupon_reason = $coupon_reason ?: "";
+
+            $request->is_coupon_applied = $is_coupon_applied;
+
+            $request->total = $total ?: 0.00;
+
+            $request->payment_mode = CARD;
+
+            // If total greater than zero, do the stripe payment
+
+            if($request->total > 0) {
+
+                // Check provider card details
+
+                $card_details = Card::where('user_id', $request->id)->where('is_default', YES)->first();
+
+                if (!$card_details) {
+
+                    throw new Exception(CommonHelper::error_message(111), 111);
+                }
+
+                $customer_id = $card_details->customer_id;
+
+                // Check stripe configuration
+            
+                $stripe_secret_key = Setting::get('stripe_secret_key');
+
+                if(!$stripe_secret_key) {
+
+                    throw new Exception(CommonHelper::error_message(107), 107);
+
+                } 
+
+                try {
+
+                    \Stripe\Stripe::setApiKey($stripe_secret_key);
+
+                    $total = $channel_details->subscription_amount;
+
+                    $currency_code = Setting::get('currency_code', 'USD') ?: "USD";
+
+                    $charge_array = [
+                                        "amount" => $total * 100,
+                                        "currency" => $currency_code,
+                                        "customer" => $customer_id,
+                                    ];
+
+                    $stripe_payment_response =  \Stripe\Charge::create($charge_array);
+
+                    $payment_id = $stripe_payment_response->id;
+
+                    $amount = $stripe_payment_response->amount/100;
+
+                    $paid_status = $stripe_payment_response->paid;
+
+                } catch(Stripe_CardError | Stripe_InvalidRequestError | Stripe_AuthenticationError | Stripe_ApiConnectionError | Stripe_Error $e) {
+
+                    $error_message = $e->getMessage();
+
+                    $error_code = $e->getCode();
+
+                    // Payment failure function
+
+                    DB::commit();
+
+                    // @todo changes
+
+                    $response_array = ['success' => false, 'error'=> $error_message , 'error_code' => 205];
+
+                    return response()->json($response_array);
+
+                } 
+
+            }
+
+            $response_array = PaymentRepo::channel_subscriptions_payment_save($request, $channel_details, $user_details);
+
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            // Something else happened, completely unrelated to Stripe
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
+    /**
+     * @method channel_subscriptions_payment_by_paypal() 
+     *
+     * @uses used to deduct amount for selected subscription
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */     
+
+    public function channel_subscriptions_payment_by_paypal(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'channel_id' => 'required|exists:channels,id',
+                'coupon_code'=>'exists:coupons,coupon_code',
+            ],
+            [
+                'coupon_code' => CommonHelper::error_message(205)
+            ]
+            );
+
+            if ($validator->fails()) {
+
+                // Error messages added in response for debugging
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+            DB::beginTransaction();
+
+             // Check Subscriptions
+
+            $channel_details = Channel::where('id', $request->channel_id)->where('status', APPROVED)->where('user_id', '!=', $request->id)->first();
+
+            if(!$channel_details) {
+
+                throw new Exception(CommonHelper::error_message(223), 223);            
+            }
+
+            $user_details  = User::find($request->id);
+
+            // Initial detault values
+
+            $total = $channel_details->subscription_amount; 
+
+            $coupon_amount = 0.00;
+           
+            $coupon_reason = ""; 
+
+            $is_coupon_applied = COUPON_NOT_APPLIED;
+
+            // Check the coupon code
+
+            if($request->coupon_code) {
+                
+                $coupon_code_response = PaymentRepo::check_coupon_code($request, $user_details, $channel_details->subscription_amount);
+
+                $coupon_amount = $coupon_code_response['coupon_amount'];
+
+                $coupon_reason = $coupon_code_response['coupon_reason'];
+
+                $is_coupon_applied = $coupon_code_response['is_coupon_applied'];
+
+                $total = $coupon_code_response['total'];
+
+            }
+
+            // Update the coupon details and total to the request
+
+            $request->coupon_amount = $coupon_amount ?: 0.00;
+
+            $request->coupon_reason = $coupon_reason ?: "";
+
+            $request->is_coupon_applied = $is_coupon_applied;
+
+            $request->total = $total ?: 0.00;
+
+            $request->payment_mode = PAYPAL;
+
+            $request->payment_id = $request->payment_id ?: generate_payment_id($request->id, $channel_details->id, $total);
+
+            $response_array = PaymentRepo::channel_subscriptions_payment_save($request, $channel_details, $user_details);
+
+            DB::commit();
+
+            return response()->json($response_array, 200);
+
+        } catch(Exception $e) {
+
+            // Something else happened, completely unrelated to Stripe
+
+            DB::rollback();
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
 }
