@@ -2390,7 +2390,8 @@ return array(
 	'channel_invoice' => 'Channel invoice',
 	'paid_channels' => 'Paid Channels',
 	'channel_payments' => 'Channel Payments',
-	'is_current' => 'Is Current?'
+	'is_current' => 'Is Current?',
+	'channel_total_subscription_amount' => 'Channel total subscription amount',
 
 
 );

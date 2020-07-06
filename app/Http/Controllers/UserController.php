@@ -1367,6 +1367,8 @@ class UserController extends Controller {
 
             $subscriberscnt = subscriberscnt($channel->id);
 
+            $channel_subscription_amount = 
+
             $live_video_history = [];
 
             if (Auth::check()) {
@@ -1382,6 +1384,8 @@ class UserController extends Controller {
 
             }
 
+            $channel_total_subscription_amount = Channel::where('id',$id)->sum('subscription_amount');
+
             return view('user.channels.index')
                         ->with('page' , 'channels_'.$id)
                         ->with('subPage' , 'channels')
@@ -1393,7 +1397,8 @@ class UserController extends Controller {
                         ->with('payment_videos', $payment_videos)
                         ->with('subscribe_status', $subscribe_status)
                         ->with('subscriberscnt', $subscriberscnt)
-                        ->with('live_video_history', $live_video_history);
+                        ->with('live_video_history', $live_video_history)
+                        ->with('channel_total_subscription_amount',$channel_total_subscription_amount);
         } else {
 
             return back()->with('flash_error', tr('channel_not_found'));
@@ -1445,7 +1450,7 @@ class UserController extends Controller {
             $check_user_channel_payment = ChannelSubscriptionPayment::where('user_id',$user_id)->where('channel_id',$data->response_array->video->channel_id)->first();
 
             if(!$check_user_channel_payment){
-                
+
                   $channel_id = $data->response_array->video->channel_id;
 
                 $video_id = $data->response_array->video->video_tape_id;
