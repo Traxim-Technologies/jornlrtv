@@ -78,10 +78,10 @@
                             <th>{{ tr('id') }}</th>
                             <th>{{ tr('channel') }}</th>
                             <th>{{ tr('user_name') }}</th>
-                            <th>{{tr('subscription_amount')}}</th>
-                            <th>{{ tr('no_of_videos') }}</th>
+                            <th>{{tr('amount')}}</th>
+                            <!-- <th>{{ tr('no_of_videos') }}</th> -->
                             <th>{{ tr('subscribers') }}</th>
-                            <th>{{ tr('ppv_amount') }}</th>
+                            <!-- <th>{{ tr('ppv_amount') }}</th> -->
                             <th>{{ tr('status') }}</th>
                             <th>{{ tr('action') }}</th>
                         </tr>
@@ -100,11 +100,11 @@
 
                                 <td><a>{{formatted_amount($channel_details->subscription_amount)}}</a></td>
 
-	                            <td><a target="_blank" href="{{ route('admin.channels.videos', ['channel_id'=> $channel_details->id] ) }}">{{ $channel_details->get_video_tape_count }}</a></td>
+	                            <!-- <td><a target="_blank" href="{{ route('admin.channels.videos', ['channel_id'=> $channel_details->id] ) }}">{{ $channel_details->get_video_tape_count }}</a></td> -->
 
 	                            <td><a target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id]) }}">{{ $channel_details->get_channel_subscribers_count }}</a></td>
 
-	                            <td>{{ formatted_amount(getAmountBasedChannel($channel_details->id)) }}</td>
+	                           <!--  <td>{{ formatted_amount(getAmountBasedChannel($channel_details->id)) }}</td> -->
 
 	                            <td>
 	                                @if($channel_details->is_approved)
