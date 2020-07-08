@@ -80,6 +80,7 @@
                             <th>{{ tr('user_name') }}</th>
                             <th>{{tr('amount')}}</th>
                             <th>{{ tr('subscribers') }}</th>
+                            <th>{{tr('is_paid_channel')}}</th>
                             <th>{{ tr('status') }}</th>
                             <th>{{ tr('action') }}</th>
                         </tr>
@@ -101,7 +102,12 @@
 	                            
 
 	                            <td><a target="_blank" href="{{ route('admin.channels.subscribers', ['channel_id' => $channel_details->id]) }}">{{ $channel_details->get_channel_subscribers_count }}</a></td>
-
+                                
+                                <td>
+                                    @if($channel_details->is_paid_channel)
+                                    <span class="label label-success">{{ tr('yes') }}</span> @else
+                                    <span class="label label-warning">{{ tr('no') }}</span> @endif
+                                </td>
 	                            <td>
 	                                @if($channel_details->is_approved)
 	                                <span class="label label-success">{{ tr('approved') }}</span> @else
