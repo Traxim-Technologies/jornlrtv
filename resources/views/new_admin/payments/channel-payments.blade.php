@@ -4,7 +4,7 @@
 
 @section('content-header')
 
-{{ tr('channel_payments')}} - {{ formatted_amount(total_video_revenue('admin')) }}
+{{ tr('channel_payments')}}
 
 @endsection
 
@@ -96,7 +96,7 @@
 
 							      	<td>
 							      		@if($payment_details->UserDetails->name)
-
+							      		
 							      		<a href="{{ route('admin.users.view' , ['user_id' => $payment_details->user_id] )}}"> 
 							      			{{ $payment_details->UserDetails->name ? $payment_details->UserDetails->name : " "}} 
 							      		</a>
