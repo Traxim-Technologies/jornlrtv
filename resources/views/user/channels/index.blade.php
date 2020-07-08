@@ -1012,7 +1012,7 @@
 
                                         @else
 
-                                        <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif
+                                       <!--  <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin"> @endif -->
 
                                         <?php /* @if(count($payment_videos) > 0)
 

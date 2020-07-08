@@ -237,7 +237,7 @@ class CommonRepository {
                 $channel_details->description = $request->has('description') ? $request->description : '';
                 $channel_details->is_paid_channel = $request->is_paid_channel == YES ? YES : NO;
 
-                $channel_details->subscription_amount = $request->subscription_amount ?? 0;
+                $channel_details->subscription_amount = $request->is_paid_channel== YES ? $request->subscription_amount : 0;
                 
                 $channel_details->user_id = $request->has('id') ? $request->id : $request->user_id;
 

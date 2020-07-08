@@ -1366,8 +1366,6 @@ class UserController extends Controller {
 
             $subscriberscnt = subscriberscnt($channel->id);
 
-            $channel_subscription_amount = 
-
             $live_video_history = [];
 
             if (Auth::check()) {
@@ -1383,8 +1381,8 @@ class UserController extends Controller {
 
             }
 
-            $channel_total_subscription_amount = Channel::where('id',$id)->sum('subscription_amount');
-
+            $channel_total_subscription_amount = ChannelSubscriptionPayment::where('channel_id',$id)->sum('amount');
+           
             return view('user.channels.index')
                         ->with('page' , 'channels_'.$id)
                         ->with('subPage' , 'channels')
