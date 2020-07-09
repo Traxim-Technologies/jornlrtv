@@ -3517,6 +3517,8 @@ class UserApiController extends Controller {
 
                 $is_paid_channel = $channel_details->is_paid_channel ?? FREE_CHANNEL;
 
+                $is_user_needs_pay_channel = NO;
+
                 if($is_paid_channel == PAID_CHANNAL) {
 
                     $is_user_needs_pay_channel = YES;
