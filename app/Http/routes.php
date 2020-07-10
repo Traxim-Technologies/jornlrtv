@@ -1466,7 +1466,7 @@ Route::group(['prefix' => 'api/user'], function() {
 
     Route::post('/referrals_check', 'UserApiController@referrals_check');
 
-    Route::post('channel_subscriptions/invoice', 'UserApiController@channel_subscription_invoice');
+    Route::post('channel_subscriptions/invoice', 'NewUserApiController@channel_subscriptions_invoice');
 
 });
 

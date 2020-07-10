@@ -5338,7 +5338,7 @@ class NewUserApiController extends Controller
      * @return json repsonse
      */     
 
-    public function channel_subscription_invoice(Request $request) {
+    public function channel_subscriptions_invoice(Request $request) {
 
         try {
 
