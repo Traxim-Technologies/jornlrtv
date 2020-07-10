@@ -886,24 +886,7 @@
                                            
                                                     <div class="ppv-dashboard-right">
                                                         <p>{{tr('revenue')}}</p>
-                                                        <h2 class="">{{Setting::get('currency')}} {{getAmountBasedChannel($channel->id)}}</h2>
-                                                    </div>
-                                           
-                                                </div>
-                                           
-                                            </div>
-
-                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-
-                                                <div class="ppv-dashboard">
-                                           
-                                                    <div class="ppv-dashboard-left">
-                                                        <img src="{{asset('images/dollar.png')}}">
-                                                    </div>
-                                           
-                                                    <div class="ppv-dashboard-right">
-                                                        <p>{{tr('channel_total_subscription_amount')}}</p>
-                                                        <h2 class="">{{Setting::get('currency')}} {{$channel_total_subscription_amount}}</h2>
+                                                        <h2 class="">{{Setting::get('currency')}} {{$channel_earnings}}</h2>
                                                     </div>
                                            
                                                 </div>

@@ -1382,6 +1382,8 @@ class UserController extends Controller {
             }
 
             $channel_total_subscription_amount = ChannelSubscriptionPayment::where('channel_id',$id)->sum('amount');
+
+            $channel_earnings = getAmountBasedChannel($channel->id)+ $channel_total_subscription_amount;
            
             return view('user.channels.index')
                         ->with('page' , 'channels_'.$id)
@@ -1395,7 +1397,8 @@ class UserController extends Controller {
                         ->with('subscribe_status', $subscribe_status)
                         ->with('subscriberscnt', $subscriberscnt)
                         ->with('live_video_history', $live_video_history)
-                        ->with('channel_total_subscription_amount',$channel_total_subscription_amount);
+                        ->with('channel_total_subscription_amount',$channel_total_subscription_amount)
+                        ->with('channel_earnings',$channel_earnings);
         } else {
 
             return back()->with('flash_error', tr('channel_not_found'));
@@ -3386,7 +3389,7 @@ class UserController extends Controller {
      * @return json response details
      */
     public function invoice(Request $request) {
-
+        
         $request->request->add([ 
             'u_id'=>Auth::check() ? \Auth::user()->id : '',
         ]);

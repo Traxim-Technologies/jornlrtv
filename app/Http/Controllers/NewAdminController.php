@@ -1122,7 +1122,7 @@ class NewAdminController extends Controller {
                         ->withCount('getChannelSubscribers')
                         ->withCount('getVideoTape')
                         ->get();
-
+       
         return view('new_admin.channels.index')
                     ->withPage('channels')
                     ->with('sub_page','channels-view')
@@ -1294,6 +1294,9 @@ class NewAdminController extends Controller {
                 
                 $playlist_details->total_videos = PlaylistVideo::where('playlist_id', $playlist_details->playlist_id)->count();
             }
+            $channel_total_amount = ChannelSubscriptionPayment::where('channel_id',$request->channel_id)->sum('amount');
+            
+            $channel_earnings = $channel_earnings+$channel_total_amount;
             
             return view('new_admin.channels.view')
                         ->with('page' ,'channels')

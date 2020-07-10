@@ -1155,6 +1155,7 @@ function number_format_short( $n, $precision = 1 ) {
         $dotzero = '.' . str_repeat( '0', $precision );
         $n_format = str_replace( $dotzero, '', $n_format );
     }
+
     return $n_format . $suffix;
 }
 
@@ -1250,7 +1251,6 @@ function watchFullVideo($user_id, $user_type, $video) {
 
 function displayVideoDetails($data,$userId) {
 
-    
     $user = User::find($userId);
 
     if (Setting::get('is_payper_view')) {

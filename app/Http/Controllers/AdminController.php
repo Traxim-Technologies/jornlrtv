@@ -1209,7 +1209,7 @@ class AdminController extends Controller {
                         ->withCount('getChannelSubscribers')
                         ->withCount('getVideoTape')
                         ->get();
-
+        
         return view('admin.channels.list')
             ->with('channels' , $channels)
             ->withPage('channels')
