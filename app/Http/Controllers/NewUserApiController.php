@@ -5324,4 +5324,65 @@ class NewUserApiController extends Controller
 
     }
 
+    /**
+     * @method channel_subscription_invoice() 
+     *
+     * @uses used to deduct amount for selected subscription
+     *
+     * @created Vithya R
+     *
+     * @updated Vithya R
+     *
+     * @param
+     *
+     * @return json repsonse
+     */     
+
+    public function channel_subscription_invoice(Request $request) {
+
+        try {
+
+            $validator = Validator::make($request->all(), ['channel_id' => 'required|exists:channels,id',
+            ]);
+
+            if ($validator->fails()) {
+
+                $error = implode(',',$validator->messages()->all());
+
+                throw new Exception($error, 101);
+
+            }
+
+
+            $channel_details = Channel::where('id', $request->channel_id)->where('status', APPROVED)->first();
+
+            if(!$channel_details) {
+
+                throw new Exception(CommonHelper::error_message(223), 223);            
+            }
+
+            $data = new \stdClass;
+
+            $data->channel_name = $channel_details->name;
+
+            $data->picture = $channel_details->picture;
+
+            $data->description = $channel_details->description;
+
+            $data->subscription_amount = $channel_details->subscription_amount;
+
+            $data->subscription_amount_formatted = formatted_amount($channel_details->subscription_amount);
+
+            $response = ['success' => true, 'data' => $data];
+
+            return response()->json($response, 200);
+
+        } catch(Exception $e) {
+
+            return $this->sendError($e->getMessage(), $e->getCode());
+
+        }
+
+    }
+
 }
