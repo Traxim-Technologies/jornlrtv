@@ -5328,7 +5328,7 @@ class NewAdminController extends Controller {
      * @return success/error message
      */
     public function settings_save(Request $request) {
-       
+
         try {
             
             DB::beginTransaction();
@@ -7032,7 +7032,7 @@ class NewAdminController extends Controller {
                     
                     } else {
 
-                        throw new Exception(tr('admin_settings_save_error'), 101);
+                        // throw new Exception(tr('admin_settings_save_error'), 101);
                     }
 
  
