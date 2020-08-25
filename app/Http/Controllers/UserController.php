@@ -1444,6 +1444,14 @@ class UserController extends Controller {
         $data = $this->UserAPI->video_detail($request)->getData();
 
         $user_id = Auth::user()->id ?? 0;
+                
+                // video url
+        if (isset($data->url)) {
+
+            return redirect($data->url);
+        }
+
+        if ($data->success) {
         
         if($data->response_array->video->is_paid_channel == PAID_CHANNAL) {
 
@@ -1465,13 +1473,6 @@ class UserController extends Controller {
             }
 
         }
-                // video url
-        if (isset($data->url)) {
-
-            return redirect($data->url);
-        }
-
-        if ($data->success) {
 
             // @todo minimize the code
             // get user playlists
