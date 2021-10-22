@@ -883,7 +883,7 @@ class CommonRepository {
 
             DB::rollBack();
 
-            $response_array = ['success'=>false, 'error_messages'=>$e->getMessage()];
+            $response_array = ['success'=>false, 'error_messages'=>[$e->getMessage(),$e->getLine(),$e->getFile()]];
 
         }
 

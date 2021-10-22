@@ -6663,6 +6663,10 @@ class NewAdminController extends Controller {
                 $page = 'banner-videos'; $sub_page = 'banner-videos';
             }
            
+            if($video_tape_details->video_type === 1){
+                $videoStreamUrl = $video_tape_details->video;
+            }
+            
             return view('new_admin.video_tapes.view')
                         ->with('video' , $video_tape_details)
                         ->with('video_images' , $admin_video_images)

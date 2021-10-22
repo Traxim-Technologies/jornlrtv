@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Redis;
 
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,6 +13,9 @@ use Illuminate\Support\Facades\Redis;
 |
 */
 
+Route::get('/debug',function(){
+    
+});
 
 Route::get('/clear-cache', function() {
 

@@ -95,7 +95,19 @@
                         @include('user.videos.streaming')
 
                      </div>
-                     
+                     													<div class="googleads" style="width: 100%;text-align: center;">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Inner Video -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3326961837800182"
+     data-ad-slot="9965037003"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
                      <div class="main-content">
 
                         <div class="video-content">
@@ -712,9 +724,9 @@
    
        @if($videoStreamUrl) 
    
-           path.push({file : "{{$videoStreamUrl}}", label : "Original"});
-   
-           path.push({file : "{{$video->video}}", label : "Original"});
+         path.push({file : "{{$video->video}}", label : "Original"});
+         
+         path.push({file : "{{$videoStreamUrl}}", label : "Original"});
    
        @else
    

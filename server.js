@@ -5,15 +5,15 @@ var debug = require('debug')('SmartCar:sockets');
 var request = require('request');
 var dotenv = require('dotenv').config();
 
-var port = process.env.PORT || '3002';
+var port = process.env.PORT || '3001';
 var chat_save_url = process.env.CHAT_URL;
 
 // var server = require('http').Server(app);
 var https = require('https');
 
 var server = https.createServer({ 
-                key: fs.readFileSync('/home/tubenow/.acme.sh/tubenow.bytecollar.com/tubenow.bytecollar.com.key'),
-                cert: fs.readFileSync('/home/tubenow/.acme.sh/tubenow.bytecollar.com/tubenow.bytecollar.com.cer') 
+                key: fs.readFileSync('/etc/letsencrypt/live/tv.jornlr.com/privkey.pem'),
+                cert: fs.readFileSync('/etc/letsencrypt/live/tv.jornlr.com/fullchain.pem') 
              },app);
 
 var io = require('socket.io')(server);

@@ -87,6 +87,7 @@
                             </a> -->
 
                         </div>
+
                     </div>
                 </div>
 
@@ -131,6 +132,20 @@
                                 <span class="sr-only">{{tr('next')}}</span>
                             </a>
                         </div>
+													<div class="googleads" style="width: 100%;text-align: center;">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- New Ads 8 April -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3326961837800182"
+     data-ad-slot="3790510897"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
                     </div>
                 </div>
 
@@ -197,7 +212,8 @@
                    
                               
                         </div><!--end of box--> 
-                   
+                   <div class="googleads" style="width: 100%;text-align: center;">
+					</div>
                     </div>
                     <!--end of slide-area-->
 
@@ -256,7 +272,7 @@
                    
                               
                         </div><!--end of box--> 
-                   
+                 
                     </div>
                     <!--end of slide-area-->
 
@@ -315,6 +331,7 @@
                    
                               
                         </div><!--end of box--> 
+					
                     </div><!--end of slide-area-->
 
                 @endif

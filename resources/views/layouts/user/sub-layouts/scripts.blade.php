@@ -378,4 +378,4 @@
     @endif
 </script>
 
-<?php echo Setting::get('body_scripts') ?: ""; ?>
+<?php //echo Setting::get('body_scripts') ?: ""; ?>
