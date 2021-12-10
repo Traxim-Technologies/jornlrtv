@@ -2,6 +2,7 @@
 
     @if(count($wishlists->items) > 0)
 
+        <div class="home-wishlists">
         <div class="slide-area">
             
             <div class="box-head">
@@ -12,8 +13,9 @@
 
                 @foreach($wishlists->items as $wishlist)
 
+                   
                     <div class="slide-box">
-                        
+                         <div class="slide-box-shadow">
                         <div class="slide-image">
                             
                             <a href="{{$wishlist->url}}">
@@ -55,10 +57,12 @@
                                     </a>
                                 </div>
                                 <div class="hidden-mobile">
-                                    <i class="fa fa-eye"></i> 
+								<ul>
+                                   <li> <i class="fa fa-eye"></i> 
                                     {{$wishlist->watch_count}} {{tr('views')}} 
-                                    <b>.</b> 
-                                    {{$wishlist->publish_time}}
+                                    </li>
+                                    <li>{{$wishlist->publish_time}}</li>
+									</ul>
                                 </div>
                             </span>
                         
@@ -67,12 +71,12 @@
                         <!--end of video-details-->
                     
                     </div><!--end of slide-box-->
-                
+                </div>
                 @endforeach
        
             </div><!--end of box--> 
         </div><!--end of slide-area-->
-
+</div>
     @endif
 
 @endif

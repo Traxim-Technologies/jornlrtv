@@ -49,7 +49,7 @@
 
             @include('layouts.user.nav')
 
-            <div class="page-inner col-sm-9 col-md-10 profile-edit">
+            <div class="page-inner col-sm-12 col-md-12 profile-edit">
             
                 <div class="profile-content">
 
@@ -105,13 +105,13 @@
                             <div class="up-next">
 
                                 @if(count($suggestions) > 0)
-                                   
+                                   <div class="box-head">
                                     <h4 class="sugg-head1">{{tr('suggestions')}}</h4>
-
+</div>
                                     <ul class="video-sugg"> 
                
                                         @foreach($suggestions as $suggestion)
-                                        
+                                        <div class="slide-box-shadow">
                                             <li class="sugg-list row">
                                                 <div class="main-video">
                                                      <div class="video-image">
@@ -131,16 +131,21 @@
 
                                                         <span class="video_views">
                                                             <div></div>
-                                                            <!-- <i class="fa fa-eye"></i>  {{tr('views')}} <b>.</b>  -->
-                                                            {{ common_date($suggestion->created_at) }} 
+                                                            
+															<div class="hidden-mobile">
+												<ul>
+												<li><!-- <i class="fa fa-eye"></i>  {{tr('views')}} <b>.</b>  --></li>
+                                                   <li>
+                                                            {{ common_date($suggestion->created_at) }} </li>
+															</ul>
                                                         </span> 
-                                                        <br>
+                                                        
                                                                                
                                                     </div><!--end of sugg-head-->
                                         
                                                 </div><!--end of main-video-->
                                             </li><!--end of sugg-list-->
-                                       
+                                       </div>
                                         @endforeach
                                         
                                     </ul>

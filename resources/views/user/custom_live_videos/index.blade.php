@@ -13,7 +13,7 @@
 
             @include('layouts.user.nav')
 
-            <div class="page-inner col-sm-9 col-md-10">
+            <div class="col-sm-12">
 
                 <div class="slide-area recom-area">
 
@@ -31,7 +31,7 @@
                             @foreach($data as $video)
 
                                 <div class="slide-box recom-box">
-
+								<div class="slide-box-shadow">
                                     <div class="slide-image recom-image">
 
                                         <a href="{{route('user.custom_live_videos.view' , $video->custom_live_video_id)}}">
@@ -53,6 +53,7 @@
                                             {{$video->created_time}}
                                         </span> 
                                     </div><!--end of video-details-->
+									</div>
                                 </div><!--end of slide-box-->
                             @endforeach
                             

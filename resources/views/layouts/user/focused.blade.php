@@ -40,8 +40,10 @@
         @yield('content')
 
         <!-- <div class="bottom"></div> -->
-        
-        @include('layouts.user.footer')      
+        <!-- {{\Request::route()->getName()}} -->
+        @if(\Request::route()->getName() != 'user.login.form' && \Request::route()->getName() != 'user.register.form')
+            @include('layouts.user.footer') 
+        @endif     
 
     </div> 
     

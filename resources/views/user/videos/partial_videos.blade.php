@@ -1,5 +1,5 @@
 @foreach($videos as $i => $video)
-
+<div class="slide-box-shadow">
         <li class="sub-list row">
             <div class="main-history">
                 <div class="history-image">
@@ -24,9 +24,14 @@
                             <h5 class="payment_class"><a href="{{$video->url}}">{{$video->title}}</a></h5>
                            
                             <span class="video_views">
-                                <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-                                {{ common_date($video->created_at) }}
+							<div class="hidden-mobile">
+							<ul>
+                             <li>   <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} </li>
+                                <li>{{ common_date($video->created_at) }}</li>
+								</ul>
+								</div>
                             </span>
+							
                         </div> 
                         @if(Auth::check())
                         @if($channel->user_id == Auth::user()->id)
@@ -204,5 +209,6 @@
                 </div><!--end of history-title--> 
                 
             </div><!--end of main-history-->
-        </li>    
+        </li> 
+</div>		
 @endforeach

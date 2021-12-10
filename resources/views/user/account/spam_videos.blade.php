@@ -7,7 +7,7 @@
 
         @include('layouts.user.nav')
 
-        <div class="history-content page-inner col-sm-9 col-md-10">
+        <div class="history-content col-sm-12 col-md-12">
             
             @include('notification.notify')
 

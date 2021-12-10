@@ -1,5 +1,4 @@
 @extends( 'layouts.user' ) 
-
 @section( 'styles' )
 
     <link rel="stylesheet" type="text/css" href="{{asset('streamtube/css/custom-style.css')}}">
@@ -95,7 +94,7 @@
 
             @include('layouts.user.nav')
 
-            <div class="page-inner col-sm-9 col-md-10">
+            <div class=" col-sm-12 ">
 
                 <div class="slide-area1">
 
@@ -268,7 +267,7 @@
                         </div>
 
                     </div>
-
+					<div class="slide-area">
                     <ul class="tab-content"  style="padding-left: 0px;">
 
                         <li role="tabpanel" class="tab-pane active" id="home1">
@@ -283,8 +282,8 @@
 
                                             <div class="big-section-main new-history1">
 
-                                                <div class="content-head">
-                                                    <h4 style="color: #000;">{{tr('watch_to_next')}}</h4>
+                                                <div class="box-head">
+                                                    <h3 style="color: #000;">{{tr('watch_to_next')}}</h3>
                                                 </div>
                                                 <?php /*@if(count($trending_videos) == 0)
 
@@ -339,7 +338,8 @@
                                                                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 channel-view">
 
                                                                     <div class="slide-box recom-box big-box-slide mt-0 mb-15">
-
+                                                                    <div class="slide-box-shadow">
+																		
                                                                         <div class="slide-image">
                                                                             <a href="{{$trending_video->url}}">
                                                                             
@@ -364,7 +364,7 @@
 
                                                                         <div class="video-details">
 
-                                                                        </div>
+                                                                        
 
                                                                         <span class="video_views">
 
@@ -373,14 +373,17 @@
                                                                             <!-- <img src="{{$trending_video->video_image}}"> -->
 
                                                                             <a href="{{$trending_video->url}}">{{$trending_video->title}}</a>
-
-                                                                            <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}}
-                                                                            {{ common_date($trending_video->created_at) }}
-
+																			<div class="hidden-mobile">
+																			<ul>
+                                                                           <li> <i class="fa fa-eye"></i> {{$trending_video->watch_count}} {{tr('views')}}</li>
+                                                                           <li> {{ common_date($trending_video->created_at) }}</li>
+																			</ul>
+                                                                          </div>
                                                                           </div>
                                                                           
                                                                         </span>
-
+</div>
+                                                                    </div>
                                                                     </div>
 
                                                                 </div>
@@ -419,10 +422,10 @@
 
                                     <div class="new-history1">
 
-                                        <div class="content-head">
+                                        <div class="box-head">
 
                                             <div>
-                                                <h4 style="color: #000;">{{tr('videos')}}&nbsp;&nbsp;
+                                                <h3 style="color: #000;">{{tr('videos')}}&nbsp;&nbsp;
                                                 @if(Auth::check())
 
                                                 <!-- @if(Auth::user()->id == $channel->user_id)
@@ -436,13 +439,13 @@
 
                                         </div>
                                         <!--end of content-head-->
-
+                                        
                                         @if(count($videos) > 0)
-
+                                        
                                         <ul class="history-list">
 
                                             @foreach($videos as $i => $video)
-
+<div class="slide-box-shadow">
                                             <li class="sub-list row border-0">
 
                                                 <div class="main-history">
@@ -496,11 +499,27 @@
 
                                                                     <a href="{{$video->url}}">{{$video->title}}</a>
                                                                 </h5>
+<div class="description">
+                                                                <?= $video->description?>
+                                                            </div>
+                                                            <!--end of description-->
 
+                                                            <span class="stars">
+                                                                <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                                <a><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
+                                                            </span>
                                                                 <span class="video_views">
-                                                                    <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-                                                                     {{ common_date($video->created_at) }}
+																<div class="hidden-mobile">
+																<ul>
+                                                                    <li><i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} </li>
+                                                                     <li>{{ common_date($video->created_at) }}</li>
+																	 </ul>
                                                                 </span>
+																
+                                                            </div>
                                                             </div>
                                                          
         @if(Auth::check()) 
@@ -663,18 +682,18 @@
 
         <?php /*<div class="category"><b class="text-capitalize">{{tr('category_name')}} : </b> <a href="{{route('user.categories.view', $video->category_unique_id)}}" target="_blank">{{$video->category_name}}</a></div> */?>
 
-                                                            <div class="description">
+                                                            <!--<div class="description">
                                                                 <?= $video->description?>
-                                                            </div>
+                                                            </div>-->
                                                             <!--end of description-->
 
-                                                            <span class="stars">
+                                                            <!--<span class="stars">
                                                                 <a><i @if($video->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a><i @if($video->ratings >= 2) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a><i @if($video->ratings >= 3) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a><i @if($video->ratings >= 4) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
                                                                 <a><i @if($video->ratings >= 5) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
-                                                            </span>
+                                                            </span>-->
                                                       
                                                         </div>
                                                         <!--end of history-title-->
@@ -685,7 +704,7 @@
                                                 </div>
 
                                             </li>
-
+</div>
                                             @endforeach
 
                                             <span id="videos_list"></span>
@@ -698,7 +717,7 @@
 
                                             <div class="clearfix"></div>
 
-                                            <button class="pull-right btn btn-info mb-15" onclick="getVideos()" style="color: #fff">{{tr('view_more')}}</button>
+                                            <button class="pull-right btn btn-info mb-15 fsafas" onclick="getVideos()" style="color: #fff">{{tr('view_more')}}</button>
 
                                             <div class="clearfix"></div>
 
@@ -735,13 +754,13 @@
 
                                     <div class="new-history1">
 
-                                        <div class="content-head">
+                                        <div class="box-head">
 
                                             <div>
 
-                                                <h4 style="color: #000; display: inline;">
+                                                <h3 style="color: #000; display: inline;">
                                                 {{tr('playlists')}}&nbsp;&nbsp;
-                                                </h4>
+                                                </h3>
                                                 
                                                 @if(Auth::check())
                                                     
@@ -843,7 +862,7 @@
 
                                     <div class="new-history1">
 
-                                        <div class="content-head">
+                                        <div class="box-head">
                                             <div>
                                                 <h4 style="color: #000;">{{tr('payment_videos')}}</h4>
                                             </div>
@@ -899,11 +918,11 @@
                                         <!-- dashboard -->
 
                                         @if($payment_videos->count > 0)
-
+									
                                         <ul class="history-list">
 
                                             @foreach($payment_videos->data as $i => $video)
-
+<div class="slide-box-shadow">
                                             <li class="sub-list row border-0">
                                                
                                                 <div class="main-history">
@@ -936,8 +955,12 @@
                                                                 <h5 class="payment_class unset-height"><a href="{{$video->url}}">{{$video->title}}</a></h5>
 
                                                                 <span class="video_views">
-                                                                    <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-                                                                    {{ common_date($video->created_at) }}
+                                                                    <div class="hidden-mobile">
+                                                                    <ul>
+                                                                  <li>  <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}}</li> 
+                                                                    <li>{{ common_date($video->created_at) }}</li>
+    </ul>
+    </div>
                                                                 </span>
 
                                                             </div>
@@ -974,7 +997,7 @@
                                                 </div>
                                                 <!--end of main-history-->
                                             </li>
-
+</div>
                                             @endforeach
 
                                             <span id="payment_videos_list"></span>
@@ -1022,7 +1045,7 @@
                         @include('user.channels._live_taps') 
 
                     </ul>
-
+				</div>
                     <div class="sidebar-back"></div>
 
                 </div>

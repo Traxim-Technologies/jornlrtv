@@ -15,14 +15,15 @@
 
 		@include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10">
+		<div class="col-sm-12 col-md-12">
 
 			@include('notification.notify')
 
 			<div class="invoice">
 				<h3 class="no-margin text-center mb-20 mt-0">Invoice</h3>	
 				<div class="row" > 
-					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-md-offset-1 col-lg-offset-2 " >
+					<div class="container" >
+					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-12" >
 						<div class="text-center invoice1 white-bg">
 						 	<div class="row">
 						 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 invoice-img" style="background-image: url({{asset('images/invoice-bg.jpg')}});">
@@ -117,6 +118,7 @@
 								</div>
 							 </div>
 						</div>
+					</div>
 					</div>
 				</div>
 			</div>

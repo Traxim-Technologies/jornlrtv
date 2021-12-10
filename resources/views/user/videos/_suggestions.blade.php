@@ -1,4 +1,4 @@
-<div class="up-next pt-0">
+<div class="up-next pt-0  you-tube-video-list">
 
     <h4 class="sugg-head1">{{tr('suggestions')}}</h4>
 
@@ -7,7 +7,7 @@
         @if(count($suggestions->items) > 0)
 
             @foreach($suggestions->items as $suggestion)
-
+<div class="slide-box-shadow">
                 <li class="sugg-list row">
                     
                     <div class="main-video">
@@ -46,11 +46,14 @@
                                 <div>
                                     <a href="{{route('user.channel',$suggestion->channel_id)}}">{{$suggestion->channel_name}}</a>
                                 </div>
-                                <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} <b>.</b> 
-                                {{$suggestion->created_at}} 
+								<div class="hidden-mobile">
+								<ul>
+                               <li> <i class="fa fa-eye"></i> {{$suggestion->watch_count}} {{tr('views')}} </li>
+                                <li>{{$suggestion->created_at}} </li>
+								</ul>
+								</div>
                             </span>
 
-                            <br>
 
                             <span class="stars">
                                 <a><i @if($suggestion->ratings >= 1) style="color:#ff0000" @endif class="fa fa-star" aria-hidden="true"></i></a>
@@ -67,6 +70,7 @@
                     <!--end of main-video-->
                 
                 </li>
+				</div>
                 <!--end of sugg-list-->
             @endforeach
         @endif

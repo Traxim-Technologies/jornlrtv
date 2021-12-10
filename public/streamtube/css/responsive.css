@@ -46,10 +46,10 @@
 	padding:10px 0px;
 	border-bottom:0;
 	background-color:#e61b1b;
-	position: fixed;
+	/* position: fixed; */
 	z-index:999;
 	width: 100%;
-	top:0;
+	/* top:0; */
 }
 .logo-img{
 	height: 28px;
@@ -411,12 +411,12 @@
 .streamtube-nav{
 	padding:10px 0px;
 	border-bottom: 0;
-	background-color:#e61b1b;
-	position: fixed;
+	/* background-color:#e61b1b; */
+	/* position: fixed; */
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
-	top:0;
+	/* top:0; */
 }
 .logo-img{
 	width: 120px;
@@ -594,11 +594,11 @@
 	padding:10px 20px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
-	position: fixed;
+	/* position: fixed; */
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
-	top:0;
+	/* top:0; */
 }
 .page-inner{
 
@@ -767,11 +767,11 @@
 	padding:10px 20px;
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
-	position: fixed;
+	/* position: fixed; */
 	z-index: 100;
 	width: 100%;
 	z-index: 999;
-	top:0;
+	/* top:0; */
 }
 .logo-img{
 	width: 128px;
@@ -931,18 +931,18 @@
 }
 .page-inner{
 
-	margin:60px 0 0 0;
+	/* margin:60px 0 0 0; */
 
 }
 .streamtube-nav{
 	padding:10px;
-	border-bottom: 1px solid #e8e8e8;
+	/* border-bottom: 1px solid #e8e8e8; */
 	background-color: #fff;
-	position: fixed;
+	/* position: fixed; */
 	z-index:100;
 	width: 100%;
 	z-index: 999;
-	top:0;
+	/* top:0; */
 }
 .logo-img{
 	max-width: 128px;

@@ -8,13 +8,15 @@
 
 @section('content')
 
-<div class="y-content">
+<div class="y-content card-page">
 
     <div class="row y-content-row">
 
         @include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10 profile-edit">
+		<div class="card-page">
+		<div class="container">
+		<div class=" col-sm-9 col-md-12 profile-edit">
 				
 				<div class="profile-content profile-details">	
 
@@ -28,7 +30,7 @@
 
                     		<div class="row">
                     			
-                    			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1 col-lg-4">
+                    			<div class="col-xs-12 col-sm-8 col-md-4 col-lg-4">
                     				
                     				<div class="card-wrapper row">
 
@@ -297,6 +299,8 @@
 				</div>
 				
 			<div class="sidebar-back"></div> 
+		</div>
+		</div>
 		</div>
 
 	</div>

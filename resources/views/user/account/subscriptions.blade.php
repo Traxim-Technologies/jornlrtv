@@ -9,7 +9,8 @@
 
         @include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10 profile-edit">
+		<div class="container">
+		<div class="col-sm-12 col-md-12 profile-edit">
 				
 				<div class="profile-content">	
 
@@ -60,6 +61,7 @@
 					</div>
 				</div>
 			<div class="sidebar-back"></div> 
+		</div>
 		</div>
 
 	</div>

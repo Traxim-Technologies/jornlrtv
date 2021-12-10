@@ -12,7 +12,9 @@
 
         @include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10">
+		<div class="play-list-page">
+		<div class="slide-area">
+		<div class="page-inner col-sm-9 col-md-12">
 
 			@include('notification.notify')
             
@@ -31,6 +33,7 @@
                             @foreach($playlists as $playlist_details)
 
                                 <div class="slide-box recom-box">
+                                <div class="slide-box-shadow">
 
                                     <div class="slide-image">
 
@@ -65,6 +68,7 @@
                                   
                                     </div><!--end of video-details-->
                                 
+                                </div>
                                 </div>
 
                             @endforeach
@@ -105,6 +109,8 @@
 
 	        </div>
 
+		</div>
+		</div>
 		</div>
 
    	</div>

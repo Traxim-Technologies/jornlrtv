@@ -8,94 +8,28 @@
 
 @section('content')
 
+<div class="register-space-top">
 <div class="login-space">
-        <div class="common-form login-common">
+
+    <div class="container">
+    <div class="row" style="border-radius: 10px;-webkit-box-shadow: 5px 8px 5px rgb(0 0 0 / 15%);">
+    <div class="col-sm-6" style="
+    padding-left: 0;
+">
+	<img class="login-right-img" src="images/register-img.png"/>
+	</div>
+    <div class="col-sm-6">
+    <div class="common-form login-common text-center">
 
             @include('notification.notify')
         
-            <div class="signup-head text-center">
-                <h3>{{tr('signup')}}</h3>
-            </div><!--end  of signup-head-->
+            <!-- <div class="signup-head text-center"> -->
+                <!-- <h3>{{tr('signup')}}</h3> -->
+            <!-- </div> -->
+			
+			<!--end  of signup-head-->
 
-            @if((config('services.facebook.client_id') && config('services.facebook.client_secret'))
-            || (config('services.twitter.client_id') && config('services.twitter.client_secret'))
-            || (config('services.google.client_id') && config('services.google.client_secret')))
-            
-            <div class="social-form">
-                
-                <div class="social-btn">
-
-                    @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
-                        
-                        <div class="social-fb">
-                            
-                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
-                                
-                                <input type="hidden" value="facebook" name="provider" id="provider">
-
-                                <input type="hidden" name="timezone" value="" id="f-userTimezone">
-
-                                <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
-
-                                <a href="#">
-                                    <button type="submit">
-                                        <i class="fa fa-facebook"></i>{{tr('login_via_fb')}}
-                                    </button>
-                                </a>
-                        
-                            </form>
-                        
-                        </div>
-                    
-                    @endif
-
-                    @if(config('services.twitter.client_id') && config('services.twitter.client_secret'))
-
-                        <div class="social-twitter">
-                          
-                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
-                                
-                                <input type="hidden" value="twitter" name="provider" id="provider">
-
-                                <input type="hidden" name="timezone" value="" id="t-userTimezone">
-
-                                <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
-
-                                <a href="#">
-                                    <button type="submit">
-                                        <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
-                                    </button>
-                                </a>
-                            
-                            </form>
-                        
-                        </div>
-
-                    @endif
-
-                    @if(config('services.google.client_id') && config('services.google.client_secret'))
-
-                        <div class="social-google">
-                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
-                                <input type="hidden" value="google" name="provider" id="provider">
-                                <input type="hidden" name="timezone" value="" id="g-userTimezone">
-
-                                <a href="#">
-                                    <button type="submit">
-                                        <i class="fa fa-google-plus"></i>{{tr('login_via_google')}}
-                                    </button>
-                                </a>
-                            </form>
-                        </div>
-                        
-                    @endif
-
-                </div><!--end of social-btn-->          
-            </div><!--end of socila-form-->
-
-            <p class="col-xs-12 divider1">OR</p>
-
-            @endif
+          
 
             <div class="sign-up">
 
@@ -142,26 +76,26 @@
                     @endif
                     
                     <div class="form-group">
-                        <label for="name">{{tr('name')}}*</label>
+                        <label for="name">{{tr('name')}}</label>
                         <input type="text" required name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="{{tr('name')}}" title="{{tr('username_notes')}}" value="{{old('name')}}">
                     </div>
                     <div class="form-group">
-                        <label for="email">{{tr('email')}}*</label>
+                        <label for="email">{{tr('email')}}</label>
                         <input type="email" required name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="{{tr('email')}}" value="{{old('email')}}"> 
                     </div>
 
                     <div class="form-group">
-                        <label for="dob">{{tr('dob')}}*</label>
+                        <label for="dob">{{tr('dob')}}</label>
                         <input type="text" name="dob" class="form-control" placeholder="{{tr('enter_dob')}}" id="dob" required autocomplete="off" value="{{old('dob')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="password">{{tr('password')}}*</label>
+                        <label for="password">{{tr('password')}}</label>
                         <input type="password" required name="password" min="6" class="form-control" id="password" placeholder="{{tr('password')}}" value="{{old('password')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="confirm_password">{{tr('confirm_password')}}*</label>
+                        <label for="confirm_password">{{tr('confirm_password')}}</label>
                         <input type="password" required name="password_confirmation" min="6" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}" value="{{old('confirm_password')}}">
                     </div>
 
@@ -170,12 +104,99 @@
                     <div class="change-pwd">
                         <button type="submit" class="btn btn-primary signup-submit">{{tr('submit')}}</button>
                     </div>  
-                    <p class="text-right">{{tr('already_account')}} <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p>         
+                   <p class="col-xs-12 divider1">Or</p>
+
+ 				
                 </form>
+				 @if((config('services.facebook.client_id') && config('services.facebook.client_secret'))
+            || (config('services.twitter.client_id') && config('services.twitter.client_secret'))
+            || (config('services.google.client_id') && config('services.google.client_secret')))
+            
+            <div class="social-form">
+                
+                <div class="social-btn">
+                   
+					 @if(config('services.google.client_id') && config('services.google.client_secret'))
+
+                        <div class="social-google">
+                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                <input type="hidden" value="google" name="provider" id="provider">
+                                <input type="hidden" name="timezone" value="" id="g-userTimezone">
+
+                                <a href="#">
+                                    <button type="submit">
+                                       <img src="images/google-img-login.png"/>
+                                    </button>
+                                </a>
+                            </form>
+                        </div>
+                        
+                    @endif
+					
+                    @if(config('services.facebook.client_id') && config('services.facebook.client_secret'))
+                        
+                        <div class="social-fb">
+                            
+                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                
+                                <input type="hidden" value="facebook" name="provider" id="provider">
+
+                                <input type="hidden" name="timezone" value="" id="f-userTimezone">
+
+                                <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
+
+                                <a href="#">
+                                    <button type="submit">
+                                       <img src="images/facebook-login.png"/>
+                                    </button>
+                                </a>
+                        
+                            </form>
+                        
+                        </div>
+                    
+                    @endif
+
+                    @if(config('services.twitter.client_id') && config('services.twitter.client_secret'))
+
+                        <div class="social-twitter">
+                          
+                            <form class="social-form form-horizontal" role="form" method="POST" action="{{ route('SocialLogin') }}">
+                                
+                                <input type="hidden" value="twitter" name="provider" id="provider">
+
+                                <input type="hidden" name="timezone" value="" id="t-userTimezone">
+
+                                <input type="hidden" value="{{ app('request')->input('referral') }}" name="referral" id="referral">
+
+                                <a href="#">
+                                    <button type="submit">
+                                        <i class="fa fa-twitter"></i>{{tr('login_via_twitter')}}
+                                    </button>
+                                </a>
+                            
+                            </form>
+                        
+                        </div>
+
+                    @endif
+
+                    
+
+                </div><!--end of social-btn-->          
+            </div><!--end of socila-form-->
+ <p class="new_account">{{tr('already_account')}} <a href="{{route('user.login.form')}}">{{tr('login')}}</a></p> 
+            
+
+            @endif	
             </div><!--end of sign-up-->
         </div><!--end of common-form-->     
     </div><!--form-background end-->
-
+</div>
+</div>
+</div>
+<img src="images/login-left-bottom-final.png"/>
+</div>
 @endsection
 
 

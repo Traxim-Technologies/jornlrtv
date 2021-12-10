@@ -8,7 +8,7 @@
 
         @include('layouts.user.nav')
 
-        <div class="page-inner col-sm-9 col-md-10 profile-edit">
+        <div class="page-inner col-sm-9 col-md-12 profile-edit">
 
             <div class="form-background p-50 forgot-password-reset">
 

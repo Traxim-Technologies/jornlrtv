@@ -6,8 +6,8 @@
         <div class="abt-sec-head">
             
              <div class="new-history1">
-                    <div class="content-head">
-                        <div><h4 style="color: #000;">{{tr('live_history')}}</h4></div>              
+                    <div class="box-head">
+                        <div><h3 style="color: #000;">{{tr('live_history')}}</h3></div>              
                     </div><!--end of content-head-->
 
                     @if(count($live_video_history->data) > 0)

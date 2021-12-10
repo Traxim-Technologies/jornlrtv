@@ -57,7 +57,7 @@
     display: table-cell;
     padding: 1em;
     vertical-align: middle;
-    color: #D9230F;
+    color: #ff583e;
 }
 
 @media (min-width: 480px) {
@@ -82,6 +82,10 @@ table {
 thead>tr>th {
     padding: 1% !important;
 }
+.btn-info {
+    background-color: #ff583e;
+    border-color: #ff583e;
+}
 </style>
 
 @endsection
@@ -94,7 +98,8 @@ thead>tr>th {
 
             @include('layouts.user.nav')
 
-            <div class="history-content page-inner col-sm-9 col-md-10">
+            <div class="container">
+            <div class="history-content  col-sm-9 col-md-12">
 
                 @include('notification.notify')
 
@@ -133,7 +138,7 @@ thead>tr>th {
                             </div>
 
                             <div class="new-redeem-sec">
-                                <p style="color: #3398E6">{{tr('paypal_email_note')}}</p>
+                                <p style="color: #ff583e">{{tr('paypal_email_note')}}</p>
                                 <form  action="{{ route('user.update.paypal_email') }}" method="POST" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="paypal_email">{{tr('paypal_email')}}</label>
@@ -228,6 +233,7 @@ thead>tr>th {
                 <!-- new ui @ranjitha -->
 
                 <div class="sidebar-back"></div> 
+            </div>
             </div>
     
         </div>

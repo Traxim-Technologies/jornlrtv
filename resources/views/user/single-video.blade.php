@@ -80,7 +80,7 @@
       
       @include('layouts.user.nav')
          
-         <div class="page-inner col-sm-9 col-md-10 profile-edit">
+         <div class="page-inner col-sm-9 col-md-12 profile-edit">
             
             <div class="profile-content mar-0">
             
@@ -403,9 +403,9 @@
                   <!--end of col-sm-8 and play-video-->
                   
                   <div class="col-sm-12 col-md-4 side-video custom-side">
-
-                     @include('user.videos._suggestions')
-                      
+                    <div class="box-head">                                     
+                     <h3>@include('user.videos._suggestions')</h3>
+                                                      </div>
                   </div>
 
                   <div id="dislike_video" style="display: none">

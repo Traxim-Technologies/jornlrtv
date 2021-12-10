@@ -2,13 +2,13 @@
 
 @section('content')
 
-    <div class="y-content">
+    <div class="y-content search-page">
         <div class="row content-row">
 
             @include('layouts.user.nav')
     
-            <div class=" page-inner col-sm-9 col-md-10">
-                <div class="new-history">
+            <div class="col-sm-9 col-md-12">
+                <div class="slide-area">
                     <div class="content-head search-head">
                         <div><h4>{{tr('search_result')}} "{{$key}}"</h4></div>               
                     </div><!--end of content-head-->
@@ -18,7 +18,7 @@
                         @if (count($channels) > 0)
 
                             @foreach($channels as $channel)
-
+<div class="slide-box-shadow">
                             <li class="sub-list search-list row">
                                 <div class="main-history">
                                     <div class="history-image text-center">
@@ -31,9 +31,13 @@
                                             <div class="cross-title">
                                                 <h5 class="mb-5"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
                                                 <span class="video_views">
-                                                    <div>
-                                                        <i class="fa fa-eye"></i>&nbsp;{{$channel->no_of_subscribers}} Subscribers&nbsp;<b>.</b>&nbsp;{{$channel->no_of_videos}} videos
-                                                    </div>
+                                                    <div class="hidden-mobile">
+												<ul>
+                                                   <li> 
+                                                        <i class="fa fa-eye"></i>&nbsp;{{$channel->no_of_subscribers}} Subscribers&nbsp;</li>
+														<li>&nbsp;{{$channel->no_of_videos}} videos</li>
+                                                    </ul>
+													</div>
                                                 </span> 
                                             </div> 
                                             @if(Auth::check())
@@ -61,6 +65,7 @@
                                     </div>
                                 </div>
                             </li>
+							</div>
                             @endforeach
 
                         @endif
@@ -71,7 +76,7 @@
                         @if(count($videos->items) > 0)
 
                             @foreach($videos->items as $v => $video)
-
+<div class="slide-box-shadow search-page-search-list">
                                 <li class="sub-list search-list row">
                                     <div class="main-history">
                                          <div class="history-image">
@@ -98,11 +103,13 @@
                                                     <h5>
                                                         <a href="{{$video->url}}">{{$video->title}}</a></h5>
                                                     <span class="video_views">
-                                                         <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
-                                                        <div>
-                                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}}<b>.</b> 
-                                                            {{common_date($video->created_at) }}
-                                                        </div>
+													<div class="hidden-mobile">
+												<ul>
+                                                   <li> <a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></li>
+                                                        
+                                                            <li><i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}}</li>
+                                                       </ul>
+														</div>
                                                     </span> 
                                                 </div> 
                                                                       
@@ -123,7 +130,7 @@
                                         
                                     </div><!--end of main-history-->
                                 </li>
-
+</div>
                             @endforeach
 
                         @else
@@ -187,8 +194,13 @@
                                                     <h5>
                                                         <a href="{{$url}}">{{$live_video->title}}</a></h5>
                                                     <span class="video_views">
-                                                        <i class="fa fa-eye"></i> {{$live_video->viewer_cnt}} {{tr('views')}}<b>.</b> 
-                                                        {{$live_video->created_at->diffForHumans()}}
+													<div class="hidden-mobile">
+												<ul>
+                                                   <li> 
+                                                        <i class="fa fa-eye"></i> {{$live_video->viewer_cnt}} {{tr('views')}}</li>
+                                                        <li>{{$live_video->created_at->diffForHumans()}}</li>
+														</ul>
+														</div>
                                                     </span> 
                                                 </div> 
                                                                       

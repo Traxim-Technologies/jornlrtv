@@ -2,13 +2,13 @@
 
 @section('content')
 
-<div class="y-content">
+<div class="y-content setting-page">
 
 	<div class="row content-row">
 
 		@include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10">
+		<div class="col-sm-12 col-md-12">
 
 			@include('notification.notify')
 

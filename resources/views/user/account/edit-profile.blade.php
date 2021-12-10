@@ -16,13 +16,13 @@
 
 @section('content')
 
-<div class="y-content">
+<div class="y-content edit-profile-page">
     
     <div class="row y-content-row">
 
         @include('layouts.user.nav')
 
-        <div class="page-inner col-sm-9 col-md-10 profile-edit">
+        <div class="col-sm-12 col-md-12 profile-edit">
 
             <div class="profile-content slide-area1">
                
@@ -125,7 +125,7 @@
                             <ul class="history-list profile-history">
 
                                 @foreach($wishlist->items as $i => $video)
-
+<div class="slide-box-shadow">
                                     <li class="sub-list row no-margin">
                                         
                                         <div class="main-history">
@@ -154,18 +154,23 @@
 
                                             <div class="history-title">
                                                 <div class="history-head row">
+												<div class="cross-mark1">
+                                                        <a onclick="return confirm( &nbsp;{{tr('user_wishlist_delete_confirm',$video->title)}} &nbsp; );" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    </div><!--end of cross-mark-->  
                                                     <div class="cross-title1">
                                                         <h5><a href="{{$video->url}}">{{$video->title}}</a></h5>
                                                          <span class="video_views">
-                                                            <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
-                                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} 
-                                                            <b>.</b> 
-                                                            {{ common_date($video->created_at) }}
+														 <div class="hidden-mobile">
+														 <ul>
+                                                            <li><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a>
+                                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} </li>
+                                                             
+                                                            <li>{{ common_date($video->created_at) }}</li>
+															</ul>
+															</div>
                                                         </span>
                                                     </div> 
-                                                    <div class="cross-mark1">
-                                                        <a onclick="return confirm( &nbsp;{{tr('user_wishlist_delete_confirm',$video->title)}} &nbsp; );" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                                    </div><!--end of cross-mark-->                       
+                                                                         
                                                 </div> <!--end of history-head--> 
 
                                             
@@ -180,7 +185,7 @@
                                             </div><!--end of history-title--> 
                                         </div><!--end of main-history-->
                                     </li>
-
+</div>
                                 @endforeach
 
                

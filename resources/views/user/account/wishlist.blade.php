@@ -2,17 +2,18 @@
 
 @section('content')
 
-<div class="y-content">
+<div class="y-content wishlist-page">
     <div class="row content-row">
 
         @include('layouts.user.nav')
 
-        <div class="history-content page-inner col-sm-9 col-md-10">
+        <div class="wishlist-page">
+        <div class="history-content page-inner col-sm-12 col-md-12">
             
             <div class="slide-area1">
             
                 @include('notification.notify')
-
+<div class="container">
                 <div class="new-history">
                     <div class="content-head">
                         <div><h4 class="bold no-margin-top">{{tr('wishlist')}}</h4></div>              
@@ -23,7 +24,7 @@
                         <ul class="history-list">
 
                             @foreach($videos->items as $i => $video)
-
+<div class="slide-box-shadow">
                             <li class="sub-list row">
                                 <div class="main-history">
                                      <div class="history-image">
@@ -46,17 +47,22 @@
                                     </div><!--history-image-->
                                     <div class="history-title">
                                         <div class="history-head row">
+										 <div class="cross-mark1">
+                                                <a onclick="return confirm(&quot;{{ substr($video->title, 0 , 15)}}.. {{tr('user_wishlist_delete_confirm') }}&quot;)" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            </div><!--end of cross-mark--> 
                                             <div class="cross-title1">
                                                 <h5><a href="{{$video->url}}">{{$video->title}}</a></h5>
                                                 <span class="video_views">
-                                                    <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
-                                                    <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-                                                    {{ common_date($video->created_at) }}
+												<div class="hidden-mobile">
+												<ul>
+                                                   <li> <a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a>
+                                                    <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} </li>
+                                                    <li>{{ common_date($video->created_at) }}</li>
+													</ul>
+													</div>
                                                 </span> 
                                             </div> 
-                                            <div class="cross-mark1">
-                                                <a onclick="return confirm(&quot;{{ substr($video->title, 0 , 15)}}.. {{tr('user_wishlist_delete_confirm') }}&quot;)" href="{{route('user.delete.wishlist' , array('video_tape_id' => $video->video_tape_id))}}"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                            </div><!--end of cross-mark-->                       
+                                                                 
                                         </div> <!--end of history-head--> 
 
                                         <!-- <div class="description"> -->
@@ -75,11 +81,11 @@
                                     
                                 </div><!--end of main-history-->
                             </li>    
-
+</div>
                             @endforeach
                            
                         </ul>
-
+</div>
                     @else
                        <!--  <p>{{tr('no_wishlist_found')}}</p> -->
                        <img src="{{asset('images/no-result.jpg')}}" class="img-responsive auto-margin">
@@ -101,6 +107,7 @@
                 
             </div>
 
+        </div>
         </div>
 
     </div>

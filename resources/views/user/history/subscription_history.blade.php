@@ -16,7 +16,9 @@
 
 		@include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10">
+		<div class="subscription-history">
+		<div class="container">
+		<div class="col-sm-12 col-md-12">
 
 			@include('notification.notify')
 
@@ -31,7 +33,7 @@
 
 				<?php $subscription_details = get_expiry_days(Auth::user()->id);?>
 
-                <br>
+               
 
 
                 @if(count($response->data) > 0)
@@ -57,7 +59,7 @@
 
 				@endif
 
-                <div class="clearfix"></div>
+               
 
 				<div class="row">
 					@if(count($response->data) > 0)
@@ -214,6 +216,8 @@
 				</div>
 				<!-- modal -->
 			</div>
+		</div>
+		</div>
 		</div>
 
 	</div>

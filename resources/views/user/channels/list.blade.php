@@ -8,13 +8,13 @@
 
 @section('content')
 
-<div class="y-content">
+<div class="y-content channels-page">
 
 	<div class="row content-row">
 
 		@include('layouts.user.nav')
 
-		<div class="page-inner col-sm-9 col-md-10">
+		<div class="col-sm-12 col-md-12">
 
 			@include('notification.notify')
 
@@ -67,7 +67,7 @@
 			                    <ul class="history-list">
 
 			                        @foreach($response->channels as $i => $channel)
-
+<div class="slide-box-shadow">
 			                        <li class="sub-list row">
 			                           
 			                            <div class="main-history">
@@ -93,9 +93,13 @@
 			                                            <h5 class="payment_class mb-3" style="padding: 0px;"><a href="{{route('user.channel',$channel->channel_id)}}">{{$channel->title}}</a></h5>
 			                                            
 			                                            <span class="video_views">
-			                                            	 <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}} <b>.</b> 
-					                                        {{ common_date($channel->created_at) }}
+														<div class="hidden-mobile">
+														<ul>
+			                                            	<li> <i class="fa fa-eye"></i> {{$channel->no_of_subscribers}} {{tr('subscribers')}}</li>
+					                                       <li> {{ common_date($channel->created_at) }}</li>
+															</ul>
 					                                    </span>
+														</div>
 					                                </div>
 
 					                                @if($channel->is_paid_channel == YES)
@@ -152,7 +156,7 @@
 			                            <div class="clearfix"></div>
 			                        
 			                        </li>    
-
+</div>
 			                        @endforeach
 			                       
 			                    </ul>

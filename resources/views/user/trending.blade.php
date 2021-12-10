@@ -8,9 +8,9 @@
 
             @include('layouts.user.nav')
 
-            <div class="page-inner col-sm-9 col-md-10">
+            <div class="col-sm-12">
 
-                <div class="slide-area1 recom-area">
+                <div class="slide-area slide-area1">
                     <div class="box-head recom-head">
                         <h3>{{tr('trending')}}</h3>
                     </div>
@@ -22,6 +22,7 @@
 
                             @foreach($videos->items as $video)
                                 <div class="slide-box recom-box">
+                                <div class="slide-box-shadow">
                                     <div class="slide-image">
                                         <a href="{{$video->url}}">
                                             <!-- <img src="{{$video->video_image}}" /> -->
@@ -49,11 +50,17 @@
                                        
 
                                         <span class="video_views">
-                                            <div><a href="{{route('user.channel',$video->channel_id)}}">{{$video->channel_name}}</a></div>
-                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} <b>.</b> 
-                                            {{ common_date($video->created_at) }}
+                                            <div><a href="{{route('user.channel',$video->channel_id)}}"></a></div>
+											<div class="hidden-mobile">
+											<ul>
+											<li>{{$video->channel_name}}
+                                            <i class="fa fa-eye"></i> {{$video->watch_count}} {{tr('views')}} </li>
+                                            <li>{{ common_date($video->created_at) }}</li>
+											</ul>
+											</div>
                                         </span> 
                                     </div><!--end of video-details-->
+									</div>
                                 </div><!--end of slide-box-->
                             @endforeach
                             

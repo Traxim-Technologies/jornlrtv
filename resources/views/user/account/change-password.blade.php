@@ -7,7 +7,7 @@
 
         @include('layouts.user.nav')
 
-        <div class="page-inner col-sm-9 col-md-10 profile-edit">
+        <div class="col-sm-9 col-md-12 profile-edit">
 
             <div class="form-background p-50">
                
@@ -47,7 +47,7 @@
                                 <input type="password" required name="password_confirmation" class="form-control" id="confirm_password" placeholder="{{tr('confirm_password')}}">
                             </div>
 
-                            <div class="change-pwd">
+                            <div class="change-pwd change-pwd-buttons">
 
                                 @if(Setting::get('admin_delete_control') == 1)
                                     <button type="button" disabled class="btn btn-primary" style="cursor: disabled" title="{{tr('admin_disabled')}}">{{tr('submit')}}</button>

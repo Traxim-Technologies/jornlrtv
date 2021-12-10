@@ -24,13 +24,14 @@
     <div class="clear-both"></div>
 </div>
 
+<div class="streamtube-top">
 <div class="streamtube-nav" id="header-section">
 
     <div class="row">
 
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6">
 
-            <a href="#" class="hidden-xs"><img src="{{asset('images/menu.png')}}" class="toggle-icon"></a>
+            <a href="#" class="hidden-xs"><img src="{{asset('images/fa-fa-bar.png')}}" id="sidehide" class="toggle-icon"></a>
 
             <a href="#" class="hidden-lg hidden-md hidden-sm"><img src="{{asset('images/menu_white.png')}}" class="toggle-icon"></a>
 
@@ -44,7 +45,7 @@
 
         </div>
 
-        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 hidden-xs">
+        <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 hidden-xs">
 
             <div id="custom-search-input" class="">
                 <form method="post" action="{{route('search-all')}}" id="userSearch">
@@ -65,7 +66,7 @@
 
         <!-- ========RESPONSIVE  HEADER VISIBLE IN MOBAILE VIEW====== -->
         
-        <div class="col-lg-3 col-md-2 col-sm-3 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 hidden-xs visible-sm visible-md visible-lg">
 
             @if(Auth::check())
 
@@ -161,8 +162,10 @@
                 @endif
 
             @else
-                <div class="y-button">
-                    <a href="{{route('user.login.form')}}" class="y-signin">{{tr('login')}}</a>
+                <div class="y-button header-login-signup-buttons">
+                    <a href="{{route('user.login.form')}}" class="y-signin login-header-button">{{tr('login')}} |</a>
+					
+                    <a href="{{route('user.register.form')}}" class="y-signin sign-up-header-button">Sign up</a>
                 </div>
 
                 @if(Setting::get('is_direct_upload_button') == YES)
@@ -213,4 +216,116 @@
 
     </div><!--end of row-->
 
+
+<div class="header-nav-menu">
+<div class="row">
+<div class="col-sm-2 desktop-menu">
+<ul class="y-home menu1 header-nav-menu">
+<li id="explore">
+            <a href="{{route('user.dashboard')}}">
+                <img src="{{asset('images/sidebar/explore-gray.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/explore-red.png')}}" class="red-img">
+                <span>Explore</span>
+            </a>
+        </li>
+		</ul>
+</div>
+<div class="col-sm-10">
+<ul class="y-home menu1 header-nav-menu">
+<li id="explore" class="mobile-menu" style="display:none;">
+            <a href="{{route('user.dashboard')}}">
+                <img src="{{asset('images/sidebar/explore-gray.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/explore-red.png')}}" class="red-img">
+                <span>Explore</span>
+            </a>
+        </li>
+        <li id="home">
+            <a href="{{route('user.dashboard')}}">
+                <img src="{{asset('images/sidebar/home-grey.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/home-red.png')}}" class="red-img">
+                <span>{{tr('home')}}</span>
+            </a>
+        </li>
+        <li id="trending">
+            <a href="{{route('user.trending')}}">
+                <img src="{{asset('images/sidebar/trending-grey.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/trending-red.png')}}" class="red-img">
+                <span>{{tr('trending')}}</span>
+            </a>
+        </li>
+
+        <li id="custom_live_videos">
+            <a href="{{route('user.custom_live_videos.index')}}">
+                <img src="{{asset('images/sidebar/live-gray.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/live-red-tv.png')}}" class="red-img">
+                <span>{{tr('user_custom_live_videos')}}</span>
+            </a>
+        </li>
+        <li id="live_videos">
+            <a href="{{route('user.live_videos')}}">
+                <img src="{{asset('images/sidebar/live-video.png')}}" class="grey-img">
+                <img src="{{asset('images/sidebar/live-video-active.png')}}" class="red-img">
+                <span>{{tr('live_videos')}}</span>
+            </a>
+        </li>
+
+        </li>
+
+        <!-- <li id="channels"> -->
+            <!-- <a href="{{route('user.channel.list')}}"> -->
+                <!-- <img src="{{asset('images/sidebar/search-grey.png')}}" class="grey-img"> -->
+                <!-- <img src="{{asset('images/sidebar/search-red.png')}}" class="red-img"> -->
+                <!-- <span>{{tr('browse_channels')}}</span> -->
+            <!-- </a> -->
+        <!-- </li> -->
+
+        @if(Auth::check())
+
+            <li id="history">
+                <a href="{{route('user.history')}}">
+                    <img src="{{asset('images/sidebar/history-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/history-red.png')}}" class="red-img">
+                    <span>{{tr('history')}}</span>
+                </a>
+            </li>
+            <li id="settings">
+                <a href="/settings">
+                    <img src="{{asset('images/sidebar/settings-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/settings-red.png')}}" class="red-img">
+                    <span>{{tr('settings')}}</span>
+                </a>
+            </li>
+            <li id="wishlist">
+                <a href="{{route('user.wishlist')}}">
+                    <img src="{{asset('images/sidebar/heart-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/heart-red.png')}}" class="red-img">
+                    <span>{{tr('wishlist')}}</span>
+                </a>
+            </li>
+            @if(Setting::get('create_channel_by_user') == CREATE_CHANNEL_BY_USER_ENABLED || Auth::user()->is_master_user == 1)
+                <li id="my_channel">
+                    <a href="{{route('user.channel.mychannel')}}">
+                        <img src="{{asset('images/sidebar/channel-grey.png')}}" class="grey-img">
+                        <img src="{{asset('images/sidebar/channel-red.png')}}" class="red-img">
+                        <span>{{tr('my_channels')}}</span>
+                    </a>
+                </li>
+
+            @endif
+
+            <li id="playlists">
+                <a href="{{route('user.playlists.index')}}">
+                    <img src="{{asset('images/sidebar/playlist-grey.png')}}" class="grey-img">
+                    <img src="{{asset('images/sidebar/playlist-red.png')}}" class="red-img">
+                    <span>{{tr('playlists')}}</span>
+                </a>
+            </li>
+    
+        @endif
+    
+    </ul>
+	</div>
+	</div>
+	</div><!--end header-nav-menu-->
+	</div>
 </div><!--end of streamtube-nav-->
